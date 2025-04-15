@@ -1,7 +1,19 @@
-import React from "react";
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import React, { useState } from "react";
+import {
+  GoogleMap,
+  Marker,
+  InfoWindow,
+  useJsApiLoader,
+} from "@react-google-maps/api";
+import HomeDetailsPopup from "./HomeDetailsPopup/HomeDetailsPopup";
 
-const properties = [
+type Property = {
+  lat: number;
+  lng: number;
+  price: string;
+};
+
+const properties: Property[] = [
   { lat: 36.851, lng: 30.789, price: "$1.42m" },
   { lat: 36.853, lng: 30.801, price: "$1.42m" },
   { lat: 36.857, lng: 30.808, price: "$1.42m" },
@@ -22,6 +34,10 @@ export default function GoogleMapView() {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyA64Bc3Y55vRFuugh8jxMon9ySYur4SvXY",
   });
+
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(
+    null
+  );
 
   if (!isLoaded) return <div>Loading...</div>;
 
@@ -68,8 +84,18 @@ export default function GoogleMapView() {
             // of the path. Setting it to the center coordinates helps center it.
             labelOrigin: new window.google.maps.Point(100, 25),
           }}
+          onClick={() => setSelectedProperty(property)}
         />
       ))}
+
+      {selectedProperty && (
+        <InfoWindow
+          position={{ lat: selectedProperty.lat, lng: selectedProperty.lng }}
+          onCloseClick={() => setSelectedProperty(null)}
+        >
+          <HomeDetailsPopup selectedProperty={selectedProperty} />
+        </InfoWindow>
+      )}
     </GoogleMap>
   );
 }
