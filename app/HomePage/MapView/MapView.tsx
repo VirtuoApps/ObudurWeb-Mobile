@@ -22,7 +22,7 @@ const properties: Property[] = [
 
 const containerStyle = {
   width: "100%",
-  height: "calc(100vh - 165px)",
+  height: "calc(100vh - 155px)",
 };
 
 const center = {
@@ -50,7 +50,7 @@ export default function GoogleMapView() {
         // Turn off default UI if you want a cleaner map;
         // or leave on certain controls like zoomControl if desired
         disableDefaultUI: true,
-        zoomControl: true,
+        zoomControl: false,
         styles: [
           {
             featureType: "poi",
