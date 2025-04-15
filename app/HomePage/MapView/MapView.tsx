@@ -1,88 +1,75 @@
-"use client";
+import React from "react";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 
-import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
-
-// Dummy data for markers
-const locations = [
-  { lat: 36.85, lng: 30.8, label: "$1.42m" },
-  { lat: 36.86, lng: 30.81, label: "$1.42m" },
-  { lat: 36.87, lng: 30.82, label: "$1.42m" },
+const properties = [
+  { lat: 36.851, lng: 30.789, price: "$1.42m" },
+  { lat: 36.853, lng: 30.801, price: "$1.42m" },
+  { lat: 36.857, lng: 30.808, price: "$1.42m" },
+  { lat: 36.86, lng: 30.818, price: "$1.42m" },
 ];
 
-// Component to update map view on window resize
-function MapUpdater() {
-  const map = useMap();
+const containerStyle = {
+  width: "100%",
+  height: "100vh",
+};
 
-  useEffect(() => {
-    const handleResize = () => {
-      map.invalidateSize();
-    };
+const center = {
+  lat: 36.855,
+  lng: 30.805,
+};
 
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [map]);
-
-  return null;
-}
-
-const createPriceIcon = (price: string) =>
-  L.divIcon({
-    className: "price-marker",
-    html: `<div class="marker-label">${price}</div>`,
-    iconSize: [80, 30],
-    iconAnchor: [40, 15],
+export default function GoogleMapView() {
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyA64Bc3Y55vRFuugh8jxMon9ySYur4SvXY",
   });
 
-export default function MapView() {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return (
-      <div className="w-full h-[calc(100vh-100px)] bg-gray-100 flex items-center justify-center">
-        Loading map...
-      </div>
-    );
-  }
+  if (!isLoaded) return <div>Loading...</div>;
 
   return (
-    <div className="relative w-full h-[calc(100vh)]">
-      <MapContainer
-        center={[36.86, 30.8]}
-        zoom={14}
-        style={{ height: "100%", width: "100%" }}
-        zoomControl={false}
-      >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    <GoogleMap
+      mapContainerStyle={containerStyle}
+      center={center}
+      zoom={14}
+      options={{
+        // Turn off default UI if you want a cleaner map;
+        // or leave on certain controls like zoomControl if desired
+        disableDefaultUI: true,
+        zoomControl: true,
+        styles: [
+          {
+            featureType: "poi",
+            elementType: "labels",
+            stylers: [{ visibility: "off" }],
+          },
+        ],
+      }}
+    >
+      {properties.map((property, index) => (
+        <Marker
+          key={index}
+          position={{ lat: property.lat, lng: property.lng }}
+          label={{
+            text: property.price,
+            color: "white",
+            fontSize: "12px",
+            fontWeight: "bold",
+          }}
+          icon={{
+            // Draw a 200 x 50 rectangle with rounded corners (12px radius)
+            path: "M12,0 L188,0 Q200,0 200,12 L200,38 Q200,50 188,50 L12,50 Q0,50 0,38 L0,12 Q0,0 12,0 Z",
+            fillColor: "#5E5691",
+            fillOpacity: 1,
+            strokeWeight: 0,
+            scale: 0.4,
+            // 'anchor' is the point of the icon which will be placed at the
+            // marker's position (lat/lng). (100,25) = center of a 200x50 rect.
+            anchor: new window.google.maps.Point(100, 25),
+            // Where the label text is drawn relative to the top-left corner
+            // of the path. Setting it to the center coordinates helps center it.
+            labelOrigin: new window.google.maps.Point(100, 25),
+          }}
         />
-
-        {locations.map((loc, index) => (
-          <Marker
-            key={index}
-            position={[loc.lat, loc.lng]}
-            icon={createPriceIcon(loc.label)}
-          >
-            <Popup>
-              <div className="text-center font-semibold text-black">
-                {loc.label}
-              </div>
-            </Popup>
-          </Marker>
-        ))}
-
-        <MapUpdater />
-      </MapContainer>
-    </div>
+      ))}
+    </GoogleMap>
   );
 }
