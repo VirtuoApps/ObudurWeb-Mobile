@@ -3,6 +3,7 @@
 import React from "react";
 
 import dynamic from "next/dynamic";
+import Header from "./Header/Header";
 
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
@@ -16,6 +17,7 @@ const MapView = dynamic(() => import("./MapView/MapView"), {
 export default function HomePage() {
   return (
     <div className="">
+      <Header />
       <MapView />
     </div>
   );
