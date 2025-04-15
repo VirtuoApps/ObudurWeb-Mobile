@@ -4,6 +4,7 @@ import React from "react";
 
 import dynamic from "next/dynamic";
 import Header from "./Header/Header";
+import FilterList from "./FilterList/FilterList";
 
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
@@ -18,6 +19,7 @@ export default function HomePage() {
   return (
     <div className="">
       <Header />
+      <FilterList />
       <MapView />
     </div>
   );
