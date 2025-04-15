@@ -6,18 +6,24 @@ import {
 } from "@heroicons/react/20/solid";
 import { MapPinIcon } from "@heroicons/react/24/outline";
 
-const locations = [
+export const locations = [
   { name: "Sarımsaklı Plajı", description: "Ayvalık/Balıkesir", href: "#" },
   { name: "Kırıkkale", description: "Kırıkkale/Kırıkkale", href: "#" },
 ];
 
-export default function LocationSelect() {
+type LocationSelectProps = {
+  selectedLocation: (typeof locations)[0] | null;
+  setSelectedLocation: (location: (typeof locations)[0]) => void;
+};
+
+export default function LocationSelect({
+  selectedLocation,
+  setSelectedLocation,
+}: LocationSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(true);
-  const [selectedLocation, setSelectedLocation] = useState<
-    (typeof locations)[0] | null
-  >(null);
+
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const filteredLocations = locations.filter(
@@ -59,33 +65,29 @@ export default function LocationSelect() {
           <>
             <PopoverButton
               ref={buttonRef}
-              className="flex items-center text-gray-700 px-3 py-1.5 text-sm"
+              className="flex items-center text-gray-700 px-3 py-1.5 text-sm w-[150px] cursor-pointer"
             >
               {isOpen && showSearch ? (
-                <div className="flex items-center">
-                  <MagnifyingGlassIcon className="h-4 w-4 mr-1 text-gray-500" />
+                <div className="flex items-center w-full">
+                  <MagnifyingGlassIcon className="h-4 w-4 mr-1 text-gray-500 flex-shrink-0" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Konum ara..."
-                    className="outline-none w-28"
+                    className="outline-none w-full"
                     onClick={(e) => e.stopPropagation()}
                     autoFocus
                   />
                 </div>
               ) : (
                 <>
-                  <MapPinIcon className="h-4 w-4 mr-1" />
-                  <span>
+                  <MapPinIcon className="h-4 w-4 mr-1 flex-shrink-0" />
+                  <span className="truncate">
                     {selectedLocation
                       ? `${selectedLocation.name} (${selectedLocation.description})`
                       : "Konum"}
                   </span>
-                  <ChevronDownIcon
-                    className="ml-1 h-4 w-4"
-                    aria-hidden="true"
-                  />
                 </>
               )}
             </PopoverButton>

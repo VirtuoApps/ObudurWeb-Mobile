@@ -1,7 +1,11 @@
-import React from "react";
-import LocationSelect from "./LocationSelect/LocationSelect";
+import React, { useState } from "react";
+import LocationSelect, { locations } from "./LocationSelect/LocationSelect";
 
 export default function MiddleSearchBox() {
+  const [selectedLocation, setSelectedLocation] = useState<
+    (typeof locations)[0] | null
+  >(null);
+
   return (
     <div className="flex items-center gap-2 border border-gray-100 px-4 py-2 rounded-lg">
       {/* Satılık / Kiralık */}
@@ -15,7 +19,10 @@ export default function MiddleSearchBox() {
       </div>
 
       {/* Konum */}
-      <LocationSelect />
+      <LocationSelect
+        selectedLocation={selectedLocation}
+        setSelectedLocation={setSelectedLocation}
+      />
 
       {/* Emlak Tipi */}
       <div className="relative">

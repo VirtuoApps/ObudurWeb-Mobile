@@ -75,6 +75,26 @@ const filterList = [
     name: "Açık Havuz",
     icon: <MdPool color="rgba(0,0,0,0.6)" className="text-2xl" />,
   },
+  {
+    id: 12,
+    name: "Spor Salonu",
+    icon: <FaDumbbell color="rgba(0,0,0,0.6)" className="text-2xl" />,
+  },
+  {
+    id: 13,
+    name: "Jakuzi",
+    icon: <FaBath color="rgba(0,0,0,0.6)" className="text-2xl" />,
+  },
+  {
+    id: 14,
+    name: "Şarj İstasyonu",
+    icon: <FaChargingStation color="rgba(0,0,0,0.6)" className="text-2xl" />,
+  },
+  {
+    id: 15,
+    name: "Açık Mutfak",
+    icon: <MdKitchen color="rgba(0,0,0,0.6)" className="text-2xl" />,
+  },
 ];
 
 export default function FilterList() {
