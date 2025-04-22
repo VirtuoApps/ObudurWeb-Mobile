@@ -69,7 +69,7 @@ export default function LanguageSwitcher() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(true)}
-        className="inline-flex justify-center rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        className="inline-flex justify-center rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 cursor-pointer"
       >
         <TbWorld className="w-8 h-8" />
       </button>
@@ -80,8 +80,12 @@ export default function LanguageSwitcher() {
           style={{
             backgroundColor: "rgba(0, 0, 0, 0.4)",
           }}
+          onClick={() => setIsOpen(false)}
         >
-          <div className="bg-white rounded-xl p-6 w-full max-w-xl shadow-xl relative">
+          <div
+            className="bg-white rounded-xl p-6 w-full max-w-xl shadow-xl relative"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               onClick={() => setIsOpen(false)}
               className="p-1 rounded-full hover:bg-gray-100 absolute top-2 right-2 cursor-pointer"
