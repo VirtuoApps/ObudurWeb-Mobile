@@ -27,7 +27,7 @@ function MapLoadingIndicator() {
 }
 
 export default function HomePage() {
-  const [currentView, setCurrentView] = useState<"map" | "list">("list");
+  const [currentView, setCurrentView] = useState<"map" | "list">("map");
   return (
     <div className="bg-white">
       <Header />
