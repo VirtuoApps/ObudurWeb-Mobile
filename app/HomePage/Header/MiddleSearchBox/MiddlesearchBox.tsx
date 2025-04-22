@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import LocationSelect, { locations } from "./LocationSelect/LocationSelect";
 import PropertyType, { propertyTypes } from "./PropertyType/PropertyType";
 import CategorySelect, { categories } from "./CategorySelect/CategorySelect";
+import { useTranslations } from "next-intl";
 
 export default function MiddleSearchBox() {
+  const t = useTranslations("listingType");
+  const filterT = useTranslations("filter");
   const [selectedLocation, setSelectedLocation] = useState<
     (typeof locations)[0] | null
   >(null);
@@ -13,8 +16,8 @@ export default function MiddleSearchBox() {
   const [selectedCategory, setSelectedCategory] = useState<
     (typeof categories)[0] | null
   >(null);
-  const [listingType, setListingType] = useState<"Satılık" | "Kiralık">(
-    "Satılık"
+  const [listingType, setListingType] = useState<"forSale" | "forRent">(
+    "forSale"
   );
 
   return (
@@ -23,23 +26,23 @@ export default function MiddleSearchBox() {
       <div className="flex rounded-md overflow-hidden mr-2">
         <button
           className={`px-4 py-1.5 text-sm font-medium transition-colors duration-200 cursor-pointer ${
-            listingType === "Satılık"
+            listingType === "forSale"
               ? "bg-[#362C75] text-white"
               : "bg-gray-50 text-gray-700"
           }`}
-          onClick={() => setListingType("Satılık")}
+          onClick={() => setListingType("forSale")}
         >
-          Satılık
+          {t("forSale")}
         </button>
         <button
           className={`px-4 py-1.5 text-sm font-medium transition-colors duration-200 cursor-pointer ${
-            listingType === "Kiralık"
+            listingType === "forRent"
               ? "bg-[#362C75] text-white"
               : "bg-gray-50 text-gray-700"
           }`}
-          onClick={() => setListingType("Kiralık")}
+          onClick={() => setListingType("forRent")}
         >
-          Kiralık
+          {t("forRent")}
         </button>
       </div>
 
@@ -63,7 +66,7 @@ export default function MiddleSearchBox() {
 
       {/* Search Button */}
       <button className="bg-[#5E5691] text-white px-6 py-1.5 rounded-md text-sm font-medium">
-        Ara
+        {filterT("search")}
       </button>
     </div>
   );

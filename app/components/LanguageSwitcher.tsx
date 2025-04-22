@@ -21,11 +21,12 @@ export default function LanguageSwitcher() {
       newPath = pathname;
     }
 
-    if (newLocale === defaultLocale) {
-      window.location.href = newPath;
-    } else {
-      window.location.href = `/${newLocale}${newPath === "/" ? "" : newPath}`;
-    }
+    console.log({
+      newLocale,
+      newPath,
+    });
+
+    window.location.href = `/${newLocale}${newPath === "/" ? "" : newPath}`;
   };
 
   return (

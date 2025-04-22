@@ -18,7 +18,12 @@
     "type": "Property Type",
     "rooms": "Rooms",
     "applyFilter": "Apply Filter",
-    "clearFilter": "Clear"
+    "clearFilter": "Clear",
+    "search": "Search"
+  },
+  "listingType": {
+    "forSale": "For Sale",
+    "forRent": "For Rent"
   },
   "propertyTypes": {
     "apartment": "Apartment",

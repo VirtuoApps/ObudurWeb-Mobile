@@ -18,7 +18,12 @@
     "type": "Mülk Tipi",
     "rooms": "Oda Sayısı",
     "applyFilter": "Filtre Uygula",
-    "clearFilter": "Temizle"
+    "clearFilter": "Temizle",
+    "search": "Ara"
+  },
+  "listingType": {
+    "forSale": "Satılık",
+    "forRent": "Kiralık"
   },
   "propertyTypes": {
     "apartment": "Daire",
