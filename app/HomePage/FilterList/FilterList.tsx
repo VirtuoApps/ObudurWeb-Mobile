@@ -113,13 +113,13 @@ export default function FilterList() {
   };
 
   return (
-    <div className="bg-white flex flex-row items-center px-6 py-2 h-[75px]">
-      <div className="flex-1 overflow-x-auto scrollbar-hide h-[75px] no-scrollbar">
-        <div className="flex flex-row gap-4 items-center justify-center min-w-max mt-2">
+    <div className="bg-white flex flex-col md:flex-row items-center px-2 md:px-6 py-2 h-auto md:h-[75px]">
+      <div className="flex-1 overflow-x-auto scrollbar-hide w-full md:h-[75px] no-scrollbar py-2 md:py-0">
+        <div className="flex flex-row gap-2 md:gap-4 items-center justify-start md:justify-center min-w-max mt-0 md:mt-2 px-2 md:px-0">
           {filterList.map((filterItem) => (
             <div
               key={filterItem.id}
-              className={`flex flex-col items-center cursor-pointer rounded-lg min-w-[80px] p-2 ${
+              className={`flex flex-col items-center cursor-pointer rounded-lg min-w-[65px] md:min-w-[80px] p-1 md:p-2 ${
                 selectedFilters.includes(filterItem.id)
                   ? "bg-[#5E5691] text-white"
                   : "hover:bg-gray-100"
@@ -142,13 +142,13 @@ export default function FilterList() {
           ))}
         </div>
       </div>
-      <div className="flex flex-row gap-4 justify-end min-w-[200px] ml-12 items-center">
-        <button className="flex flex-row items-center border h-[35px] border-[#5E5691] rounded-lg px-2 py-1 cursor-pointer hover:bg-[#5E5691] text-[#5E5691] hover:text-white transition-all duration-300">
-          <LuSettings2 className="text-2xl" />
-          <p className="text-xs font-bold ml-2">{t("allFilters")}</p>
+      <div className="flex flex-row gap-2 md:gap-4 justify-end w-full md:w-auto md:min-w-[200px] mt-2 md:mt-0 md:ml-12 items-center px-2 md:px-0">
+        <button className="flex-1 md:flex-none flex flex-row justify-center items-center border h-[35px] border-[#5E5691] rounded-lg px-2 py-1 cursor-pointer hover:bg-[#5E5691] text-[#5E5691] hover:text-white transition-all duration-300">
+          <LuSettings2 className="text-xl md:text-2xl" />
+          <p className="text-xs font-bold ml-1 md:ml-2">{t("allFilters")}</p>
         </button>
         <button
-          className="flex flex-row items-center border h-[35px] border-[#EC755D] rounded-lg px-2 py-1 cursor-pointer hover:bg-[#EC755D] text-[#EC755D] hover:text-white transition-all duration-300"
+          className="flex-1 md:flex-none flex flex-row justify-center items-center border h-[35px] border-[#EC755D] rounded-lg px-2 py-1 cursor-pointer hover:bg-[#EC755D] text-[#EC755D] hover:text-white transition-all duration-300"
           onClick={() => setSelectedFilters([])}
         >
           <p className="text-xs font-bold">{t("clear")}</p>

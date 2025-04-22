@@ -18,7 +18,7 @@ function MapLoadingIndicator() {
   const t = useTranslations("common");
 
   return (
-    <div className="w-full h-[calc(100vh-100px)] bg-gray-100 flex items-center justify-center">
+    <div className="w-full h-[calc(100vh-155px)] bg-gray-100 flex items-center justify-center">
       {t("loadingMap")}
     </div>
   );

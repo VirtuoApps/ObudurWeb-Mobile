@@ -14,11 +14,13 @@ export const locations = [
 type LocationSelectProps = {
   selectedLocation: (typeof locations)[0] | null;
   setSelectedLocation: (location: (typeof locations)[0]) => void;
+  isMobileMenu?: boolean;
 };
 
 export default function LocationSelect({
   selectedLocation,
   setSelectedLocation,
+  isMobileMenu = false,
 }: LocationSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -55,7 +57,7 @@ export default function LocationSelect({
   }, [isOpen, showSearch]);
 
   return (
-    <Popover className="relative">
+    <Popover className="relative w-full">
       {({ open }) => {
         useEffect(() => {
           if (open !== isOpen) {
@@ -67,36 +69,50 @@ export default function LocationSelect({
           <>
             <PopoverButton
               ref={buttonRef}
-              className="flex items-center text-gray-700 px-3 py-1.5 text-sm w-[150px] cursor-pointer"
+              className={`flex items-center text-gray-700 px-3 py-1.5 text-sm cursor-pointer ${
+                isMobileMenu
+                  ? "w-full border rounded-md border-gray-200 justify-between"
+                  : "w-[150px]"
+              }`}
             >
-              {isOpen && showSearch ? (
-                <div className="flex items-center w-full">
-                  <MagnifyingGlassIcon className="h-4 w-4 mr-1 text-gray-500 flex-shrink-0" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder={t("searchLocation")}
-                    className="outline-none w-full"
-                    onClick={(e) => e.stopPropagation()}
-                    autoFocus
-                  />
-                </div>
-              ) : (
-                <>
-                  <MapPinIcon className="h-4 w-4 mr-1 flex-shrink-0" />
-                  <span className="truncate">
-                    {selectedLocation
-                      ? `${selectedLocation.name} (${selectedLocation.description})`
-                      : t("location")}
-                  </span>
-                </>
-              )}
+              <div
+                className={`flex items-center ${isMobileMenu ? "flex-1" : ""}`}
+              >
+                {isOpen && showSearch ? (
+                  <>
+                    <MagnifyingGlassIcon className="h-4 w-4 mr-1 text-gray-500 flex-shrink-0" />
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder={t("searchLocation")}
+                      className="outline-none w-full bg-transparent"
+                      onClick={(e) => e.stopPropagation()}
+                      autoFocus
+                    />
+                  </>
+                ) : (
+                  <>
+                    <MapPinIcon className="h-4 w-4 mr-1 flex-shrink-0" />
+                    <span className="truncate">
+                      {selectedLocation
+                        ? `${selectedLocation.name} (${selectedLocation.description})`
+                        : t("location")}
+                    </span>
+                  </>
+                )}
+              </div>
+              <ChevronDownIcon
+                className="h-5 w-5 text-gray-400 ml-2"
+                aria-hidden="true"
+              />
             </PopoverButton>
 
             <PopoverPanel
               transition
-              className="absolute left-1/2 z-10 mt-2 flex w-screen max-w-xs -translate-x-1/2 px-4 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
+              className={`absolute z-10 mt-2 w-screen max-w-xs px-4 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in ${
+                isMobileMenu ? "left-0" : "left-1/2 -translate-x-1/2"
+              }`}
             >
               <div className="w-full max-w-md flex-auto overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
                 <div className="p-4">

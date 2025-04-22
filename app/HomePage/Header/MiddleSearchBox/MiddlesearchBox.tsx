@@ -4,7 +4,13 @@ import PropertyType, { propertyTypes } from "./PropertyType/PropertyType";
 import CategorySelect, { categories } from "./CategorySelect/CategorySelect";
 import { useTranslations } from "next-intl";
 
-export default function MiddleSearchBox() {
+interface MiddleSearchBoxProps {
+  isMobileMenu?: boolean;
+}
+
+export default function MiddleSearchBox({
+  isMobileMenu = false,
+}: MiddleSearchBoxProps) {
   const t = useTranslations("listingType");
   const filterT = useTranslations("filter");
   const [selectedLocation, setSelectedLocation] = useState<
@@ -20,12 +26,22 @@ export default function MiddleSearchBox() {
     "forSale"
   );
 
+  console.log(isMobileMenu);
+
   return (
-    <div className="flex items-center gap-2 border border-gray-100 px-4 py-2 rounded-lg">
+    <div
+      className={`
+        ${
+          isMobileMenu
+            ? "flex flex-col w-full gap-3"
+            : "flex items-center gap-2 border border-gray-100 px-4 py-2 rounded-lg"
+        }
+      `}
+    >
       {/* Satılık / Kiralık */}
-      <div className="flex rounded-md overflow-hidden mr-2">
+      <div className={`flex rounded-md  ${isMobileMenu ? "w-full" : "mr-2"}`}>
         <button
-          className={`px-4 py-1.5 text-sm font-medium transition-colors duration-200 cursor-pointer ${
+          className={`px-4 py-1.5 text-sm font-medium transition-colors duration-200 cursor-pointer rounded-md ${
             listingType === "forSale"
               ? "bg-[#362C75] text-white"
               : "bg-gray-50 text-gray-700"
@@ -35,7 +51,7 @@ export default function MiddleSearchBox() {
           {t("forSale")}
         </button>
         <button
-          className={`px-4 py-1.5 text-sm font-medium transition-colors duration-200 cursor-pointer ${
+          className={`px-4 py-1.5 text-sm font-medium transition-colors duration-200 cursor-pointer rounded-md ${
             listingType === "forRent"
               ? "bg-[#362C75] text-white"
               : "bg-gray-50 text-gray-700"
@@ -50,6 +66,7 @@ export default function MiddleSearchBox() {
       <LocationSelect
         selectedLocation={selectedLocation}
         setSelectedLocation={setSelectedLocation}
+        isMobileMenu={isMobileMenu}
       />
 
       {/* Emlak Tipi */}
@@ -65,7 +82,11 @@ export default function MiddleSearchBox() {
       />
 
       {/* Search Button */}
-      <button className="bg-[#5E5691] text-white px-6 py-1.5 rounded-md text-sm font-medium">
+      <button
+        className={`bg-[#5E5691] text-white px-6 py-1.5 rounded-md text-sm font-medium ${
+          isMobileMenu ? "w-full" : ""
+        }`}
+      >
         {filterT("search")}
       </button>
     </div>
