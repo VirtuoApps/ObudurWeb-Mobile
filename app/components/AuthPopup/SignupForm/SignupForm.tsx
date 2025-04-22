@@ -1,48 +1,60 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FaGoogle, FaFacebook } from "react-icons/fa";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useTranslations } from "next-intl";
 
 // Define the type for form data
-type LoginFormData = {
+type SignupFormData = {
   email: string;
   password: string;
+  passwordConfirm: string;
+  agreement: boolean;
 };
 
-export default function LoginForm({
+export default function SignupForm({
   onClose,
   onChangeAuthState,
 }: {
   onClose: () => void;
   onChangeAuthState: (authState: string) => void;
 }) {
-  const t = useTranslations("loginForm");
+  const t = useTranslations("signupForm");
 
   // Define the schema for form validation with localized error messages
-  const loginSchema = z.object({
-    email: z.string().email(t("emailError")),
-    password: z.string().min(6, t("passwordError")),
-  });
+  const signupSchema = z
+    .object({
+      email: z.string().email(t("emailError")),
+      password: z.string().min(6, t("passwordError")),
+      passwordConfirm: z.string().min(6, t("passwordConfirmError")),
+      agreement: z.boolean().refine((val) => val === true, {
+        message: t("agreementError"),
+      }),
+    })
+    .refine((data) => data.password === data.passwordConfirm, {
+      message: t("passwordsDoNotMatch"),
+      path: ["passwordConfirm"],
+    });
 
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<SignupFormData>({
+    resolver: zodResolver(signupSchema),
     mode: "onChange",
     defaultValues: {
       email: "",
       password: "",
+      passwordConfirm: "",
+      agreement: false,
     },
   });
 
-  const onSubmit = (data: LoginFormData) => {
+  const onSubmit = (data: SignupFormData) => {
     console.log(data);
   };
 
@@ -56,7 +68,7 @@ export default function LoginForm({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex flex-row items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold  text-center text-gray-700">
+          <h2 className="text-2xl font-bold text-center text-gray-700">
             {t("title")}
           </h2>
           <button
@@ -77,7 +89,8 @@ export default function LoginForm({
               type="email"
               placeholder={t("emailPlaceholder")}
               {...register("email")}
-              className={`w-full px-3 py-2 pl-1 border-b outline-none text-gray-600  placeholder:text-gray-400 ${
+              autoComplete="off"
+              className={`w-full px-3 py-2 pl-1 border-b outline-none text-gray-600 placeholder:text-gray-400 ${
                 errors.email ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -94,7 +107,8 @@ export default function LoginForm({
               type="password"
               placeholder={t("passwordPlaceholder")}
               {...register("password")}
-              className={`w-full px-3 py-2 pl-1 border-b placeholder:text-gray-400 text-gray-600 outline-none  ${
+              autoComplete="off"
+              className={`w-full px-3 py-2 pl-1 border-b placeholder:text-gray-400 text-gray-600 outline-none ${
                 errors.password ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -105,20 +119,55 @@ export default function LoginForm({
             )}
           </div>
 
+          <div>
+            <input
+              id="passwordConfirm"
+              type="password"
+              placeholder={t("passwordConfirmPlaceholder")}
+              {...register("passwordConfirm")}
+              autoComplete="off"
+              className={`w-full px-3 py-2 pl-1 border-b placeholder:text-gray-400 text-gray-600 outline-none ${
+                errors.passwordConfirm ? "border-red-500" : "border-gray-300"
+              }`}
+            />
+            {errors.passwordConfirm && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.passwordConfirm.message}
+              </p>
+            )}
+          </div>
+
+          <div className="flex items-start">
+            <div className="flex items-center h-5">
+              <input
+                id="agreement"
+                type="checkbox"
+                {...register("agreement")}
+                className="w-4 h-4 border border-gray-300 rounded"
+              />
+            </div>
+            <label
+              htmlFor="agreement"
+              className={`ml-2 text-sm ${
+                errors.agreement ? "text-red-500" : "text-gray-500"
+              }`}
+            >
+              {t("agreement")}
+            </label>
+          </div>
+          {errors.agreement && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.agreement.message}
+            </p>
+          )}
+
           <div className="flex justify-between text-sm text-gray-400">
             <button
               type="button"
               className="hover:underline cursor-pointer"
-              onClick={() => onChangeAuthState("forgotPassword")}
+              onClick={() => onChangeAuthState("login")}
             >
-              {t("forgotPassword")}
-            </button>
-            <button
-              type="button"
-              className="hover:underline cursor-pointer"
-              onClick={() => onChangeAuthState("signup")}
-            >
-              {t("notMember")}
+              {t("alreadyMember")}
             </button>
           </div>
 
@@ -131,7 +180,7 @@ export default function LoginForm({
                 : "bg-[#F0F0F0] cursor-not-allowed text-gray-500"
             }`}
           >
-            {t("loginButton")}
+            {t("signupButton")}
           </button>
         </form>
 

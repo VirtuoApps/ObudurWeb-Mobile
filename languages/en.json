@@ -74,5 +74,23 @@
     "or": "or",
     "continueWithFacebook": "Continue with Facebook",
     "continueWithGoogle": "Continue with Google"
+  },
+  "signupForm": {
+    "title": "Sign Up",
+    "description": "Create a new account by entering your details below.",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "passwordConfirmPlaceholder": "Confirm Password",
+    "emailError": "Please enter a valid email address",
+    "passwordError": "Password must be at least 6 characters",
+    "passwordConfirmError": "Please confirm your password",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "agreementError": "You must accept the terms and conditions",
+    "alreadyMember": "Already a member",
+    "signupButton": "Sign Up",
+    "or": "or",
+    "continueWithFacebook": "Continue with Facebook",
+    "continueWithGoogle": "Continue with Google",
+    "agreement": "I have read and accept the terms and conditions."
   }
 }

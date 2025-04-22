@@ -74,5 +74,23 @@
     "or": "veya",
     "continueWithFacebook": "Facebook ile devam et",
     "continueWithGoogle": "Google ile devam et"
+  },
+  "signupForm": {
+    "title": "Kayıt Ol",
+    "description": "Aşağıdaki bilgileri doldurarak yeni bir hesap oluşturun.",
+    "emailPlaceholder": "E-posta",
+    "passwordPlaceholder": "Parola",
+    "passwordConfirmPlaceholder": "Parola Tekrar",
+    "emailError": "Geçerli bir e-posta adresi giriniz",
+    "passwordError": "Parola en az 6 karakter olmalıdır",
+    "passwordConfirmError": "Parolanızı doğrulayınız",
+    "passwordsDoNotMatch": "Parolalar eşleşmiyor",
+    "agreementError": "Kullanıcı sözleşmesini kabul etmelisiniz",
+    "alreadyMember": "Zaten üye misiniz",
+    "signupButton": "Kayıt Ol",
+    "or": "veya",
+    "continueWithFacebook": "Facebook ile devam et",
+    "continueWithGoogle": "Google ile devam et",
+    "agreement": "Kullanıcı sözleşmesini okudum, kabul ediyorum."
   }
 }

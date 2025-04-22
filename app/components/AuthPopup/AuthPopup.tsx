@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import LoginForm from "./LoginForm/LoginForm";
+import SignupForm from "./SignupForm/SignupForm";
 
 type AuthPopupProps = {
   isOpen: boolean;
@@ -14,8 +15,8 @@ export default function AuthPopup({ isOpen, onClose }: AuthPopupProps) {
   if (!isOpen) return null;
 
   if (authState === "login") {
-    return <LoginForm onClose={onClose} />;
+    return <LoginForm onClose={onClose} onChangeAuthState={setAuthState} />;
   }
 
-  return <div>AuthPopup</div>;
+  return <SignupForm onClose={onClose} onChangeAuthState={setAuthState} />;
 }
