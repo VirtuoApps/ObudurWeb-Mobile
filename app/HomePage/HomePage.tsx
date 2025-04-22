@@ -6,6 +6,7 @@ import Header from "./Header/Header";
 import FilterList from "./FilterList/FilterList";
 import { useTranslations } from "next-intl";
 import ViewSwitcher from "./ViewSwitcher/ViewSwitcher";
+import ListView from "./ListView/ListView";
 
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
@@ -26,12 +27,12 @@ function MapLoadingIndicator() {
 }
 
 export default function HomePage() {
-  const [currentView, setCurrentView] = useState<"map" | "list">("map");
+  const [currentView, setCurrentView] = useState<"map" | "list">("list");
   return (
-    <div className="">
+    <div className="bg-white">
       <Header />
       <FilterList />
-      <MapView />
+      {currentView === "map" ? <MapView /> : <ListView />}
       <ViewSwitcher currentView={currentView} setCurrentView={setCurrentView} />
     </div>
   );

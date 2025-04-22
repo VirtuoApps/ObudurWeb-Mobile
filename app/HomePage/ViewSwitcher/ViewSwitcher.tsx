@@ -14,7 +14,7 @@ export default function ViewSwitcher({
 }: ViewSwitcherProps) {
   const t = useTranslations("viewSwitcher");
   return (
-    <div className="absolute bottom-4 left-0 right-0 w-full flex justify-center items-center">
+    <div className="fixed bottom-4 left-0 right-0 w-full flex justify-center items-center">
       {currentView === "map" && (
         <div
           className="flex flex-row justify-center items-center gap-2 bg-white px-4 py-3 rounded-2xl shadow-lg cursor-pointer"
