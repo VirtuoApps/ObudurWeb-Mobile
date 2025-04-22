@@ -49,6 +49,10 @@
     "allFilters": "All Filters",
     "clear": "Clear"
   },
+  "viewSwitcher": {
+    "map": "Map View",
+    "list": "List View"
+  },
   "languageSwitcher": {
     "chooseLanguage": "Choose Language",
     "language": "Language",

@@ -49,6 +49,10 @@
     "allFilters": "Tüm Filtreler",
     "clear": "Temizle"
   },
+  "viewSwitcher": {
+    "map": "Harita Görünümü",
+    "list": "Liste Görünümü"
+  },
   "languageSwitcher": {
     "chooseLanguage": "Dil Seçin",
     "language": "Dil",

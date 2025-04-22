@@ -41,7 +41,7 @@ export default function MiddleSearchBox({
       {/* Satılık / Kiralık */}
       <div className={`flex rounded-md  ${isMobileMenu ? "w-full" : "mr-2"}`}>
         <button
-          className={`px-4 py-1.5 text-sm font-medium transition-colors duration-200 cursor-pointer rounded-md ${
+          className={`px-4 py-1.5 text-sm font-medium transition-colors duration-200 cursor-pointer rounded-md w-[100px] ${
             listingType === "forSale"
               ? "bg-[#362C75] text-white"
               : "bg-gray-50 text-gray-700"
@@ -51,7 +51,7 @@ export default function MiddleSearchBox({
           {t("forSale")}
         </button>
         <button
-          className={`px-4 py-1.5 text-sm font-medium transition-colors duration-200 cursor-pointer rounded-md ${
+          className={`px-4 py-1.5 text-sm font-medium transition-colors duration-200 cursor-pointer rounded-md w-[100px] ${
             listingType === "forRent"
               ? "bg-[#362C75] text-white"
               : "bg-gray-50 text-gray-700"

@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import Header from "./Header/Header";
 import FilterList from "./FilterList/FilterList";
 import { useTranslations } from "next-intl";
+import ViewSwitcher from "./ViewSwitcher/ViewSwitcher";
 
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
@@ -25,11 +26,13 @@ function MapLoadingIndicator() {
 }
 
 export default function HomePage() {
+  const [currentView, setCurrentView] = useState<"map" | "list">("map");
   return (
     <div className="">
       <Header />
       <FilterList />
       <MapView />
+      <ViewSwitcher currentView={currentView} setCurrentView={setCurrentView} />
     </div>
   );
 }
