@@ -126,5 +126,10 @@
     "emailError": "Please enter a valid email address",
     "backToLogin": "Back to login",
     "resetButton": "Reset Password"
+  },
+  "residentBox": {
+    "optinable": "Optinable",
+    "forSale": "For Sale",
+    "forRent": "For Rent"
   }
 }

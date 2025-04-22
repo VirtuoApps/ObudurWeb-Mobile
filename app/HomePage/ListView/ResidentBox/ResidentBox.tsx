@@ -11,13 +11,35 @@ import LikeIcon from "@/app/svgIcons/likeIcon";
 import BedIcon from "@/app/svgIcons/BedIcon";
 import FloorCountIcon from "@/app/svgIcons/FloorCountIcon";
 import AreaIcon from "@/app/svgIcons/AreaIcon";
+import { useTranslations } from "next-intl";
 interface ResidentBoxProps {
   isFavorite?: boolean;
+  type: string; // Satılık/Kiralık
+  isOptinable?: boolean;
+  residentTypeName: string;
+  title: string;
+  price: string;
+  bedCount: string;
+  floorCount: string;
+  area: string;
+  locationText: string;
+  image?: string;
 }
 
 export default function ResidentBox({
   isFavorite: propIsFavorite = false,
+  type = "Satılık",
+  isOptinable = false,
+  residentTypeName = "Modern Villa",
+  title = "Comfortable Villa in Green",
+  price = "$1,420,000",
+  bedCount = "4+1",
+  floorCount = "2",
+  area = "240m²",
+  locationText = "814 E Highland Dr, Seattle, WA 98102",
+  image = "/example-house.png",
 }: ResidentBoxProps) {
+  const t = useTranslations("residentBox");
   const [localIsFavorite, setLocalIsFavorite] = useState(propIsFavorite);
 
   const handleFavoriteToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -25,26 +47,26 @@ export default function ResidentBox({
     setLocalIsFavorite(!localIsFavorite);
   };
 
-  // Use prop if provided, otherwise use local state
-
   return (
     <div className="w-full overflow-hidden bg-white rounded-xl hover:shadow-lg transition-shadow duration-300 cursor-pointer">
       {/* Image container with badges */}
       <div className="relative">
         <img
-          src="/example-house.png"
-          alt="Modern Villa in Green"
+          src={image}
+          alt={title}
           className="w-full h-48 object-cover rounded-lg"
         />
 
         {/* Sale badge */}
         <div className="absolute top-3 left-3 flex flex-row items-center">
           <div className=" bg-white border border-gray-200 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-lg">
-            Satılık
+            {type === "forSale" ? t("forSale") : t("forRent")}
           </div>
-          <div className=" bg-[#EC755D] border border-[#EC755D] text-white ml-2 text-xs font-semibold px-3 py-1 rounded-lg">
-            Opsiyonlandı
-          </div>
+          {isOptinable && (
+            <div className=" bg-[#EC755D] border border-[#EC755D] text-white ml-2 text-xs font-semibold px-3 py-1 rounded-lg">
+              {t("optinable")}
+            </div>
+          )}
         </div>
 
         {/* Favorite button */}
@@ -62,40 +84,40 @@ export default function ResidentBox({
       {/* Content */}
       <div className="p-4">
         {/* Property type */}
-        <p className="text-xs text-gray-500 font-medium mb-1">Modern Villa</p>
+        <p className="text-xs text-gray-500 font-medium mb-1">
+          {residentTypeName}
+        </p>
 
         <div className="flex flex-row items-center justify-between mb-4">
           {/* Title */}
-          <h3 className="text-base font-bold text-gray-800 ">
-            Comfortable Villa in Green
-          </h3>
+          <h3 className="text-base font-bold text-gray-800 ">{title}</h3>
 
           {/* Price */}
-          <p className="text-sm font-bold text-[#362C75]">$1,420,000</p>
+          <p className="text-sm font-bold text-[#362C75]">{price}</p>
         </div>
 
         {/* Features */}
         <div className="flex justify-between items-center mb-4 text-sm text-gray-800 font-semibold">
           <div className="flex items-center space-x-1">
             <BedIcon />
-            <span>4+1</span>
+            <span>{bedCount}</span>
           </div>
 
           <div className="flex items-center space-x-1">
             <FloorCountIcon />
-            <span>2</span>
+            <span>{floorCount}</span>
           </div>
 
           <div className="flex items-center space-x-1">
             <AreaIcon />
-            <span>240m²</span>
+            <span>{area}</span>
           </div>
         </div>
 
         {/* Location */}
         <div className="flex items-start space-x-1 text-xs text-gray-500">
           <MapPinIcon className="w-4 h-4 flex-shrink-0 mt-0.5" />
-          <span>814 E Highland Dr, Seattle, WA 98102</span>
+          <span>{locationText}</span>
         </div>
       </div>
     </div>

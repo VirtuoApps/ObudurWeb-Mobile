@@ -126,5 +126,10 @@
     "emailError": "Geçerli bir e-posta adresi giriniz",
     "backToLogin": "Giriş sayfasına dön",
     "resetButton": "Şifremi Sıfırla"
+  },
+  "residentBox": {
+    "optinable": "Opsiyonlandı",
+    "forSale": "Satılık",
+    "forRent": "Kiralık"
   }
 }
