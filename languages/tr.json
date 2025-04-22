@@ -9,7 +9,8 @@
     "register": "Kayıt Ol",
     "language": "Dil",
     "english": "İngilizce",
-    "turkish": "Türkçe"
+    "turkish": "Türkçe",
+    "welcome": "Hoş Geldiniz"
   },
   "filter": {
     "title": "Filtreler",
@@ -59,5 +60,19 @@
     "chooseCurrency": "Para Birimi Seçin",
     "currency": "Para Birimi",
     "update": "Güncelle"
+  },
+  "loginForm": {
+    "title": "Giriş Yap",
+    "emailPlaceholder": "E-posta",
+    "passwordPlaceholder": "Parola",
+    "emailError": "Geçerli bir e-posta adresi giriniz",
+    "passwordError": "Parola en az 6 karakter olmalıdır",
+    "description": "E-posta adresinizi ve parolanızı girerek giriş yapın.",
+    "forgotPassword": "Şifremi unuttum",
+    "notMember": "Üye Değilim",
+    "loginButton": "Giriş Yap",
+    "or": "veya",
+    "continueWithFacebook": "Facebook ile devam et",
+    "continueWithGoogle": "Google ile devam et"
   }
 }

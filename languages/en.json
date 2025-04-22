@@ -9,7 +9,8 @@
     "register": "Register",
     "language": "Language",
     "english": "English",
-    "turkish": "Turkish"
+    "turkish": "Turkish",
+    "welcome": "Welcome"
   },
   "filter": {
     "title": "Filters",
@@ -59,5 +60,19 @@
     "chooseCurrency": "Choose Currency",
     "currency": "Currency",
     "update": "Update"
+  },
+  "loginForm": {
+    "title": "Login",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "emailError": "Please enter a valid email address",
+    "passwordError": "Password must be at least 6 characters",
+    "description": "Enter your email address and password to login.",
+    "forgotPassword": "Forgot password",
+    "notMember": "Not a member",
+    "loginButton": "Login",
+    "or": "or",
+    "continueWithFacebook": "Continue with Facebook",
+    "continueWithGoogle": "Continue with Google"
   }
 }
