@@ -5,7 +5,7 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
 import { MapPinIcon } from "@heroicons/react/24/outline";
-
+import { useTranslations } from "next-intl";
 export const locations = [
   { name: "Sarımsaklı Plajı", description: "Ayvalık/Balıkesir", href: "#" },
   { name: "Kırıkkale", description: "Kırıkkale/Kırıkkale", href: "#" },
@@ -23,6 +23,8 @@ export default function LocationSelect({
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(true);
+
+  const t = useTranslations("locations");
 
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -74,7 +76,7 @@ export default function LocationSelect({
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Konum ara..."
+                    placeholder={t("searchLocation")}
                     className="outline-none w-full"
                     onClick={(e) => e.stopPropagation()}
                     autoFocus
@@ -86,7 +88,7 @@ export default function LocationSelect({
                   <span className="truncate">
                     {selectedLocation
                       ? `${selectedLocation.name} (${selectedLocation.description})`
-                      : "Konum"}
+                      : t("location")}
                   </span>
                 </>
               )}
@@ -123,7 +125,7 @@ export default function LocationSelect({
                     ))
                   ) : (
                     <div className="p-3 text-center text-gray-500">
-                      Sonuç bulunamadı
+                      {t("notFound")}
                     </div>
                   )}
                 </div>

@@ -29,7 +29,16 @@
     "apartment": "Daire",
     "house": "Ev",
     "villa": "Villa",
-    "office": "Ofis"
+    "office": "Ofis",
+    "propertyType": "Emlak Tipi"
+  },
+  "locations": {
+    "location": "Konum",
+    "searchLocation": "Konum Ara...",
+    "notFound": "Sonuç bulunamadı"
+  },
+  "categories": {
+    "category": "Kategori"
   },
   "map": {
     "viewDetails": "Detayları Gör",

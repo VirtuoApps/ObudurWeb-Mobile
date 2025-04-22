@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { TagIcon } from "@heroicons/react/24/outline";
-
+import { useTranslations } from "next-intl";
 export const categories = [
   { name: "2+1", href: "#" },
   { name: "3+1", href: "#" },
@@ -20,6 +20,8 @@ export default function CategorySelect({
 }: CategorySelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const t = useTranslations("categories");
 
   const handleCategorySelect = (category: (typeof categories)[0]) => {
     setSelectedCategory(category);
@@ -44,7 +46,7 @@ export default function CategorySelect({
             >
               <div className="flex items-center">
                 <span className="truncate">
-                  {selectedCategory ? selectedCategory.name : "Kategori"}
+                  {selectedCategory ? selectedCategory.name : t("category")}
                 </span>
               </div>
               <ChevronDownIcon className="h-4 w-4 ml-2" />

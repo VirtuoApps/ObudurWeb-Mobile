@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { HomeIcon } from "@heroicons/react/24/outline";
-
+import { useTranslations } from "next-intl";
 export const propertyTypes = [
   { name: "Konut", href: "#" },
   { name: "İş Yeri", href: "#" },
@@ -20,6 +20,8 @@ export default function PropertyType({
 }: PropertyTypeProps) {
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const t = useTranslations("propertyTypes");
 
   const handlePropertyTypeSelect = (
     propertyType: (typeof propertyTypes)[0]
@@ -48,7 +50,7 @@ export default function PropertyType({
                 <span className="truncate">
                   {selectedPropertyType
                     ? selectedPropertyType.name
-                    : "Emlak Tipi"}
+                    : t("propertyType")}
                 </span>
               </div>
               <ChevronDownIcon className="h-4 w-4 ml-2" />

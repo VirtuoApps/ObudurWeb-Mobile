@@ -29,7 +29,16 @@
     "apartment": "Apartment",
     "house": "House",
     "villa": "Villa",
-    "office": "Office"
+    "office": "Office",
+    "propertyType": "Property Type"
+  },
+  "locations": {
+    "location": "Location",
+    "searchLocation": "Search Location...",
+    "notFound": "No results found"
+  },
+  "categories": {
+    "category": "Category"
   },
   "map": {
     "viewDetails": "View Details",
