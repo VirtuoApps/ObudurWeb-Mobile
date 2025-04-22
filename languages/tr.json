@@ -92,5 +92,13 @@
     "continueWithFacebook": "Facebook ile devam et",
     "continueWithGoogle": "Google ile devam et",
     "agreement": "Kullanıcı sözleşmesini okudum, kabul ediyorum."
+  },
+  "forgotPasswordForm": {
+    "title": "Şifremi Unuttum",
+    "description": "E-posta adresinizi girin ve size şifrenizi sıfırlamanız için bir bağlantı gönderelim.",
+    "emailPlaceholder": "E-posta",
+    "emailError": "Geçerli bir e-posta adresi giriniz",
+    "backToLogin": "Giriş sayfasına dön",
+    "resetButton": "Şifremi Sıfırla"
   }
 }

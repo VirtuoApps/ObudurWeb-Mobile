@@ -92,5 +92,13 @@
     "continueWithFacebook": "Continue with Facebook",
     "continueWithGoogle": "Continue with Google",
     "agreement": "I have read and accept the terms and conditions."
+  },
+  "forgotPasswordForm": {
+    "title": "Forgot Password",
+    "description": "Enter your email address and we'll send you a link to reset your password.",
+    "emailPlaceholder": "Email",
+    "emailError": "Please enter a valid email address",
+    "backToLogin": "Back to login",
+    "resetButton": "Reset Password"
   }
 }
