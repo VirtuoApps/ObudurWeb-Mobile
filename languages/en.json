@@ -48,5 +48,12 @@
   "filterList": {
     "allFilters": "All Filters",
     "clear": "Clear"
+  },
+  "languageSwitcher": {
+    "chooseLanguage": "Choose Language",
+    "language": "Language",
+    "chooseCurrency": "Choose Currency",
+    "currency": "Currency",
+    "update": "Update"
   }
 }

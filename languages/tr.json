@@ -48,5 +48,12 @@
   "filterList": {
     "allFilters": "Tüm Filtreler",
     "clear": "Temizle"
+  },
+  "languageSwitcher": {
+    "chooseLanguage": "Dil Seçin",
+    "language": "Dil",
+    "chooseCurrency": "Para Birimi Seçin",
+    "currency": "Para Birimi",
+    "update": "Güncelle"
   }
 }

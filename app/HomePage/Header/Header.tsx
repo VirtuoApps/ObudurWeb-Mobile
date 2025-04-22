@@ -12,7 +12,7 @@ export default function Header() {
 
   return (
     <header className="border-b shadow-sm py-4 bg-white h-[80px]">
-      <div className="container mx-auto px-4 flex items-center justify-between">
+      <div className="container mx-auto  flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center">
           <Image
@@ -29,8 +29,8 @@ export default function Header() {
 
         {/* Right Side with Auth and Language */}
         <div className="flex items-center gap-4">
-          <LanguageSwitcher />
           <AuthBox />
+          <LanguageSwitcher />
         </div>
       </div>
     </header>

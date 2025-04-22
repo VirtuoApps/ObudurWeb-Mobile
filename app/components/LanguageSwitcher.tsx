@@ -2,15 +2,40 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
-import { Fragment } from "react";
-import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import { defaultLocale } from "../i18n";
+import { Fragment, useState, useEffect } from "react";
+import { TbWorld } from "react-icons/tb";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function LanguageSwitcher() {
   const t = useTranslations("header");
+  const ls = useTranslations("languageSwitcher");
   const currentLocale = useLocale();
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState(currentLocale);
+  const [selectedCurrency, setSelectedCurrency] = useState("USD");
+
+  const languageOptions = [
+    { code: "tr", name: "Türkçe", translation: "Turkish" },
+    { code: "en", name: "English", translation: "English" },
+    { code: "de", name: "Deutsch", translation: "German" },
+    { code: "ru", name: "Russian", translation: "Russian" },
+  ];
+
+  const currencyOptions = [
+    { code: "TRY", symbol: "₺", name: "Turkish Lira" },
+    { code: "EUR", symbol: "€", name: "Euro" },
+    { code: "USD", symbol: "$", name: "US Dollar" },
+    { code: "RUB", symbol: "", name: "Ruble" },
+  ];
+
+  useEffect(() => {
+    // Initialize selectedCurrency from localStorage if available
+    const savedCurrency = localStorage.getItem("selectedCurrency");
+    if (savedCurrency) {
+      setSelectedCurrency(savedCurrency);
+    }
+  }, []);
 
   const changeLanguage = (newLocale: string) => {
     let newPath = pathname;
@@ -21,67 +46,118 @@ export default function LanguageSwitcher() {
       newPath = pathname;
     }
 
-    console.log({
-      newLocale,
-      newPath,
-    });
-
     window.location.href = `/${newLocale}${newPath === "/" ? "" : newPath}`;
   };
 
+  const handleCurrencyChange = (currency: string) => {
+    setSelectedCurrency(currency);
+  };
+
+  const handleUpdate = () => {
+    // Save currency to localStorage
+    localStorage.setItem("selectedCurrency", selectedCurrency);
+
+    // Redirect to the selected language
+    if (selectedLanguage !== currentLocale) {
+      changeLanguage(selectedLanguage);
+    } else {
+      setIsOpen(false);
+    }
+  };
+
   return (
-    <Menu as="div" className="relative inline-block text-left">
-      <div>
-        <Menu.Button className="inline-flex w-full justify-center rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
-          {t("language")}
-          <ChevronDownIcon
-            className="ml-2 -mr-1 h-5 w-5 text-gray-400"
-            aria-hidden="true"
-          />
-        </Menu.Button>
-      </div>
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-100"
-        enterFrom="transform opacity-0 scale-95"
-        enterTo="transform opacity-100 scale-100"
-        leave="transition ease-in duration-75"
-        leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
+    <div className="relative">
+      <button
+        onClick={() => setIsOpen(true)}
+        className="inline-flex justify-center rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
       >
-        <Menu.Items className="absolute right-0 mt-2 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <div className="px-1 py-1">
-            <Menu.Item>
-              {({ active }) => (
-                <button
-                  onClick={() => changeLanguage("en")}
-                  className={`${
-                    active ? "bg-blue-500 text-white" : "text-gray-900"
-                  } ${
-                    currentLocale === "en" ? "font-bold" : ""
-                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+        <TbWorld className="w-8 h-8" />
+      </button>
+
+      {isOpen && (
+        <div
+          className="fixed inset-0 flex items-center justify-center z-50 "
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
+          }}
+        >
+          <div className="bg-white rounded-xl p-6 w-full max-w-xl shadow-xl relative">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-1 rounded-full hover:bg-gray-100 absolute top-2 right-2 cursor-pointer"
+            >
+              <XMarkIcon className="w-6 h-6 text-gray-600" />
+            </button>
+            <div className="flex justify-between items-center mb-6 mt-8">
+              <h2 className="text-xl font-bold text-[#262626]">
+                {ls("chooseLanguage")}
+              </h2>
+              <div className="text-gray-400">{ls("language")}</div>
+            </div>
+
+            <div className="grid grid-cols-4 gap-4 mb-8">
+              {languageOptions.map((lang) => (
+                <div
+                  key={lang.code}
+                  className={` rounded-lg p-4 cursor-pointer border-2 ${
+                    selectedLanguage === lang.code
+                      ? "border-2"
+                      : "border-gray-100"
+                  }`}
+                  onClick={() => setSelectedLanguage(lang.code)}
+                  style={{
+                    borderColor:
+                      selectedLanguage === lang.code ? "#5E5691" : "",
+                  }}
                 >
-                  {t("english")}
-                </button>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <button
-                  onClick={() => changeLanguage("tr")}
-                  className={`${
-                    active ? "bg-blue-500 text-white" : "text-gray-900"
-                  } ${
-                    currentLocale === "tr" ? "font-bold" : ""
-                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                  <div className="font-medium text-gray-500">{lang.name}</div>
+                  <div className="text-gray-400 text-sm">
+                    {lang.translation}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-bold text-[#262626]">
+                {ls("chooseCurrency")}
+              </h2>
+              <div className="text-gray-400">{ls("currency")}</div>
+            </div>
+
+            <div className="grid grid-cols-4 gap-4 mb-8">
+              {currencyOptions.map((currency) => (
+                <div
+                  key={currency.code}
+                  className={`border-2 rounded-lg p-4 cursor-pointer ${
+                    selectedCurrency === currency.code
+                      ? "border-2"
+                      : "border-gray-100"
+                  }`}
+                  onClick={() => handleCurrencyChange(currency.code)}
+                  style={{
+                    borderColor:
+                      selectedCurrency === currency.code ? "#5E5691" : "",
+                  }}
                 >
-                  {t("turkish")}
-                </button>
-              )}
-            </Menu.Item>
+                  <div className="font-medium text-gray-500">
+                    {currency.code} {currency.symbol}
+                  </div>
+                  <div className="text-gray-400 text-sm">{currency.name}</div>
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={handleUpdate}
+              className="w-full text-white py-3 rounded-xl font-medium hover:opacity-90"
+              style={{ backgroundColor: "#5E5691" }}
+            >
+              {ls("update")}
+            </button>
           </div>
-        </Menu.Items>
-      </Transition>
-    </Menu>
+        </div>
+      )}
+    </div>
   );
 }
