@@ -44,5 +44,9 @@
     "viewDetails": "Detayları Gör",
     "zoomIn": "Yakınlaştır",
     "zoomOut": "Uzaklaştır"
+  },
+  "filterList": {
+    "allFilters": "Tüm Filtreler",
+    "clear": "Temizle"
   }
 }

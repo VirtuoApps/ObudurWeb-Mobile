@@ -18,7 +18,7 @@ import {
   MdKitchen,
 } from "react-icons/md";
 import { LuSettings2 } from "react-icons/lu";
-
+import { useTranslations } from "next-intl";
 const iconClassName = "text-xl";
 const iconColor = "rgba(0,0,0,0.6)";
 
@@ -101,6 +101,7 @@ const filterList = [
 ];
 
 export default function FilterList() {
+  const t = useTranslations("filterList");
   const [selectedFilters, setSelectedFilters] = useState<number[]>([]);
 
   const handleFilterClick = (filterId: number) => {
@@ -144,13 +145,13 @@ export default function FilterList() {
       <div className="flex flex-row gap-4 justify-end min-w-[200px] ml-12 items-center">
         <button className="flex flex-row items-center border h-[35px] border-[#5E5691] rounded-lg px-2 py-1 cursor-pointer hover:bg-[#5E5691] text-[#5E5691] hover:text-white transition-all duration-300">
           <LuSettings2 className="text-2xl" />
-          <p className="text-xs font-bold ml-2">Tüm Filtreler</p>
+          <p className="text-xs font-bold ml-2">{t("allFilters")}</p>
         </button>
         <button
           className="flex flex-row items-center border h-[35px] border-[#EC755D] rounded-lg px-2 py-1 cursor-pointer hover:bg-[#EC755D] text-[#EC755D] hover:text-white transition-all duration-300"
           onClick={() => setSelectedFilters([])}
         >
-          <p className="text-xs font-bold">Temizle</p>
+          <p className="text-xs font-bold">{t("clear")}</p>
         </button>
       </div>
     </div>

@@ -44,5 +44,9 @@
     "viewDetails": "View Details",
     "zoomIn": "Zoom In",
     "zoomOut": "Zoom Out"
+  },
+  "filterList": {
+    "allFilters": "All Filters",
+    "clear": "Clear"
   }
 }
