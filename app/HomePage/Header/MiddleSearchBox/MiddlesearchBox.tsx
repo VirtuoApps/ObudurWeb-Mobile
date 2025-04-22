@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import LocationSelect, { locations } from "./LocationSelect/LocationSelect";
+import PropertyType, { propertyTypes } from "./PropertyType/PropertyType";
 
 export default function MiddleSearchBox() {
   const [selectedLocation, setSelectedLocation] = useState<
     (typeof locations)[0] | null
+  >(null);
+  const [selectedPropertyType, setSelectedPropertyType] = useState<
+    (typeof propertyTypes)[0] | null
   >(null);
 
   return (
@@ -25,25 +29,10 @@ export default function MiddleSearchBox() {
       />
 
       {/* Emlak Tipi */}
-      <div className="relative">
-        <button className="flex items-center justify-between text-gray-700 px-3 py-1.5 text-sm min-w-[120px]">
-          <span>Emlak Tipi</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 ml-2"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
-        </button>
-      </div>
+      <PropertyType
+        selectedPropertyType={selectedPropertyType}
+        setSelectedPropertyType={setSelectedPropertyType}
+      />
 
       {/* Kategori */}
       <div className="relative">
