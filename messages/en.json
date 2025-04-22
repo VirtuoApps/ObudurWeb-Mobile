@@ -1,0 +1,34 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "loadingMap": "Loading map..."
+  },
+  "header": {
+    "title": "Find Your Place",
+    "login": "Login",
+    "register": "Register",
+    "language": "Language",
+    "english": "English",
+    "turkish": "Turkish"
+  },
+  "filter": {
+    "title": "Filters",
+    "location": "Location",
+    "price": "Price Range",
+    "type": "Property Type",
+    "rooms": "Rooms",
+    "applyFilter": "Apply Filter",
+    "clearFilter": "Clear"
+  },
+  "propertyTypes": {
+    "apartment": "Apartment",
+    "house": "House",
+    "villa": "Villa",
+    "office": "Office"
+  },
+  "map": {
+    "viewDetails": "View Details",
+    "zoomIn": "Zoom In",
+    "zoomOut": "Zoom Out"
+  }
+}

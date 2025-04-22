@@ -1,0 +1,34 @@
+{
+  "common": {
+    "loading": "Yükleniyor...",
+    "loadingMap": "Harita yükleniyor..."
+  },
+  "header": {
+    "title": "Yerini Bul",
+    "login": "Giriş Yap",
+    "register": "Kayıt Ol",
+    "language": "Dil",
+    "english": "İngilizce",
+    "turkish": "Türkçe"
+  },
+  "filter": {
+    "title": "Filtreler",
+    "location": "Konum",
+    "price": "Fiyat Aralığı",
+    "type": "Mülk Tipi",
+    "rooms": "Oda Sayısı",
+    "applyFilter": "Filtre Uygula",
+    "clearFilter": "Temizle"
+  },
+  "propertyTypes": {
+    "apartment": "Daire",
+    "house": "Ev",
+    "villa": "Villa",
+    "office": "Ofis"
+  },
+  "map": {
+    "viewDetails": "Detayları Gör",
+    "zoomIn": "Yakınlaştır",
+    "zoomOut": "Uzaklaştır"
+  }
+}

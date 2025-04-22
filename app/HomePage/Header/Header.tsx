@@ -1,9 +1,15 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import MiddleSearchBox from "./MiddleSearchBox/MiddlesearchBox";
 import AuthBox from "./AuthBox/AuthBox";
+import LanguageSwitcher from "../../components/LanguageSwitcher";
+import { useTranslations } from "next-intl";
 
 export default function Header() {
+  const t = useTranslations("header");
+
   return (
     <header className="border-b shadow-sm py-4 bg-white h-[80px]">
       <div className="container mx-auto px-4 flex items-center justify-between">
@@ -21,8 +27,11 @@ export default function Header() {
         {/* Center Navigation */}
         <MiddleSearchBox />
 
-        {/* Right Side */}
-        <AuthBox />
+        {/* Right Side with Auth and Language */}
+        <div className="flex items-center gap-4">
+          <LanguageSwitcher />
+          <AuthBox />
+        </div>
       </div>
     </header>
   );
