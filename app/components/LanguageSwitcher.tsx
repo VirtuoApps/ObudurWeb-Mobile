@@ -6,6 +6,20 @@ import { Fragment, useState, useEffect } from "react";
 import { TbWorld } from "react-icons/tb";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
+const languageOptions = [
+  { code: "tr", name: "Türkçe", translation: "Turkish" },
+  { code: "en", name: "English", translation: "English" },
+  { code: "de", name: "Deutsch", translation: "German" },
+  { code: "ru", name: "Russian", translation: "Russian" },
+];
+
+export const currencyOptions = [
+  { code: "TRY", symbol: "₺", name: "Turkish Lira" },
+  { code: "EUR", symbol: "€", name: "Euro" },
+  { code: "USD", symbol: "$", name: "US Dollar" },
+  { code: "RUB", symbol: "", name: "Ruble" },
+];
+
 export default function LanguageSwitcher() {
   const t = useTranslations("header");
   const ls = useTranslations("languageSwitcher");
@@ -14,20 +28,6 @@ export default function LanguageSwitcher() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(currentLocale);
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
-
-  const languageOptions = [
-    { code: "tr", name: "Türkçe", translation: "Turkish" },
-    { code: "en", name: "English", translation: "English" },
-    { code: "de", name: "Deutsch", translation: "German" },
-    { code: "ru", name: "Russian", translation: "Russian" },
-  ];
-
-  const currencyOptions = [
-    { code: "TRY", symbol: "₺", name: "Turkish Lira" },
-    { code: "EUR", symbol: "€", name: "Euro" },
-    { code: "USD", symbol: "$", name: "US Dollar" },
-    { code: "RUB", symbol: "", name: "Ruble" },
-  ];
 
   useEffect(() => {
     // Initialize selectedCurrency from localStorage if available
