@@ -1,3 +1,4 @@
+import Descriptions from "./Descriptions/Descriptions";
 import GeneralInfo from "./GeneralInfo/GeneralInfo";
 import Header from "./Header/Header";
 import Images from "./Images/Images";
@@ -10,6 +11,7 @@ export default function ResidentPage() {
       <div className="flex md:flex-row flex-col">
         <div className="md:w-8/12 w-full">
           <GeneralInfo />
+          <Descriptions />
         </div>
 
         <div className="md:w-4/12 w-full"></div>
