@@ -6,6 +6,7 @@ import { countryCodes } from "./countryCodes";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 
 // Define the type for form data
 type ContactFormData = {
@@ -19,14 +20,15 @@ type ContactFormData = {
 export default function ContactBox() {
   const [countryCode, setCountryCode] = useState("+90");
   const [wantsVisit, setWantsVisit] = useState(false);
+  const t = useTranslations("contactBox");
 
   // Define the schema for form validation
   const contactSchema = z.object({
-    firstName: z.string().min(1, "İsim gereklidir"),
-    lastName: z.string().min(1, "Soyisim gereklidir"),
-    email: z.string().email("Geçerli bir e-posta adresi giriniz"),
+    firstName: z.string().min(1, t("validation.firstNameRequired")),
+    lastName: z.string().min(1, t("validation.lastNameRequired")),
+    email: z.string().email(t("validation.emailRequired")),
     phone: z.string().optional(),
-    message: z.string().min(1, "Mesaj gereklidir"),
+    message: z.string().min(1, t("validation.messageRequired")),
   });
 
   const {
@@ -41,8 +43,7 @@ export default function ContactBox() {
       lastName: "",
       email: "",
       phone: "",
-      message:
-        "Merhaba, Obudur'daki #135154832 numaralı ilanınız ile ilgili daha fazla bilgi almak istiyorum.",
+      message: t("defaultMessage"),
     },
   });
 
@@ -82,10 +83,10 @@ export default function ContactBox() {
 
         <div className="flex gap-2 mt-5">
           <button className="flex-1 bg-[#EC755D] text-white py-2 px-4 rounded-xl font-medium cursor-pointer">
-            Ara
+            {t("call")}
           </button>
           <button className="flex-1 bg-[#FCFCFC] text-gray-800 py-2 px-4 rounded-xl border border-gray-200 font-medium cursor-pointer">
-            Tüm İlanları
+            {t("allListings")}
           </button>
         </div>
       </div>
@@ -94,14 +95,14 @@ export default function ContactBox() {
 
       {/* Contact Form */}
       <div className="p-4">
-        <h4 className="font-medium text-gray-800 mb-4">Daha Fazla Bilgi Al</h4>
+        <h4 className="font-medium text-gray-800 mb-4">{t("getMoreInfo")}</h4>
 
         <form onSubmit={handleSubmit(onSubmit as any)}>
           <div className="mb-3">
             <input
               type="text"
               id="firstName"
-              placeholder="İsim*"
+              placeholder={t("firstName")}
               {...register("firstName")}
               className={`w-full border ${
                 errors.firstName ? "border-red-500" : "border-gray-300"
@@ -118,7 +119,7 @@ export default function ContactBox() {
             <input
               type="text"
               id="lastName"
-              placeholder="Soyisim*"
+              placeholder={t("lastName")}
               {...register("lastName")}
               className={`w-full border ${
                 errors.lastName ? "border-red-500" : "border-gray-300"
@@ -135,7 +136,7 @@ export default function ContactBox() {
             <input
               type="email"
               id="email"
-              placeholder="E-posta*"
+              placeholder={t("email")}
               {...register("email")}
               className={`w-full border ${
                 errors.email ? "border-red-500" : "border-gray-300"
@@ -153,7 +154,7 @@ export default function ContactBox() {
               htmlFor="phone"
               className="block text-sm text-[#262626] font-semibold mb-1"
             >
-              Telefon
+              {t("phone")}
             </label>
             <div className="flex gap-2">
               <div className="relative">
@@ -180,7 +181,7 @@ export default function ContactBox() {
                 type="tel"
                 id="phone"
                 {...register("phone")}
-                placeholder="Telefon Numarası"
+                placeholder={t("phoneNumber")}
                 className={`w-full border ${
                   errors.phone ? "border-red-500" : "border-gray-300"
                 } rounded-2xl text-sm placeholder:text-gray-400 text-[#262626] font-semibold py-4 px-3`}
@@ -201,7 +202,7 @@ export default function ContactBox() {
                 wantsVisit ? "bg-[#31286A]" : "bg-gray-200"
               } relative inline-flex h-6 w-11 items-center rounded-full transition-colors`}
             >
-              <span className="sr-only">Evi ziyaret etmek istiyorum</span>
+              <span className="sr-only">{t("wantToVisit")}</span>
               <span
                 className={`${
                   wantsVisit ? "translate-x-6" : "translate-x-1"
@@ -209,7 +210,7 @@ export default function ContactBox() {
               />
             </Switch>
             <label htmlFor="wantsVisit" className="text-sm text-gray-700 ml-4">
-              Evi ziyaret etmek istiyorum.
+              {t("wantToVisit")}
             </label>
           </div>
 
@@ -218,7 +219,7 @@ export default function ContactBox() {
               htmlFor="message"
               className="block text-sm text-gray-400 -mb-8 ml-3"
             >
-              Mesajınız
+              {t("message")}
             </label>
             <textarea
               id="message"
@@ -244,7 +245,7 @@ export default function ContactBox() {
                 : "bg-[#F0F0F0] text-gray-700 cursor-not-allowed"
             }`}
           >
-            Mesaj Gönder
+            {t("sendMessage")}
           </button>
         </form>
       </div>

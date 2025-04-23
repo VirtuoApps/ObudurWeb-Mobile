@@ -140,5 +140,25 @@
     "virtualTour": "360 Sanal Tur",
     "location": "Lokasyon",
     "floorPlans": "Kat Planları ve Dökümanlar"
+  },
+  "contactBox": {
+    "getMoreInfo": "Daha Fazla Bilgi Al",
+    "firstName": "İsim*",
+    "lastName": "Soyisim*",
+    "email": "E-posta*",
+    "phone": "Telefon",
+    "phoneNumber": "Telefon Numarası",
+    "wantToVisit": "Evi ziyaret etmek istiyorum.",
+    "message": "Mesajınız",
+    "sendMessage": "Mesaj Gönder",
+    "call": "Ara",
+    "allListings": "Tüm İlanları",
+    "defaultMessage": "Merhaba, Obudur'daki #135154832 numaralı ilanınız ile ilgili daha fazla bilgi almak istiyorum.",
+    "validation": {
+      "firstNameRequired": "İsim gereklidir",
+      "lastNameRequired": "Soyisim gereklidir",
+      "emailRequired": "Geçerli bir e-posta adresi giriniz",
+      "messageRequired": "Mesaj gereklidir"
+    }
   }
 }

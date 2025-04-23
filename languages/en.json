@@ -140,5 +140,25 @@
     "virtualTour": "360 Virtual Tour",
     "location": "Location",
     "floorPlans": "Floor Plans & Documents"
+  },
+  "contactBox": {
+    "getMoreInfo": "Get More Information",
+    "firstName": "First Name*",
+    "lastName": "Last Name*",
+    "email": "Email*",
+    "phone": "Phone",
+    "phoneNumber": "Phone Number",
+    "wantToVisit": "I want to visit the property.",
+    "message": "Your Message",
+    "sendMessage": "Send Message",
+    "call": "Call",
+    "allListings": "All Listings",
+    "defaultMessage": "Hello, I would like to get more information about your listing #135154832 on Obudur.",
+    "validation": {
+      "firstNameRequired": "First name is required",
+      "lastNameRequired": "Last name is required",
+      "emailRequired": "Please enter a valid email address",
+      "messageRequired": "Message is required"
+    }
   }
 }
