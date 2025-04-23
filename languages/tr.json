@@ -160,5 +160,15 @@
       "emailRequired": "Geçerli bir e-posta adresi giriniz",
       "messageRequired": "Mesaj gereklidir"
     }
+  },
+  "generalInfo": {
+    "listingNumber": "İlan No: #{id}",
+    "features": {
+      "new": "Yeni",
+      "design": "Tasarım",
+      "parking": "Otopark",
+      "pool": "Havuz",
+      "seaView": "Deniz Manzarası"
+    }
   }
 }

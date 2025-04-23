@@ -160,5 +160,15 @@
       "emailRequired": "Please enter a valid email address",
       "messageRequired": "Message is required"
     }
+  },
+  "generalInfo": {
+    "listingNumber": "Listing No: #{id}",
+    "features": {
+      "new": "New",
+      "design": "Design",
+      "parking": "Parking",
+      "pool": "Pool",
+      "seaView": "Sea View"
+    }
   }
 }

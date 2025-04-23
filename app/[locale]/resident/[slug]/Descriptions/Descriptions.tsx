@@ -1,9 +1,12 @@
 import React from "react";
+import { useTranslations } from "next-intl";
 
 export default function Descriptions() {
+  const t = useTranslations("residentMenu");
+
   return (
     <div className="max-w-5xl mx-auto p-4 mt-12">
-      <p className="font-bold text-[#362C75] text-2xl">Açıklamalar</p>
+      <p className="font-bold text-[#362C75] text-2xl">{t("descriptions")}</p>
 
       <div className="flex md:flex-row flex-col mt-8 gap-6">
         <div className="md:w-1/2 w-full">

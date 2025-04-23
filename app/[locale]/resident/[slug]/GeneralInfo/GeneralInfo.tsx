@@ -1,6 +1,7 @@
 import React from "react";
 import BedIcon from "@/app/svgIcons/BedIcon";
 import AreaIcon from "@/app/svgIcons/AreaIcon";
+import { useTranslations } from "next-intl";
 
 interface FeatureIconProps {
   icon: React.ReactNode;
@@ -198,7 +199,10 @@ const LocationIcon = () => (
   </svg>
 );
 
-export default function GeneralInfo() {
+export default function GeneralInfo({}: {}) {
+  const t = useTranslations("generalInfo");
+  const propertyT = useTranslations("propertyTypes");
+
   return (
     <div className="max-w-5xl mx-auto p-3 sm:p-6 font-sans">
       {/* Title and Price Section */}
@@ -209,7 +213,7 @@ export default function GeneralInfo() {
           </h1>
           <div className="text-left sm:text-right order-1 sm:order-2 flex justify-between sm:block items-center">
             <div className="text-gray-500 text-xs sm:text-sm">
-              İlan No: #135154832
+              {t("listingNumber", { id: "135154832" })}
             </div>
             <div className="text-[#362C75] text-2xl sm:text-3xl font-bold">
               $1,420,000
@@ -224,12 +228,12 @@ export default function GeneralInfo() {
       {/* Features Icons Row - Scrollable on mobile */}
       <div className="flex overflow-x-auto py-3 sm:py-4 justify-between no-scrollbar">
         <div className="flex gap-4 justify-between min-w-full">
-          <FeatureIcon icon={<VillaIcon />} label="Villa" />
-          <FeatureIcon icon={<NewIcon />} label="Yeni" />
-          <FeatureIcon icon={<DesignIcon />} label="Tasarım" />
-          <FeatureIcon icon={<ParkingIcon />} label="Otopark" />
-          <FeatureIcon icon={<PoolIcon />} label="Havuz" />
-          <FeatureIcon icon={<SeaViewIcon />} label="Deniz Manzarası" />
+          <FeatureIcon icon={<VillaIcon />} label={propertyT("villa")} />
+          <FeatureIcon icon={<NewIcon />} label={t("features.new")} />
+          <FeatureIcon icon={<DesignIcon />} label={t("features.design")} />
+          <FeatureIcon icon={<ParkingIcon />} label={t("features.parking")} />
+          <FeatureIcon icon={<PoolIcon />} label={t("features.pool")} />
+          <FeatureIcon icon={<SeaViewIcon />} label={t("features.seaView")} />
         </div>
       </div>
 
