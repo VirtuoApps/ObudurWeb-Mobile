@@ -131,5 +131,14 @@
     "optinable": "Opsiyonlandı",
     "forSale": "Satılık",
     "forRent": "Kiralık"
+  },
+  "residentMenu": {
+    "photos": "Fotoğraflar",
+    "descriptions": "Açıklamalar",
+    "details": "Detaylar",
+    "features": "Özellikler & Donanımlar",
+    "virtualTour": "360 Sanal Tur",
+    "location": "Lokasyon",
+    "floorPlans": "Kat Planları ve Dökümanlar"
   }
 }

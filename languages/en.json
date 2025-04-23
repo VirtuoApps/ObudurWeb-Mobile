@@ -131,5 +131,14 @@
     "optinable": "Optinable",
     "forSale": "For Sale",
     "forRent": "For Rent"
+  },
+  "residentMenu": {
+    "photos": "Photos",
+    "descriptions": "Descriptions",
+    "details": "Details",
+    "features": "Features & Amenities",
+    "virtualTour": "360 Virtual Tour",
+    "location": "Location",
+    "floorPlans": "Floor Plans & Documents"
   }
 }
