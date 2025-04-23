@@ -1,0 +1,262 @@
+import React from "react";
+import BedIcon from "@/app/svgIcons/BedIcon";
+import AreaIcon from "@/app/svgIcons/AreaIcon";
+
+interface FeatureIconProps {
+  icon: React.ReactNode;
+  label: string;
+}
+
+const FeatureIcon: React.FC<FeatureIconProps> = ({ icon, label }) => {
+  return (
+    <div className="flex flex-col items-center juce gap-1">
+      <div className="text-gray-600">{icon}</div>
+      <span className="text-xs sm:text-sm text-gray-600 text-center">
+        {label}
+      </span>
+    </div>
+  );
+};
+
+// Custom SVG icons
+const VillaIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M3 21V8.5L12 4L21 8.5V21M4.5 12.5V19.5H9V12.5H4.5ZM10.5 12.5V19.5H13.5V12.5H10.5ZM15 12.5V19.5H19.5V12.5H15Z"
+      stroke="#595959"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+const NewIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M12 3V12M12 12V21M12 12H21M12 12H3"
+      stroke="#595959"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+const DesignIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M3 21L3 3M21 21V3M21 12H3M7 7.5H9M7 16.5H9M15 7.5H17M15 16.5H17"
+      stroke="#595959"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+const ParkingIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M5 5C5 3.89543 5.89543 3 7 3H17C18.1046 3 19 3.89543 19 5V19C19 20.1046 18.1046 21 17 21H7C5.89543 21 5 20.1046 5 19V5Z"
+      stroke="#595959"
+      strokeWidth="1.2"
+    />
+    <path
+      d="M8.5 8.5C8.5 7.67157 9.17157 7 10 7H14C14.8284 7 15.5 7.67157 15.5 8.5V9.5C15.5 10.3284 14.8284 11 14 11H8.5V8.5Z"
+      stroke="#595959"
+      strokeWidth="1.2"
+    />
+    <path
+      d="M8.5 11V15"
+      stroke="#595959"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+const PoolIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M4 15C4 15 5 14 8 14C11 14 13 16 16 16C19 16 20 15 20 15M4 19C4 19 5 18 8 18C11 18 13 20 16 20C19 20 20 19 20 19M4 11C4 11 5 10 8 10C11 10 13 12 16 12C19 12 20 11 20 11M4 7C4 7 5 6 8 6C11 6 13 8 16 8C19 8 20 7 20 7M12 4V6"
+      stroke="#595959"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+const SeaViewIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M2 12C2 12 5.5 7 12 7C18.5 7 22 12 22 12C22 12 18.5 17 12 17C5.5 17 2 12 2 12Z"
+      stroke="#595959"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+    />
+    <circle cx="12" cy="12" r="3" stroke="#595959" strokeWidth="1.2" />
+    <path
+      d="M3 5L5 7"
+      stroke="#595959"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+    />
+    <path
+      d="M21 5L19 7"
+      stroke="#595959"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+const SymbolicIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle cx="12" cy="12" r="9" stroke="#595959" strokeWidth="1.2" />
+    <circle cx="12" cy="12" r="4.5" stroke="#595959" strokeWidth="1.2" />
+  </svg>
+);
+
+const BathIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M4 12H20M20 12V11C20 7.68629 17.3137 5 14 5C10.6863 5 8 7.68629 8 11V12M20 12V16C20 17.1046 19.1046 18 18 18H6C4.89543 18 4 17.1046 4 16V12M6 21V18M18 21V18"
+      stroke="#595959"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+    />
+    <path
+      d="M14 8.5C14 7.67157 13.3284 7 12.5 7C11.6716 7 11 7.67157 11 8.5C11 9.32843 11.6716 10 12.5 10"
+      stroke="#595959"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+const LocationIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M12 21C16.9706 17 20 13.4183 20 10C20 6.13401 16.4183 3 12 3C7.58172 3 4 6.13401 4 10C4 13.4183 7.02944 17 12 21Z"
+      stroke="#595959"
+      strokeWidth="1.2"
+    />
+    <circle cx="12" cy="10" r="3" stroke="#595959" strokeWidth="1.2" />
+  </svg>
+);
+
+export default function GeneralInfo() {
+  return (
+    <div className="max-w-5xl mx-auto p-3 sm:p-6 font-sans">
+      {/* Title and Price Section */}
+      <div className="mb-4 sm:mb-6">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-0">
+          <h1 className="text-2xl sm:text-3xl font-serif font-medium text-[#262626] order-2 sm:order-1 sm:max-w-2xl">
+            Gravida aliquam at in dignissim urna libero eu ipsum.
+          </h1>
+          <div className="text-left sm:text-right order-1 sm:order-2 flex justify-between sm:block items-center">
+            <div className="text-gray-500 text-xs sm:text-sm">
+              İlan No: #135154832
+            </div>
+            <div className="text-[#362C75] text-2xl sm:text-3xl font-bold">
+              $1,420,000
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Separator Line */}
+      <div className="border-b border-gray-200 my-3 sm:my-4"></div>
+
+      {/* Features Icons Row - Scrollable on mobile */}
+      <div className="flex overflow-x-auto py-3 sm:py-4 justify-between no-scrollbar">
+        <div className="flex gap-4 justify-between min-w-full">
+          <FeatureIcon icon={<VillaIcon />} label="Villa" />
+          <FeatureIcon icon={<NewIcon />} label="Yeni" />
+          <FeatureIcon icon={<DesignIcon />} label="Tasarım" />
+          <FeatureIcon icon={<ParkingIcon />} label="Otopark" />
+          <FeatureIcon icon={<PoolIcon />} label="Havuz" />
+          <FeatureIcon icon={<SeaViewIcon />} label="Deniz Manzarası" />
+        </div>
+      </div>
+
+      {/* Separator Line */}
+      <div className="border-b border-gray-200 my-3 sm:my-4"></div>
+
+      {/* Details Section */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 py-2">
+        <div className="flex gap-4 sm:gap-8 overflow-x-auto no-scrollbar">
+          <div className="flex items-center gap-2 text-[#262626] whitespace-nowrap">
+            <BedIcon />
+            <span>4+1</span>
+          </div>
+          <div className="flex items-center gap-2 text-[#262626] border-r border-gray-200 pr-4 border-l border-gray-200 pl-4 whitespace-nowrap">
+            <BathIcon />
+            <span>2</span>
+          </div>
+          <div className="flex items-center gap-2 text-[#262626] whitespace-nowrap">
+            <AreaIcon />
+            <span>240m²</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 text-[#262626] text-sm sm:text-base">
+          <LocationIcon />
+          <span className="truncate">814 E Highland Dr, Seattle, WA 98102</span>
+        </div>
+      </div>
+    </div>
+  );
+}
