@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import { Switch } from "@headlessui/react";
+import { countryCodes } from "./countryCodes";
 
 export default function ContactBox() {
   const [formData, setFormData] = useState({
@@ -14,18 +15,6 @@ export default function ContactBox() {
     message:
       "Merhaba, Obudur'daki #135154832 numaralı ilanınız ile ilgili daha fazla bilgi almak istiyorum.",
   });
-
-  const countryCodes = [
-    { code: "+90", country: "TR" },
-    { code: "+1", country: "US" },
-    { code: "+44", country: "GB" },
-    { code: "+49", country: "DE" },
-    { code: "+33", country: "FR" },
-    { code: "+39", country: "IT" },
-    { code: "+7", country: "RU" },
-    { code: "+86", country: "CN" },
-    { code: "+81", country: "JP" },
-  ];
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -140,9 +129,12 @@ export default function ContactBox() {
                 onChange={handleChange}
                 className="bg-white border border-gray-300 rounded-2xl text-sm text-[#262626] font-semibold py-4 px-2 w-24 appearance-none pr-8"
               >
-                {countryCodes.map((country) => (
-                  <option key={country.code} value={country.code}>
-                    {country.code} {country.country}
+                {countryCodes.map((country, index) => (
+                  <option
+                    key={country.code + index.toString()}
+                    value={country.code}
+                  >
+                    +{country.code}
                   </option>
                 ))}
               </select>
