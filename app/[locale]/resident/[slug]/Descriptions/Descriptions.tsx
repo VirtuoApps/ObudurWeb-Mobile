@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Descriptions() {
   return (
-    <div className="w-full p-4 mt-12">
+    <div className="max-w-5xl mx-auto p-4 mt-12">
       <p className="font-bold text-[#362C75] text-2xl">Açıklamalar</p>
 
       <div className="flex md:flex-row flex-col mt-8 gap-6">

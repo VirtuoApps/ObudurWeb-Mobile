@@ -1,3 +1,4 @@
+import ContactBox from "./ContactBox/ContactBox";
 import Descriptions from "./Descriptions/Descriptions";
 import GeneralInfo from "./GeneralInfo/GeneralInfo";
 import Header from "./Header/Header";
@@ -8,13 +9,15 @@ export default function ResidentPage() {
     <>
       <Header />
       <Images />
-      <div className="flex md:flex-row flex-col">
-        <div className="md:w-8/12 w-full">
+      <div className="flex md:flex-row flex-col items-start mt-12">
+        <div className="md:w-[70%] w-full">
           <GeneralInfo />
           <Descriptions />
         </div>
 
-        <div className="md:w-4/12 w-full"></div>
+        <div className="md:w-[30%] w-full p-4 pt-2">
+          <ContactBox />
+        </div>
       </div>
     </>
   );
