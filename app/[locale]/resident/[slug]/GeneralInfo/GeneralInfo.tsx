@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import BedIcon from "@/app/svgIcons/BedIcon";
 import AreaIcon from "@/app/svgIcons/AreaIcon";

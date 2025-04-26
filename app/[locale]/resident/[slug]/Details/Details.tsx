@@ -1,15 +1,19 @@
+"use client";
+
 import React from "react";
+import { useTranslations } from "next-intl";
 
 export default function Details() {
+  const t = useTranslations("details");
+
   return (
     <section className="max-w-5xl mx-auto p-4 mt-12">
       <div className="header">
         <h2 className="font-semibold tracking-tight text-[#31286A] text-3xl md:text-4xl">
-          Detaylar
+          {t("title")}
         </h2>
         <p className="max-w-2xl mt-2 leading-relaxed text-sm md:text-base text-gray-500">
-          Yapısal özellikler, inşa yılı ve proje kapsamında sunulan teknik
-          bilgiler ile konutun fiziksel yapısına dair açıklamalar.
+          {t("description")}
         </p>
       </div>
 
@@ -18,25 +22,25 @@ export default function Details() {
         <div className="flex flex-col gap-4 sm:border-r">
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
-              Proje Alanı:
+              {t("projectArea")}:
             </span>
             <span className="font-semibold text-[#0F0F0F]">1.200 m2</span>
           </div>
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
-              Alan:
+              {t("area")}:
             </span>
             <span className="font-semibold text-[#0F0F0F]">340 m2</span>
           </div>
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
-              İnşa Yılı:
+              {t("constructionYear")}:
             </span>
             <span className="font-semibold text-[#0F0F0F]">2022</span>
           </div>
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
-              Mimar:
+              {t("architect")}:
             </span>
             <span className="font-semibold text-[#0F0F0F]">Barry Allen</span>
           </div>
@@ -46,25 +50,25 @@ export default function Details() {
         <div className="flex flex-col gap-4 sm:border-r">
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
-              Mutfak:
+              {t("kitchen")}:
             </span>
             <span className="font-semibold text-[#0F0F0F]">Ayrı Mutfak</span>
           </div>
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
-              Yatak Odası:
+              {t("bedrooms")}:
             </span>
             <span className="font-semibold text-[#0F0F0F]">3</span>
           </div>
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
-              Banyo Sayısı:
+              {t("bathrooms")}:
             </span>
             <span className="font-semibold text-[#0F0F0F]">2</span>
           </div>
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
-              Balkon Sayısı:
+              {t("balconies")}:
             </span>
             <span className="font-semibold text-[#0F0F0F]">2</span>
           </div>
@@ -74,25 +78,25 @@ export default function Details() {
         <div className="flex flex-col gap-4">
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
-              Kat:
+              {t("floor")}:
             </span>
             <span className="font-semibold text-[#0F0F0F]">Dubleks</span>
           </div>
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
-              Konut Tipi:
+              {t("propertyType")}:
             </span>
             <span className="font-semibold text-[#0F0F0F]">Villa</span>
           </div>
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
-              Giriş:
+              {t("entrance")}:
             </span>
             <span className="font-semibold text-[#0F0F0F]">Müstakil</span>
           </div>
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
-              İlan Türü:
+              {t("listingType")}:
             </span>
             <span className="font-semibold text-[#0F0F0F]">Satılık</span>
           </div>

@@ -170,5 +170,21 @@
       "pool": "Havuz",
       "seaView": "Deniz Manzarası"
     }
+  },
+  "details": {
+    "title": "Detaylar",
+    "description": "Yapısal özellikler, inşa yılı ve proje kapsamında sunulan teknik bilgiler ile konutun fiziksel yapısına dair açıklamalar.",
+    "projectArea": "Proje Alanı",
+    "area": "Alan",
+    "constructionYear": "İnşa Yılı",
+    "architect": "Mimar",
+    "kitchen": "Mutfak",
+    "bedrooms": "Yatak Odası",
+    "bathrooms": "Banyo Sayısı",
+    "balconies": "Balkon Sayısı",
+    "floor": "Kat",
+    "propertyType": "Konut Tipi",
+    "entrance": "Giriş",
+    "listingType": "İlan Türü"
   }
 }

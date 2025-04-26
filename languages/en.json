@@ -170,5 +170,21 @@
       "pool": "Pool",
       "seaView": "Sea View"
     }
+  },
+  "details": {
+    "title": "Details",
+    "description": "Structural features, construction year, and technical information provided within the project scope along with descriptions about the physical structure of the residence.",
+    "projectArea": "Project Area",
+    "area": "Area",
+    "constructionYear": "Construction Year",
+    "architect": "Architect",
+    "kitchen": "Kitchen",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "balconies": "Balconies",
+    "floor": "Floor",
+    "propertyType": "Property Type",
+    "entrance": "Entrance",
+    "listingType": "Listing Type"
   }
 }
