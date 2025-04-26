@@ -1,6 +1,7 @@
 import ContactBox from "./ContactBox/ContactBox";
 import Descriptions from "./Descriptions/Descriptions";
 import Details from "./Details/Details";
+import FeaturesEquipment from "./Features/Features";
 import GeneralInfo from "./GeneralInfo/GeneralInfo";
 import Header from "./Header/Header";
 import Images from "./Images/Images";
@@ -15,6 +16,7 @@ export default function ResidentPage() {
           <GeneralInfo />
           <Descriptions />
           <Details />
+          <FeaturesEquipment />
         </div>
 
         <div className="md:w-[30%] w-full p-4 pt-2">
