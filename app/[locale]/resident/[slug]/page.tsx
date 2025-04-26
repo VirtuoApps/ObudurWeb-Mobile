@@ -5,6 +5,7 @@ import FeaturesEquipment from "./Features/Features";
 import GeneralInfo from "./GeneralInfo/GeneralInfo";
 import Header from "./Header/Header";
 import Images from "./Images/Images";
+import Location from "./Location/Location";
 import PanoramicView from "./PanoramicView/PanoramicView";
 
 export default function ResidentPage() {
@@ -19,6 +20,7 @@ export default function ResidentPage() {
           <Details />
           <FeaturesEquipment />
           <PanoramicView />
+          <Location />
         </div>
 
         <div className="md:w-[30%] w-full p-4 pt-2">
