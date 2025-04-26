@@ -7,7 +7,7 @@ import Header from "./Header/Header";
 import Images from "./Images/Images";
 import Location from "./Location/Location";
 import PanoramicView from "./PanoramicView/PanoramicView";
-
+import PlansAndDocumentation from "./PlansAndDocumentation/PlansAndDocumentation";
 export default function ResidentPage() {
   return (
     <>
@@ -21,6 +21,7 @@ export default function ResidentPage() {
           <FeaturesEquipment />
           <PanoramicView />
           <Location />
+          <PlansAndDocumentation />
         </div>
 
         <div className="md:w-[30%] w-full p-4 pt-2">

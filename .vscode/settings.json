@@ -2,5 +2,8 @@
     "i18n-ally.localesPaths": [
         "languages",
         "app/i18n"
+    ],
+    "cSpell.words": [
+        "Documentaation"
     ]
 }

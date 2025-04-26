@@ -252,5 +252,8 @@
       "businessCenter": "Business Center",
       "hospital": "Hospital"
     }
+  },
+  "floorPlans": {
+    "description": "View all areas of the property on technical drawings; access necessary certificates and documents."
   }
 }

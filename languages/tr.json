@@ -252,5 +252,8 @@
       "businessCenter": "İş Merkezi",
       "hospital": "Hastane"
     }
+  },
+  "floorPlans": {
+    "description": "Konutun tüm alanlarını teknik resimler üzerinde görebilir; gerekli sertifika ve dökümanlara ulaşabilirsiniz."
   }
 }
