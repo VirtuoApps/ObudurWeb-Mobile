@@ -6,6 +6,7 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import HomeDetailsPopup from "./HomeDetailsPopup/HomeDetailsPopup";
+import { useRouter } from "next/navigation";
 
 type Property = {
   lat: number;
@@ -38,6 +39,8 @@ export default function GoogleMapView() {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(
     null
   );
+
+  const router = useRouter();
 
   if (!isLoaded) return <div>Loading...</div>;
 
@@ -84,7 +87,10 @@ export default function GoogleMapView() {
             // of the path. Setting it to the center coordinates helps center it.
             labelOrigin: new window.google.maps.Point(100, 25),
           }}
-          onClick={() => setSelectedProperty(property)}
+          onClick={() => {
+            router.push(`/resident/test`);
+            // setSelectedProperty(property)
+          }}
         />
       ))}
 

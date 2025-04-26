@@ -12,6 +12,7 @@ import BedIcon from "@/app/svgIcons/BedIcon";
 import FloorCountIcon from "@/app/svgIcons/FloorCountIcon";
 import AreaIcon from "@/app/svgIcons/AreaIcon";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 interface ResidentBoxProps {
   isFavorite?: boolean;
   type: string; // Satılık/Kiralık
@@ -42,13 +43,18 @@ export default function ResidentBox({
   const t = useTranslations("residentBox");
   const [localIsFavorite, setLocalIsFavorite] = useState(propIsFavorite);
 
+  const router = useRouter();
+
   const handleFavoriteToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     setLocalIsFavorite(!localIsFavorite);
   };
 
   return (
-    <div className="w-full overflow-hidden bg-white rounded-xl hover:shadow-lg transition-shadow duration-300 cursor-pointer">
+    <div
+      className="w-full overflow-hidden bg-white rounded-xl hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+      onClick={() => router.push(`/resident/${title}`)}
+    >
       {/* Image container with badges */}
       <div className="relative">
         <img

@@ -7,16 +7,22 @@ import { FaBars } from "react-icons/fa";
 import LanguageSwitcher from "@/app/components/LanguageSwitcher";
 import AuthBox from "@/app/HomePage/Header/AuthBox/AuthBox";
 import MenuItems from "./MenuItems/MenuItems";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const t = useTranslations("header");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const router = useRouter();
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b shadow-sm py-4 bg-white h-[80px] w-full px-4 md:px-0">
       <div className="w-full px-4 mx-auto flex flex-wrap items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center">
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={() => router.push("/")}
+        >
           <Image
             src="/obudur-logo.png"
             alt="oBudur Logo"
