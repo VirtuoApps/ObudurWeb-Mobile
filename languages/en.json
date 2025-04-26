@@ -221,5 +221,11 @@
     "spa": "SPA",
     "office": "Office",
     "meetingRoom": "Meeting Room"
+  },
+  "panoramicView": {
+    "title": "360 Virtual Tour",
+    "description": "An interactive viewing experience that allows you to explore all areas of the property in detail through a virtual tour.",
+    "startTour": "Start Tour",
+    "closeTour": "Close"
   }
 }

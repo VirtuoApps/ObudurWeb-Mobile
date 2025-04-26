@@ -5,6 +5,7 @@ import FeaturesEquipment from "./Features/Features";
 import GeneralInfo from "./GeneralInfo/GeneralInfo";
 import Header from "./Header/Header";
 import Images from "./Images/Images";
+import PanoramicView from "./PanoramicView/PanoramicView";
 
 export default function ResidentPage() {
   return (
@@ -17,6 +18,7 @@ export default function ResidentPage() {
           <Descriptions />
           <Details />
           <FeaturesEquipment />
+          <PanoramicView />
         </div>
 
         <div className="md:w-[30%] w-full p-4 pt-2">

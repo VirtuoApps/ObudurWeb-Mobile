@@ -221,5 +221,11 @@
     "spa": "SPA",
     "office": "Ofis",
     "meetingRoom": "Toplantı Odası"
+  },
+  "panoramicView": {
+    "title": "360 Sanal Tur",
+    "description": "Konutun tüm alanlarını sanal tur ile detaylı şekilde keşfetme imkanı sunan interaktif görüntüleme deneyimi.",
+    "startTour": "Tura Başla",
+    "closeTour": "Kapat"
   }
 }
