@@ -7,7 +7,7 @@ export default function Details() {
   const t = useTranslations("details");
 
   return (
-    <section className="max-w-5xl mx-auto p-4 mt-12">
+    <section id="details-section" className="max-w-5xl mx-auto p-4 mt-12">
       <div className="header">
         <h2 className="font-semibold tracking-tight text-[#31286A] text-3xl md:text-4xl">
           {t("title")}

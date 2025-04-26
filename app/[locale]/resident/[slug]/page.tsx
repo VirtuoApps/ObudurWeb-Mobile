@@ -12,20 +12,22 @@ export default function ResidentPage() {
   return (
     <>
       <Header />
-      <Images />
-      <div className="flex md:flex-row flex-col items-start mt-12">
-        <div className="md:w-[70%] w-full">
-          <GeneralInfo />
-          <Descriptions />
-          <Details />
-          <FeaturesEquipment />
-          <PanoramicView />
-          <Location />
-          <PlansAndDocumentation />
-        </div>
+      <div className="pt-[80px]">
+        <Images />
+        <div className="flex md:flex-row flex-col items-start mt-12">
+          <div className="md:w-[70%] w-full">
+            <GeneralInfo />
+            <Descriptions />
+            <Details />
+            <FeaturesEquipment />
+            <PanoramicView />
+            <Location />
+            <PlansAndDocumentation />
+          </div>
 
-        <div className="md:w-[30%] w-full p-4 pt-2">
-          <ContactBox />
+          <div className="md:w-[30%] w-full p-4 pt-2">
+            <ContactBox />
+          </div>
         </div>
       </div>
     </>

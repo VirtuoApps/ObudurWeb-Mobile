@@ -42,7 +42,7 @@ export default function Images() {
   };
 
   return (
-    <div className="w-full">
+    <div id="images-section" className="w-full">
       {/* Images grid layout */}
       <div className="relative grid grid-cols-1 md:grid-cols-5 gap-2 p-1">
         {/* Large image on the left */}

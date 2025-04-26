@@ -120,7 +120,7 @@ export default function FeaturesEquipment() {
   ];
 
   return (
-    <section className="max-w-5xl mx-auto p-4 mt-12">
+    <section id="features-section" className="max-w-5xl mx-auto p-4 mt-12">
       <div>
         <h2 className="text-[#31286A] font-semibold tracking-tight text-3xl md:text-4xl">
           {t("title")}

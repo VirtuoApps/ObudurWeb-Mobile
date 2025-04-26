@@ -21,7 +21,7 @@ export default function FloorDocs() {
   const floorPlansT = useTranslations("floorPlans");
 
   return (
-    <section className="max-w-5xl mx-auto p-4 mt-12">
+    <section id="plans-section" className="max-w-5xl mx-auto p-4 mt-12">
       <h2 className="text-[#31286A] font-semibold tracking-tight text-3xl md:text-4xl">
         {t("floorPlans")}
       </h2>
