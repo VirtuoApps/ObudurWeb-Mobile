@@ -227,5 +227,30 @@
     "description": "An interactive viewing experience that allows you to explore all areas of the property in detail through a virtual tour.",
     "startTour": "Start Tour",
     "closeTour": "Close"
+  },
+  "location": {
+    "title": "Location",
+    "description": "The location of the property on the map, its distances to essential living areas, historical and/or popular points.",
+    "property": "Property",
+    "distancesTitle": "Distances",
+    "distances": {
+      "tram": "Tram",
+      "airport": "Airport",
+      "beach": "Beach",
+      "taxiStation": "Taxi Station",
+      "school": "School",
+      "bankAtm": "Bank / ATM",
+      "market": "Market",
+      "shoppingMall": "Shopping Mall",
+      "nationalPark": "National Park",
+      "cinema": "Cinema",
+      "entertainmentCenter": "Entertainment Center",
+      "gasStation": "Gas Station",
+      "restaurants": "Restaurants",
+      "gym": "Gym",
+      "pharmacy": "Pharmacy",
+      "businessCenter": "Business Center",
+      "hospital": "Hospital"
+    }
   }
 }

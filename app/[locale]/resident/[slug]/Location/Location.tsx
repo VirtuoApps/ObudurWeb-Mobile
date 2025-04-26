@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { IconType } from "react-icons";
+import { useTranslations } from "next-intl";
 import {
   FiNavigation2,
   FiAirplay,
@@ -29,27 +30,42 @@ interface DistanceItem {
   value: string;
 }
 
-const distances: DistanceItem[] = [
-  { icon: FiNavigation2, label: "Tramvay", value: "0,42 km" },
-  { icon: FiAirplay, label: "Havaalanı", value: "0,42 km" },
-  { icon: FiUmbrella, label: "Plaj", value: "0,42 km" },
-  { icon: FiTruck, label: "Taksi Durağı", value: "0,42 km" },
-  { icon: FiBook, label: "Okul", value: "0,42 km" },
-  { icon: FiCreditCard, label: "Banka / ATM", value: "0,42 km" },
-  { icon: FiShoppingCart, label: "Market", value: "0,42 km" },
-  { icon: FiShoppingBag, label: "Alış Veriş Merkezi", value: "0,42 km" },
-  { icon: FiMapPin, label: "Milli Park", value: "0,42 km" },
-  { icon: FiFilm, label: "Sinema", value: "0,42 km" },
-  { icon: FiSmile, label: "Eğlence Merkezi", value: "0,42 km" },
-  { icon: FiDroplet, label: "Benzinlik", value: "0,42 km" },
-  { icon: FiCoffee, label: "Restoranlar", value: "0,42 km" },
-  { icon: FiActivity, label: "Spor Salonu", value: "0,42 km" },
-  { icon: FiHeart, label: "Eczane", value: "0,42 km" },
-  { icon: FiBriefcase, label: "İş Merkezi", value: "0,42 km" },
-  { icon: FiHome, label: "Hastane", value: "0,42 km" },
-];
-
 export default function Location() {
+  const t = useTranslations("location");
+  const commonT = useTranslations("common");
+
+  const distances: DistanceItem[] = [
+    { icon: FiNavigation2, label: t("distances.tram"), value: "0,42 km" },
+    { icon: FiAirplay, label: t("distances.airport"), value: "0,42 km" },
+    { icon: FiUmbrella, label: t("distances.beach"), value: "0,42 km" },
+    { icon: FiTruck, label: t("distances.taxiStation"), value: "0,42 km" },
+    { icon: FiBook, label: t("distances.school"), value: "0,42 km" },
+    { icon: FiCreditCard, label: t("distances.bankAtm"), value: "0,42 km" },
+    { icon: FiShoppingCart, label: t("distances.market"), value: "0,42 km" },
+    {
+      icon: FiShoppingBag,
+      label: t("distances.shoppingMall"),
+      value: "0,42 km",
+    },
+    { icon: FiMapPin, label: t("distances.nationalPark"), value: "0,42 km" },
+    { icon: FiFilm, label: t("distances.cinema"), value: "0,42 km" },
+    {
+      icon: FiSmile,
+      label: t("distances.entertainmentCenter"),
+      value: "0,42 km",
+    },
+    { icon: FiDroplet, label: t("distances.gasStation"), value: "0,42 km" },
+    { icon: FiCoffee, label: t("distances.restaurants"), value: "0,42 km" },
+    { icon: FiActivity, label: t("distances.gym"), value: "0,42 km" },
+    { icon: FiHeart, label: t("distances.pharmacy"), value: "0,42 km" },
+    {
+      icon: FiBriefcase,
+      label: t("distances.businessCenter"),
+      value: "0,42 km",
+    },
+    { icon: FiHome, label: t("distances.hospital"), value: "0,42 km" },
+  ];
+
   const center = { lat: 40.982, lng: 29.126 };
   const containerStyle = {
     width: "100%",
@@ -79,11 +95,10 @@ export default function Location() {
   return (
     <section className="max-w-5xl mx-auto p-4 mt-12">
       <h2 className="text-[#31286A] font-semibold tracking-tight text-3xl md:text-4xl">
-        Lokasyon
+        {t("title")}
       </h2>
       <p className="mt-2 max-w-lg text-sm md:text-base leading-relaxed text-gray-500">
-        Konutun harita üzerindeki konumu, çevresindeki temel yaşam alanlarına,
-        tarihi ve/veya popüler noktalara olan mesafeleri.
+        {t("description")}
       </p>
 
       {/* Map */}
@@ -108,7 +123,7 @@ export default function Location() {
             <Marker
               position={center}
               label={{
-                text: "Konut",
+                text: t("property"),
                 color: "white",
                 fontSize: "12px",
                 fontWeight: "bold",
@@ -118,20 +133,20 @@ export default function Location() {
           </GoogleMap>
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gray-100">
-            <p className="text-gray-500">Loading map...</p>
+            <p className="text-gray-500">{commonT("loadingMap")}</p>
           </div>
         )}
       </div>
 
       {/* Distances */}
       <h3 className="mt-14 mb-6 text-lg font-semibold text-gray-900">
-        Uzaklıklar
+        {t("distancesTitle")}
       </h3>
-      <ul role="list" className="flex flex-wrap gap-y-5">
+      <ul role="list" className="flex flex-wrap justify-between  gap-y-5">
         {distances.map(({ icon: Icon, label, value }) => (
           <li
             key={label}
-            className="flex items-center gap-3 w-1/2 md:w-1/3 lg:w-1/5 pr-4"
+            className="flex items-center gap-3 w-1/2 md:w-1/3 lg:w-1/5 pr-4 sm:min-w-[220px]"
           >
             <Icon className="w-5 h-5 shrink-0 text-[#675CA8] stroke-[1.5]" />
             <span className="text-gray-700 font-medium text-sm">
