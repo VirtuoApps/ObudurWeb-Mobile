@@ -2,6 +2,7 @@ import ContactBox from "./ContactBox/ContactBox";
 import Descriptions from "./Descriptions/Descriptions";
 import Details from "./Details/Details";
 import FeaturesEquipment from "./Features/Features";
+import Footer from "./Footer/Footer";
 import GeneralInfo from "./GeneralInfo/GeneralInfo";
 import Header from "./Header/Header";
 import Images from "./Images/Images";
@@ -29,6 +30,8 @@ export default function ResidentPage() {
             <ContactBox />
           </div>
         </div>
+
+        <Footer />
       </div>
     </>
   );
