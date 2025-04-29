@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { FaBars } from "react-icons/fa";
 import LanguageSwitcher from "@/app/components/LanguageSwitcher";
@@ -23,12 +22,11 @@ export default function Header() {
           className="flex items-center cursor-pointer"
           onClick={() => router.push("/")}
         >
-          <Image
-            src="/obudur-logo.png"
+          <img
+            src="/obudur-icon.png"
             alt="oBudur Logo"
-            width={120}
-            height={40}
-            priority
+            width={30}
+            height={20}
           />
         </div>
 
