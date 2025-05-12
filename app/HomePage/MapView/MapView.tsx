@@ -23,7 +23,7 @@ const properties: Property[] = [
 
 const containerStyle = {
   width: "100%",
-  height: "calc(100vh - 155px)",
+  height: "calc(100vh - 80px)",
 };
 
 const center = {

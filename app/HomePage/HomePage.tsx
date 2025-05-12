@@ -31,9 +31,18 @@ export default function HomePage() {
   return (
     <div className="bg-white">
       <Header />
-      <FilterList />
+      <FilterList
+        currentView={currentView}
+        onChangeCurrentView={() => {
+          if (currentView === "map") {
+            setCurrentView("list");
+          } else {
+            setCurrentView("map");
+          }
+        }}
+      />
       {currentView === "map" ? <MapView /> : <ListView />}
-      <ViewSwitcher currentView={currentView} setCurrentView={setCurrentView} />
+      {/* <ViewSwitcher currentView={currentView} setCurrentView={setCurrentView} /> */}
     </div>
   );
 }

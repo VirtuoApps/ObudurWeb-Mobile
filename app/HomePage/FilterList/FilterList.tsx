@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   FaHotjar,
   FaKey,
@@ -20,6 +20,9 @@ import {
 import { LuSettings2 } from "react-icons/lu";
 import { useTranslations } from "next-intl";
 import FilterPopup from "@/app/components/FilterPopup/FilterPopup";
+import ListViewIcon from "@/app/svgIcons/ListViewIcon";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+
 const iconClassName = "text-xl";
 const iconColor = "rgba(0,0,0,0.6)";
 
@@ -101,10 +104,19 @@ const filterList = [
   },
 ];
 
-export default function FilterList() {
+export default function FilterList({
+  onChangeCurrentView,
+  currentView,
+}: {
+  onChangeCurrentView: () => void;
+  currentView: "map" | "list";
+}) {
   const t = useTranslations("filterList");
   const [selectedFilters, setSelectedFilters] = useState<number[]>([]);
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(false);
 
   const handleFilterClick = (filterId: number) => {
     setSelectedFilters((prev) =>
@@ -114,19 +126,84 @@ export default function FilterList() {
     );
   };
 
+  const checkArrows = () => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      const { scrollLeft, scrollWidth, clientWidth } = container;
+      setShowLeftArrow(scrollLeft > 0);
+      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 1);
+    }
+  };
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      checkArrows();
+
+      container.addEventListener("scroll", checkArrows);
+
+      const resizeObserver = new ResizeObserver(checkArrows);
+      resizeObserver.observe(container);
+
+      return () => {
+        container.removeEventListener("scroll", checkArrows);
+        resizeObserver.unobserve(container);
+      };
+    }
+  }, []);
+
+  const scrollLeft = () => {
+    scrollContainerRef.current?.scrollBy({ left: -200, behavior: "smooth" });
+  };
+
+  const scrollRight = () => {
+    scrollContainerRef.current?.scrollBy({ left: 200, behavior: "smooth" });
+  };
+
   return (
     <>
       <FilterPopup
         isOpen={isFilterPopupOpen}
         onClose={() => setIsFilterPopupOpen(false)}
       />
-      <div className="bg-white flex flex-col md:flex-row items-center px-2 md:px-6 py-2 h-auto md:h-[75px]">
-        <div className="flex-1 overflow-x-auto scrollbar-hide w-full md:h-[75px] no-scrollbar py-2 md:py-0">
-          <div className="flex flex-row gap-2 md:gap-4 items-center justify-start md:justify-center min-w-max mt-0 md:mt-2 px-2 md:px-0">
+      <div
+        className={`bg-white flex flex-row ${
+          currentView === "map" ? "fixed top-24 left-0 right-0" : "mt-5 mb-7"
+        } z-50 w-[60%] mx-auto shadow-lg rounded-2xl`}
+      >
+        {showRightArrow && (
+          <button
+            onClick={scrollRight}
+            className="absolute right-18 top-1/2 -translate-y-1/2 z-10 bg-white p-1 rounded-lg border border-gray-200 shadow-md cursor-pointer"
+          >
+            <FiChevronRight className="text-gray-600 text-sm" />
+          </button>
+        )}
+
+        {showLeftArrow && (
+          <button
+            onClick={scrollLeft}
+            className="absolute left-10 top-1/2 -translate-y-1/2 z-10 bg-white p-1 rounded-lg border border-gray-200 shadow-md cursor-pointer"
+          >
+            <FiChevronLeft className="text-gray-600 text-sm" />
+          </button>
+        )}
+
+        <div
+          onClick={onChangeCurrentView}
+          className="flex items-center justify-center border-r h-full border-gray-200 px-4 py-4 cursor-pointer transition-all duration-200 hover:bg-gray-100 overflow-hidden rounded-l-2xl"
+        >
+          <ListViewIcon />
+        </div>
+        <div className="flex-1 flex items-center relative overflow-hidden">
+          <div
+            ref={scrollContainerRef}
+            className="flex flex-row items-center overflow-x-auto scrollbar-hide w-full no-scrollbar px-3 py-2 gap-3"
+          >
             {filterList.map((filterItem) => (
               <div
                 key={filterItem.id}
-                className={`flex flex-col items-center cursor-pointer rounded-lg min-w-[65px] md:min-w-[80px] p-1 md:p-2 ${
+                className={`flex flex-row items-center cursor-pointer rounded-lg px-3 py-2 whitespace-nowrap ${
                   selectedFilters.includes(filterItem.id)
                     ? "bg-[#5E5691] text-white"
                     : "hover:bg-gray-100"
@@ -134,10 +211,12 @@ export default function FilterList() {
                 onClick={() => handleFilterClick(filterItem.id)}
               >
                 {selectedFilters.includes(filterItem.id)
-                  ? React.cloneElement(filterItem.icon, { color: "white" })
+                  ? React.cloneElement(filterItem.icon, {
+                      color: "white",
+                    })
                   : filterItem.icon}
                 <p
-                  className={`text-xs mt-1 font-light text-center ${
+                  className={`text-xs ml-2 font-light ${
                     selectedFilters.includes(filterItem.id)
                       ? "text-white"
                       : "text-gray-500"
@@ -149,20 +228,10 @@ export default function FilterList() {
             ))}
           </div>
         </div>
-        <div className="flex flex-row gap-2 md:gap-4 justify-end w-full md:w-auto md:min-w-[200px] mt-2 md:mt-0 md:ml-12 items-center px-2 md:px-0">
-          <button
-            onClick={() => setIsFilterPopupOpen(true)}
-            className="flex-1 md:flex-none flex flex-row justify-center items-center border h-[35px] border-[#5E5691] rounded-lg px-2 py-1 cursor-pointer hover:bg-[#5E5691] text-[#5E5691] hover:text-white transition-all duration-300"
-          >
-            <LuSettings2 className="text-xl md:text-2xl" />
-            <p className="text-xs font-bold ml-1 md:ml-2">{t("allFilters")}</p>
-          </button>
-          <button
-            className="flex-1 md:flex-none flex flex-row justify-center items-center border h-[35px] border-[#EC755D] rounded-lg px-2 py-1 cursor-pointer hover:bg-[#EC755D] text-[#EC755D] hover:text-white transition-all duration-300"
-            onClick={() => setSelectedFilters([])}
-          >
-            <p className="text-xs font-bold">{t("clear")}</p>
-          </button>
+        <div className="flex justify-center items-center w-full md:w-auto px-3 border-l border-gray-200">
+          <p className="text-xs font-bold ml-1 md:ml-2 text-gray-600 whitespace-nowrap">
+            {t("allFilters")}
+          </p>
         </div>
       </div>
     </>
