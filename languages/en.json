@@ -31,6 +31,15 @@
     "maxValue": "Max",
     "search": "Search",
     "interiorFeatures": "Interior Features",
+    "estateType": "Property Type",
+    "category": "Category",
+    "bathrooms": "Bathrooms",
+    "bathroomsSelect": "Select Bathroom Count",
+    "exteriorFeatures": "Exterior Features",
+    "locationFeatures": "Location Features",
+    "selectLocation": "Select Location",
+    "selectEstateType": "Select Property Type",
+    "selectCategory": "Select Category",
     "features": {
       "cableTV": "Cable TV",
       "wifi": "Wi-Fi",
@@ -46,6 +55,22 @@
       "laundryRoom": "Laundry Room",
       "dressingRoom": "Dressing Room",
       "fireAlarm": "Fire Alarm"
+    },
+    "exteriorFeaturesList": {
+      "garden": "Garden",
+      "balcony": "Balcony",
+      "pool": "Pool",
+      "parking": "Parking",
+      "security": "Security",
+      "elevator": "Elevator",
+      "gate": "Security Gate"
+    },
+    "locationFeaturesList": {
+      "nearTransport": "Near Transport",
+      "nearSchool": "Near School",
+      "nearShopping": "Near Shopping Center",
+      "nearRestaurants": "Near Restaurants",
+      "nearHospital": "Near Hospital"
     }
   },
   "listingType": {

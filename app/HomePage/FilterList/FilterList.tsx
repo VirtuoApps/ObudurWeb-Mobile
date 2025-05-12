@@ -230,7 +230,10 @@ export default function FilterList({
             ))}
           </div>
         </div>
-        <div className="flex justify-center items-center w-full md:w-auto px-3 border-l border-gray-200">
+        <div
+          className="flex justify-center items-center w-full md:w-auto px-3 border-l border-gray-200 cursor-pointer"
+          onClick={() => setIsFilterPopupOpen(true)}
+        >
           <p className="text-xs font-bold ml-1 md:ml-2 text-gray-600 whitespace-nowrap">
             {t("allFilters")}
           </p>

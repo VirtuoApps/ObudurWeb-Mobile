@@ -31,6 +31,15 @@
     "maxValue": "En Fazla",
     "search": "Ara",
     "interiorFeatures": "İç Özellikler",
+    "estateType": "Emlak Tipi",
+    "category": "Kategori",
+    "bathrooms": "Banyo Sayısı",
+    "bathroomsSelect": "Banyo Sayısı Seçin",
+    "exteriorFeatures": "Dış Özellikler",
+    "locationFeatures": "Konum Özellikleri",
+    "selectLocation": "Konum Seçin",
+    "selectEstateType": "Emlak Tipi Seçin",
+    "selectCategory": "Kategori Seçin",
     "features": {
       "cableTV": "Kablo TV",
       "wifi": "Wi-Fi",
@@ -46,6 +55,22 @@
       "laundryRoom": "Çamaşır Odası",
       "dressingRoom": "Giyinme Odası",
       "fireAlarm": "Yangın Alarmı"
+    },
+    "exteriorFeaturesList": {
+      "garden": "Bahçe",
+      "balcony": "Balkon",
+      "pool": "Havuz",
+      "parking": "Otopark",
+      "security": "Güvenlik",
+      "elevator": "Asansör",
+      "gate": "Güvenli Giriş"
+    },
+    "locationFeaturesList": {
+      "nearTransport": "Ulaşıma Yakın",
+      "nearSchool": "Okula Yakın",
+      "nearShopping": "Alışveriş Merkezine Yakın",
+      "nearRestaurants": "Restoranlara Yakın",
+      "nearHospital": "Hastaneye Yakın"
     }
   },
   "listingType": {
