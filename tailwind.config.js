@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Kumbh Sans", "sans-serif"],
+        sans: ["var(--font-kumbh-sans)", "sans-serif"],
       },
     },
   },

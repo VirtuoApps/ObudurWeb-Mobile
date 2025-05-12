@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -9,7 +8,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-kumbh-sans);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -25,7 +24,7 @@
 body {
   background: #fff;
   color: var(--foreground);
-  font-family: 'Kumbh Sans', sans-serif;
+  font-family: var(--font-kumbh-sans), sans-serif;
 }
 
 /* Leaflet map styles */

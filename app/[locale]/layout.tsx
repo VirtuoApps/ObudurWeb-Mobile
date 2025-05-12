@@ -1,11 +1,16 @@
 import { NextIntlClientProvider } from "next-intl";
-import { Geist_Mono } from "next/font/google";
+import { Geist_Mono, Kumbh_Sans } from "next/font/google";
 import "../globals.css";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const kumbhSans = Kumbh_Sans({
+  variable: "--font-kumbh-sans",
   subsets: ["latin"],
 });
 
@@ -47,7 +52,9 @@ export default async function LocaleLayout({ children, params }: Props) {
           type="text/css"
         />
       </head>
-      <body className={`${geistMono.variable} antialiased`}>
+      <body
+        className={`${geistMono.variable} ${kumbhSans.variable} antialiased`}
+      >
         <NextIntlClientProvider locale={locale} messages={messages}>
           {children}
         </NextIntlClientProvider>
