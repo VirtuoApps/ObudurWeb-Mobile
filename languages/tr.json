@@ -159,7 +159,11 @@
       "lastNameRequired": "Soyisim gereklidir",
       "emailRequired": "Geçerli bir e-posta adresi giriniz",
       "messageRequired": "Mesaj gereklidir"
-    }
+    },
+    "loginPromptTitle": "İletişime Geçin",
+    "loginPromptDescription": "Emlak danışmanına mesaj göndermek veya telefon numarasına ulaşmak için lütfen giriş yapın.",
+    "loginButton": "Giriş Yap",
+    "agentCompanyName": "Motto Yatırım"
   },
   "generalInfo": {
     "listingNumber": "İlan No: #{id}",

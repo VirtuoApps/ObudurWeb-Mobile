@@ -159,7 +159,11 @@
       "lastNameRequired": "Last name is required",
       "emailRequired": "Please enter a valid email address",
       "messageRequired": "Message is required"
-    }
+    },
+    "loginPromptTitle": "Contact Agent",
+    "loginPromptDescription": "Please log in to send a message to the real estate agent or access their phone number.",
+    "loginButton": "Login",
+    "agentCompanyName": "Motto Investment"
   },
   "generalInfo": {
     "listingNumber": "Listing No: #{id}",
