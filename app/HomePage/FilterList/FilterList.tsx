@@ -168,7 +168,9 @@ export default function FilterList({
       />
       <div
         className={`bg-white flex flex-row ${
-          currentView === "map" ? "fixed top-24 left-0 right-0" : "mt-5 mb-7"
+          currentView === "map"
+            ? "fixed top-24 left-0 right-0"
+            : "mt-5 mb-7 relative"
         } z-50 w-[60%] mx-auto shadow-lg rounded-2xl`}
       >
         {showRightArrow && (
