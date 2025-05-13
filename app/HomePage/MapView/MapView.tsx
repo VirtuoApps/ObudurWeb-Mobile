@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import {
   GoogleMap,
   Marker,
@@ -22,13 +22,20 @@ const currencySymbols: Record<string, string> = {
   RUB: "₽",
 };
 
-export default function GoogleMapView({ hotels }: { hotels: Hotel[] }) {
+export default function GoogleMapView({
+  hotels,
+  totalHotelsCount,
+}: {
+  hotels: Hotel[];
+  totalHotelsCount: number;
+}) {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyA64Bc3Y55vRFuugh8jxMon9ySYur4SvXY",
   });
 
   const [selectedHotel, setSelectedHotel] = useState<Hotel | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
+  const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
 
   const router = useRouter();
 
@@ -86,6 +93,56 @@ export default function GoogleMapView({ hotels }: { hotels: Hotel[] }) {
     };
   }, [hotels]);
 
+  const onLoad = useCallback(function callback(map: google.maps.Map) {
+    setMapInstance(map);
+  }, []);
+
+  const onUnmount = useCallback(function callback() {
+    setMapInstance(null);
+  }, []);
+
+  useEffect(() => {
+    if (mapInstance) {
+      const validHotels = hotels.filter(
+        (hotel) =>
+          hotel.location &&
+          hotel.location.coordinates &&
+          hotel.location.coordinates.length === 2
+      );
+
+      // Only apply dynamic zoom/fit if the number of hotels has changed due to filtering
+      if (hotels.length !== totalHotelsCount) {
+        if (validHotels.length === 0) {
+          mapInstance.setCenter(center); // center is default { lat: 36.855, lng: 30.805 } when hotels is empty
+          mapInstance.setZoom(6);
+        } else if (validHotels.length === 1) {
+          const hotel = validHotels[0];
+          const position = {
+            lat: hotel.location.coordinates[1],
+            lng: hotel.location.coordinates[0],
+          };
+          mapInstance.setCenter(position);
+          mapInstance.setZoom(15);
+        } else {
+          const bounds = new window.google.maps.LatLngBounds();
+          validHotels.forEach((hotel) => {
+            bounds.extend(
+              new window.google.maps.LatLng(
+                hotel.location.coordinates[1],
+                hotel.location.coordinates[0]
+              )
+            );
+          });
+          mapInstance.fitBounds(bounds);
+        }
+      } else {
+        // No effective filter, or all hotels are shown. Use default view.
+        mapInstance.setCenter(center); // 'center' is already calculated based on all 'hotels'
+        mapInstance.setZoom(14); // Default overview zoom for all hotels
+      }
+    }
+  }, [mapInstance, hotels, center, totalHotelsCount]);
+
   if (!isLoaded) return <div>Loading...</div>;
 
   // Helper function to get display price in the selected currency
@@ -127,6 +184,8 @@ export default function GoogleMapView({ hotels }: { hotels: Hotel[] }) {
           },
         ],
       }}
+      onLoad={onLoad}
+      onUnmount={onUnmount}
     >
       {hotels.map((hotel, index) => {
         if (

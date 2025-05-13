@@ -42,6 +42,8 @@ export default function HomePage({
   const [currentView, setCurrentView] = useState<"map" | "list">("map");
   const [filters, setFilters] = useState<FilterType | null>(null);
 
+  const [selectedFeatures, setSelectedFeatures] = useState<Feature[]>([]);
+
   const [selectedLocation, setSelectedLocation] = useState<any | null>(null);
   const [selectedPropertyType, setSelectedPropertyType] = useState<any | null>(
     null
@@ -87,6 +89,25 @@ export default function HomePage({
     }
   }
 
+  if (selectedFeatures.length > 0) {
+    filteredHotels = filteredHotels.filter((hotel) =>
+      selectedFeatures.every((selectedFeature) =>
+        hotel.featureIds.some((hotelFeature: string | { _id: string }) => {
+          // Assuming hotel.features is an array of feature objects with _id
+          if (
+            typeof hotelFeature === "object" &&
+            hotelFeature !== null &&
+            "_id" in hotelFeature
+          ) {
+            return hotelFeature._id === selectedFeature._id;
+          }
+          // Assuming hotel.features is an array of feature IDs (strings)
+          return hotelFeature === selectedFeature._id;
+        })
+      )
+    );
+  }
+
   function NoResultsFound() {
     return (
       <div className="w-full h-[calc(100vh-155px)] flex flex-col items-center justify-center text-gray-500">
@@ -98,7 +119,7 @@ export default function HomePage({
             setSelectedPropertyType(null);
             setSelectedCategory(null);
             setListingType("For Sale");
-            setCurrentView("map");
+            setSelectedFeatures([]);
           }}
           className="mt-4 px-4 py-2 bg-[#362C75] text-white rounded transition-colors cursor-pointer"
         >
@@ -124,6 +145,8 @@ export default function HomePage({
       />
       <FilterList
         features={features}
+        selectedFeatures={selectedFeatures}
+        setSelectedFeatures={setSelectedFeatures}
         currentView={currentView}
         onChangeCurrentView={() => {
           if (currentView === "map") {
@@ -136,7 +159,11 @@ export default function HomePage({
       {filters && filteredHotels.length === 0 ? (
         <NoResultsFound />
       ) : currentView === "map" ? (
-        <MapView hotels={filteredHotels} />
+        <MapView
+          key={selectedFeatures.length}
+          hotels={filteredHotels}
+          totalHotelsCount={hotels.length}
+        />
       ) : (
         <ListView hotels={filteredHotels} />
       )}

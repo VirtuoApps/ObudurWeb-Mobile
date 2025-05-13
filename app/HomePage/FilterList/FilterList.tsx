@@ -26,105 +26,30 @@ import { Feature } from "@/types/feature.type";
 const iconClassName = "text-xl";
 const iconColor = "rgba(0,0,0,0.6)";
 
-const filterList = [
-  {
-    id: 1,
-    name: "Popüler",
-    icon: <FaHotjar color={iconColor} className={iconClassName} />,
-  },
-  {
-    id: 2,
-    name: "Yeni",
-    icon: <FaKey color={iconColor} className={iconClassName} />,
-  },
-  {
-    id: 3,
-    name: "1+1",
-    icon: <TbSquarePlus color={iconColor} className={iconClassName} />,
-  },
-  {
-    id: 4,
-    name: "2+1",
-    icon: <TbSquarePlus color={iconColor} className={iconClassName} />,
-  },
-  {
-    id: 5,
-    name: "3+1",
-    icon: <TbSquarePlus color={iconColor} className={iconClassName} />,
-  },
-  {
-    id: 6,
-    name: "Müstakil Villa",
-    icon: <MdHouse color={iconColor} className={iconClassName} />,
-  },
-  {
-    id: 7,
-    name: "İkiz Villa",
-    icon: <MdHolidayVillage color={iconColor} className={iconClassName} />,
-  },
-  {
-    id: 8,
-    name: "Kapalı Otopark",
-    icon: <FaCar color={iconColor} className={iconClassName} />,
-  },
-  {
-    id: 9,
-    name: "Açık Otopark",
-    icon: <FaParking color={iconColor} className={iconClassName} />,
-  },
-  {
-    id: 10,
-    name: "Site İçinde",
-    icon: <MdLocationCity color={iconColor} className={iconClassName} />,
-  },
-  {
-    id: 11,
-    name: "Açık Havuz",
-    icon: <MdPool color={iconColor} className={iconClassName} />,
-  },
-  {
-    id: 12,
-    name: "Spor Salonu",
-    icon: <FaDumbbell color={iconColor} className={iconClassName} />,
-  },
-  {
-    id: 13,
-    name: "Jakuzi",
-    icon: <FaBath color={iconColor} className={iconClassName} />,
-  },
-  {
-    id: 14,
-    name: "Şarj İstasyonu",
-    icon: <FaChargingStation color={iconColor} className={iconClassName} />,
-  },
-  {
-    id: 15,
-    name: "Açık Mutfak",
-    icon: <MdKitchen color={iconColor} className={iconClassName} />,
-  },
-];
-
 export default function FilterList({
   onChangeCurrentView,
   currentView,
   features,
+  selectedFeatures,
+  setSelectedFeatures,
 }: {
   onChangeCurrentView: () => void;
   currentView: "map" | "list";
   features: Feature[];
+  selectedFeatures: Feature[];
+  setSelectedFeatures: (features: Feature[]) => void;
 }) {
   const t = useTranslations("filterList");
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(false);
 
-  const handleFilterClick = (filterId: string) => {
-    setSelectedFilters((prev) =>
-      prev.includes(filterId)
-        ? prev.filter((id) => id !== filterId)
-        : [...prev, filterId]
+  const handleFilterClick = (featureItem: Feature) => {
+    setSelectedFeatures(
+      selectedFeatures.some((sf) => sf._id === featureItem._id)
+        ? selectedFeatures.filter((sf) => sf._id !== featureItem._id)
+        : [...selectedFeatures, featureItem]
     );
   };
 
@@ -208,11 +133,11 @@ export default function FilterList({
               <div
                 key={filterItem._id}
                 className={`flex flex-row items-center cursor-pointer rounded-lg px-3 py-2 whitespace-nowrap ${
-                  selectedFilters.includes(filterItem._id)
+                  selectedFeatures.some((sf) => sf._id === filterItem._id)
                     ? "bg-gray-100"
                     : "hover:bg-gray-100"
                 }`}
-                onClick={() => handleFilterClick(filterItem._id)}
+                onClick={() => handleFilterClick(filterItem)}
               >
                 <img
                   src={filterItem.iconUrl}
@@ -225,7 +150,7 @@ export default function FilterList({
                 />
                 <p
                   className={`text-xs ml-2 font-light ${
-                    selectedFilters.includes(filterItem._id)
+                    selectedFeatures.some((sf) => sf._id === filterItem._id)
                       ? "text-gray-500"
                       : "text-gray-500"
                   }`}

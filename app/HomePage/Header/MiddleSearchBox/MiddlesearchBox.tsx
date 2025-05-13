@@ -102,7 +102,7 @@ export default function MiddleSearchBox({
 
       {/* Search Button */}
       <button
-        className={`bg-[#5E5691] text-white px-6 py-1.5 rounded-md text-sm font-medium ${
+        className={`bg-[#5E5691] text-white px-6 py-1.5 rounded-md text-sm font-medium cursor-pointer ${
           isMobileMenu ? "w-full" : ""
         }`}
         onClick={onApplyFilters}
