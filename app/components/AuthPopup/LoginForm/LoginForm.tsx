@@ -7,12 +7,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FaGoogle, FaFacebook } from "react-icons/fa";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useTranslations } from "next-intl";
+import axiosInstance from "@/axios";
+import { AxiosError } from "axios";
 
 // Define the type for form data
 type LoginFormData = {
   email: string;
   password: string;
 };
+
+// Define response type for login
+interface LoginResponse {
+  accessToken: string;
+}
 
 export default function LoginForm({
   onClose,
@@ -22,6 +29,8 @@ export default function LoginForm({
   onChangeAuthState: (authState: string) => void;
 }) {
   const t = useTranslations("loginForm");
+  const [isLoading, setIsLoading] = useState(false);
+  const [loginError, setLoginError] = useState("");
 
   // Define the schema for form validation with localized error messages
   const loginSchema = z.object({
@@ -42,8 +51,34 @@ export default function LoginForm({
     },
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    console.log(data);
+  const onSubmit = async (data: LoginFormData) => {
+    try {
+      setIsLoading(true);
+      setLoginError("");
+
+      const response = await axiosInstance.post<LoginResponse>(
+        "/auth/login",
+        data
+      );
+
+      // Store the access token in localStorage
+      localStorage.setItem("accessToken", response.data.accessToken);
+
+      // Refresh the page
+      window.location.reload();
+    } catch (error) {
+      const axiosError = error as any;
+
+      if (axiosError.errorCode === "INVALID_EMAIL") {
+        setLoginError(t("invalidEmail"));
+      } else if (axiosError.errorCode === "INVALID_PASSWORD") {
+        setLoginError(t("invalidPassword"));
+      } else {
+        setLoginError(t("unexpectedError"));
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -71,6 +106,12 @@ export default function LoginForm({
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {loginError && (
+            <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm">
+              {loginError}
+            </div>
+          )}
+
           <div>
             <input
               id="email"
@@ -124,14 +165,14 @@ export default function LoginForm({
 
           <button
             type="submit"
-            disabled={!isValid}
+            disabled={!isValid || isLoading}
             className={`w-full py-2 px-4 rounded-2xl font-medium cursor-pointer ${
-              isValid
+              isValid && !isLoading
                 ? "bg-[#5E5691] text-white"
                 : "bg-[#F0F0F0] cursor-not-allowed text-gray-500"
             }`}
           >
-            {t("loginButton")}
+            {isLoading ? t("loggingIn") || "Logging in..." : t("loginButton")}
           </button>
         </form>
 

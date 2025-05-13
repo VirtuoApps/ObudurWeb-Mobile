@@ -124,7 +124,11 @@
     "loginButton": "Giriş Yap",
     "or": "veya",
     "continueWithFacebook": "Facebook ile devam et",
-    "continueWithGoogle": "Google ile devam et"
+    "continueWithGoogle": "Google ile devam et",
+    "invalidEmail": "Geçerli bir e-posta adresi giriniz",
+    "invalidPassword": "Şifre hatalı",
+    "unexpectedError": "Bir hata oluştu, lütfen daha sonra tekrar deneyiniz.",
+    "loggingIn": "Giriş yapılıyor..."
   },
   "signupForm": {
     "title": "Kayıt Ol",

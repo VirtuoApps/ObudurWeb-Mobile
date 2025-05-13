@@ -124,7 +124,11 @@
     "loginButton": "Login",
     "or": "or",
     "continueWithFacebook": "Continue with Facebook",
-    "continueWithGoogle": "Continue with Google"
+    "continueWithGoogle": "Continue with Google",
+    "invalidEmail": "Please enter a valid email address",
+    "invalidPassword": "Password is incorrect",
+    "unexpectedError": "An unexpected error occurred, please try again later.",
+    "loggingIn": "Logging in..."
   },
   "signupForm": {
     "title": "Sign Up",
