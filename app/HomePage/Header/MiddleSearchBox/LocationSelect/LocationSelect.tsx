@@ -110,7 +110,7 @@ export default function LocationSelect({
 
             <PopoverPanel
               transition
-              className={`absolute z-10 mt-2 w-screen max-w-xs px-4 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in ${
+              className={`absolute z-20 mt-2 w-screen max-w-xs px-4 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in ${
                 isMobileMenu ? "left-0" : "left-1/2 -translate-x-1/2"
               }`}
             >

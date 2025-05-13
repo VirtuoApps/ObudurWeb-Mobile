@@ -173,7 +173,7 @@ export default function FilterList({
           currentView === "map"
             ? "fixed top-24 left-0 right-0"
             : "mt-5 mb-7 relative"
-        } z-40 w-[60%] mx-auto shadow-lg rounded-2xl`}
+        } z-10 w-[60%] mx-auto shadow-lg rounded-2xl`}
       >
         {showRightArrow && (
           <button

@@ -52,7 +52,7 @@ export default function CategorySelect({
               <ChevronDownIcon className="h-4 w-4 ml-2" />
             </PopoverButton>
 
-            <PopoverPanel className="absolute left-1/2 z-10 mt-2 flex w-screen max-w-xs -translate-x-1/2 px-4 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
+            <PopoverPanel className="absolute left-1/2 z-20 mt-2 flex w-screen max-w-xs -translate-x-1/2 px-4 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
               <div className="w-full max-w-md flex-auto overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
                 <div className="p-4">
                   {categories.map((category) => (
