@@ -160,7 +160,21 @@
     "emailPlaceholder": "E-posta",
     "emailError": "Geçerli bir e-posta adresi giriniz",
     "backToLogin": "Giriş sayfasına dön",
-    "resetButton": "Şifremi Sıfırla"
+    "resetButton": "Şifremi Sıfırla",
+    "loading": "Yükleniyor...",
+    "emailNotFound": "E-posta adresi bulunamadı, lütfen e-posta adresinizi kontrol edin",
+    "genericError": "Bir hata oluştu, lütfen daha sonra tekrar deneyiniz",
+    "resetPasswordTitle": "Şifrenizi Sıfırlayın",
+    "resetPasswordDescription": "E-posta adresinize gönderilen kodu ve yeni şifrenizi girin",
+    "resetCodePlaceholder": "Sıfırlama Kodu",
+    "newPasswordPlaceholder": "Yeni Şifre",
+    "confirmPasswordPlaceholder": "Şifre Tekrar",
+    "passwordMinLength": "Şifre en az 8 karakter olmalıdır",
+    "passwordsDoNotMatch": "Şifreler eşleşmiyor",
+    "codeRequired": "Sıfırlama kodu gereklidir",
+    "backToForgotPassword": "Geri",
+    "submitNewPassword": "Şifremi Güncelle",
+    "passwordResetSuccess": "Şifreniz başarıyla güncellenmiştir"
   },
   "residentBox": {
     "optinable": "Opsiyonlandı",

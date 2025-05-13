@@ -160,7 +160,21 @@
     "emailPlaceholder": "Email",
     "emailError": "Please enter a valid email address",
     "backToLogin": "Back to login",
-    "resetButton": "Reset Password"
+    "resetButton": "Reset Password",
+    "loading": "Loading...",
+    "emailNotFound": "Email address not found, please check your email",
+    "genericError": "An error occurred, please try again later",
+    "resetPasswordTitle": "Reset Your Password",
+    "resetPasswordDescription": "Enter the code sent to your email and your new password",
+    "resetCodePlaceholder": "Reset Code",
+    "newPasswordPlaceholder": "New Password",
+    "confirmPasswordPlaceholder": "Confirm Password",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "codeRequired": "Reset code is required",
+    "backToForgotPassword": "Back",
+    "submitNewPassword": "Update Password",
+    "passwordResetSuccess": "Your password has been successfully updated"
   },
   "residentBox": {
     "optinable": "Optinable",
