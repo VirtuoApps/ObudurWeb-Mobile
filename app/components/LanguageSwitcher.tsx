@@ -63,6 +63,8 @@ export default function LanguageSwitcher() {
     } else {
       setIsOpen(false);
     }
+
+    window.location.reload();
   };
 
   return (

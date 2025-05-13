@@ -7,7 +7,8 @@ import FilterList from "./FilterList/FilterList";
 import { useTranslations } from "next-intl";
 import ViewSwitcher from "./ViewSwitcher/ViewSwitcher";
 import ListView from "./ListView/ListView";
-
+import { Feature } from "@/types/feature.type";
+import { Hotel } from "@/types/hotel.type";
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
   loading: () => {
@@ -26,12 +27,19 @@ function MapLoadingIndicator() {
   );
 }
 
-export default function HomePage() {
+export default function HomePage({
+  features,
+  hotels,
+}: {
+  features: Feature[];
+  hotels: Hotel[];
+}) {
   const [currentView, setCurrentView] = useState<"map" | "list">("map");
   return (
     <div className="bg-white">
       <Header />
       <FilterList
+        features={features}
         currentView={currentView}
         onChangeCurrentView={() => {
           if (currentView === "map") {
@@ -41,7 +49,7 @@ export default function HomePage() {
           }
         }}
       />
-      {currentView === "map" ? <MapView /> : <ListView />}
+      {currentView === "map" ? <MapView hotels={hotels} /> : <ListView />}
       {/* <ViewSwitcher currentView={currentView} setCurrentView={setCurrentView} /> */}
     </div>
   );

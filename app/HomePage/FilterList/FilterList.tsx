@@ -22,7 +22,7 @@ import { useTranslations } from "next-intl";
 import FilterPopup from "@/app/components/FilterPopup/FilterPopup";
 import ListViewIcon from "@/app/svgIcons/ListViewIcon";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-
+import { Feature } from "@/types/feature.type";
 const iconClassName = "text-xl";
 const iconColor = "rgba(0,0,0,0.6)";
 
@@ -107,18 +107,20 @@ const filterList = [
 export default function FilterList({
   onChangeCurrentView,
   currentView,
+  features,
 }: {
   onChangeCurrentView: () => void;
   currentView: "map" | "list";
+  features: Feature[];
 }) {
   const t = useTranslations("filterList");
-  const [selectedFilters, setSelectedFilters] = useState<number[]>([]);
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(false);
 
-  const handleFilterClick = (filterId: number) => {
+  const handleFilterClick = (filterId: string) => {
     setSelectedFilters((prev) =>
       prev.includes(filterId)
         ? prev.filter((id) => id !== filterId)
@@ -193,7 +195,7 @@ export default function FilterList({
 
         <div
           onClick={onChangeCurrentView}
-          className="flex items-center justify-center border-r h-full border-gray-200 px-4 py-4 cursor-pointer transition-all duration-200 hover:bg-gray-100 overflow-hidden rounded-l-2xl"
+          className="flex items-center justify-center border-r px-4 py-4 border-gray-200  cursor-pointer transition-all duration-200 hover:bg-gray-100 -2xl"
         >
           <ListViewIcon />
         </div>
@@ -202,29 +204,35 @@ export default function FilterList({
             ref={scrollContainerRef}
             className="flex flex-row items-center overflow-x-auto scrollbar-hide w-full no-scrollbar px-3 py-2 gap-3"
           >
-            {filterList.map((filterItem) => (
+            {features.map((filterItem) => (
               <div
-                key={filterItem.id}
+                key={filterItem._id}
                 className={`flex flex-row items-center cursor-pointer rounded-lg px-3 py-2 whitespace-nowrap ${
-                  selectedFilters.includes(filterItem.id)
-                    ? "bg-[#5E5691] text-white"
+                  selectedFilters.includes(filterItem._id)
+                    ? "bg-gray-100"
                     : "hover:bg-gray-100"
                 }`}
-                onClick={() => handleFilterClick(filterItem.id)}
+                onClick={() => handleFilterClick(filterItem._id)}
               >
-                {selectedFilters.includes(filterItem.id)
-                  ? React.cloneElement(filterItem.icon, {
-                      color: "white",
-                    })
-                  : filterItem.icon}
+                <img
+                  src={filterItem.iconUrl}
+                  alt={
+                    typeof filterItem.name === "object"
+                      ? filterItem.name.en
+                      : String(filterItem.name)
+                  }
+                  className="w-8 h-8 object-contain"
+                />
                 <p
                   className={`text-xs ml-2 font-light ${
-                    selectedFilters.includes(filterItem.id)
-                      ? "text-white"
+                    selectedFilters.includes(filterItem._id)
+                      ? "text-gray-500"
                       : "text-gray-500"
                   }`}
                 >
-                  {filterItem.name}
+                  {typeof filterItem.name === "object"
+                    ? filterItem.name.en
+                    : String(filterItem.name)}
                 </p>
               </div>
             ))}
