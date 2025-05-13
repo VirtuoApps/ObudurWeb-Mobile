@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 import "./globals.css";
+import AuthCheck from "./components/AuthCheck/AuthCheck";
+import { ReduxProvider } from "./providers/ReduxProvider";
 
 export const metadata: Metadata = {
   title: "oBudur Website",
@@ -13,5 +15,10 @@ export default function RootLayout({
 }>) {
   // The root layout should only pass children down
   // The html and body tags are handled by the locale layout
-  return <>{children}</>;
+  return (
+    <ReduxProvider>
+      <AuthCheck />
+      {children}
+    </ReduxProvider>
+  );
 }
