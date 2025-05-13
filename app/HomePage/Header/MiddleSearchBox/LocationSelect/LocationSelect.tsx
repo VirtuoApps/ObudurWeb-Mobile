@@ -5,26 +5,34 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
 import { MapPinIcon } from "@heroicons/react/24/outline";
-import { useTranslations } from "next-intl";
-export const locations = [
-  { name: "Sarımsaklı Plajı", description: "Ayvalık/Balıkesir", href: "#" },
-  { name: "Kırıkkale", description: "Kırıkkale/Kırıkkale", href: "#" },
-];
+import { useTranslations, useLocale } from "next-intl";
+import { FilterOptions } from "@/types/filter-options.type";
 
 type LocationSelectProps = {
-  selectedLocation: (typeof locations)[0] | null;
-  setSelectedLocation: (location: (typeof locations)[0]) => void;
+  selectedLocation: any[0] | null;
+  setSelectedLocation: (location: any[0]) => void;
   isMobileMenu?: boolean;
+  filterOptions: FilterOptions;
 };
 
 export default function LocationSelect({
   selectedLocation,
   setSelectedLocation,
   isMobileMenu = false,
+  filterOptions,
 }: LocationSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(true);
+  const locale = useLocale();
+
+  const locations = filterOptions.state.map((state) => ({
+    name: (state as any)[locale],
+    description: `${(state.cityOfTheState as any)[locale]}/${
+      (state.countryOfTheState as any)[locale]
+    }`,
+    href: "#",
+  }));
 
   const t = useTranslations("locations");
 
@@ -96,7 +104,7 @@ export default function LocationSelect({
                     <MapPinIcon className="h-4 w-4 mr-1 flex-shrink-0" />
                     <span className="truncate">
                       {selectedLocation
-                        ? `${selectedLocation.name} (${selectedLocation.description})`
+                        ? `${selectedLocation.name}`
                         : t("location")}
                     </span>
                   </>

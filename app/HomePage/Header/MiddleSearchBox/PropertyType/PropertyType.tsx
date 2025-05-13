@@ -2,24 +2,29 @@ import { useState, useEffect, useRef } from "react";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { HomeIcon } from "@heroicons/react/24/outline";
-import { useTranslations } from "next-intl";
-export const propertyTypes = [
-  { name: "Konut", href: "#" },
-  { name: "İş Yeri", href: "#" },
-  { name: "Arsa", href: "#" },
-];
+import { useTranslations, useLocale } from "next-intl";
+import { FilterOptions } from "@/types/filter-options.type";
 
 type PropertyTypeProps = {
-  selectedPropertyType?: (typeof propertyTypes)[0] | null;
-  setSelectedPropertyType?: (propertyType: (typeof propertyTypes)[0]) => void;
+  selectedPropertyType?: any | null;
+  setSelectedPropertyType?: (propertyType: any) => void;
+  filterOptions: FilterOptions;
 };
 
 export default function PropertyType({
   selectedPropertyType = null,
   setSelectedPropertyType = () => {},
+  filterOptions,
 }: PropertyTypeProps) {
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const locale = useLocale();
+
+  const propertyTypes = filterOptions.housingType.map((propertyType) => ({
+    name: (propertyType as any)[locale],
+    href: "#",
+  }));
 
   const t = useTranslations("propertyTypes");
 

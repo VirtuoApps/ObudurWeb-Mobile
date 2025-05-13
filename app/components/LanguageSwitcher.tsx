@@ -57,14 +57,14 @@ export default function LanguageSwitcher() {
     // Save currency to localStorage
     localStorage.setItem("selectedCurrency", selectedCurrency);
 
-    // Redirect to the selected language
     if (selectedLanguage !== currentLocale) {
       changeLanguage(selectedLanguage);
-    } else {
-      setIsOpen(false);
     }
 
-    window.location.reload();
+    // Always close the modal after an update attempt
+    setIsOpen(false);
+
+    // Removed window.location.reload(); to allow language change navigation to complete
   };
 
   return (

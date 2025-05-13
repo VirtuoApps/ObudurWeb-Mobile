@@ -2,21 +2,19 @@ import { useState, useEffect, useRef } from "react";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { TagIcon } from "@heroicons/react/24/outline";
-import { useTranslations } from "next-intl";
-export const categories = [
-  { name: "2+1", href: "#" },
-  { name: "3+1", href: "#" },
-  { name: "4+1", href: "#" },
-];
+import { useTranslations, useLocale } from "next-intl";
+import { FilterOptions } from "@/types/filter-options.type";
 
 type CategorySelectProps = {
-  selectedCategory?: (typeof categories)[0] | null;
-  setSelectedCategory?: (category: (typeof categories)[0]) => void;
+  selectedCategory?: any | null;
+  setSelectedCategory?: (category: any) => void;
+  filterOptions: FilterOptions;
 };
 
 export default function CategorySelect({
   selectedCategory = null,
   setSelectedCategory = () => {},
+  filterOptions,
 }: CategorySelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -28,6 +26,11 @@ export default function CategorySelect({
     setIsOpen(false);
     buttonRef.current?.click();
   };
+
+  const categories = filterOptions.roomAsText.map((category) => ({
+    name: category,
+    href: "#",
+  }));
 
   return (
     <Popover className="relative">

@@ -9,6 +9,8 @@ import ViewSwitcher from "./ViewSwitcher/ViewSwitcher";
 import ListView from "./ListView/ListView";
 import { Feature } from "@/types/feature.type";
 import { Hotel } from "@/types/hotel.type";
+import { FilterType } from "@/types/filter.type";
+import { FilterOptions } from "@/types/filter-options.type";
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
   loading: () => {
@@ -30,14 +32,18 @@ function MapLoadingIndicator() {
 export default function HomePage({
   features,
   hotels,
+  filterOptions,
 }: {
   features: Feature[];
   hotels: Hotel[];
+  filterOptions: FilterOptions;
 }) {
   const [currentView, setCurrentView] = useState<"map" | "list">("map");
+  const [filters, setFilters] = useState<FilterType | null>(null);
+
   return (
     <div className="bg-white">
-      <Header />
+      <Header setFilters={setFilters} filterOptions={filterOptions} />
       <FilterList
         features={features}
         currentView={currentView}

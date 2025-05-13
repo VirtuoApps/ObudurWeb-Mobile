@@ -7,8 +7,16 @@ import AuthBox from "./AuthBox/AuthBox";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
 import { useTranslations } from "next-intl";
 import { FaBars } from "react-icons/fa";
+import { FilterType } from "@/types/filter.type";
+import { FilterOptions } from "@/types/filter-options.type";
 
-export default function Header() {
+export default function Header({
+  setFilters,
+  filterOptions,
+}: {
+  setFilters: (filters: FilterType) => void;
+  filterOptions: FilterOptions;
+}) {
   const t = useTranslations("header");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -28,7 +36,10 @@ export default function Header() {
 
         {/* Center Navigation - Hidden on mobile, shown on md and larger */}
         <div className="hidden md:flex md:flex-1 md:justify-center md:px-4 lg:px-8">
-          <MiddleSearchBox />
+          <MiddleSearchBox
+            setFilters={setFilters}
+            filterOptions={filterOptions}
+          />
         </div>
 
         {/* Right Side Items for Desktop */}
@@ -53,7 +64,11 @@ export default function Header() {
       {isMenuOpen && (
         <div className="md:hidden absolute top-[80px] left-0 right-0 bg-white shadow-lg z-50 p-4 border-t">
           <div className="mb-4">
-            <MiddleSearchBox isMobileMenu={true} />
+            <MiddleSearchBox
+              setFilters={setFilters}
+              isMobileMenu={true}
+              filterOptions={filterOptions}
+            />
           </div>
           <div className="flex flex-row justify-between gap-4">
             <AuthBox />

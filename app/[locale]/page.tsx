@@ -3,6 +3,7 @@ import axiosInstance from "../../axios";
 import { unstable_noStore as noStore } from "next/cache";
 import { Feature } from "@/types/feature.type";
 import { Hotel } from "@/types/hotel.type";
+import { FilterOptions } from "@/types/filter-options.type";
 
 export default async function Home() {
   // Disable caching at the page level
@@ -16,9 +17,19 @@ export default async function Home() {
 
   const hotels = hotelsResponse.data as Hotel[];
 
+  const filterOptionsResponse = await axiosInstance.get(
+    "/hotels/filter-options"
+  );
+
+  const filterOptions = filterOptionsResponse.data as FilterOptions;
+
   return (
     <>
-      <HomePage features={features} hotels={hotels} />
+      <HomePage
+        features={features}
+        hotels={hotels}
+        filterOptions={filterOptions}
+      />
     </>
   );
 }
