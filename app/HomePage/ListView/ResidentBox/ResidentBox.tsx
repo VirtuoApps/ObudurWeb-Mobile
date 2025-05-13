@@ -66,7 +66,7 @@ export default function ResidentBox({
         {/* Sale badge */}
         <div className="absolute top-3 left-3 flex flex-row items-center">
           <div className=" bg-white border border-gray-200 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-lg">
-            {type === "forSale" ? t("forSale") : t("forRent")}
+            {type}
           </div>
           {isOptinable && (
             <div className=" bg-[#EC755D] border border-[#EC755D] text-white ml-2 text-xs font-semibold px-3 py-1 rounded-lg">

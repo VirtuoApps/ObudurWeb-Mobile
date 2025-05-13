@@ -49,7 +49,11 @@ export default function HomePage({
           }
         }}
       />
-      {currentView === "map" ? <MapView hotels={hotels} /> : <ListView />}
+      {currentView === "map" ? (
+        <MapView hotels={hotels} />
+      ) : (
+        <ListView hotels={hotels} />
+      )}
       {/* <ViewSwitcher currentView={currentView} setCurrentView={setCurrentView} /> */}
     </div>
   );
