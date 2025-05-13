@@ -133,9 +133,13 @@
   "signupForm": {
     "title": "Sign Up",
     "description": "Create a new account by entering your details below.",
+    "firstNamePlaceholder": "First Name",
+    "lastNamePlaceholder": "Last Name",
     "emailPlaceholder": "Email",
     "passwordPlaceholder": "Password",
     "passwordConfirmPlaceholder": "Confirm Password",
+    "firstNameError": "First name is required",
+    "lastNameError": "Last name is required",
     "emailError": "Please enter a valid email address",
     "passwordError": "Password must be at least 6 characters",
     "passwordConfirmError": "Please confirm your password",
@@ -146,7 +150,9 @@
     "or": "or",
     "continueWithFacebook": "Continue with Facebook",
     "continueWithGoogle": "Continue with Google",
-    "agreement": "I have read and accept the terms and conditions."
+    "agreement": "I have read and accept the terms and conditions.",
+    "emailAlreadyExists": "Email address is already in use",
+    "signingUp": "Signing up..."
   },
   "forgotPasswordForm": {
     "title": "Forgot Password",

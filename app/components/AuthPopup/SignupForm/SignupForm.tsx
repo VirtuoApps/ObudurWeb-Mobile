@@ -1,14 +1,19 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useTranslations } from "next-intl";
+import axiosInstance from "../../../../axios";
+import { useAppDispatch } from "@/app/store/hooks";
+import { fetchUserData } from "@/app/store/userSlice";
 
 // Define the type for form data
 type SignupFormData = {
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   passwordConfirm: string;
@@ -23,10 +28,15 @@ export default function SignupForm({
   onChangeAuthState: (authState: string) => void;
 }) {
   const t = useTranslations("signupForm");
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
 
   // Define the schema for form validation with localized error messages
   const signupSchema = z
     .object({
+      firstName: z.string().min(1, t("firstNameError")),
+      lastName: z.string().min(1, t("lastNameError")),
       email: z.string().email(t("emailError")),
       password: z.string().min(6, t("passwordError")),
       passwordConfirm: z.string().min(6, t("passwordConfirmError")),
@@ -47,6 +57,8 @@ export default function SignupForm({
     resolver: zodResolver(signupSchema),
     mode: "onChange",
     defaultValues: {
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
       passwordConfirm: "",
@@ -54,8 +66,57 @@ export default function SignupForm({
     },
   });
 
-  const onSubmit = (data: SignupFormData) => {
-    console.log(data);
+  const onSubmit = async (data: SignupFormData) => {
+    try {
+      setIsLoading(true);
+      setApiError(null);
+
+      // Combine first name and last name
+      const name = `${data.firstName} ${data.lastName}`;
+
+      // Call the registration API with name included
+      const response = await axiosInstance.post("/auth/register", {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        password: data.password,
+      });
+
+      // Get the token from the response
+      const { accessToken } = response.data;
+
+      // Store the token in localStorage
+      localStorage.setItem("accessToken", accessToken);
+
+      // Set the authorization header for all future requests
+      axiosInstance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${accessToken}`;
+
+      // Fetch user data to update Redux store
+      await dispatch(fetchUserData());
+
+      // Close the popup
+      onClose();
+    } catch (error: any) {
+      // Handle API error
+      if (error.response && error.response.data) {
+        if (error.response.data.errorCode === "EMAIL_ALREADY_EXISTS") {
+          setApiError(
+            t("emailAlreadyExists") || "E-Posta adresi zaten kullanılıyor"
+          );
+        } else {
+          setApiError(
+            error.response.data.message ||
+              "Kayıt işlemi sırasında bir hata oluştu"
+          );
+        }
+      } else {
+        setApiError("Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -82,7 +143,49 @@ export default function SignupForm({
           {t("description")}
         </p>
 
+        {apiError && (
+          <div className="bg-red-50 text-red-600 p-3 rounded-lg mb-4">
+            {apiError}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div>
+            <input
+              id="firstName"
+              type="text"
+              placeholder={t("firstNamePlaceholder")}
+              {...register("firstName")}
+              autoComplete="off"
+              className={`w-full px-3 py-2 pl-1 border-b outline-none text-gray-600 placeholder:text-gray-400 ${
+                errors.firstName ? "border-red-500" : "border-gray-300"
+              }`}
+            />
+            {errors.firstName && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.firstName.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <input
+              id="lastName"
+              type="text"
+              placeholder={t("lastNamePlaceholder")}
+              {...register("lastName")}
+              autoComplete="off"
+              className={`w-full px-3 py-2 pl-1 border-b outline-none text-gray-600 placeholder:text-gray-400 ${
+                errors.lastName ? "border-red-500" : "border-gray-300"
+              }`}
+            />
+            {errors.lastName && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.lastName.message}
+              </p>
+            )}
+          </div>
+
           <div>
             <input
               id="email"
@@ -173,14 +276,16 @@ export default function SignupForm({
 
           <button
             type="submit"
-            disabled={!isValid}
+            disabled={!isValid || isLoading}
             className={`w-full py-2 px-4 rounded-2xl font-medium cursor-pointer ${
-              isValid
+              isValid && !isLoading
                 ? "bg-[#5E5691] text-white"
                 : "bg-[#F0F0F0] cursor-not-allowed text-gray-500"
             }`}
           >
-            {t("signupButton")}
+            {isLoading
+              ? t("signingUp") || "Kayıt Olunuyor..."
+              : t("signupButton")}
           </button>
         </form>
 

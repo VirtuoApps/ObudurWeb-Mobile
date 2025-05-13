@@ -8,7 +8,8 @@ import { FaGoogle, FaFacebook } from "react-icons/fa";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useTranslations } from "next-intl";
 import axiosInstance from "@/axios";
-import { AxiosError } from "axios";
+import { useAppDispatch } from "@/app/store/hooks";
+import { fetchUserData } from "@/app/store/userSlice";
 
 // Define the type for form data
 type LoginFormData = {
@@ -31,6 +32,7 @@ export default function LoginForm({
   const t = useTranslations("loginForm");
   const [isLoading, setIsLoading] = useState(false);
   const [loginError, setLoginError] = useState("");
+  const dispatch = useAppDispatch();
 
   // Define the schema for form validation with localized error messages
   const loginSchema = z.object({
@@ -64,17 +66,33 @@ export default function LoginForm({
       // Store the access token in localStorage
       localStorage.setItem("accessToken", response.data.accessToken);
 
-      // Refresh the page
-      window.location.reload();
+      // Set the authorization header for all future requests
+      axiosInstance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${response.data.accessToken}`;
+
+      // Fetch user data to update Redux store
+      await dispatch(fetchUserData());
+
+      // Close the popup
+      onClose();
     } catch (error) {
       const axiosError = error as any;
 
-      if (axiosError.errorCode === "INVALID_EMAIL") {
-        setLoginError(t("invalidEmail"));
-      } else if (axiosError.errorCode === "INVALID_PASSWORD") {
-        setLoginError(t("invalidPassword"));
+      if (axiosError.response && axiosError.response.data) {
+        if (axiosError.response.data.errorCode === "INVALID_EMAIL") {
+          setLoginError(t("invalidEmail") || "Geçersiz e-posta adresi");
+        } else if (axiosError.response.data.errorCode === "INVALID_PASSWORD") {
+          setLoginError(t("invalidPassword") || "Geçersiz şifre");
+        } else {
+          setLoginError(
+            axiosError.response.data.message ||
+              t("unexpectedError") ||
+              "Bir hata oluştu"
+          );
+        }
       } else {
-        setLoginError(t("unexpectedError"));
+        setLoginError(t("unexpectedError") || "Beklenmeyen bir hata oluştu");
       }
     } finally {
       setIsLoading(false);
@@ -172,7 +190,9 @@ export default function LoginForm({
                 : "bg-[#F0F0F0] cursor-not-allowed text-gray-500"
             }`}
           >
-            {isLoading ? t("loggingIn") || "Logging in..." : t("loginButton")}
+            {isLoading
+              ? t("loggingIn") || "Giriş yapılıyor..."
+              : t("loginButton")}
           </button>
         </form>
 

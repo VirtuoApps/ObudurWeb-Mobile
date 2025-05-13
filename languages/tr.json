@@ -133,9 +133,13 @@
   "signupForm": {
     "title": "Kayıt Ol",
     "description": "Aşağıdaki bilgileri doldurarak yeni bir hesap oluşturun.",
+    "firstNamePlaceholder": "Ad",
+    "lastNamePlaceholder": "Soyad",
     "emailPlaceholder": "E-posta",
     "passwordPlaceholder": "Parola",
     "passwordConfirmPlaceholder": "Parola Tekrar",
+    "firstNameError": "Ad alanı zorunludur",
+    "lastNameError": "Soyad alanı zorunludur",
     "emailError": "Geçerli bir e-posta adresi giriniz",
     "passwordError": "Parola en az 6 karakter olmalıdır",
     "passwordConfirmError": "Parolanızı doğrulayınız",
@@ -146,7 +150,9 @@
     "or": "veya",
     "continueWithFacebook": "Facebook ile devam et",
     "continueWithGoogle": "Google ile devam et",
-    "agreement": "Kullanıcı sözleşmesini okudum, kabul ediyorum."
+    "agreement": "Kullanıcı sözleşmesini okudum, kabul ediyorum.",
+    "emailAlreadyExists": "E-Posta adresi zaten kullanılıyor",
+    "signingUp": "Kayıt Olunuyor..."
   },
   "forgotPasswordForm": {
     "title": "Şifremi Unuttum",
