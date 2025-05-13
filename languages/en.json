@@ -1,7 +1,9 @@
 {
   "common": {
     "loading": "Loading...",
-    "loadingMap": "Loading map..."
+    "loadingMap": "Loading map...",
+    "noResultsFound": "No results found matching your filters.",
+    "clearFilters": "Clear Filters"
   },
   "header": {
     "title": "Find Your Place",

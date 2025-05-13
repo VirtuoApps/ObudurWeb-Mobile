@@ -9,23 +9,31 @@ interface MiddleSearchBoxProps {
   isMobileMenu?: boolean;
   setFilters: (filters: FilterType) => void;
   filterOptions: FilterOptions;
+  selectedLocation: any | null;
+  selectedPropertyType: any | null;
+  selectedCategory: any | null;
+  listingType: "For Sale" | "For Rent";
+  setListingType: (listingType: "For Sale" | "For Rent") => void;
+  setSelectedLocation: (location: any) => void;
+  setSelectedPropertyType: (propertyType: any) => void;
+  setSelectedCategory: (category: any) => void;
 }
 
 export default function MiddleSearchBox({
   isMobileMenu = false,
   setFilters,
   filterOptions,
+  selectedLocation,
+  selectedPropertyType,
+  selectedCategory,
+  listingType,
+  setListingType,
+  setSelectedLocation,
+  setSelectedPropertyType,
+  setSelectedCategory,
 }: MiddleSearchBoxProps) {
   const t = useTranslations("listingType");
   const filterT = useTranslations("filter");
-  const [selectedLocation, setSelectedLocation] = useState<any | null>(null);
-  const [selectedPropertyType, setSelectedPropertyType] = useState<any | null>(
-    null
-  );
-  const [selectedCategory, setSelectedCategory] = useState<any | null>(null);
-  const [listingType, setListingType] = useState<"For Sale" | "For Rent">(
-    "For Sale"
-  );
 
   const onApplyFilters = () => {
     setFilters({

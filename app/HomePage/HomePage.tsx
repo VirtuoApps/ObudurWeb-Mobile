@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Header from "./Header/Header";
 import FilterList from "./FilterList/FilterList";
@@ -38,12 +38,90 @@ export default function HomePage({
   hotels: Hotel[];
   filterOptions: FilterOptions;
 }) {
+  const t = useTranslations("common");
   const [currentView, setCurrentView] = useState<"map" | "list">("map");
   const [filters, setFilters] = useState<FilterType | null>(null);
 
+  const [selectedLocation, setSelectedLocation] = useState<any | null>(null);
+  const [selectedPropertyType, setSelectedPropertyType] = useState<any | null>(
+    null
+  );
+  const [selectedCategory, setSelectedCategory] = useState<any | null>(null);
+  const [listingType, setListingType] = useState<"For Sale" | "For Rent">(
+    "For Sale"
+  );
+
+  console.log({
+    filters,
+  });
+
+  let filteredHotels = hotels;
+
+  if (filters) {
+    if (filters.listingType) {
+      filteredHotels = filteredHotels.filter((hotel) =>
+        Object.values(hotel.listingType).some(
+          (value) => value === filters.listingType
+        )
+      );
+    }
+
+    if (filters.state) {
+      filteredHotels = filteredHotels.filter((hotel) =>
+        Object.values(hotel.state).some((value) => value === filters.state)
+      );
+    }
+
+    if (filters.propertyType) {
+      filteredHotels = filteredHotels.filter((hotel) =>
+        Object.values(hotel.housingType).some(
+          (value) => value === filters.propertyType
+        )
+      );
+    }
+
+    if (filters.roomAsText) {
+      filteredHotels = filteredHotels.filter(
+        (hotel) => hotel.roomAsText === filters.roomAsText
+      );
+    }
+  }
+
+  function NoResultsFound() {
+    return (
+      <div className="w-full h-[calc(100vh-155px)] flex flex-col items-center justify-center text-gray-500">
+        <p>{t("noResultsFound")}</p>
+        <button
+          onClick={() => {
+            setFilters(null);
+            setSelectedLocation(null);
+            setSelectedPropertyType(null);
+            setSelectedCategory(null);
+            setListingType("For Sale");
+            setCurrentView("map");
+          }}
+          className="mt-4 px-4 py-2 bg-[#362C75] text-white rounded transition-colors cursor-pointer"
+        >
+          {t("clearFilters")}
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white">
-      <Header setFilters={setFilters} filterOptions={filterOptions} />
+      <Header
+        setFilters={setFilters}
+        filterOptions={filterOptions}
+        selectedLocation={selectedLocation}
+        selectedPropertyType={selectedPropertyType}
+        selectedCategory={selectedCategory}
+        listingType={listingType}
+        setListingType={setListingType}
+        setSelectedPropertyType={setSelectedPropertyType}
+        setSelectedCategory={setSelectedCategory}
+        setSelectedLocation={setSelectedLocation}
+      />
       <FilterList
         features={features}
         currentView={currentView}
@@ -55,10 +133,12 @@ export default function HomePage({
           }
         }}
       />
-      {currentView === "map" ? (
-        <MapView hotels={hotels} />
+      {filters && filteredHotels.length === 0 ? (
+        <NoResultsFound />
+      ) : currentView === "map" ? (
+        <MapView hotels={filteredHotels} />
       ) : (
-        <ListView hotels={hotels} />
+        <ListView hotels={filteredHotels} />
       )}
       {/* <ViewSwitcher currentView={currentView} setCurrentView={setCurrentView} /> */}
     </div>

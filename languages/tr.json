@@ -1,7 +1,9 @@
 {
   "common": {
     "loading": "Yükleniyor...",
-    "loadingMap": "Harita yükleniyor..."
+    "loadingMap": "Harita yükleniyor...",
+    "noResultsFound": "Filtrelerinize uygun sonuç bulunamadı.",
+    "clearFilters": "Filtreleri Temizle"
   },
   "header": {
     "title": "Yerini Bul",

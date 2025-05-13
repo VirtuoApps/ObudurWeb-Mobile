@@ -44,6 +44,9 @@ export interface Hotel {
   featureIds: string[];
   distances: Distance[];
   location: GeoPoint;
+  city: MultilingualText;
+  country: MultilingualText;
+  state: MultilingualText;
   documents: any[];
   createdAt: string;
   updatedAt: string;

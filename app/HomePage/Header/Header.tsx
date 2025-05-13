@@ -13,9 +13,25 @@ import { FilterOptions } from "@/types/filter-options.type";
 export default function Header({
   setFilters,
   filterOptions,
+  selectedLocation,
+  selectedPropertyType,
+  selectedCategory,
+  listingType,
+  setListingType,
+  setSelectedPropertyType,
+  setSelectedCategory,
+  setSelectedLocation,
 }: {
   setFilters: (filters: FilterType) => void;
   filterOptions: FilterOptions;
+  selectedLocation: any | null;
+  selectedPropertyType: any | null;
+  selectedCategory: any | null;
+  listingType: "For Sale" | "For Rent";
+  setListingType: (listingType: "For Sale" | "For Rent") => void;
+  setSelectedPropertyType: (propertyType: any) => void;
+  setSelectedCategory: (category: any) => void;
+  setSelectedLocation: (location: any) => void;
 }) {
   const t = useTranslations("header");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -39,6 +55,14 @@ export default function Header({
           <MiddleSearchBox
             setFilters={setFilters}
             filterOptions={filterOptions}
+            selectedLocation={selectedLocation}
+            selectedPropertyType={selectedPropertyType}
+            selectedCategory={selectedCategory}
+            listingType={listingType}
+            setListingType={setListingType}
+            setSelectedPropertyType={setSelectedPropertyType}
+            setSelectedCategory={setSelectedCategory}
+            setSelectedLocation={setSelectedLocation}
           />
         </div>
 
@@ -68,6 +92,14 @@ export default function Header({
               setFilters={setFilters}
               isMobileMenu={true}
               filterOptions={filterOptions}
+              selectedLocation={selectedLocation}
+              selectedPropertyType={selectedPropertyType}
+              selectedCategory={selectedCategory}
+              listingType={listingType}
+              setListingType={setListingType}
+              setSelectedLocation={setSelectedLocation}
+              setSelectedPropertyType={setSelectedPropertyType}
+              setSelectedCategory={setSelectedCategory}
             />
           </div>
           <div className="flex flex-row justify-between gap-4">
