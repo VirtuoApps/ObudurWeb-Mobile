@@ -53,10 +53,6 @@ export default function HomePage({
     "For Sale"
   );
 
-  console.log({
-    filters,
-  });
-
   let filteredHotels = hotels;
 
   if (filters) {
@@ -148,6 +144,8 @@ export default function HomePage({
         selectedFeatures={selectedFeatures}
         setSelectedFeatures={setSelectedFeatures}
         currentView={currentView}
+        listingType={listingType}
+        setListingType={setListingType}
         onChangeCurrentView={() => {
           if (currentView === "map") {
             setCurrentView("list");
@@ -155,6 +153,14 @@ export default function HomePage({
             setCurrentView("map");
           }
         }}
+        filterOptions={filterOptions}
+        selectedLocation={selectedLocation}
+        setSelectedLocation={setSelectedLocation}
+        selectedPropertyType={selectedPropertyType}
+        setSelectedPropertyType={setSelectedPropertyType}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        setFilters={setFilters}
       />
       {filters && filteredHotels.length === 0 ? (
         <NoResultsFound />

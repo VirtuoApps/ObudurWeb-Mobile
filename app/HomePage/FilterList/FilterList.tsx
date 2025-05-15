@@ -23,6 +23,7 @@ import FilterPopup from "@/app/components/FilterPopup/FilterPopup";
 import ListViewIcon from "@/app/svgIcons/ListViewIcon";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { Feature } from "@/types/feature.type";
+import { FilterOptions } from "@/types/filter-options.type";
 const iconClassName = "text-xl";
 const iconColor = "rgba(0,0,0,0.6)";
 
@@ -32,12 +33,32 @@ export default function FilterList({
   features,
   selectedFeatures,
   setSelectedFeatures,
+  listingType,
+  setListingType,
+  filterOptions,
+  selectedLocation,
+  setSelectedLocation,
+  selectedPropertyType,
+  setSelectedPropertyType,
+  selectedCategory,
+  setSelectedCategory,
+  setFilters,
 }: {
   onChangeCurrentView: () => void;
   currentView: "map" | "list";
   features: Feature[];
   selectedFeatures: Feature[];
   setSelectedFeatures: (features: Feature[]) => void;
+  listingType: "For Sale" | "For Rent";
+  setListingType: (listingType: "For Sale" | "For Rent") => void;
+  filterOptions: FilterOptions;
+  selectedLocation: any;
+  setSelectedLocation: (selectedLocation: any) => void;
+  selectedPropertyType: any;
+  setSelectedPropertyType: (selectedPropertyType: any) => void;
+  selectedCategory: any;
+  setSelectedCategory: (selectedCategory: any) => void;
+  setFilters: (filters: any) => void;
 }) {
   const t = useTranslations("filterList");
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
@@ -92,6 +113,16 @@ export default function FilterList({
       <FilterPopup
         isOpen={isFilterPopupOpen}
         onClose={() => setIsFilterPopupOpen(false)}
+        listingType={listingType}
+        setListingType={setListingType}
+        filterOptions={filterOptions}
+        selectedLocation={selectedLocation}
+        setSelectedLocation={setSelectedLocation}
+        selectedPropertyType={selectedPropertyType}
+        setSelectedPropertyType={setSelectedPropertyType}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        setFilters={setFilters}
       />
       <div
         className={`bg-white flex flex-row ${
