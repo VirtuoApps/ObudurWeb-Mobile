@@ -5,4 +5,8 @@ export type FilterType = {
   roomAsText: string | null;
   minPrice?: number | null;
   maxPrice?: number | null;
+  roomCount?: number | null;
+  bathroomCount?: number | null;
+  minProjectArea?: number | null;
+  maxProjectArea?: number | null;
 };

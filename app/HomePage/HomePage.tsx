@@ -120,6 +120,46 @@ export default function HomePage({
           : true; // Could also return false or use a fallback currency
       });
     }
+
+    if (
+      filters.roomCount !== undefined &&
+      filters.roomCount !== null &&
+      filters.roomCount > 0
+    ) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return hotel.roomCount === filters.roomCount;
+      });
+    }
+
+    if (
+      filters.bathroomCount !== undefined &&
+      filters.bathroomCount !== null &&
+      filters.bathroomCount > 0
+    ) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return hotel.bathroomCount === filters.bathroomCount;
+      });
+    }
+
+    if (
+      filters.minProjectArea !== undefined &&
+      filters.minProjectArea !== null &&
+      filters.minProjectArea > 0
+    ) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return hotel.projectArea >= filters.minProjectArea!;
+      });
+    }
+
+    if (
+      filters.maxProjectArea !== undefined &&
+      filters.maxProjectArea !== null &&
+      filters.maxProjectArea > 0
+    ) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return hotel.projectArea <= filters.maxProjectArea!;
+      });
+    }
   }
 
   if (selectedFeatures.length > 0) {

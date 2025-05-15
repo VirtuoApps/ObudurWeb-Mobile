@@ -734,19 +734,79 @@ export default function FilterPopup({
                 {t("reset")}
               </button>
             </div>
-            <select
-              className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-400 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 mt-3 r"
-              value={roomCount}
-              onChange={(e) => setRoomCount(e.target.value)}
-            >
-              <option value="">{t("roomsSelect")}</option>
-              <option value="1+0">1+0</option>
-              <option value="1+1">1+1</option>
-              <option value="2+1">2+1</option>
-              <option value="3+1">3+1</option>
-              <option value="4+1">4+1</option>
-              <option value="5+1">5+1 {t("roomsAndMore")}</option>
-            </select>
+            <div className="mt-3">
+              <Popover className="relative w-full">
+                {({ open }) => {
+                  const [isOpen, setIsOpen] = useState(false);
+                  const buttonRef = useRef<HTMLButtonElement>(null);
+
+                  useEffect(() => {
+                    if (open !== isOpen) {
+                      setIsOpen(open);
+                    }
+                  }, [open, isOpen]);
+
+                  const roomOptions = filterOptions.roomCount.map((room) => ({
+                    name: room,
+                    href: "#",
+                  }));
+
+                  const handleRoomSelect = (room: any) => {
+                    setRoomCount(room.name);
+                    setIsOpen(false);
+                    buttonRef.current?.click();
+                  };
+
+                  return (
+                    <>
+                      <PopoverButton
+                        ref={buttonRef}
+                        className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-700"
+                      >
+                        <div className="flex items-center">
+                          <HomeIcon className="h-4 w-4 mr-1 flex-shrink-0" />
+                          <span className="truncate">
+                            {roomCount
+                              ? roomCount
+                              : t("roomsSelect") || "Select Room Count"}
+                          </span>
+                        </div>
+                        <ChevronDownSolidIcon
+                          className="h-5 w-5 text-gray-400 ml-2"
+                          aria-hidden="true"
+                        />
+                      </PopoverButton>
+
+                      <PopoverPanel className="absolute z-20 mt-2 w-full max-w-md py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
+                        <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
+                          <div className="p-4">
+                            {roomOptions.map((room) => (
+                              <div
+                                key={room.name}
+                                className="group relative flex items-center gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
+                                onClick={() => handleRoomSelect(room)}
+                              >
+                                <div className="mt-1 flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                                  <HomeIcon
+                                    className="h-5 w-5 text-gray-600 group-hover:text-indigo-600"
+                                    aria-hidden="true"
+                                  />
+                                </div>
+                                <div>
+                                  <div className="font-semibold text-gray-900">
+                                    {room.name}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </PopoverPanel>
+                    </>
+                  );
+                }}
+              </Popover>
+            </div>
           </div>
 
           {/* Bathroom Count Section */}
@@ -762,19 +822,84 @@ export default function FilterPopup({
                 {t("reset")}
               </button>
             </div>
-            <select
-              className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-400 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 mt-3"
-              value={bathroomCount}
-              onChange={(e) => setBathroomCount(e.target.value)}
-            >
-              <option value="">
-                {t("bathroomsSelect") || "Select Bathroom Count"}
-              </option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4+</option>
-            </select>
+            <div className="mt-3">
+              <Popover className="relative w-full">
+                {({ open }) => {
+                  const [isOpen, setIsOpen] = useState(false);
+                  const buttonRef = useRef<HTMLButtonElement>(null);
+
+                  useEffect(() => {
+                    if (open !== isOpen) {
+                      setIsOpen(open);
+                    }
+                  }, [open, isOpen]);
+
+                  const bathroomOptions = filterOptions.bathroomCount.map(
+                    (bathroom: number) => ({
+                      name: bathroom.toString(),
+                      href: "#",
+                    })
+                  );
+
+                  const handleBathroomSelect = (bathroom: {
+                    name: string;
+                    href: string;
+                  }) => {
+                    setBathroomCount(bathroom.name);
+                    setIsOpen(false);
+                    buttonRef.current?.click();
+                  };
+
+                  return (
+                    <>
+                      <PopoverButton
+                        ref={buttonRef}
+                        className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-700"
+                      >
+                        <div className="flex items-center">
+                          <HomeIcon className="h-4 w-4 mr-1 flex-shrink-0" />
+                          <span className="truncate">
+                            {bathroomCount
+                              ? bathroomCount
+                              : t("bathroomsSelect") || "Select Bathroom Count"}
+                          </span>
+                        </div>
+                        <ChevronDownSolidIcon
+                          className="h-5 w-5 text-gray-400 ml-2"
+                          aria-hidden="true"
+                        />
+                      </PopoverButton>
+
+                      <PopoverPanel className="absolute z-20 mt-2 w-full max-w-md py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
+                        <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
+                          <div className="p-4">
+                            {bathroomOptions.map((bathroom) => (
+                              <div
+                                key={bathroom.name}
+                                className="group relative flex items-center gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
+                                onClick={() => handleBathroomSelect(bathroom)}
+                              >
+                                <div className="mt-1 flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                                  <HomeIcon
+                                    className="h-5 w-5 text-gray-600 group-hover:text-indigo-600"
+                                    aria-hidden="true"
+                                  />
+                                </div>
+                                <div>
+                                  <div className="font-semibold text-gray-900">
+                                    {bathroom.name}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </PopoverPanel>
+                    </>
+                  );
+                }}
+              </Popover>
+            </div>
           </div>
 
           {/* Area Section */}
@@ -1004,6 +1129,10 @@ export default function FilterPopup({
                   state: selectedLocation?.name || null,
                   propertyType: selectedPropertyType?.name || null,
                   roomAsText: selectedCategory?.name || null,
+                  roomCount: roomCount,
+                  bathroomCount: bathroomCount,
+                  minProjectArea: minArea,
+                  maxProjectArea: maxArea,
                 });
                 onClose && onClose();
               }}

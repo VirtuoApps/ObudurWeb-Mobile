@@ -24,4 +24,6 @@ export interface FilterOptions {
   roomAsText: string[];
   locations: Location[];
   state: StateInfo[];
+  roomCount: number[];
+  bathroomCount: number[];
 }
