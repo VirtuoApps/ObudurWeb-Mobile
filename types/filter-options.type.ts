@@ -16,6 +16,16 @@ export interface StateInfo {
   countryOfTheState: LocalizedText;
 }
 
+export interface Feature {
+  _id: string;
+  name: LocalizedText;
+  iconUrl: string;
+  featureType: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
 export interface FilterOptions {
   city: LocalizedText[];
   country: LocalizedText[];
@@ -26,4 +36,7 @@ export interface FilterOptions {
   state: StateInfo[];
   roomCount: number[];
   bathroomCount: number[];
+  interiorFeatures: Feature[];
+  outsideFeatures: Feature[];
+  generalFeatures: Feature[];
 }

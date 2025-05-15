@@ -43,12 +43,30 @@ export default function FilterList({
   selectedCategory,
   setSelectedCategory,
   setFilters,
+  minPrice,
+  setMinPrice,
+  maxPrice,
+  setMaxPrice,
+  minArea,
+  setMinArea,
+  maxArea,
+  setMaxArea,
+  roomCount,
+  setRoomCount,
+  bathroomCount,
+  setBathroomCount,
+  selectedExteriorFeatures,
+  setSelectedExteriorFeatures,
+  currencyCode,
+  setCurrencyCode,
+  interiorFeatures,
+  setInteriorFeatures,
 }: {
   onChangeCurrentView: () => void;
   currentView: "map" | "list";
   features: Feature[];
   selectedFeatures: Feature[];
-  setSelectedFeatures: (features: Feature[]) => void;
+  setSelectedFeatures: React.Dispatch<React.SetStateAction<Feature[]>>;
   listingType: "For Sale" | "For Rent";
   setListingType: (listingType: "For Sale" | "For Rent") => void;
   filterOptions: FilterOptions;
@@ -59,6 +77,24 @@ export default function FilterList({
   selectedCategory: any;
   setSelectedCategory: (selectedCategory: any) => void;
   setFilters: (filters: any) => void;
+  minPrice: number | "";
+  setMinPrice: React.Dispatch<React.SetStateAction<number | "">>;
+  maxPrice: number | "";
+  setMaxPrice: React.Dispatch<React.SetStateAction<number | "">>;
+  minArea: number | "";
+  setMinArea: React.Dispatch<React.SetStateAction<number | "">>;
+  maxArea: number | "";
+  setMaxArea: React.Dispatch<React.SetStateAction<number | "">>;
+  roomCount: string;
+  setRoomCount: React.Dispatch<React.SetStateAction<string>>;
+  bathroomCount: string;
+  setBathroomCount: React.Dispatch<React.SetStateAction<string>>;
+  selectedExteriorFeatures: any[];
+  setSelectedExteriorFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  currencyCode: string;
+  setCurrencyCode: React.Dispatch<React.SetStateAction<string>>;
+  interiorFeatures: any[];
+  setInteriorFeatures: React.Dispatch<React.SetStateAction<any[]>>;
 }) {
   const t = useTranslations("filterList");
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
@@ -123,6 +159,26 @@ export default function FilterList({
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
         setFilters={setFilters}
+        minPrice={minPrice}
+        setMinPrice={setMinPrice}
+        maxPrice={maxPrice}
+        setMaxPrice={setMaxPrice}
+        minArea={minArea}
+        setMinArea={setMinArea}
+        maxArea={maxArea}
+        setMaxArea={setMaxArea}
+        roomCount={roomCount}
+        setRoomCount={setRoomCount}
+        bathroomCount={bathroomCount}
+        setBathroomCount={setBathroomCount}
+        selectedFeatures={selectedFeatures}
+        setSelectedFeatures={setSelectedFeatures}
+        selectedExteriorFeatures={selectedExteriorFeatures}
+        setSelectedExteriorFeatures={setSelectedExteriorFeatures}
+        currencyCode={currencyCode}
+        setCurrencyCode={setCurrencyCode}
+        interiorFeatures={interiorFeatures}
+        setInteriorFeatures={setInteriorFeatures}
       />
       <div
         className={`bg-white flex flex-row ${

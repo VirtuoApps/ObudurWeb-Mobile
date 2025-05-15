@@ -9,4 +9,7 @@ export type FilterType = {
   bathroomCount?: number | null;
   minProjectArea?: number | null;
   maxProjectArea?: number | null;
+  interiorFeatureIds?: string[] | null;
+  exteriorFeatureIds?: string[] | null;
+  locationFeatureIds?: string[] | null;
 };

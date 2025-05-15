@@ -44,7 +44,19 @@ export default function HomePage({
   const [filters, setFilters] = useState<FilterType | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
 
+  // States moved from FilterPopup component
+  const [minPrice, setMinPrice] = useState<number | "">("");
+  const [maxPrice, setMaxPrice] = useState<number | "">("");
+  const [minArea, setMinArea] = useState<number | "">("");
+  const [maxArea, setMaxArea] = useState<number | "">("");
+  const [roomCount, setRoomCount] = useState<string>("");
+  const [bathroomCount, setBathroomCount] = useState<string>("");
   const [selectedFeatures, setSelectedFeatures] = useState<Feature[]>([]);
+  const [interiorFeatures, setInteriorFeatures] = useState<any[]>([]);
+  const [selectedExteriorFeatures, setSelectedExteriorFeatures] = useState<
+    any[]
+  >([]);
+  const [currencyCode, setCurrencyCode] = useState("₺");
 
   const [selectedLocation, setSelectedLocation] = useState<any | null>(null);
   const [selectedPropertyType, setSelectedPropertyType] = useState<any | null>(
@@ -160,6 +172,22 @@ export default function HomePage({
         return hotel.projectArea <= filters.maxProjectArea!;
       });
     }
+
+    if (filters.interiorFeatureIds) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return filters.interiorFeatureIds!.every((featureId) =>
+          hotel.featureIds.includes(featureId)
+        );
+      });
+    }
+
+    if (filters.exteriorFeatureIds) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return filters.exteriorFeatureIds!.every((featureId) =>
+          hotel.featureIds.includes(featureId)
+        );
+      });
+    }
   }
 
   if (selectedFeatures.length > 0) {
@@ -193,6 +221,14 @@ export default function HomePage({
             setSelectedCategory(null);
             setListingType("For Sale");
             setSelectedFeatures([]);
+            setInteriorFeatures([]);
+            setSelectedExteriorFeatures([]);
+            setMinPrice("");
+            setMaxPrice("");
+            setMinArea("");
+            setMaxArea("");
+            setRoomCount("");
+            setBathroomCount("");
           }}
           className="mt-4 px-4 py-2 bg-[#362C75] text-white rounded transition-colors cursor-pointer"
         >
@@ -238,6 +274,24 @@ export default function HomePage({
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
         setFilters={setFilters}
+        minPrice={minPrice}
+        setMinPrice={setMinPrice}
+        maxPrice={maxPrice}
+        setMaxPrice={setMaxPrice}
+        minArea={minArea}
+        setMinArea={setMinArea}
+        maxArea={maxArea}
+        setMaxArea={setMaxArea}
+        roomCount={roomCount}
+        setRoomCount={setRoomCount}
+        bathroomCount={bathroomCount}
+        setBathroomCount={setBathroomCount}
+        selectedExteriorFeatures={selectedExteriorFeatures}
+        setSelectedExteriorFeatures={setSelectedExteriorFeatures}
+        currencyCode={currencyCode}
+        setCurrencyCode={setCurrencyCode}
+        interiorFeatures={interiorFeatures}
+        setInteriorFeatures={setInteriorFeatures}
       />
       {filters && filteredHotels.length === 0 ? (
         <NoResultsFound />

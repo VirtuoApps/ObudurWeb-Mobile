@@ -58,6 +58,26 @@ type FilterPopupProps = {
   selectedCategory?: any | null;
   setSelectedCategory?: (category: any) => void;
   setFilters: (filters: any) => void;
+  minPrice: number | "";
+  setMinPrice: React.Dispatch<React.SetStateAction<number | "">>;
+  maxPrice: number | "";
+  setMaxPrice: React.Dispatch<React.SetStateAction<number | "">>;
+  minArea: number | "";
+  setMinArea: React.Dispatch<React.SetStateAction<number | "">>;
+  maxArea: number | "";
+  setMaxArea: React.Dispatch<React.SetStateAction<number | "">>;
+  roomCount: string;
+  setRoomCount: React.Dispatch<React.SetStateAction<string>>;
+  bathroomCount: string;
+  setBathroomCount: React.Dispatch<React.SetStateAction<string>>;
+  selectedFeatures: any[];
+  setSelectedFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  selectedExteriorFeatures: any[];
+  setSelectedExteriorFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  currencyCode: string;
+  setCurrencyCode: React.Dispatch<React.SetStateAction<string>>;
+  interiorFeatures: any[];
+  setInteriorFeatures: React.Dispatch<React.SetStateAction<any[]>>;
 };
 
 export default function FilterPopup({
@@ -73,28 +93,27 @@ export default function FilterPopup({
   selectedCategory,
   setSelectedCategory,
   setFilters,
+  minPrice,
+  setMinPrice,
+  maxPrice,
+  setMaxPrice,
+  minArea,
+  setMinArea,
+  maxArea,
+  setMaxArea,
+  roomCount,
+  setRoomCount,
+  bathroomCount,
+  setBathroomCount,
+  selectedExteriorFeatures,
+  setSelectedExteriorFeatures,
+  currencyCode,
+  setCurrencyCode,
+  interiorFeatures,
+  setInteriorFeatures,
 }: FilterPopupProps) {
   const t = useTranslations("filter");
   const listingTypeTranslations = useTranslations("listingType");
-
-  const [propertyType, setPropertyType] = useState<"forSale" | "forRent">(
-    "forSale"
-  );
-
-  const [minPrice, setMinPrice] = useState<number | "">("");
-  const [maxPrice, setMaxPrice] = useState<number | "">("");
-  const [minArea, setMinArea] = useState<number | "">("");
-  const [maxArea, setMaxArea] = useState<number | "">("");
-  const [roomCount, setRoomCount] = useState<string>("");
-  const [bathroomCount, setBathroomCount] = useState<string>("");
-  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
-  const [selectedExteriorFeatures, setSelectedExteriorFeatures] = useState<
-    string[]
-  >([]);
-  const [selectedLocationFeatures, setSelectedLocationFeatures] = useState<
-    string[]
-  >([]);
-  const [currencyCode, setCurrencyCode] = useState("₺");
 
   const locale = useLocale();
 
@@ -121,40 +140,28 @@ export default function FilterPopup({
     setValue(Number(currentValue) - 1);
   };
 
-  const toggleFeature = (feature: string) => {
-    setSelectedFeatures((prev) =>
-      prev.includes(feature)
-        ? prev.filter((f) => f !== feature)
+  const toggleFeature = (feature: any) => {
+    setInteriorFeatures((prev: any[]) =>
+      prev.some((f: any) => f._id === feature._id)
+        ? prev.filter((f: any) => f._id !== feature._id)
         : [...prev, feature]
     );
   };
 
-  const toggleExteriorFeature = (feature: string) => {
-    setSelectedExteriorFeatures((prev) =>
-      prev.includes(feature)
-        ? prev.filter((f) => f !== feature)
-        : [...prev, feature]
-    );
-  };
-
-  const toggleLocationFeature = (feature: string) => {
-    setSelectedLocationFeatures((prev) =>
-      prev.includes(feature)
-        ? prev.filter((f) => f !== feature)
+  const toggleExteriorFeature = (feature: any) => {
+    setSelectedExteriorFeatures((prev: any[]) =>
+      prev.some((f: any) => f._id === feature._id)
+        ? prev.filter((f: any) => f._id !== feature._id)
         : [...prev, feature]
     );
   };
 
   const resetFeatures = () => {
-    setSelectedFeatures([]);
+    setInteriorFeatures([]);
   };
 
   const resetExteriorFeatures = () => {
     setSelectedExteriorFeatures([]);
-  };
-
-  const resetLocationFeatures = () => {
-    setSelectedLocationFeatures([]);
   };
 
   useEffect(() => {
@@ -163,124 +170,13 @@ export default function FilterPopup({
       const currency = currencyOptions.find(
         (option) => option.code === savedCurrency
       );
-      setCurrencyCode(currency?.symbol || "₺");
+      if (currency?.symbol && currency.symbol !== currencyCode) {
+        setCurrencyCode(currency.symbol);
+      }
     }
-  }, []);
+  }, [currencyCode, setCurrencyCode]);
 
   if (!isOpen) return null;
-
-  const features = [
-    {
-      key: "cableTV",
-      icon: <BsTv className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "wifi",
-      icon: <RiWifiFill className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "alarm",
-      icon: <AiFillSafetyCertificate className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "doubleGlazed",
-      icon: <MdWindow className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "smartHome",
-      icon: <BsFillHouseFill className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "microwave",
-      icon: <ImSpoonKnife className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "combi",
-      icon: <FaTemperatureHigh className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "fireplace",
-      icon: <AiOutlineFire className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "builtInAppliances",
-      icon: <MdKitchen className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "airConditioning",
-      icon: <TbAirConditioning className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "storage",
-      icon: <FaWarehouse className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "laundryRoom",
-      icon: <GiWashingMachine className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "dressingRoom",
-      icon: <GiClothes className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "fireAlarm",
-      icon: <MdFireplace className="mr-1 text-[#7872A3]" />,
-    },
-  ];
-
-  const exteriorFeatures = [
-    {
-      key: "garden",
-      icon: <GiGardeningShears className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "balcony",
-      icon: <MdBalcony className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "pool",
-      icon: <FaSwimmingPool className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "parking",
-      icon: <FaParking className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "security",
-      icon: <MdSecurity className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "elevator",
-      icon: <MdElevator className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "gate",
-      icon: <GiGate className="mr-1 text-[#7872A3]" />,
-    },
-  ];
-
-  const locationFeatures = [
-    {
-      key: "nearTransport",
-      icon: <BiTrain className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "nearSchool",
-      icon: <IoSchool className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "nearShopping",
-      icon: <BiStore className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "nearRestaurants",
-      icon: <IoRestaurantOutline className="mr-1 text-[#7872A3]" />,
-    },
-    {
-      key: "nearHospital",
-      icon: <BiHealth className="mr-1 text-[#7872A3]" />,
-    },
-  ];
 
   return (
     <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 overflow-y-auto">
@@ -991,20 +887,26 @@ export default function FilterPopup({
             </div>
             <div className="mt-3 overflow-y-auto max-h-48">
               <div className="flex flex-wrap gap-2 ">
-                {features.map((feature) => (
-                  <button
-                    key={feature.key}
-                    onClick={() => toggleFeature(t(`features.${feature.key}`))}
-                    className={`inline-flex items-center ${
-                      selectedFeatures.includes(t(`features.${feature.key}`))
-                        ? "bg-purple-100 border-purple-300 text-purple-700"
-                        : "bg-white border-gray-100 text-gray-600"
-                    } border rounded-full px-3 py-1 text-xs font-medium  cursor-pointer`}
-                  >
-                    {feature.icon}
-                    {t(`features.${feature.key}`)}
-                  </button>
-                ))}
+                {filterOptions.interiorFeatures.map((feature) => {
+                  const isSelected = interiorFeatures.find(
+                    (f: any) => f._id === feature._id
+                  );
+
+                  return (
+                    <button
+                      key={feature._id}
+                      onClick={() => toggleFeature(feature)}
+                      className={`inline-flex items-center ${
+                        isSelected
+                          ? "bg-purple-100 border-purple-300 text-purple-700"
+                          : "bg-white border-gray-100 text-gray-600"
+                      } border rounded-full px-3 py-1 text-xs font-medium  cursor-pointer`}
+                    >
+                      <img src={feature.iconUrl} className="w-4 h-4 mr-2" />
+                      {feature.name.tr}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -1024,68 +926,31 @@ export default function FilterPopup({
             </div>
             <div className="mt-3 overflow-y-auto max-h-48">
               <div className="flex flex-wrap gap-2">
-                {exteriorFeatures.map((feature) => (
-                  <button
-                    key={feature.key}
-                    onClick={() =>
-                      toggleExteriorFeature(
-                        t(`exteriorFeaturesList.${feature.key}`) || feature.key
-                      )
-                    }
-                    className={`inline-flex items-center ${
-                      selectedExteriorFeatures.includes(
-                        t(`exteriorFeaturesList.${feature.key}`) || feature.key
-                      )
-                        ? "bg-purple-100 border-purple-300 text-purple-700"
-                        : "bg-white border-gray-100 text-gray-600"
-                    } border rounded-full px-3 py-1 text-xs font-medium cursor-pointer`}
-                  >
-                    {feature.icon}
-                    {t(`exteriorFeaturesList.${feature.key}`) || feature.key}
-                  </button>
-                ))}
+                {filterOptions.outsideFeatures.map((feature) => {
+                  const isSelected = selectedExteriorFeatures.find(
+                    (f: any) => f._id === feature._id
+                  );
+
+                  return (
+                    <button
+                      key={feature._id}
+                      onClick={() => toggleExteriorFeature(feature)}
+                      className={`inline-flex items-center ${
+                        isSelected
+                          ? "bg-purple-100 border-purple-300 text-purple-700"
+                          : "bg-white border-gray-100 text-gray-600"
+                      } border rounded-full px-3 py-1 text-xs font-medium cursor-pointer`}
+                    >
+                      <img src={feature.iconUrl} className="w-4 h-4 mr-2" />
+                      {feature.name.tr}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
 
           {/* Location Features Section */}
-          <div className="mt-6">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-gray-700">
-                {t("locationFeatures") || "Konum Özellikleri"}
-              </h3>
-              <button
-                className="text-sm text-purple-600 hover:underline cursor-pointer"
-                onClick={resetLocationFeatures}
-              >
-                {t("reset")}
-              </button>
-            </div>
-            <div className="mt-3 overflow-y-auto max-h-48">
-              <div className="flex flex-wrap gap-2">
-                {locationFeatures.map((feature) => (
-                  <button
-                    key={feature.key}
-                    onClick={() =>
-                      toggleLocationFeature(
-                        t(`locationFeaturesList.${feature.key}`) || feature.key
-                      )
-                    }
-                    className={`inline-flex items-center ${
-                      selectedLocationFeatures.includes(
-                        t(`locationFeaturesList.${feature.key}`) || feature.key
-                      )
-                        ? "bg-purple-100 border-purple-300 text-purple-700"
-                        : "bg-white border-gray-100 text-gray-600"
-                    } border rounded-full px-3 py-1 text-xs font-medium cursor-pointer`}
-                  >
-                    {feature.icon}
-                    {t(`locationFeaturesList.${feature.key}`) || feature.key}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
 
           {/* Add some bottom padding to prevent content from hiding behind the fixed footer */}
           <div className="pb-20"></div>
@@ -1103,9 +968,8 @@ export default function FilterPopup({
                 setMaxArea("");
                 setRoomCount("");
                 setBathroomCount("");
-                setSelectedFeatures([]);
+                setInteriorFeatures([]);
                 setSelectedExteriorFeatures([]);
-                setSelectedLocationFeatures([]);
                 setSelectedLocation(null);
                 setSelectedPropertyType && setSelectedPropertyType(null);
                 setSelectedCategory && setSelectedCategory(null);
@@ -1133,6 +997,10 @@ export default function FilterPopup({
                   bathroomCount: bathroomCount,
                   minProjectArea: minArea,
                   maxProjectArea: maxArea,
+                  interiorFeatureIds: interiorFeatures.map((f: any) => f._id),
+                  exteriorFeatureIds: selectedExteriorFeatures.map(
+                    (f: any) => f._id
+                  ),
                 });
                 onClose && onClose();
               }}
