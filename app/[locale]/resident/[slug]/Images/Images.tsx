@@ -6,21 +6,26 @@ import { FaRegImages } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import GridIcon from "@/app/svgIcons/GridIcon";
+import { useHotelData } from "../hotelContext";
 
 export default function Images() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Example images - replace with actual property images
-  const images = [
-    "/example-house.png",
-    "/example-house.png",
-    "/example-house.png",
-    "/example-house.png",
-    "/example-house.png",
+  const { hotelData, locale } = useHotelData();
 
-    // Add more images if available
-  ];
+  // Example images - replace with actual property images
+  let images = hotelData.hotelDetails.images;
+
+  if (images.length < 4) {
+    images = [
+      hotelData.hotelDetails.images[0],
+      hotelData.hotelDetails.images[0],
+      hotelData.hotelDetails.images[0],
+      hotelData.hotelDetails.images[0],
+      hotelData.hotelDetails.images[0],
+    ];
+  }
 
   const openModal = (index = 0) => {
     setCurrentImageIndex(index);

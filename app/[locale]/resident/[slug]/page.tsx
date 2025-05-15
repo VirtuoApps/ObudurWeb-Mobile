@@ -1,3 +1,4 @@
+import axiosInstance from "@/axios";
 import ContactBox from "./ContactBox/ContactBox";
 import Descriptions from "./Descriptions/Descriptions";
 import Details from "./Details/Details";
@@ -9,9 +10,119 @@ import Images from "./Images/Images";
 import Location from "./Location/Location";
 import PanoramicView from "./PanoramicView/PanoramicView";
 import PlansAndDocumentation from "./PlansAndDocumentation/PlansAndDocumentation";
-export default function ResidentPage() {
+import ClientWrapper from "./ClientWrapper";
+
+// Types for API response
+interface LocalizedText {
+  tr: string;
+  en: string;
+}
+
+interface Price {
+  amount: number;
+  currency: string;
+}
+
+interface Feature {
+  _id: string;
+  name: LocalizedText;
+  iconUrl: string;
+  featureType: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+interface Distance {
+  _id: string;
+  name: Record<string, string>;
+  iconUrl: string;
+  unit: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  value: number;
+  typeId?: string;
+}
+
+interface LocationPoint {
+  type: string;
+  coordinates: number[];
+}
+
+interface HotelDetails {
+  _id: string;
+  no: number;
+  slug: string;
+  title: LocalizedText;
+  description: LocalizedText;
+  address: LocalizedText;
+  price: Price[];
+  images: string[];
+  roomAsText: string;
+  projectArea: number;
+  totalSize: number;
+  buildYear: number;
+  architect: string;
+  kitchenType: LocalizedText;
+  roomCount: number;
+  bathroomCount: number;
+  balconyCount: number;
+  bedRoomCount: number;
+  floorType: LocalizedText;
+  housingType: LocalizedText;
+  entranceType: LocalizedText;
+  listingType: LocalizedText;
+  featureIds: string[];
+  distances: { typeId: string; value: number }[];
+  location: LocationPoint;
+  documents: string[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  city: LocalizedText;
+  country: LocalizedText;
+  floorCount: number;
+  state: LocalizedText;
+}
+
+interface PopulatedData {
+  generalFeatures: Feature[];
+  insideFeatures: Feature[];
+  outsideFeatures: Feature[];
+  distances: Distance[];
+}
+
+interface HotelResponse {
+  hotelDetails: HotelDetails;
+  populatedData: PopulatedData;
+}
+
+// Export these interfaces for use in other components
+export type {
+  LocalizedText,
+  Price,
+  Feature,
+  Distance,
+  LocationPoint,
+  HotelDetails,
+  PopulatedData,
+  HotelResponse,
+};
+
+export default async function ResidentPage({
+  params,
+}: {
+  params: { slug: string; locale: string };
+}) {
+  const { slug, locale } = params;
+  const currentLocale = locale || "en";
+
+  const hotelDataResponse = await axiosInstance.get(`hotels/${slug}`);
+  const hotelData: HotelResponse = hotelDataResponse.data;
+
   return (
-    <>
+    <ClientWrapper hotelData={hotelData} locale={currentLocale}>
       <Header />
       <div className="pt-[80px]">
         <Images />
@@ -33,6 +144,6 @@ export default function ResidentPage() {
 
         <Footer />
       </div>
-    </>
+    </ClientWrapper>
   );
 }

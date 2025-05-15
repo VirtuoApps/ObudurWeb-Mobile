@@ -35,23 +35,26 @@ import {
   FiCalendar,
 } from "react-icons/fi";
 import { IconBaseProps } from "react-icons";
+import { useHotelData } from "../hotelContext";
+import { Feature, LocalizedText } from "../page";
 
 // Type definitions
 type FeatureItemProps = {
-  icon: React.ComponentType<IconBaseProps>;
+  imageUrl: string;
   label: string;
 };
 
 type FeatureGroupProps = {
   title: string;
-  features: { icon: React.ComponentType<IconBaseProps>; key: string }[];
+  features: Feature[];
+  locale: "tr" | "en";
 };
 
 // Feature Item Component
-const FeatureItem: React.FC<FeatureItemProps> = ({ icon: Icon, label }) => {
+const FeatureItem: React.FC<FeatureItemProps> = ({ label, imageUrl }) => {
   return (
     <li className="flex items-center gap-2 md:gap-3 text-[#31286A]">
-      <Icon className="w-4 h-4 md:w-5 md:h-5" />
+      <img src={imageUrl} alt={label} className="w-7 h-7" />
       <span className="text-gray-700 text-sm md:text-base font-medium">
         {label}
       </span>
@@ -60,7 +63,11 @@ const FeatureItem: React.FC<FeatureItemProps> = ({ icon: Icon, label }) => {
 };
 
 // Feature Group Component
-const FeatureGroup: React.FC<FeatureGroupProps> = ({ title, features }) => {
+const FeatureGroup: React.FC<FeatureGroupProps> = ({
+  title,
+  features,
+  locale,
+}) => {
   const t = useTranslations("features");
 
   return (
@@ -71,7 +78,11 @@ const FeatureGroup: React.FC<FeatureGroupProps> = ({ title, features }) => {
         className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 "
       >
         {features.map((feature, index) => (
-          <FeatureItem key={index} icon={feature.icon} label={t(feature.key)} />
+          <FeatureItem
+            key={index}
+            imageUrl={feature.iconUrl}
+            label={feature.name[locale]}
+          />
         ))}
       </ul>
     </div>
@@ -82,42 +93,15 @@ const FeatureGroup: React.FC<FeatureGroupProps> = ({ title, features }) => {
 export default function FeaturesEquipment() {
   const t = useTranslations("features");
 
-  // Feature data with translation keys
-  const indoor = [
-    { icon: FiTv, key: "cableTV" },
-    { icon: FiWifi, key: "wifi" },
-    { icon: FiBell, key: "alarm" },
-    { icon: FiGrid, key: "doubleGlazed" },
-    { icon: FiHome, key: "smartHome" },
-    { icon: FiMonitor, key: "microwave" },
-    { icon: FiCpu, key: "combi" },
-    { icon: FiCoffee, key: "fireplace" },
-    { icon: FiHardDrive, key: "builtInAppliances" },
-    { icon: FiWind, key: "airConditioning" },
-    { icon: FiPackage, key: "storage" },
-    { icon: FiLayers, key: "laundryRoom" },
-    { icon: FiScissors, key: "dressingRoom" },
-    { icon: FiFile, key: "fireAlarm" },
-  ];
+  const { hotelData, locale } = useHotelData();
 
-  const outdoor = [
-    { icon: FiSun, key: "southFacing" },
-    { icon: FiAperture, key: "balcony" },
-    { icon: FiCloud, key: "garden" },
-    { icon: FiBox, key: "exteriorInsulation" },
-    { icon: FiUsers, key: "security" },
-    { icon: FiMove, key: "elevator" },
-    { icon: FiActivity, key: "bikePath" },
-    { icon: FiCircle, key: "parking" },
-    { icon: FiTruck, key: "garage" },
-    { icon: FiVideo, key: "securityCamera" },
-    { icon: FiArchive, key: "storage" },
-    { icon: FiLock, key: "secureEntrance" },
-    { icon: FiMusic, key: "gym" },
-    { icon: FiDroplet, key: "spa" },
-    { icon: FiBriefcase, key: "office" },
-    { icon: FiCalendar, key: "meetingRoom" },
-  ];
+  const currentLocale = locale as keyof LocalizedText;
+
+  const insideFeatures = hotelData.populatedData.insideFeatures;
+
+  const outsideFeatures = hotelData.populatedData.outsideFeatures;
+
+  // Feature data with translation keys
 
   return (
     <section id="features-section" className="max-w-5xl mx-auto p-4 mt-12">
@@ -130,8 +114,16 @@ export default function FeaturesEquipment() {
         </p>
       </div>
 
-      <FeatureGroup title={t("indoorTitle")} features={indoor} />
-      <FeatureGroup title={t("outdoorTitle")} features={outdoor} />
+      <FeatureGroup
+        title={t("indoorTitle")}
+        features={insideFeatures}
+        locale={currentLocale}
+      />
+      <FeatureGroup
+        title={t("outdoorTitle")}
+        features={outsideFeatures}
+        locale={currentLocale}
+      />
     </section>
   );
 }

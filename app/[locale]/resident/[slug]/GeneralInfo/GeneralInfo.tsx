@@ -4,6 +4,8 @@ import React from "react";
 import BedIcon from "@/app/svgIcons/BedIcon";
 import AreaIcon from "@/app/svgIcons/AreaIcon";
 import { useTranslations } from "next-intl";
+import { useHotelData } from "../hotelContext";
+import { LocalizedText } from "../page";
 
 interface FeatureIconProps {
   icon: React.ReactNode;
@@ -82,22 +84,22 @@ const ParkingIcon = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path
-      d="M5 5C5 3.89543 5.89543 3 7 3H17C18.1046 3 19 3.89543 19 5V19C19 20.1046 18.1046 21 17 21H7C5.89543 21 5 20.1046 5 19V5Z"
+    <rect
+      x="3"
+      y="6"
+      width="18"
+      height="12"
+      rx="1"
       stroke="#595959"
       strokeWidth="1.2"
     />
     <path
-      d="M8.5 8.5C8.5 7.67157 9.17157 7 10 7H14C14.8284 7 15.5 7.67157 15.5 8.5V9.5C15.5 10.3284 14.8284 11 14 11H8.5V8.5Z"
+      d="M7 10H10.5C11.3284 10 12 10.6716 12 11.5V11.5C12 12.3284 11.3284 13 10.5 13H7V10Z"
       stroke="#595959"
       strokeWidth="1.2"
     />
-    <path
-      d="M8.5 11V15"
-      stroke="#595959"
-      strokeWidth="1.2"
-      strokeLinecap="round"
-    />
+    <circle cx="6" cy="18" r="1" fill="#595959" />
+    <circle cx="18" cy="18" r="1" fill="#595959" />
   </svg>
 );
 
@@ -110,11 +112,37 @@ const PoolIcon = () => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      d="M4 15C4 15 5 14 8 14C11 14 13 16 16 16C19 16 20 15 20 15M4 19C4 19 5 18 8 18C11 18 13 20 16 20C19 20 20 19 20 19M4 11C4 11 5 10 8 10C11 10 13 12 16 12C19 12 20 11 20 11M4 7C4 7 5 6 8 6C11 6 13 8 16 8C19 8 20 7 20 7M12 4V6"
+      d="M3 19.4C5.66667 15.8 9.33333 15.8 12 17.5C14.6667 19.2 18.3333 18.6667 21 17.5"
       stroke="#595959"
       strokeWidth="1.2"
       strokeLinecap="round"
     />
+    <path
+      d="M3 15.9C5.66667 12.3 9.33333 12.3 12 14C14.6667 15.7 18.3333 15.1667 21 14"
+      stroke="#595959"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+    />
+    <path
+      d="M3 12.4C5.66667 8.8 9.33333 8.8 12 10.5C14.6667 12.2 18.3333 11.6667 21 10.5"
+      stroke="#595959"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+    />
+    <path
+      d="M7 5V19.5"
+      stroke="#595959"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+    />
+    <path
+      d="M17 5V19.5"
+      stroke="#595959"
+      strokeWidth="1.2"
+      strokeLinecap="round"
+    />
+    <circle cx="7" cy="6" r="1.5" stroke="#595959" strokeWidth="1.2" />
+    <circle cx="17" cy="6" r="1.5" stroke="#595959" strokeWidth="1.2" />
   </svg>
 );
 
@@ -148,19 +176,6 @@ const SeaViewIcon = () => (
   </svg>
 );
 
-const SymbolicIcon = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <circle cx="12" cy="12" r="9" stroke="#595959" strokeWidth="1.2" />
-    <circle cx="12" cy="12" r="4.5" stroke="#595959" strokeWidth="1.2" />
-  </svg>
-);
-
 const BathIcon = () => (
   <svg
     width="24"
@@ -170,13 +185,23 @@ const BathIcon = () => (
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      d="M4 12H20M20 12V11C20 7.68629 17.3137 5 14 5C10.6863 5 8 7.68629 8 11V12M20 12V16C20 17.1046 19.1046 18 18 18H6C4.89543 18 4 17.1046 4 16V12M6 21V18M18 21V18"
+      d="M3.5 12.5H20.5"
       stroke="#595959"
       strokeWidth="1.2"
       strokeLinecap="round"
     />
     <path
-      d="M14 8.5C14 7.67157 13.3284 7 12.5 7C11.6716 7 11 7.67157 11 8.5C11 9.32843 11.6716 10 12.5 10"
+      d="M5.5 12.5V10C5.5 8.11438 5.5 7.17157 6.08579 6.58579C6.67157 6 7.61438 6 9.5 6H10.5C12.3856 6 13.3284 6 13.9142 6.58579C14.5 7.17157 14.5 8.11438 14.5 10V12.5"
+      stroke="#595959"
+      strokeWidth="1.2"
+    />
+    <path
+      d="M4.5 12.5V15.5C4.5 18.5 6.5 20.5 9.5 20.5H15C18 20.5 20 18.5 20 15.5V12.5"
+      stroke="#595959"
+      strokeWidth="1.2"
+    />
+    <path
+      d="M10 10H14"
       stroke="#595959"
       strokeWidth="1.2"
       strokeLinecap="round"
@@ -201,9 +226,38 @@ const LocationIcon = () => (
   </svg>
 );
 
-export default function GeneralInfo({}: {}) {
+export default function GeneralInfo() {
   const t = useTranslations("generalInfo");
   const propertyT = useTranslations("propertyTypes");
+  const { hotelData, locale } = useHotelData();
+
+  // Get current locale data
+  const currentLocale = locale as keyof LocalizedText;
+
+  // Extract hotel details
+  const {
+    title,
+    price,
+    no,
+    address,
+    roomAsText,
+    totalSize,
+    roomCount,
+    bathroomCount,
+  } = hotelData.hotelDetails;
+
+  // Get general features for the icons
+  const generalFeatures = hotelData.populatedData.generalFeatures;
+
+  // Format price with currency
+  const mainPrice = price[0]?.amount || 0;
+  const currency = price[0]?.currency || "USD";
+  const formattedPrice = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(mainPrice);
 
   return (
     <div className="max-w-5xl mx-auto p-3 sm:p-6 font-sans">
@@ -211,14 +265,14 @@ export default function GeneralInfo({}: {}) {
       <div className="mb-4 sm:mb-6">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-0">
           <h1 className="text-2xl sm:text-3xl font-serif font-medium text-[#262626] order-2 sm:order-1 sm:max-w-2xl">
-            Gravida aliquam at in dignissim urna libero eu ipsum.
+            {title[currentLocale]}
           </h1>
           <div className="text-left sm:text-right order-1 sm:order-2 flex justify-between sm:block items-center">
             <div className="text-gray-500 text-xs sm:text-sm">
-              {t("listingNumber", { id: "135154832" })}
+              {t("listingNumber", { id: no.toString() })}
             </div>
             <div className="text-[#362C75] text-2xl sm:text-3xl font-bold">
-              $1,420,000
+              {formattedPrice}
             </div>
           </div>
         </div>
@@ -230,12 +284,13 @@ export default function GeneralInfo({}: {}) {
       {/* Features Icons Row - Scrollable on mobile */}
       <div className="flex overflow-x-auto py-3 sm:py-4 justify-between no-scrollbar">
         <div className="flex gap-4 justify-between min-w-full">
-          <FeatureIcon icon={<VillaIcon />} label={propertyT("villa")} />
-          <FeatureIcon icon={<NewIcon />} label={t("features.new")} />
-          <FeatureIcon icon={<DesignIcon />} label={t("features.design")} />
-          <FeatureIcon icon={<ParkingIcon />} label={t("features.parking")} />
-          <FeatureIcon icon={<PoolIcon />} label={t("features.pool")} />
-          <FeatureIcon icon={<SeaViewIcon />} label={t("features.seaView")} />
+          {generalFeatures.slice(0, 6).map((feature) => (
+            <FeatureIcon
+              key={feature._id}
+              icon={<VillaIcon />} // Ideally we would map the right icon based on the feature type
+              label={feature.name[currentLocale]}
+            />
+          ))}
         </div>
       </div>
 
@@ -247,20 +302,20 @@ export default function GeneralInfo({}: {}) {
         <div className="flex gap-4 sm:gap-8 overflow-x-auto no-scrollbar">
           <div className="flex items-center gap-2 text-[#262626] whitespace-nowrap">
             <BedIcon />
-            <span>4+1</span>
+            <span>{roomAsText}</span>
           </div>
           <div className="flex items-center gap-2 text-[#262626] border-r border-gray-200 pr-4 border-l border-gray-200 pl-4 whitespace-nowrap">
             <BathIcon />
-            <span>2</span>
+            <span>{bathroomCount}</span>
           </div>
           <div className="flex items-center gap-2 text-[#262626] whitespace-nowrap">
             <AreaIcon />
-            <span>240m²</span>
+            <span>{totalSize}m²</span>
           </div>
         </div>
         <div className="flex items-center gap-2 text-[#262626] text-sm sm:text-base">
           <LocationIcon />
-          <span className="truncate">814 E Highland Dr, Seattle, WA 98102</span>
+          <span className="truncate">{address[currentLocale]}</span>
         </div>
       </div>
     </div>

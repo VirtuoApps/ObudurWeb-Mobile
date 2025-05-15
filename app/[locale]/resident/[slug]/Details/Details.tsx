@@ -2,9 +2,15 @@
 
 import React from "react";
 import { useTranslations } from "next-intl";
+import { useHotelData } from "../hotelContext";
+import { LocalizedText } from "../page";
 
 export default function Details() {
   const t = useTranslations("details");
+
+  const { hotelData, locale } = useHotelData();
+
+  const currentLocale = locale as keyof LocalizedText;
 
   return (
     <section id="details-section" className="max-w-5xl mx-auto p-4 mt-12">
@@ -24,25 +30,32 @@ export default function Details() {
             <span className="w-32 shrink-0 font-medium text-gray-600">
               {t("projectArea")}:
             </span>
-            <span className="font-semibold text-[#0F0F0F]">1.200 m2</span>
+            <span className="font-semibold text-[#0F0F0F]">
+              {hotelData.hotelDetails.projectArea} m2
+            </span>
           </div>
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
               {t("area")}:
             </span>
-            <span className="font-semibold text-[#0F0F0F]">340 m2</span>
+            <span className="font-semibold text-[#0F0F0F]">
+              {hotelData.hotelDetails.totalSize} m2
+            </span>
           </div>
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
               {t("constructionYear")}:
             </span>
-            <span className="font-semibold text-[#0F0F0F]">2022</span>
+            <span className="font-semibold text-[#0F0F0F]">
+              {hotelData.hotelDetails.buildYear}
+            </span>
           </div>
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
               {t("architect")}:
             </span>
             <span className="font-semibold text-[#0F0F0F]">Barry Allen</span>
+            {/* TODO */}
           </div>
         </div>
 
@@ -52,25 +65,33 @@ export default function Details() {
             <span className="w-32 shrink-0 font-medium text-gray-600">
               {t("kitchen")}:
             </span>
-            <span className="font-semibold text-[#0F0F0F]">Ayrı Mutfak</span>
+            <span className="font-semibold text-[#0F0F0F]">
+              {hotelData.hotelDetails.kitchenType[currentLocale]}
+            </span>
           </div>
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
               {t("bedrooms")}:
             </span>
-            <span className="font-semibold text-[#0F0F0F]">3</span>
+            <span className="font-semibold text-[#0F0F0F]">
+              {hotelData.hotelDetails.roomCount}
+            </span>
           </div>
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
               {t("bathrooms")}:
             </span>
-            <span className="font-semibold text-[#0F0F0F]">2</span>
+            <span className="font-semibold text-[#0F0F0F]">
+              {hotelData.hotelDetails.bathroomCount}
+            </span>
           </div>
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
               {t("balconies")}:
             </span>
-            <span className="font-semibold text-[#0F0F0F]">2</span>
+            <span className="font-semibold text-[#0F0F0F]">
+              {hotelData.hotelDetails.balconyCount}
+            </span>
           </div>
         </div>
 
@@ -80,25 +101,33 @@ export default function Details() {
             <span className="w-32 shrink-0 font-medium text-gray-600">
               {t("floor")}:
             </span>
-            <span className="font-semibold text-[#0F0F0F]">Dubleks</span>
+            <span className="font-semibold text-[#0F0F0F]">
+              {hotelData.hotelDetails.floorType[currentLocale]}
+            </span>
           </div>
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
               {t("propertyType")}:
             </span>
-            <span className="font-semibold text-[#0F0F0F]">Villa</span>
+            <span className="font-semibold text-[#0F0F0F]">
+              {hotelData.hotelDetails.housingType[currentLocale]}
+            </span>
           </div>
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
               {t("entrance")}:
             </span>
-            <span className="font-semibold text-[#0F0F0F]">Müstakil</span>
+            <span className="font-semibold text-[#0F0F0F]">
+              {hotelData.hotelDetails.entranceType[currentLocale]}
+            </span>
           </div>
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
               {t("listingType")}:
             </span>
-            <span className="font-semibold text-[#0F0F0F]">Satılık</span>
+            <span className="font-semibold text-[#0F0F0F]">
+              {hotelData.hotelDetails.listingType[currentLocale]}
+            </span>
           </div>
         </div>
       </div>

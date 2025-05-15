@@ -23,7 +23,8 @@ import {
   FiBriefcase,
   FiHome,
 } from "react-icons/fi";
-
+import { useHotelData } from "../hotelContext";
+import { LocalizedText } from "../page";
 interface DistanceItem {
   icon: IconType;
   label: string;
@@ -34,39 +35,14 @@ export default function Location() {
   const t = useTranslations("location");
   const commonT = useTranslations("common");
 
-  const distances: DistanceItem[] = [
-    { icon: FiNavigation2, label: t("distances.tram"), value: "0,42 km" },
-    { icon: FiAirplay, label: t("distances.airport"), value: "0,42 km" },
-    { icon: FiUmbrella, label: t("distances.beach"), value: "0,42 km" },
-    { icon: FiTruck, label: t("distances.taxiStation"), value: "0,42 km" },
-    { icon: FiBook, label: t("distances.school"), value: "0,42 km" },
-    { icon: FiCreditCard, label: t("distances.bankAtm"), value: "0,42 km" },
-    { icon: FiShoppingCart, label: t("distances.market"), value: "0,42 km" },
-    {
-      icon: FiShoppingBag,
-      label: t("distances.shoppingMall"),
-      value: "0,42 km",
-    },
-    { icon: FiMapPin, label: t("distances.nationalPark"), value: "0,42 km" },
-    { icon: FiFilm, label: t("distances.cinema"), value: "0,42 km" },
-    {
-      icon: FiSmile,
-      label: t("distances.entertainmentCenter"),
-      value: "0,42 km",
-    },
-    { icon: FiDroplet, label: t("distances.gasStation"), value: "0,42 km" },
-    { icon: FiCoffee, label: t("distances.restaurants"), value: "0,42 km" },
-    { icon: FiActivity, label: t("distances.gym"), value: "0,42 km" },
-    { icon: FiHeart, label: t("distances.pharmacy"), value: "0,42 km" },
-    {
-      icon: FiBriefcase,
-      label: t("distances.businessCenter"),
-      value: "0,42 km",
-    },
-    { icon: FiHome, label: t("distances.hospital"), value: "0,42 km" },
-  ];
+  const { hotelData, locale } = useHotelData();
 
-  const center = { lat: 40.982, lng: 29.126 };
+  const currentLocale = locale as keyof LocalizedText;
+
+  const center = {
+    lat: hotelData.hotelDetails.location.coordinates[0],
+    lng: hotelData.hotelDetails.location.coordinates[1],
+  };
   const containerStyle = {
     width: "100%",
     height: "100%",
@@ -143,14 +119,21 @@ export default function Location() {
         {t("distancesTitle")}
       </h3>
       <ul role="list" className="flex flex-wrap justify-between  gap-y-5">
-        {distances.map(({ icon: Icon, label, value }) => (
+        {hotelData.populatedData.distances.map((distance) => (
           <li
-            key={label}
+            key={distance._id}
             className="flex items-center gap-3 w-1/2 md:w-1/3 lg:w-1/5 pr-4 sm:min-w-[220px]"
           >
-            <Icon className="w-5 h-5 shrink-0 text-[#675CA8] stroke-[1.5]" />
+            <img
+              className="w-6 h-6"
+              src={distance.iconUrl}
+              alt={distance.name[currentLocale]}
+            />
             <span className="text-gray-700 font-medium text-sm">
-              {label} <span className="text-gray-500 font-normal">{value}</span>
+              {distance.name[currentLocale]}{" "}
+              <span className="text-gray-500 font-normal">
+                {distance.value} km
+              </span>
             </span>
           </li>
         ))}
