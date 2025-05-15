@@ -11,6 +11,7 @@ import { Feature } from "@/types/feature.type";
 import { Hotel } from "@/types/hotel.type";
 import { FilterType } from "@/types/filter.type";
 import { FilterOptions } from "@/types/filter-options.type";
+import { currencyOptions } from "@/app/components/LanguageSwitcher";
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
   loading: () => {
@@ -41,6 +42,7 @@ export default function HomePage({
   const t = useTranslations("common");
   const [currentView, setCurrentView] = useState<"map" | "list">("map");
   const [filters, setFilters] = useState<FilterType | null>(null);
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
 
   const [selectedFeatures, setSelectedFeatures] = useState<Feature[]>([]);
 
@@ -52,6 +54,14 @@ export default function HomePage({
   const [listingType, setListingType] = useState<"For Sale" | "For Rent">(
     "For Sale"
   );
+
+  useEffect(() => {
+    // Get selected currency from localStorage
+    const savedCurrency = localStorage.getItem("selectedCurrency");
+    if (savedCurrency) {
+      setSelectedCurrency(savedCurrency);
+    }
+  }, []);
 
   let filteredHotels = hotels;
 
@@ -82,6 +92,33 @@ export default function HomePage({
       filteredHotels = filteredHotels.filter(
         (hotel) => hotel.roomAsText === filters.roomAsText
       );
+    }
+
+    if (filters.minPrice !== undefined && filters.minPrice !== null) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        // Find the price for the selected currency
+        const priceInSelectedCurrency = hotel.price.find(
+          (price) => price.currency === selectedCurrency
+        );
+
+        // If price in selected currency exists, compare with minPrice
+        // Otherwise, return true to keep the hotel (or could default to another currency)
+        return priceInSelectedCurrency
+          ? priceInSelectedCurrency.amount >= filters.minPrice!
+          : true; // Could also return false or use a fallback currency
+      });
+    }
+
+    if (filters.maxPrice !== undefined && filters.maxPrice !== null) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        const priceInSelectedCurrency = hotel.price.find(
+          (price) => price.currency === selectedCurrency
+        );
+
+        return priceInSelectedCurrency
+          ? priceInSelectedCurrency.amount <= filters.maxPrice!
+          : true; // Could also return false or use a fallback currency
+      });
     }
   }
 

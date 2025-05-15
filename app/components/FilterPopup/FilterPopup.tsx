@@ -159,9 +159,6 @@ export default function FilterPopup({
 
   useEffect(() => {
     const savedCurrency = localStorage.getItem("selectedCurrency");
-    console.log({
-      savedCurrency,
-    });
     if (savedCurrency) {
       const currency = currencyOptions.find(
         (option) => option.code === savedCurrency

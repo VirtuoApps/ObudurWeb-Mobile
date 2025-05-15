@@ -55,10 +55,15 @@ export default function LanguageSwitcher() {
 
   const handleUpdate = () => {
     // Save currency to localStorage
+
+    const savedCurrency = localStorage.getItem("selectedCurrency");
+
     localStorage.setItem("selectedCurrency", selectedCurrency);
 
     if (selectedLanguage !== currentLocale) {
       changeLanguage(selectedLanguage);
+    } else if (savedCurrency !== selectedCurrency) {
+      window.location.reload();
     }
 
     // Always close the modal after an update attempt
