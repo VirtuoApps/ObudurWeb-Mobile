@@ -2,6 +2,7 @@
 
 import React, { useState, createContext, useContext } from "react";
 import FirstCreateStep from "./FirstCreateStep/FirstCreateStep";
+import SecondCreateStep from "./SecondCreateStep/SecondCreateStep";
 
 // Define the multilingual text interface
 export interface MultilangText {
@@ -20,6 +21,26 @@ type ListingFormContextType = {
   setTitle: React.Dispatch<React.SetStateAction<MultilangText>>;
   description: MultilangText;
   setDescription: React.Dispatch<React.SetStateAction<MultilangText>>;
+  price: { amount: number; currency: string }[];
+  setPrice: React.Dispatch<
+    React.SetStateAction<{ amount: number; currency: string }[]>
+  >;
+  projectArea: number;
+  setProjectArea: React.Dispatch<React.SetStateAction<number>>;
+  totalSize: number;
+  setTotalSize: React.Dispatch<React.SetStateAction<number>>;
+  roomCount: number;
+  setRoomCount: React.Dispatch<React.SetStateAction<number>>;
+  bathroomCount: number;
+  setBathroomCount: React.Dispatch<React.SetStateAction<number>>;
+  bedRoomCount: number;
+  setBedRoomCount: React.Dispatch<React.SetStateAction<number>>;
+  floorCount: number;
+  setFloorCount: React.Dispatch<React.SetStateAction<number>>;
+  buildYear: number;
+  setBuildYear: React.Dispatch<React.SetStateAction<number>>;
+  kitchenType: MultilangText;
+  setKitchenType: React.Dispatch<React.SetStateAction<MultilangText>>;
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
 };
@@ -36,6 +57,24 @@ export const ListingFormContext = createContext<ListingFormContextType>({
   setTitle: () => {},
   description: { tr: "", en: "" },
   setDescription: () => {},
+  price: [],
+  setPrice: () => {},
+  projectArea: 0,
+  setProjectArea: () => {},
+  totalSize: 0,
+  setTotalSize: () => {},
+  roomCount: 0,
+  setRoomCount: () => {},
+  bathroomCount: 0,
+  setBathroomCount: () => {},
+  bedRoomCount: 0,
+  setBedRoomCount: () => {},
+  floorCount: 0,
+  setFloorCount: () => {},
+  buildYear: 0,
+  setBuildYear: () => {},
+  kitchenType: { tr: "", en: "" },
+  setKitchenType: () => {},
   currentStep: 1,
   setCurrentStep: () => {},
 });
@@ -65,6 +104,23 @@ export default function CreationSteps() {
     tr: "",
     en: "",
   });
+
+  // New state for SecondCreateStep
+  const [price, setPrice] = useState<{ amount: number; currency: string }[]>(
+    []
+  );
+  const [projectArea, setProjectArea] = useState<number>(0);
+  const [totalSize, setTotalSize] = useState<number>(0);
+  const [roomCount, setRoomCount] = useState<number>(0);
+  const [bathroomCount, setBathroomCount] = useState<number>(0);
+  const [bedRoomCount, setBedRoomCount] = useState<number>(0);
+  const [floorCount, setFloorCount] = useState<number>(0);
+  const [buildYear, setBuildYear] = useState<number>(0);
+  const [kitchenType, setKitchenType] = useState<MultilangText>({
+    tr: "",
+    en: "",
+  });
+
   const [currentStep, setCurrentStep] = useState(1);
 
   // Context value
@@ -79,6 +135,24 @@ export default function CreationSteps() {
     setTitle,
     description,
     setDescription,
+    price,
+    setPrice,
+    projectArea,
+    setProjectArea,
+    totalSize,
+    setTotalSize,
+    roomCount,
+    setRoomCount,
+    bathroomCount,
+    setBathroomCount,
+    bedRoomCount,
+    setBedRoomCount,
+    floorCount,
+    setFloorCount,
+    buildYear,
+    setBuildYear,
+    kitchenType,
+    setKitchenType,
     currentStep,
     setCurrentStep,
   };
@@ -86,6 +160,7 @@ export default function CreationSteps() {
   return (
     <ListingFormContext.Provider value={contextValue}>
       {currentStep === 1 && <FirstCreateStep />}
+      {currentStep === 2 && <SecondCreateStep />}
     </ListingFormContext.Provider>
   );
 }
