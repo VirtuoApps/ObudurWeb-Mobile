@@ -4,6 +4,7 @@ import React, { useState, createContext, useContext } from "react";
 import FirstCreateStep from "./FirstCreateStep/FirstCreateStep";
 import SecondCreateStep from "./SecondCreateStep/SecondCreateStep";
 import ThirdCreateStep from "./ThirdCreateStep/ThirdCreateStep";
+import FourthCreateStep from "./FourthCreateStep/FourthCreateStep";
 
 // Define the multilingual text interface
 export interface MultilangText {
@@ -42,6 +43,9 @@ type ListingFormContextType = {
   setBuildYear: React.Dispatch<React.SetStateAction<number>>;
   kitchenType: MultilangText;
   setKitchenType: React.Dispatch<React.SetStateAction<MultilangText>>;
+  // Orientation (facade)
+  orientation: string;
+  setOrientation: React.Dispatch<React.SetStateAction<string>>;
   // Address fields
   country: MultilangText;
   setCountry: React.Dispatch<React.SetStateAction<MultilangText>>;
@@ -59,6 +63,23 @@ type ListingFormContextType = {
   setPostalCode: React.Dispatch<React.SetStateAction<string>>;
   coordinates: [number, number];
   setCoordinates: React.Dispatch<React.SetStateAction<[number, number]>>;
+  // Feature IDs
+  featureIds: string[];
+  setFeatureIds: React.Dispatch<React.SetStateAction<string[]>>;
+  // Distances
+  distances: { typeId: string; value: number }[];
+  setDistances: React.Dispatch<
+    React.SetStateAction<{ typeId: string; value: number }[]>
+  >;
+  // Distance editing
+  newDistanceTypeId: string;
+  setNewDistanceTypeId: React.Dispatch<React.SetStateAction<string>>;
+  newDistanceValue: string;
+  setNewDistanceValue: React.Dispatch<React.SetStateAction<string>>;
+  editingDistanceId: string | null;
+  setEditingDistanceId: React.Dispatch<React.SetStateAction<string | null>>;
+  editingDistanceValue: string;
+  setEditingDistanceValue: React.Dispatch<React.SetStateAction<string>>;
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
 };
@@ -93,6 +114,9 @@ export const ListingFormContext = createContext<ListingFormContextType>({
   setBuildYear: () => {},
   kitchenType: { tr: "", en: "" },
   setKitchenType: () => {},
+  // Orientation
+  orientation: "",
+  setOrientation: () => {},
   // Address fields defaults
   country: { tr: "", en: "" },
   setCountry: () => {},
@@ -110,6 +134,21 @@ export const ListingFormContext = createContext<ListingFormContextType>({
   setPostalCode: () => {},
   coordinates: [30.805, 36.855],
   setCoordinates: () => {},
+  // Feature IDs default
+  featureIds: [],
+  setFeatureIds: () => {},
+  // Distances default
+  distances: [],
+  setDistances: () => {},
+  // Distance editing default
+  newDistanceTypeId: "",
+  setNewDistanceTypeId: () => {},
+  newDistanceValue: "",
+  setNewDistanceValue: () => {},
+  editingDistanceId: null,
+  setEditingDistanceId: () => {},
+  editingDistanceValue: "",
+  setEditingDistanceValue: () => {},
   currentStep: 1,
   setCurrentStep: () => {},
 });
@@ -168,7 +207,26 @@ export default function CreationSteps() {
     30.805, 36.855,
   ]); // [long, lat] format
 
-  const [currentStep, setCurrentStep] = useState(1);
+  // New state for FourthCreateStep - Features
+  const [featureIds, setFeatureIds] = useState<string[]>([]);
+
+  // New state for FourthCreateStep - Distances
+  const [distances, setDistances] = useState<
+    { typeId: string; value: number }[]
+  >([]);
+
+  // New state for FourthCreateStep - Distance editing
+  const [newDistanceTypeId, setNewDistanceTypeId] = useState<string>("");
+  const [newDistanceValue, setNewDistanceValue] = useState<string>("");
+  const [editingDistanceId, setEditingDistanceId] = useState<string | null>(
+    null
+  );
+  const [editingDistanceValue, setEditingDistanceValue] = useState<string>("");
+
+  const [currentStep, setCurrentStep] = useState(4);
+
+  // Orientation state
+  const [orientation, setOrientation] = useState<string>("");
 
   // Context value
   const contextValue = {
@@ -200,6 +258,9 @@ export default function CreationSteps() {
     setBuildYear,
     kitchenType,
     setKitchenType,
+    // Orientation
+    orientation,
+    setOrientation,
     // Address fields
     country,
     setCountry,
@@ -217,6 +278,21 @@ export default function CreationSteps() {
     setPostalCode,
     coordinates,
     setCoordinates,
+    // Feature IDs
+    featureIds,
+    setFeatureIds,
+    // Distances
+    distances,
+    setDistances,
+    // Distance editing
+    newDistanceTypeId,
+    setNewDistanceTypeId,
+    newDistanceValue,
+    setNewDistanceValue,
+    editingDistanceId,
+    setEditingDistanceId,
+    editingDistanceValue,
+    setEditingDistanceValue,
     currentStep,
     setCurrentStep,
   };
@@ -226,6 +302,7 @@ export default function CreationSteps() {
       {currentStep === 1 && <FirstCreateStep />}
       {currentStep === 2 && <SecondCreateStep />}
       {currentStep === 3 && <ThirdCreateStep />}
+      {currentStep === 4 && <FourthCreateStep />}
     </ListingFormContext.Provider>
   );
 }
