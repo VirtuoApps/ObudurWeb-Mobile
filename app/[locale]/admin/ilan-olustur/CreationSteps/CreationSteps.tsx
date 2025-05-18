@@ -3,6 +3,7 @@
 import React, { useState, createContext, useContext } from "react";
 import FirstCreateStep from "./FirstCreateStep/FirstCreateStep";
 import SecondCreateStep from "./SecondCreateStep/SecondCreateStep";
+import ThirdCreateStep from "./ThirdCreateStep/ThirdCreateStep";
 
 // Define the multilingual text interface
 export interface MultilangText {
@@ -41,6 +42,23 @@ type ListingFormContextType = {
   setBuildYear: React.Dispatch<React.SetStateAction<number>>;
   kitchenType: MultilangText;
   setKitchenType: React.Dispatch<React.SetStateAction<MultilangText>>;
+  // Address fields
+  country: MultilangText;
+  setCountry: React.Dispatch<React.SetStateAction<MultilangText>>;
+  city: MultilangText;
+  setCity: React.Dispatch<React.SetStateAction<MultilangText>>;
+  state: MultilangText;
+  setState: React.Dispatch<React.SetStateAction<MultilangText>>;
+  street: MultilangText;
+  setStreet: React.Dispatch<React.SetStateAction<MultilangText>>;
+  buildingNo: string;
+  setBuildingNo: React.Dispatch<React.SetStateAction<string>>;
+  apartmentNo: string;
+  setApartmentNo: React.Dispatch<React.SetStateAction<string>>;
+  postalCode: string;
+  setPostalCode: React.Dispatch<React.SetStateAction<string>>;
+  coordinates: [number, number];
+  setCoordinates: React.Dispatch<React.SetStateAction<[number, number]>>;
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
 };
@@ -75,6 +93,23 @@ export const ListingFormContext = createContext<ListingFormContextType>({
   setBuildYear: () => {},
   kitchenType: { tr: "", en: "" },
   setKitchenType: () => {},
+  // Address fields defaults
+  country: { tr: "", en: "" },
+  setCountry: () => {},
+  city: { tr: "", en: "" },
+  setCity: () => {},
+  state: { tr: "", en: "" },
+  setState: () => {},
+  street: { tr: "", en: "" },
+  setStreet: () => {},
+  buildingNo: "",
+  setBuildingNo: () => {},
+  apartmentNo: "",
+  setApartmentNo: () => {},
+  postalCode: "",
+  setPostalCode: () => {},
+  coordinates: [30.805, 36.855],
+  setCoordinates: () => {},
   currentStep: 1,
   setCurrentStep: () => {},
 });
@@ -121,6 +156,18 @@ export default function CreationSteps() {
     en: "",
   });
 
+  // New state for ThirdCreateStep - Address fields
+  const [country, setCountry] = useState<MultilangText>({ tr: "", en: "" });
+  const [city, setCity] = useState<MultilangText>({ tr: "", en: "" });
+  const [state, setState] = useState<MultilangText>({ tr: "", en: "" });
+  const [street, setStreet] = useState<MultilangText>({ tr: "", en: "" });
+  const [buildingNo, setBuildingNo] = useState<string>("");
+  const [apartmentNo, setApartmentNo] = useState<string>("");
+  const [postalCode, setPostalCode] = useState<string>("");
+  const [coordinates, setCoordinates] = useState<[number, number]>([
+    30.805, 36.855,
+  ]); // [long, lat] format
+
   const [currentStep, setCurrentStep] = useState(1);
 
   // Context value
@@ -153,6 +200,23 @@ export default function CreationSteps() {
     setBuildYear,
     kitchenType,
     setKitchenType,
+    // Address fields
+    country,
+    setCountry,
+    city,
+    setCity,
+    state,
+    setState,
+    street,
+    setStreet,
+    buildingNo,
+    setBuildingNo,
+    apartmentNo,
+    setApartmentNo,
+    postalCode,
+    setPostalCode,
+    coordinates,
+    setCoordinates,
     currentStep,
     setCurrentStep,
   };
@@ -161,6 +225,7 @@ export default function CreationSteps() {
     <ListingFormContext.Provider value={contextValue}>
       {currentStep === 1 && <FirstCreateStep />}
       {currentStep === 2 && <SecondCreateStep />}
+      {currentStep === 3 && <ThirdCreateStep />}
     </ListingFormContext.Provider>
   );
 }
