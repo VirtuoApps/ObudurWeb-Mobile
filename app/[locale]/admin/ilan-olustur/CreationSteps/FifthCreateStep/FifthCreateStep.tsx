@@ -1,0 +1,617 @@
+import React, { useState, useRef } from "react";
+import { ChevronLeftIcon } from "@heroicons/react/24/solid";
+import { useListingForm } from "../CreationSteps";
+import axiosInstance from "@/axios";
+
+export default function FifthCreateStep() {
+  const { setCurrentStep, images, setImages, video, setVideo } =
+    useListingForm();
+  const [selectedImages, setSelectedImages] = useState<
+    { file: File; url: string; uploading: boolean; error: boolean }[]
+  >([]);
+  const [selectedVideo, setSelectedVideo] = useState<{
+    file: File;
+    url: string;
+    uploading: boolean;
+    error: boolean;
+  } | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [errors, setErrors] = useState<string[]>([]);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
+
+  // Upload a single image
+  const uploadImage = async (file: File, index: number) => {
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
+      const formData = new FormData();
+      formData.append("image", file);
+
+      // Update the status to uploading
+      setSelectedImages((prev) => {
+        const newImages = [...prev];
+        newImages[index] = { ...newImages[index], uploading: true };
+        return newImages;
+      });
+
+      const response = await axiosInstance.post(
+        `${baseUrl}/file-system/image`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      // Update the image URL and status
+      setSelectedImages((prev) => {
+        const newImages = [...prev];
+        newImages[index] = {
+          ...newImages[index],
+          uploading: false,
+          url: response.data.location,
+        };
+        return newImages;
+      });
+
+      // Add to context
+      setImages((prev) => [...prev, response.data.location]);
+
+      return response.data.location;
+    } catch (error) {
+      console.error("Upload error:", error);
+
+      // Mark as error
+      setSelectedImages((prev) => {
+        const newImages = [...prev];
+        newImages[index] = {
+          ...newImages[index],
+          uploading: false,
+          error: true,
+        };
+        return newImages;
+      });
+
+      return null;
+    }
+  };
+
+  // Upload video
+  const uploadVideo = async (file: File) => {
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
+      const formData = new FormData();
+      formData.append("file", file);
+
+      // Update the status to uploading
+      setSelectedVideo((prev) => {
+        if (!prev) return null;
+        return { ...prev, uploading: true };
+      });
+
+      const response = await axiosInstance.post(
+        `${baseUrl}/file-system/file`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      // Update the video URL and status
+      setSelectedVideo((prev) => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          uploading: false,
+          url: URL.createObjectURL(file), // Keep the local URL for preview
+        };
+      });
+
+      // Add to context
+      setVideo(response.data.location);
+
+      return response.data.location;
+    } catch (error) {
+      console.error("Video upload error:", error);
+
+      // Mark as error
+      setSelectedVideo((prev) => {
+        if (!prev) return null;
+        return { ...prev, uploading: false, error: true };
+      });
+
+      return null;
+    }
+  };
+
+  // Handle image selection
+  const handleImageSelect = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (!event.target.files) return;
+
+    const files = Array.from(event.target.files);
+    if (selectedImages.length + files.length > 20) {
+      setErrors(["Maksimum 20 görsel yükleyebilirsiniz."]);
+      return;
+    }
+
+    // Add files to local state first for immediate display
+    const newImageItems = files.map((file) => ({
+      file,
+      url: URL.createObjectURL(file),
+      uploading: false,
+      error: false,
+    }));
+
+    setSelectedImages((prev) => [...prev, ...newImageItems]);
+
+    // Upload each file immediately
+    files.forEach((file, idx) => {
+      const newIndex = selectedImages.length + idx;
+      uploadImage(file, newIndex);
+    });
+  };
+
+  // Handle video selection
+  const handleVideoSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files || !event.target.files[0]) return;
+
+    const file = event.target.files[0];
+
+    // Create local preview
+    const videoObj = {
+      file,
+      url: URL.createObjectURL(file),
+      uploading: false,
+      error: false,
+    };
+
+    setSelectedVideo(videoObj);
+
+    // Start upload immediately
+    uploadVideo(file);
+  };
+
+  // Handle image drag and drop
+  const handleImageDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+
+    if (!event.dataTransfer.files) return;
+
+    const files = Array.from(event.dataTransfer.files).filter((file) =>
+      file.type.startsWith("image/")
+    );
+
+    if (selectedImages.length + files.length > 20) {
+      setErrors(["Maksimum 20 görsel yükleyebilirsiniz."]);
+      return;
+    }
+
+    // Add files to local state first for immediate display
+    const newImageItems = files.map((file) => ({
+      file,
+      url: URL.createObjectURL(file),
+      uploading: false,
+      error: false,
+    }));
+
+    setSelectedImages((prev) => [...prev, ...newImageItems]);
+
+    // Upload each file immediately
+    files.forEach((file, idx) => {
+      const newIndex = selectedImages.length + idx;
+      uploadImage(file, newIndex);
+    });
+  };
+
+  // Handle video drag and drop
+  const handleVideoDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+
+    if (!event.dataTransfer.files || !event.dataTransfer.files[0]) return;
+
+    const file = event.dataTransfer.files[0];
+    if (file.type.startsWith("video/")) {
+      // Create local preview
+      const videoObj = {
+        file,
+        url: URL.createObjectURL(file),
+        uploading: false,
+        error: false,
+      };
+
+      setSelectedVideo(videoObj);
+
+      // Start upload immediately
+      uploadVideo(file);
+    }
+  };
+
+  // Prevent default behavior for drag over
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+  };
+
+  // Remove image from selection
+  const removeImage = (index: number) => {
+    // Get the URL of the image being removed
+    const imageToRemove = selectedImages[index];
+
+    // Remove from selected images
+    setSelectedImages((prev) => prev.filter((_, i) => i !== index));
+
+    // If the image was uploaded successfully, remove from context
+    if (!imageToRemove.uploading && !imageToRemove.error && imageToRemove.url) {
+      setImages((prev) => prev.filter((url) => url !== imageToRemove.url));
+    }
+  };
+
+  // Remove video from selection
+  const removeVideo = () => {
+    setSelectedVideo(null);
+    setVideo("");
+  };
+
+  // Validate before proceeding
+  const handleComplete = () => {
+    const newErrors = [];
+
+    if (selectedImages.length === 0) {
+      newErrors.push("Lütfen en az bir görsel yükleyin.");
+    }
+
+    const hasUploadingImages = selectedImages.some((img) => img.uploading);
+    if (hasUploadingImages) {
+      newErrors.push("Yüklenmekte olan görseller var, lütfen bekleyin.");
+    }
+
+    const hasErrorImages = selectedImages.some((img) => img.error);
+    if (hasErrorImages) {
+      newErrors.push(
+        "Bazı görseller yüklenemedi. Lütfen tekrar deneyin veya bu görselleri kaldırın."
+      );
+    }
+
+    if (selectedVideo?.uploading) {
+      newErrors.push("Video yükleniyor, lütfen bekleyin.");
+    }
+
+    if (selectedVideo?.error) {
+      newErrors.push(
+        "Video yüklenemedi. Lütfen tekrar deneyin veya videoyu kaldırın."
+      );
+    }
+
+    if (newErrors.length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    // All uploads are complete, proceed to next step
+    setCurrentStep((prev) => prev + 1);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#ECEBF4] flex items-center justify-center p-4">
+      <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">
+        <div className="flex flex-col md:flex-row p-10">
+          {/* Left Info Panel - 30% width on desktop */}
+          <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 flex flex-col">
+            <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
+              İlan görsellerini yükleyin.
+            </h1>
+            <p className="mt-4 text-gray-500">
+              Magna amet sit ac lorem lacus volutpat quis. Faucibus amet quis
+              pellentesque quam augue commodo vitae. Pretium placerat
+              ullamcorper proin massa.
+            </p>
+            <span className="text-sm text-gray-600 mb-4 sm:mb-0 mt-auto">
+              Adım 5 / 5
+            </span>
+          </div>
+
+          {/* Right Form Panel - 70% width on desktop */}
+          <div className="w-full md:w-[70%] md:pl-6">
+            {/* Errors display */}
+            {errors.length > 0 && (
+              <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-red-800">
+                    Lütfen aşağıdaki hataları düzeltin:
+                  </h3>
+                  <div className="mt-2 text-sm text-red-700">
+                    <ul className="list-disc pl-5 space-y-1">
+                      {errors.map((error, index) => (
+                        <li key={index}>{error}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Image Upload Section */}
+            <div className="mb-8">
+              <h2 className="font-semibold text-lg mb-2 text-gray-700">
+                Görseller
+              </h2>
+              <p className="text-sm text-gray-500 mb-4">
+                Maksimum 20 görsel yükleyebilirsiniz. (JPG, PNG)
+              </p>
+
+              {/* Drag and drop area for images */}
+              <div
+                className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center bg-gray-50 cursor-pointer"
+                onClick={() => imageInputRef.current?.click()}
+                onDrop={handleImageDrop}
+                onDragOver={handleDragOver}
+              >
+                <input
+                  type="file"
+                  ref={imageInputRef}
+                  onChange={handleImageSelect}
+                  multiple
+                  accept="image/jpeg,image/png"
+                  className="hidden"
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-8 h-8 text-gray-400"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 4.5v15m7.5-7.5h-15"
+                  />
+                </svg>
+                <p className="mt-2 text-sm text-gray-600">
+                  Bilgisayardan yükle veya sürükle bırak
+                </p>
+              </div>
+
+              {/* Image preview area */}
+              {selectedImages.length > 0 && (
+                <div className="mt-4 grid grid-cols-4 gap-4">
+                  {selectedImages.map((image, index) => (
+                    <div key={index} className="relative group">
+                      <img
+                        src={image.url}
+                        alt={`Preview ${index}`}
+                        className={`w-full h-24 object-cover rounded-lg ${
+                          image.error ? "opacity-50 border border-red-500" : ""
+                        }`}
+                      />
+                      {image.uploading ? (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-lg">
+                          <svg
+                            className="animate-spin h-6 w-6 text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
+                        </div>
+                      ) : (
+                        <div
+                          className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            removeImage(index);
+                          }}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6 text-white"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </div>
+                      )}
+                      {image.error && (
+                        <div className="absolute bottom-1 right-1 bg-white rounded-full p-1">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-4 h-4 text-red-600"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+                            />
+                          </svg>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Video Upload Section */}
+            <div className="mb-8">
+              <h2 className="font-semibold text-lg mb-2 text-gray-700">
+                Video
+              </h2>
+              <p className="text-sm text-gray-500 mb-4">
+                Maksimum 1 dakika uzunluğunda video yükleyebilirsiniz. (MP4,
+                MOV)
+              </p>
+
+              {/* Drag and drop area for video */}
+              <div
+                className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center bg-gray-50 cursor-pointer"
+                onClick={() => videoInputRef.current?.click()}
+                onDrop={handleVideoDrop}
+                onDragOver={handleDragOver}
+              >
+                <input
+                  type="file"
+                  ref={videoInputRef}
+                  onChange={handleVideoSelect}
+                  accept="video/mp4,video/quicktime"
+                  className="hidden"
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-8 h-8 text-gray-400"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 4.5v15m7.5-7.5h-15"
+                  />
+                </svg>
+                <p className="mt-2 text-sm text-gray-600">
+                  Bilgisayardan yükle veya sürükle bırak
+                </p>
+              </div>
+
+              {/* Video preview */}
+              {selectedVideo && (
+                <div className="mt-4 relative group">
+                  <video
+                    src={selectedVideo.url}
+                    className={`w-full h-40 object-cover rounded-lg ${
+                      selectedVideo.error
+                        ? "opacity-50 border border-red-500"
+                        : ""
+                    }`}
+                    controls
+                  />
+                  {selectedVideo.uploading ? (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-lg">
+                      <svg
+                        className="animate-spin h-8 w-8 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                    </div>
+                  ) : (
+                    <div
+                      className="absolute top-2 right-2 p-1 bg-white rounded-full cursor-pointer"
+                      onClick={removeVideo}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-5 h-5 text-gray-600"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </div>
+                  )}
+                  {selectedVideo.error && (
+                    <div className="absolute bottom-2 right-2 bg-white rounded-full p-1">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-5 h-5 text-red-600"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+                        />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Navigation buttons */}
+            <div className="mt-10 flex justify-between items-center">
+              <button
+                type="button"
+                onClick={() => setCurrentStep((prev) => prev - 1)}
+                className="flex items-center gap-2 text-[#6656AD] hover:text-[#5349a0] transition"
+              >
+                <ChevronLeftIcon className="h-5 w-5" />
+                <span>Geri</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleComplete}
+                disabled={
+                  isUploading ||
+                  selectedImages.some((img) => img.uploading) ||
+                  selectedVideo?.uploading
+                }
+                className="bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl transition disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {isUploading ||
+                selectedImages.some((img) => img.uploading) ||
+                selectedVideo?.uploading
+                  ? "Yükleniyor..."
+                  : "Tamamla"}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

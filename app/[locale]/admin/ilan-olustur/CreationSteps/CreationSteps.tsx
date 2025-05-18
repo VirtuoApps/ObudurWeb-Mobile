@@ -5,6 +5,7 @@ import FirstCreateStep from "./FirstCreateStep/FirstCreateStep";
 import SecondCreateStep from "./SecondCreateStep/SecondCreateStep";
 import ThirdCreateStep from "./ThirdCreateStep/ThirdCreateStep";
 import FourthCreateStep from "./FourthCreateStep/FourthCreateStep";
+import FifthCreateStep from "./FifthCreateStep/FifthCreateStep";
 
 // Define the multilingual text interface
 export interface MultilangText {
@@ -80,6 +81,11 @@ type ListingFormContextType = {
   setEditingDistanceId: React.Dispatch<React.SetStateAction<string | null>>;
   editingDistanceValue: string;
   setEditingDistanceValue: React.Dispatch<React.SetStateAction<string>>;
+  // Images and video fields
+  images: string[];
+  setImages: React.Dispatch<React.SetStateAction<string[]>>;
+  video: string;
+  setVideo: React.Dispatch<React.SetStateAction<string>>;
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
 };
@@ -149,6 +155,11 @@ export const ListingFormContext = createContext<ListingFormContextType>({
   setEditingDistanceId: () => {},
   editingDistanceValue: "",
   setEditingDistanceValue: () => {},
+  // Images and video fields default
+  images: [],
+  setImages: () => {},
+  video: "",
+  setVideo: () => {},
   currentStep: 1,
   setCurrentStep: () => {},
 });
@@ -223,10 +234,14 @@ export default function CreationSteps() {
   );
   const [editingDistanceValue, setEditingDistanceValue] = useState<string>("");
 
-  const [currentStep, setCurrentStep] = useState(4);
+  const [currentStep, setCurrentStep] = useState(1);
 
   // Orientation state
   const [orientation, setOrientation] = useState<string>("");
+
+  // Images and video states
+  const [images, setImages] = useState<string[]>([]);
+  const [video, setVideo] = useState<string>("");
 
   // Context value
   const contextValue = {
@@ -293,6 +308,11 @@ export default function CreationSteps() {
     setEditingDistanceId,
     editingDistanceValue,
     setEditingDistanceValue,
+    // Images and video fields
+    images,
+    setImages,
+    video,
+    setVideo,
     currentStep,
     setCurrentStep,
   };
@@ -303,6 +323,7 @@ export default function CreationSteps() {
       {currentStep === 2 && <SecondCreateStep />}
       {currentStep === 3 && <ThirdCreateStep />}
       {currentStep === 4 && <FourthCreateStep />}
+      {currentStep === 5 && <FifthCreateStep />}
     </ListingFormContext.Provider>
   );
 }
