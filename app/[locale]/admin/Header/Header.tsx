@@ -5,15 +5,20 @@ import AuthBox from "@/app/HomePage/Header/AuthBox/AuthBox";
 import Image from "next/image";
 import React, { useState } from "react";
 import { FaBars } from "react-icons/fa";
-
+import { useRouter } from "next/navigation";
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const router = useRouter();
 
   return (
     <header className="relative border-b shadow-sm py-4 bg-white h-[80px] w-full px-4 md:px-0">
       <div className="container mx-auto flex flex-wrap items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center">
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={() => router.push("/admin/ilanlar")}
+        >
           <Image
             src="/obudur-logo.png"
             alt="oBudur Logo"
