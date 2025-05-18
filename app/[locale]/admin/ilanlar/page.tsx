@@ -16,6 +16,7 @@ import {
   PlayIcon,
 } from "@heroicons/react/24/outline";
 import axiosInstance from "@/axios";
+import { useRouter } from "next/navigation";
 
 interface Price {
   amount: number;
@@ -58,6 +59,8 @@ export default function AdminListings() {
 
   const statusDropdownRef = useRef<HTMLDivElement>(null);
   const typeDropdownRef = useRef<HTMLDivElement>(null);
+
+  const router = useRouter();
 
   // Handle outside clicks to close dropdowns
   useEffect(() => {
@@ -368,6 +371,9 @@ export default function AdminListings() {
                           src="/edit-icon.png"
                           alt="edit"
                           className="w-8 h-8 text-gray-500 hover:scale-110  cursor-pointer transition"
+                          onClick={() => {
+                            router.push(`/admin/ilani-duzenle/${property._id}`);
+                          }}
                         />
                         <img
                           src="/message-details-icon.png"

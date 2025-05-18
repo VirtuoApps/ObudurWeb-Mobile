@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import { useListingForm } from "../CreationSteps";
 import axiosInstance from "@/axios";
@@ -38,6 +38,9 @@ export default function FifthCreateStep() {
     coordinates,
     featureIds,
     distances,
+    // Get update mode details
+    isUpdate,
+    hotelId,
   } = useListingForm();
 
   const [selectedImages, setSelectedImages] = useState<
@@ -55,6 +58,29 @@ export default function FifthCreateStep() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
+
+  // Initialize selectedImages with existing images when in update mode
+  useEffect(() => {
+    if (isUpdate && images.length > 0) {
+      const existingImages = images.map((imageUrl) => ({
+        file: new File([], "existing-image"), // Dummy file, not needed for existing images
+        url: imageUrl,
+        uploading: false,
+        error: false,
+      }));
+      setSelectedImages(existingImages);
+    }
+
+    // Initialize video preview if one exists
+    if (isUpdate && video) {
+      setSelectedVideo({
+        file: new File([], "existing-video"), // Dummy file, not needed for existing video
+        url: video,
+        uploading: false,
+        error: false,
+      });
+    }
+  }, [isUpdate, images, video]);
 
   // Upload a single image
   const uploadImage = async (file: File, index: number) => {
@@ -163,7 +189,7 @@ export default function FifthCreateStep() {
     }
   };
 
-  // Submit hotel creation
+  // Submit hotel creation or update
   const submitHotelCreation = async () => {
     try {
       setIsSubmitting(true);
@@ -212,19 +238,31 @@ export default function FifthCreateStep() {
 
       console.log("hotelData", hotelData);
 
-      // Send POST request to create hotel
-      const response = await axiosInstance.post("/admin/hotels", hotelData);
+      let response;
 
-      // Handle successful creation
-      console.log("Hotel created successfully:", response.data);
+      // If in update mode, use PATCH instead of POST
+      if (isUpdate && hotelId) {
+        // Send PATCH request to update hotel
+        response = await axiosInstance.patch(
+          `/admin/hotels/${hotelId}`,
+          hotelData
+        );
+        console.log("Hotel updated successfully:", response.data);
+      } else {
+        // Send POST request to create hotel
+        response = await axiosInstance.post("/admin/hotels", hotelData);
+        console.log("Hotel created successfully:", response.data);
+      }
 
       // Redirect to admin dashboard or hotel list
       router.push("/admin/ilanlar");
     } catch (error: any) {
-      console.error("Hotel creation error:", error);
+      console.error(`Hotel ${isUpdate ? "update" : "creation"} error:`, error);
       setSubmitError(
         error.response?.data?.message ||
-          "İlan oluşturulurken bir hata oluştu. Lütfen tekrar deneyin."
+          `İlan ${
+            isUpdate ? "güncellenirken" : "oluşturulurken"
+          } bir hata oluştu. Lütfen tekrar deneyin.`
       );
     } finally {
       setIsSubmitting(false);
@@ -348,8 +386,8 @@ export default function FifthCreateStep() {
     // Remove from selected images
     setSelectedImages((prev) => prev.filter((_, i) => i !== index));
 
-    // If the image was uploaded successfully, remove from context
-    if (!imageToRemove.uploading && !imageToRemove.error && imageToRemove.url) {
+    // For new images (those that were just uploaded) or for existing images with a URL
+    if (imageToRemove.url) {
       setImages((prev) => prev.filter((url) => url !== imageToRemove.url));
     }
   };
@@ -364,7 +402,8 @@ export default function FifthCreateStep() {
   const handleComplete = () => {
     const newErrors = [];
 
-    if (selectedImages.length === 0) {
+    // Check if there are no images at all (neither in selectedImages nor in context)
+    if (selectedImages.length === 0 && images.length === 0) {
       newErrors.push("Lütfen en az bir görsel yükleyin.");
     }
 
@@ -395,7 +434,7 @@ export default function FifthCreateStep() {
       return;
     }
 
-    // Submit the hotel creation form
+    // Submit the hotel creation or update
     submitHotelCreation();
   };
 
@@ -406,7 +445,9 @@ export default function FifthCreateStep() {
           {/* Left Info Panel - 30% width on desktop */}
           <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 flex flex-col">
             <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
-              İlan görsellerini yükleyin.
+              {isUpdate
+                ? "İlan görsellerini düzenleyin."
+                : "İlan görsellerini yükleyin."}
             </h1>
             <p className="mt-4 text-gray-500">
               Magna amet sit ac lorem lacus volutpat quis. Faucibus amet quis
@@ -723,7 +764,7 @@ export default function FifthCreateStep() {
                 {isSubmitting ? (
                   <div className="flex items-center">
                     <svg
-                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      className="animate-spin mr-2 h-4 w-4 text-white"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
@@ -742,14 +783,10 @@ export default function FifthCreateStep() {
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                       ></path>
                     </svg>
-                    İlan Oluşturuluyor...
+                    <span>İşleniyor...</span>
                   </div>
-                ) : isUploading ||
-                  selectedImages.some((img) => img.uploading) ||
-                  selectedVideo?.uploading ? (
-                  "Yükleniyor..."
                 ) : (
-                  "İlanı Oluştur"
+                  <span>{isUpdate ? "Güncelle" : "Oluştur"}</span>
                 )}
               </button>
             </div>

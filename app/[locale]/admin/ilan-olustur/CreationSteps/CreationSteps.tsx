@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, createContext, useContext } from "react";
+import React, { useState, createContext, useContext, useEffect } from "react";
 import FirstCreateStep from "./FirstCreateStep/FirstCreateStep";
 import SecondCreateStep from "./SecondCreateStep/SecondCreateStep";
 import ThirdCreateStep from "./ThirdCreateStep/ThirdCreateStep";
@@ -10,6 +10,46 @@ import FifthCreateStep from "./FifthCreateStep/FifthCreateStep";
 // Define the multilingual text interface
 export interface MultilangText {
   [key: string]: string;
+}
+
+// Define the hotel data interface
+export interface HotelData {
+  _id: string;
+  no: number;
+  face: string;
+  slug: string;
+  title: MultilangText;
+  description: MultilangText;
+  country: MultilangText;
+  city: MultilangText;
+  state: MultilangText;
+  street: MultilangText;
+  buildingNo: string;
+  apartmentNo: string;
+  postalCode: string;
+  floorCount: number;
+  price: { amount: number; currency: string }[];
+  images: string[];
+  roomAsText: string;
+  projectArea: number;
+  totalSize: number;
+  buildYear: number;
+  kitchenType: MultilangText;
+  roomCount: number;
+  bathroomCount: number;
+  balconyCount: number;
+  bedRoomCount: number;
+  housingType: MultilangText;
+  entranceType: MultilangText;
+  listingType: MultilangText;
+  featureIds: string[];
+  distances: { typeId: string; value: number }[];
+  location: {
+    type: string;
+    coordinates: [number, number];
+  };
+  documents: string[];
+  video: string;
 }
 
 // Define the context type
@@ -88,6 +128,9 @@ type ListingFormContextType = {
   setVideo: React.Dispatch<React.SetStateAction<string>>;
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+  // Update mode
+  isUpdate: boolean;
+  hotelId: string | null;
 };
 
 // Create the context with default values
@@ -162,12 +205,23 @@ export const ListingFormContext = createContext<ListingFormContextType>({
   setVideo: () => {},
   currentStep: 1,
   setCurrentStep: () => {},
+  // Update mode defaults
+  isUpdate: false,
+  hotelId: null,
 });
 
 // Custom hook to use the context
 export const useListingForm = () => useContext(ListingFormContext);
 
-export default function CreationSteps() {
+interface CreationStepsProps {
+  isUpdate?: boolean;
+  hotelData?: HotelData;
+}
+
+export default function CreationSteps({
+  isUpdate = false,
+  hotelData,
+}: CreationStepsProps) {
   // All form states moved from FirstCreateStep
   const [listingType, setListingType] = useState<MultilangText>({
     tr: "Satılık",
@@ -243,6 +297,57 @@ export default function CreationSteps() {
   const [images, setImages] = useState<string[]>([]);
   const [video, setVideo] = useState<string>("");
 
+  // Set hotelId from hotelData if in update mode
+  const hotelId = isUpdate && hotelData ? hotelData._id : null;
+
+  // Effect to initialize form with hotel data when in update mode
+  useEffect(() => {
+    if (isUpdate && hotelData) {
+      // First step data
+      setListingType(hotelData.listingType);
+      setEntranceType(hotelData.entranceType);
+      setHousingType(hotelData.housingType);
+      setTitle(hotelData.title);
+      setDescription(hotelData.description);
+
+      // Second step data
+      setPrice(hotelData.price);
+      setProjectArea(hotelData.projectArea);
+      setTotalSize(hotelData.totalSize);
+      setRoomCount(hotelData.roomCount);
+      setBathroomCount(hotelData.bathroomCount);
+      setBedRoomCount(hotelData.bedRoomCount);
+      setFloorCount(hotelData.floorCount);
+      setBuildYear(hotelData.buildYear);
+      setKitchenType(hotelData.kitchenType);
+
+      // Set orientation (face)
+      setOrientation(hotelData.face);
+
+      // Third step data - Address
+      setCountry(hotelData.country);
+      setCity(hotelData.city);
+      setState(hotelData.state);
+      setStreet(hotelData.street);
+      setBuildingNo(hotelData.buildingNo);
+      setApartmentNo(hotelData.apartmentNo);
+      setPostalCode(hotelData.postalCode);
+
+      // Set coordinates if available
+      if (hotelData.location && hotelData.location.coordinates) {
+        setCoordinates(hotelData.location.coordinates as [number, number]);
+      }
+
+      // Fourth step data
+      setFeatureIds(hotelData.featureIds);
+      setDistances(hotelData.distances);
+
+      // Fifth step data
+      setImages(hotelData.images);
+      setVideo(hotelData.video);
+    }
+  }, [isUpdate, hotelData]);
+
   // Context value
   const contextValue = {
     listingType,
@@ -315,6 +420,9 @@ export default function CreationSteps() {
     setVideo,
     currentStep,
     setCurrentStep,
+    // Update mode
+    isUpdate,
+    hotelId,
   };
 
   return (

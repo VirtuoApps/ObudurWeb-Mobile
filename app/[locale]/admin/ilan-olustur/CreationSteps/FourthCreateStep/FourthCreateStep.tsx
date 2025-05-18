@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ChevronRightIcon } from "@heroicons/react/24/solid";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useListingForm } from "../CreationSteps";
 import axiosInstance from "@/axios";
 import {
@@ -322,6 +322,10 @@ export default function FourthCreateStep() {
     );
   };
 
+  const handleBack = () => {
+    setCurrentStep(3);
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -599,7 +603,15 @@ export default function FourthCreateStep() {
             </div>
 
             {/* Step counter and continue button */}
-            <div className="mt-10 flex flex-col sm:flex-row justify-end items-center">
+            <div className="mt-10 flex flex-col sm:flex-row justify-between items-center">
+              <button
+                type="button"
+                onClick={handleBack}
+                className="w-full mb-4 sm:mb-0 sm:w-auto bg-white hover:bg-gray-50 text-[#6656AD] font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition border border-[#6656AD]"
+              >
+                <ChevronLeftIcon className="h-5 w-5" />
+                Geri
+              </button>
               <button
                 type="button"
                 onClick={handleContinue}
