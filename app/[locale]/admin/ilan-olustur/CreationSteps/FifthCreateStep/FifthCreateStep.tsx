@@ -219,7 +219,7 @@ export default function FifthCreateStep() {
       console.log("Hotel created successfully:", response.data);
 
       // Redirect to admin dashboard or hotel list
-      router.push("/admin/hotels");
+      router.push("/admin/ilanlar");
     } catch (error: any) {
       console.error("Hotel creation error:", error);
       setSubmitError(
