@@ -2,10 +2,44 @@ import React, { useState, useRef } from "react";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import { useListingForm } from "../CreationSteps";
 import axiosInstance from "@/axios";
+import { useRouter } from "next/navigation";
 
 export default function FifthCreateStep() {
-  const { setCurrentStep, images, setImages, video, setVideo } =
-    useListingForm();
+  const router = useRouter();
+  const {
+    setCurrentStep,
+    images,
+    setImages,
+    video,
+    setVideo,
+    // Get all the necessary data from context
+    title,
+    description,
+    listingType,
+    entranceType,
+    housingType,
+    price,
+    projectArea,
+    totalSize,
+    roomCount,
+    bathroomCount,
+    bedRoomCount,
+    floorCount,
+    buildYear,
+    kitchenType,
+    orientation,
+    country,
+    city,
+    state,
+    street,
+    buildingNo,
+    apartmentNo,
+    postalCode,
+    coordinates,
+    featureIds,
+    distances,
+  } = useListingForm();
+
   const [selectedImages, setSelectedImages] = useState<
     { file: File; url: string; uploading: boolean; error: boolean }[]
   >([]);
@@ -17,6 +51,8 @@ export default function FifthCreateStep() {
   } | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
 
@@ -124,6 +160,74 @@ export default function FifthCreateStep() {
       });
 
       return null;
+    }
+  };
+
+  // Submit hotel creation
+  const submitHotelCreation = async () => {
+    try {
+      setIsSubmitting(true);
+      setSubmitError(null);
+
+      // Map data from context to DTO format
+      const hotelData = {
+        title,
+        description,
+        listingType,
+        entranceType,
+        housingType,
+        price: price.map((p) => ({
+          amount: p.amount,
+          currency: p.currency,
+        })),
+        projectArea,
+        totalSize,
+        roomCount,
+        bathroomCount,
+        bedRoomCount,
+        floorCount,
+        buildYear,
+        kitchenType,
+        face: orientation, // Map orientation to face field
+        country,
+        city,
+        state,
+        street,
+        buildingNo,
+        apartmentNo,
+        postalCode,
+        location: {
+          type: "Point",
+          coordinates: coordinates,
+        },
+        featureIds,
+        distances: distances.map((d) => ({
+          typeId: d.typeId,
+          value: d.value,
+        })),
+        images,
+        // Add video if available
+        ...(video && { video }),
+      };
+
+      console.log("hotelData", hotelData);
+
+      // Send POST request to create hotel
+      const response = await axiosInstance.post("/admin/hotels", hotelData);
+
+      // Handle successful creation
+      console.log("Hotel created successfully:", response.data);
+
+      // Redirect to admin dashboard or hotel list
+      router.push("/admin/hotels");
+    } catch (error: any) {
+      console.error("Hotel creation error:", error);
+      setSubmitError(
+        error.response?.data?.message ||
+          "İlan oluşturulurken bir hata oluştu. Lütfen tekrar deneyin."
+      );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -291,8 +395,8 @@ export default function FifthCreateStep() {
       return;
     }
 
-    // All uploads are complete, proceed to next step
-    setCurrentStep((prev) => prev + 1);
+    // Submit the hotel creation form
+    submitHotelCreation();
   };
 
   return (
@@ -330,6 +434,18 @@ export default function FifthCreateStep() {
                       ))}
                     </ul>
                   </div>
+                </div>
+              </div>
+            )}
+
+            {/* Form submission error */}
+            {submitError && (
+              <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-red-800">
+                    İlan oluşturma hatası:
+                  </h3>
+                  <div className="mt-2 text-sm text-red-700">{submitError}</div>
                 </div>
               </div>
             )}
@@ -587,6 +703,7 @@ export default function FifthCreateStep() {
                 type="button"
                 onClick={() => setCurrentStep((prev) => prev - 1)}
                 className="flex items-center gap-2 text-[#6656AD] hover:text-[#5349a0] transition"
+                disabled={isSubmitting}
               >
                 <ChevronLeftIcon className="h-5 w-5" />
                 <span>Geri</span>
@@ -598,15 +715,42 @@ export default function FifthCreateStep() {
                 disabled={
                   isUploading ||
                   selectedImages.some((img) => img.uploading) ||
-                  selectedVideo?.uploading
+                  selectedVideo?.uploading ||
+                  isSubmitting
                 }
                 className="bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl transition disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                {isUploading ||
-                selectedImages.some((img) => img.uploading) ||
-                selectedVideo?.uploading
-                  ? "Yükleniyor..."
-                  : "Tamamla"}
+                {isSubmitting ? (
+                  <div className="flex items-center">
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    İlan Oluşturuluyor...
+                  </div>
+                ) : isUploading ||
+                  selectedImages.some((img) => img.uploading) ||
+                  selectedVideo?.uploading ? (
+                  "Yükleniyor..."
+                ) : (
+                  "İlanı Oluştur"
+                )}
               </button>
             </div>
           </div>
