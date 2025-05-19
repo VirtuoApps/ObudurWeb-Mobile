@@ -214,7 +214,14 @@
     "loginPromptTitle": "İletişime Geçin",
     "loginPromptDescription": "Emlak danışmanına mesaj göndermek veya telefon numarasına ulaşmak için lütfen giriş yapın.",
     "loginButton": "Giriş Yap",
-    "agentCompanyName": "Motto Yatırım"
+    "agentCompanyName": "Motto Yatırım",
+    "agentImageAlt": "Emlak Danışmanı",
+    "placeholderImage": "https://via.placeholder.com/150",
+    "sending": "Gönderiliyor...",
+    "messageSent": "Mesaj Gönderildi",
+    "messageSentTitle": "Mesaj Gönderildi",
+    "messageSentDescription": "Bu mülk için zaten iletişime geçtiniz. Emlak danışmanı sizinle en kısa sürede iletişime geçecektir.",
+    "errorSendingMessage": "Mesaj gönderilirken bir hata oluştu. Lütfen tekrar deneyin."
   },
   "generalInfo": {
     "listingNumber": "İlan No: #{id}",

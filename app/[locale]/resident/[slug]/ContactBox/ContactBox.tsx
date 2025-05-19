@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import { Switch } from "@headlessui/react";
 import { countryCodes } from "./countryCodes";
@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
+import { useAppSelector } from "@/app/store/hooks";
+import axiosInstance from "@/axios";
 
 // Define the type for form data
 type ContactFormData = {
@@ -17,10 +19,33 @@ type ContactFormData = {
   message: string;
 };
 
-export default function ContactBox() {
+type ExistingMessage = {
+  _id: string;
+  senderUserId: string;
+  hotelId: string;
+  message: string;
+  isInitialMessage: boolean;
+  from: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  isSeen: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export default function ContactBox({ hotelData }: { hotelData: any }) {
   const [countryCode, setCountryCode] = useState("+90");
   const [wantsVisit, setWantsVisit] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [existingMessage, setExistingMessage] =
+    useState<ExistingMessage | null>(null);
+  const [submitError, setSubmitError] = useState("");
   const t = useTranslations("contactBox");
+
+  const { user } = useAppSelector((state) => state.user);
+  const isLoginned = user ? true : false;
 
   // Define the schema for form validation
   const contactSchema = z.object({
@@ -35,6 +60,8 @@ export default function ContactBox() {
     register,
     handleSubmit,
     formState: { errors, isValid },
+    reset,
+    setValue,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
     mode: "onChange",
@@ -47,8 +74,107 @@ export default function ContactBox() {
     },
   });
 
-  const onSubmit = (data: ContactFormData) => {
-    console.log({ ...data, countryCode, wantsVisit });
+  console.log({
+    hotelData,
+  });
+
+  // Fill form with user data immediately when user data is available
+  useEffect(() => {
+    if (user) {
+      console.log("Setting user data in form:", user);
+      if (user.firstName) setValue("firstName", user.firstName);
+      if (user.lastName) setValue("lastName", user.lastName);
+      if (user.email) setValue("email", user.email);
+    }
+  }, [user, setValue]);
+
+  // Check for existing messages when component mounts if user is logged in
+  useEffect(() => {
+    const checkExistingMessages = async () => {
+      if (isLoginned && hotelData?.hotelDetails?._id) {
+        try {
+          setLoading(true);
+          const response = await axiosInstance.get(
+            `/hotel-messages/hotels/${hotelData.hotelDetails._id}`
+          );
+
+          if (response.data) {
+            setExistingMessage(response.data);
+
+            // Pre-fill form with existing data
+            setValue("firstName", response.data.firstName);
+            setValue("lastName", response.data.lastName);
+            setValue("email", response.data.email);
+
+            // Handle phone number with country code
+            if (response.data.phoneNumber) {
+              const phoneWithoutCode = response.data.phoneNumber.replace(
+                /^\+\d+\s/,
+                ""
+              );
+              const countryCodeMatch =
+                response.data.phoneNumber.match(/^\+(\d+)/);
+              if (countryCodeMatch) {
+                setCountryCode(`+${countryCodeMatch[1]}`);
+              }
+              setValue("phone", phoneWithoutCode);
+            }
+          }
+        } catch (error) {
+          console.log("Error fetching existing messages:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    checkExistingMessages();
+  }, [isLoginned, hotelData, setValue]);
+
+  const onSubmit = async (data: ContactFormData) => {
+    if (existingMessage) return;
+
+    try {
+      setLoading(true);
+      setSubmitError("");
+
+      const payload = {
+        message: data.message,
+        hotelId: hotelData.hotelDetails._id,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        phoneNumber: `${countryCode} ${data.phone}`,
+        email: data.email,
+        wantsVisit,
+        iWantToSeeProperty: wantsVisit,
+      };
+
+      await axiosInstance.post("/hotel-messages/initial", payload);
+
+      // Set as existing message to prevent further submissions
+      setExistingMessage({
+        _id: Date.now().toString(),
+        senderUserId: user?._id || "",
+        hotelId: hotelData.hotelDetails._id,
+        message: data.message,
+        isInitialMessage: true,
+        from: "user",
+        firstName: data.firstName,
+        lastName: data.lastName,
+        phoneNumber: `${countryCode} ${data.phone}`,
+        email: data.email,
+        isSeen: false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      });
+
+      // Optional: Show success message
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setSubmitError(t("errorSendingMessage"));
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCountryCodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -59,7 +185,19 @@ export default function ContactBox() {
     setWantsVisit(checked);
   };
 
-  const isLoginned = false;
+  const managerName = `${hotelData.manager.firstName} ${hotelData.manager.lastName}`;
+
+  const maskName = (name: string) => {
+    return name
+      .split(" ")
+      .map((part) => {
+        if (!part) return "";
+        return `${part[0]}${Array(part.length - 1)
+          .fill("*")
+          .join("")}`;
+      })
+      .join(" ");
+  };
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden max-w-md w-full p-4">
@@ -69,21 +207,21 @@ export default function ContactBox() {
           <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-300 mr-4 flex-shrink-0">
             <img
               src="/example-person.png"
-              alt="Bruce Wayne"
+              alt={t("agentImageAlt")}
               className="w-full h-full object-cover"
               onError={(e) => {
                 (e.target as HTMLImageElement).src =
-                  "https://via.placeholder.com/150";
+                  t("placeholderImage") || "https://via.placeholder.com/150";
               }}
             />
           </div>
           <div className="text-white">
             <h3 className="font-bold text-lg">
-              {isLoginned ? "Bruce Wayne" : "B**** W****"}
+              {isLoginned ? managerName : maskName(managerName)}
             </h3>
-            <p className="text-white/80 text-sm">
+            {/* <p className="text-white/80 text-sm">
               {isLoginned ? t("agentCompanyName") : "M**** Y****"}
-            </p>
+            </p> */}
           </div>
         </div>
 
@@ -121,6 +259,23 @@ export default function ContactBox() {
         <div className="p-4">
           <h4 className="font-medium text-gray-800 mb-4">{t("getMoreInfo")}</h4>
 
+          {existingMessage ? (
+            <div className="bg-green-50 p-4 rounded-xl border border-green-200 mb-4">
+              <h5 className="font-medium text-green-800 mb-2">
+                {t("messageSentTitle")}
+              </h5>
+              <p className="text-green-700 text-sm">
+                {t("messageSentDescription")}
+              </p>
+            </div>
+          ) : null}
+
+          {submitError && (
+            <div className="bg-red-50 p-4 rounded-xl border border-red-200 mb-4">
+              <p className="text-red-700 text-sm">{submitError}</p>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit(onSubmit as any)}>
             <div className="mb-3">
               <input
@@ -128,9 +283,14 @@ export default function ContactBox() {
                 id="firstName"
                 placeholder={t("firstName")}
                 {...register("firstName")}
+                disabled={loading || !!existingMessage}
                 className={`w-full border ${
                   errors.firstName ? "border-red-500" : "border-gray-300"
-                } rounded-2xl text-sm placeholder:text-gray-400 text-[#262626] font-semibold py-4 px-3`}
+                } rounded-2xl text-sm placeholder:text-gray-400 text-[#262626] font-semibold py-4 px-3 ${
+                  loading || !!existingMessage
+                    ? "bg-gray-100 cursor-not-allowed"
+                    : ""
+                }`}
               />
               {errors.firstName && (
                 <p className="text-red-500 text-xs mt-1">
@@ -145,9 +305,14 @@ export default function ContactBox() {
                 id="lastName"
                 placeholder={t("lastName")}
                 {...register("lastName")}
+                disabled={loading || !!existingMessage}
                 className={`w-full border ${
                   errors.lastName ? "border-red-500" : "border-gray-300"
-                } rounded-2xl text-sm placeholder:text-gray-400 text-[#262626] font-semibold py-4 px-3`}
+                } rounded-2xl text-sm placeholder:text-gray-400 text-[#262626] font-semibold py-4 px-3 ${
+                  loading || !!existingMessage
+                    ? "bg-gray-100 cursor-not-allowed"
+                    : ""
+                }`}
               />
               {errors.lastName && (
                 <p className="text-red-500 text-xs mt-1">
@@ -162,9 +327,14 @@ export default function ContactBox() {
                 id="email"
                 placeholder={t("email")}
                 {...register("email")}
+                disabled={loading || !!existingMessage}
                 className={`w-full border ${
                   errors.email ? "border-red-500" : "border-gray-300"
-                } rounded-2xl text-sm placeholder:text-gray-400 text-[#262626] font-semibold py-4 px-3`}
+                } rounded-2xl text-sm placeholder:text-gray-400 text-[#262626] font-semibold py-4 px-3 ${
+                  loading || !!existingMessage
+                    ? "bg-gray-100 cursor-not-allowed"
+                    : ""
+                }`}
               />
               {errors.email && (
                 <p className="text-red-500 text-xs mt-1">
@@ -186,7 +356,12 @@ export default function ContactBox() {
                     name="countryCode"
                     value={countryCode}
                     onChange={handleCountryCodeChange}
-                    className="bg-white border border-gray-300 rounded-2xl text-sm text-[#262626] font-semibold py-4 px-2 w-24 appearance-none pr-8"
+                    disabled={loading || !!existingMessage}
+                    className={`bg-white border border-gray-300 rounded-2xl text-sm text-[#262626] font-semibold py-4 px-2 w-24 appearance-none pr-8 ${
+                      loading || !!existingMessage
+                        ? "bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
                   >
                     {countryCodes.map((country, index) => (
                       <option
@@ -206,9 +381,14 @@ export default function ContactBox() {
                   id="phone"
                   {...register("phone")}
                   placeholder={t("phoneNumber")}
+                  disabled={loading || !!existingMessage}
                   className={`w-full border ${
                     errors.phone ? "border-red-500" : "border-gray-300"
-                  } rounded-2xl text-sm placeholder:text-gray-400 text-[#262626] font-semibold py-4 px-3`}
+                  } rounded-2xl text-sm placeholder:text-gray-400 text-[#262626] font-semibold py-4 px-3 ${
+                    loading || !!existingMessage
+                      ? "bg-gray-100 cursor-not-allowed"
+                      : ""
+                  }`}
                 />
               </div>
               {errors.phone && (
@@ -222,9 +402,14 @@ export default function ContactBox() {
               <Switch
                 checked={wantsVisit}
                 onChange={toggleVisit}
+                disabled={loading || !!existingMessage}
                 className={`${
                   wantsVisit ? "bg-[#31286A]" : "bg-gray-200"
-                } relative inline-flex h-6 w-11 items-center rounded-full transition-colors`}
+                } relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                  loading || !!existingMessage
+                    ? "opacity-60 cursor-not-allowed"
+                    : ""
+                }`}
               >
                 <span className="sr-only">{t("wantToVisit")}</span>
                 <span
@@ -252,9 +437,14 @@ export default function ContactBox() {
                 id="message"
                 {...register("message")}
                 rows={4}
+                disabled={loading || !!existingMessage}
                 className={`w-full px-3 py-2 border ${
                   errors.message ? "border-red-500" : "border-gray-300"
-                } rounded-2xl text-sm resize-none placeholder:text-gray-400 text-[#262626] font-semibold pt-10`}
+                } rounded-2xl text-sm resize-none placeholder:text-gray-400 text-[#262626] font-semibold pt-10 ${
+                  loading || !!existingMessage
+                    ? "bg-gray-100 cursor-not-allowed"
+                    : ""
+                }`}
               />
               {errors.message && (
                 <p className="text-red-500 text-xs mt-1">
@@ -265,14 +455,18 @@ export default function ContactBox() {
 
             <button
               type="submit"
-              disabled={!isValid}
+              disabled={!isValid || loading || !!existingMessage}
               className={`w-full py-3 rounded-xl font-medium cursor-pointer ${
-                isValid
+                isValid && !loading && !existingMessage
                   ? "bg-[#31286A] text-white"
                   : "bg-[#F0F0F0] text-gray-700 cursor-not-allowed"
               }`}
             >
-              {t("sendMessage")}
+              {loading
+                ? t("sending")
+                : existingMessage
+                ? t("messageSent")
+                : t("sendMessage")}
             </button>
           </form>
         </div>

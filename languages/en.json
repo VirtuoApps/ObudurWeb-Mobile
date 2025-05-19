@@ -214,7 +214,14 @@
     "loginPromptTitle": "Contact Agent",
     "loginPromptDescription": "Please log in to send a message to the real estate agent or access their phone number.",
     "loginButton": "Login",
-    "agentCompanyName": "Motto Investment"
+    "agentCompanyName": "Motto Investment",
+    "agentImageAlt": "Real Estate Agent",
+    "placeholderImage": "https://via.placeholder.com/150",
+    "sending": "Sending...",
+    "messageSent": "Message Sent",
+    "messageSentTitle": "Message Already Sent",
+    "messageSentDescription": "You have already contacted this property. The agent will get back to you soon.",
+    "errorSendingMessage": "Error sending message. Please try again."
   },
   "generalInfo": {
     "listingNumber": "Listing No: #{id}",

@@ -134,11 +134,11 @@ export default async function ResidentPage({
             <FeaturesEquipment />
             <PanoramicView />
             <Location />
-            <PlansAndDocumentation />
+            {/* <PlansAndDocumentation /> */}
           </div>
 
           <div className="md:w-[30%] w-full p-4 pt-2">
-            <ContactBox />
+            <ContactBox hotelData={hotelData} />
           </div>
         </div>
 
