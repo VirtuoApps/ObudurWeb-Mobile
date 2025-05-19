@@ -4,6 +4,7 @@ import "../globals.css";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { ReduxProvider } from "../providers/ReduxProvider";
+import FavoritesProvider from "../providers/FavoritesProvider";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -57,7 +58,9 @@ export default async function LocaleLayout({ children, params }: Props) {
         className={`${geistMono.variable} ${kumbhSans.variable} antialiased`}
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <ReduxProvider>{children}</ReduxProvider>
+          <ReduxProvider>
+            <FavoritesProvider>{children}</FavoritesProvider>
+          </ReduxProvider>
         </NextIntlClientProvider>
       </body>
     </html>

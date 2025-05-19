@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MapPinIcon,
   HomeIcon,
@@ -13,6 +13,14 @@ import FloorCountIcon from "@/app/svgIcons/FloorCountIcon";
 import AreaIcon from "@/app/svgIcons/AreaIcon";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "@/app/store/store";
+import AuthPopup from "@/app/components/AuthPopup/AuthPopup";
+import {
+  addToFavorites,
+  removeFromFavorites,
+} from "@/app/store/favoritesSlice";
+
 interface ResidentBoxProps {
   isFavorite?: boolean;
   slug: string;
@@ -26,6 +34,7 @@ interface ResidentBoxProps {
   area: string;
   locationText: string;
   image?: string;
+  hotelId: string; // Add hotelId for API calls
 }
 
 export default function ResidentBox({
@@ -41,93 +50,129 @@ export default function ResidentBox({
   area = "240m²",
   locationText = "814 E Highland Dr, Seattle, WA 98102",
   image = "/example-house.png",
+  hotelId,
 }: ResidentBoxProps) {
   const t = useTranslations("residentBox");
-  const [localIsFavorite, setLocalIsFavorite] = useState(propIsFavorite);
+  const [isAuthPopupOpen, setIsAuthPopupOpen] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector((state: RootState) => state.user.user);
+  const favorites = useSelector(
+    (state: RootState) => state.favorites.favorites
+  );
 
   const router = useRouter();
 
-  const handleFavoriteToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+  // Check if this hotel is in favorites
+  const isFavorite = favorites.some((favorite) => favorite.hotelId === hotelId);
+
+  const handleFavoriteToggle = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.stopPropagation();
-    setLocalIsFavorite(!localIsFavorite);
+
+    // If user is not logged in, show auth popup
+    if (!user) {
+      setIsAuthPopupOpen(true);
+      return;
+    }
+
+    try {
+      if (isFavorite) {
+        // Remove from favorites using Redux action
+        dispatch(removeFromFavorites(hotelId));
+      } else {
+        // Add to favorites using Redux action
+        dispatch(addToFavorites(hotelId));
+      }
+    } catch (error) {
+      console.error("Error updating favorite status:", error);
+    }
   };
 
   return (
-    <div
-      className="w-full overflow-hidden bg-white rounded-xl hover:shadow-lg transition-shadow duration-300 cursor-pointer"
-      onClick={() => router.push(`/resident/${slug}`)}
-    >
-      {/* Image container with badges */}
-      <div className="relative">
-        <img
-          src={image}
-          alt={title}
-          className="w-full h-48 object-cover rounded-lg"
-        />
-
-        {/* Sale badge */}
-        <div className="absolute top-3 left-3 flex flex-row items-center">
-          <div className=" bg-white border border-gray-200 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-lg">
-            {type}
-          </div>
-          {isOptinable && (
-            <div className=" bg-[#EC755D] border border-[#EC755D] text-white ml-2 text-xs font-semibold px-3 py-1 rounded-lg">
-              {t("optinable")}
-            </div>
-          )}
-        </div>
-
-        {/* Favorite button */}
-        <button
-          onClick={handleFavoriteToggle}
-          className="absolute top-0 right-0 p-1.5  rounded-full cursor-pointer"
-        >
-          <LikeIcon
-            fill={localIsFavorite ? "#362C75" : "#362C75"}
-            fillOpacity={localIsFavorite ? "1" : "0.2"}
+    <>
+      <div
+        className="w-full overflow-hidden bg-white rounded-xl hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+        onClick={() => router.push(`/resident/${slug}`)}
+      >
+        {/* Image container with badges */}
+        <div className="relative">
+          <img
+            src={image}
+            alt={title}
+            className="w-full h-48 object-cover rounded-lg"
           />
-        </button>
+
+          {/* Sale badge */}
+          <div className="absolute top-3 left-3 flex flex-row items-center">
+            <div className=" bg-white border border-gray-200 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-lg">
+              {type}
+            </div>
+            {isOptinable && (
+              <div className=" bg-[#EC755D] border border-[#EC755D] text-white ml-2 text-xs font-semibold px-3 py-1 rounded-lg">
+                {t("optinable")}
+              </div>
+            )}
+          </div>
+
+          {/* Favorite button */}
+          <button
+            onClick={handleFavoriteToggle}
+            className="absolute top-0 right-0 p-1.5  rounded-full cursor-pointer"
+          >
+            <LikeIcon
+              fill={isFavorite ? "#362C75" : "#362C75"}
+              fillOpacity={isFavorite ? "1" : "0.2"}
+            />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="p-4">
+          {/* Property type */}
+          <p className="text-xs text-gray-500 font-medium mb-1">
+            {residentTypeName}
+          </p>
+
+          <div className="flex flex-row items-center justify-between mb-4">
+            {/* Title */}
+            <h3 className="text-base font-bold text-gray-800 ">{title}</h3>
+
+            {/* Price */}
+            <p className="text-sm font-bold text-[#362C75]">{price}</p>
+          </div>
+
+          {/* Features */}
+          <div className="flex justify-between items-center mb-4 text-sm text-gray-800 font-semibold">
+            <div className="flex items-center space-x-1">
+              <BedIcon />
+              <span>{bedCount}</span>
+            </div>
+
+            <div className="flex items-center space-x-1">
+              <FloorCountIcon />
+              <span>{floorCount}</span>
+            </div>
+
+            <div className="flex items-center space-x-1">
+              <AreaIcon />
+              <span>{area}</span>
+            </div>
+          </div>
+
+          {/* Location */}
+          <div className="flex items-start space-x-1 text-xs text-gray-500">
+            <MapPinIcon className="w-4 h-4 flex-shrink-0 mt-0.5" />
+            <span>{locationText}</span>
+          </div>
+        </div>
       </div>
 
-      {/* Content */}
-      <div className="p-4">
-        {/* Property type */}
-        <p className="text-xs text-gray-500 font-medium mb-1">
-          {residentTypeName}
-        </p>
-
-        <div className="flex flex-row items-center justify-between mb-4">
-          {/* Title */}
-          <h3 className="text-base font-bold text-gray-800 ">{title}</h3>
-
-          {/* Price */}
-          <p className="text-sm font-bold text-[#362C75]">{price}</p>
-        </div>
-
-        {/* Features */}
-        <div className="flex justify-between items-center mb-4 text-sm text-gray-800 font-semibold">
-          <div className="flex items-center space-x-1">
-            <BedIcon />
-            <span>{bedCount}</span>
-          </div>
-
-          <div className="flex items-center space-x-1">
-            <FloorCountIcon />
-            <span>{floorCount}</span>
-          </div>
-
-          <div className="flex items-center space-x-1">
-            <AreaIcon />
-            <span>{area}</span>
-          </div>
-        </div>
-
-        {/* Location */}
-        <div className="flex items-start space-x-1 text-xs text-gray-500">
-          <MapPinIcon className="w-4 h-4 flex-shrink-0 mt-0.5" />
-          <span>{locationText}</span>
-        </div>
-      </div>
-    </div>
+      {/* Auth Popup */}
+      <AuthPopup
+        isOpen={isAuthPopupOpen}
+        onClose={() => setIsAuthPopupOpen(false)}
+      />
+    </>
   );
 }

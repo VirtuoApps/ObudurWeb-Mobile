@@ -79,6 +79,7 @@ export default function ListView({ hotels }: { hotels: Hotel[] }) {
       {hotels.map((hotel) => (
         <ResidentBox
           key={hotel._id}
+          hotelId={hotel._id}
           slug={hotel.slug}
           type={getLocalizedText(hotel.listingType)}
           isOptinable={false}
