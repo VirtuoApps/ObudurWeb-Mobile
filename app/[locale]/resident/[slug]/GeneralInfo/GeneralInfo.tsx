@@ -313,10 +313,10 @@ export default function GeneralInfo() {
             <span>{totalSize}m²</span>
           </div>
         </div>
-        <div className="flex items-center gap-2 text-[#262626] text-sm sm:text-base">
+        {/* <div className="flex items-center gap-2 text-[#262626] text-sm sm:text-base">
           <LocationIcon />
           <span className="truncate">{address[currentLocale]}</span>
-        </div>
+        </div> */}
       </div>
     </div>
   );

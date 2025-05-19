@@ -85,26 +85,30 @@ export default function Details() {
               {hotelData.hotelDetails.bathroomCount}
             </span>
           </div>
-          <div className="flex items-baseline">
-            <span className="w-32 shrink-0 font-medium text-gray-600">
-              {t("balconies")}:
-            </span>
-            <span className="font-semibold text-[#0F0F0F]">
-              {hotelData.hotelDetails.balconyCount}
-            </span>
-          </div>
+          {hotelData.hotelDetails.balconyCount && (
+            <div className="flex items-baseline">
+              <span className="w-32 shrink-0 font-medium text-gray-600">
+                {t("balconies")}:
+              </span>
+              <span className="font-semibold text-[#0F0F0F]">
+                {hotelData.hotelDetails.balconyCount}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Third Column */}
         <div className="flex flex-col gap-4">
-          <div className="flex items-baseline">
-            <span className="w-32 shrink-0 font-medium text-gray-600">
-              {t("floor")}:
-            </span>
-            <span className="font-semibold text-[#0F0F0F]">
-              {hotelData.hotelDetails.floorType[currentLocale]}
-            </span>
-          </div>
+          {hotelData.hotelDetails?.floorType && (
+            <div className="flex items-baseline">
+              <span className="w-32 shrink-0 font-medium text-gray-600">
+                {t("floor")}:
+              </span>
+              <span className="font-semibold text-[#0F0F0F]">
+                {hotelData.hotelDetails?.floorType?.[currentLocale]}
+              </span>
+            </div>
+          )}
           <div className="flex items-baseline">
             <span className="w-32 shrink-0 font-medium text-gray-600">
               {t("propertyType")}:

@@ -40,33 +40,22 @@ export default function Location() {
   const currentLocale = locale as keyof LocalizedText;
 
   const center = {
-    lat: hotelData.hotelDetails.location.coordinates[0],
-    lng: hotelData.hotelDetails.location.coordinates[1],
+    lat: hotelData.hotelDetails.location.coordinates[1],
+    lng: hotelData.hotelDetails.location.coordinates[0],
   };
+
+  console.log({
+    center,
+  });
+
   const containerStyle = {
     width: "100%",
-    height: "100%",
+    height: "500px",
   };
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyA64Bc3Y55vRFuugh8jxMon9ySYur4SvXY",
   });
-
-  const [markerIcon, setMarkerIcon] = useState<any>(null);
-
-  useEffect(() => {
-    if (isLoaded && typeof window !== "undefined") {
-      setMarkerIcon({
-        path: "M12,0 L188,0 Q200,0 200,12 L200,38 Q200,50 188,50 L12,50 Q0,50 0,38 L0,12 Q0,0 12,0 Z",
-        fillColor: "#5E5691",
-        fillOpacity: 1,
-        strokeWeight: 0,
-        scale: 0.4,
-        anchor: new window.google.maps.Point(100, 25),
-        labelOrigin: new window.google.maps.Point(100, 25),
-      });
-    }
-  }, [isLoaded]);
 
   return (
     <section id="location-section" className="max-w-5xl mx-auto p-4 mt-12">
@@ -83,29 +72,13 @@ export default function Location() {
           <GoogleMap
             mapContainerStyle={containerStyle}
             center={center}
-            zoom={15}
+            zoom={14}
             options={{
-              disableDefaultUI: true,
-              zoomControl: false,
-              styles: [
-                {
-                  featureType: "poi",
-                  elementType: "labels",
-                  stylers: [{ visibility: "off" }],
-                },
-              ],
+              streetViewControl: false,
+              mapTypeControl: false,
             }}
           >
-            <Marker
-              position={center}
-              label={{
-                text: t("property"),
-                color: "white",
-                fontSize: "12px",
-                fontWeight: "bold",
-              }}
-              icon={markerIcon}
-            />
+            <Marker position={center} />
           </GoogleMap>
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gray-100">
