@@ -67,6 +67,9 @@ export default function AdminListings() {
   );
   const [selectedStatus, setSelectedStatus] = useState<string>("");
   const [updateLoading, setUpdateLoading] = useState(false);
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
 
   const statusDropdownRef = useRef<HTMLDivElement>(null);
   const typeDropdownRef = useRef<HTMLDivElement>(null);
@@ -260,6 +263,37 @@ export default function AdminListings() {
 
     return true;
   });
+
+  // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredProperties.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+  const totalPages = Math.ceil(filteredProperties.length / itemsPerPage);
+
+  // Change page
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  // Go to previous page
+  const goToPrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // Go to next page
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [statusFilter, typeFilter]);
 
   return (
     <div className="bg-[#ebeaf1] w-full h-full min-h-screen">
@@ -469,197 +503,345 @@ export default function AdminListings() {
               </button>
             </div>
           ) : (
-            <table className="w-full min-w-full divide-y divide-gray-200 ">
-              <thead className="bg-white  sticky top-0 z-10">
-                <tr>
-                  <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
-                    No
-                  </th>
-                  <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
-                    İlan Özeti
-                  </th>
-                  <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
-                    Fiyat
-                  </th>
-                  <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
-                    Görüldü
-                  </th>
-                  <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
-                    Favori
-                  </th>
-                  <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
-                    Mesaj
-                  </th>
-                  <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
-                    Durum
-                  </th>
-                  <th className="py-4 text-right text-xs font-medium uppercase tracking-wide text-gray-500 ">
-                    İşlemler
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 ">
-                {filteredProperties.map((property) => (
-                  <tr key={property._id} className="hover:bg-gray-50 ">
-                    <td
-                      className="py-4 first:pl-0 text-sm font-medium text-gray-700 "
-                      data-label="No"
-                    >
-                      #{property.no}
-                    </td>
-                    <td
-                      className="py-4 text-sm text-gray-500 "
-                      data-label="İlan Özeti"
-                    >
-                      <div className="flex items-center gap-4">
-                        <img
-                          src={
-                            property.images[0] || "https://placehold.co/96x96"
-                          }
-                          alt={property.title.tr}
-                          className="w-16 h-16 rounded-lg object-cover"
-                        />
-                        <div>
-                          <h3 className="text-sm font-semibold text-gray-900 ">
-                            {property.title.tr}
-                          </h3>
-                          <p className="line-clamp-2 text-gray-600  text-xs">
-                            {property.description.tr}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-                    <td
-                      className="py-4 text-sm font-semibold text-gray-900 "
-                      data-label="Fiyat"
-                    >
-                      {formatPrice(property.price)}
-                    </td>
-                    <td
-                      className="py-4 text-sm text-gray-700 "
-                      data-label="Görüldü"
-                    >
-                      <div className="flex items-center gap-1">
-                        <EyeIcon className="h-4 w-4 text-gray-500 " />
-                        <span className="text-sm font-medium">
-                          {Math.floor(Math.random() * 1000)}
-                        </span>
-                      </div>
-                    </td>
-                    <td
-                      className="py-4 text-sm text-gray-700 "
-                      data-label="Favori"
-                    >
-                      <div className="flex items-center gap-1">
-                        <HeartIcon className="h-4 w-4 text-gray-500 " />
-                        <span className="text-sm font-medium">
-                          {Math.floor(Math.random() * 100)}
-                        </span>
-                      </div>
-                    </td>
-                    <td
-                      className="py-4 text-sm text-gray-700 "
-                      data-label="Mesaj"
-                    >
-                      <div className="flex items-center gap-1">
-                        <EnvelopeIcon className="h-4 w-4 text-gray-500 " />
-                        <span className="text-sm font-medium">
-                          {Math.floor(Math.random() * 50)}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="py-4 text-sm" data-label="Durum">
-                      <span
-                        className=" rounded-md py-0.5 text-xs font-semibold text-white cursor-pointer w-[100px] flex items-center justify-center"
-                        style={{
-                          backgroundColor: getStatusBadgeColor(
-                            property.status || "active"
-                          ),
-                        }}
-                        onClick={() => {
-                          setSelectedPropertyId(property._id);
-                          setSelectedStatus(property.status || "active");
-                          setStatusModalOpen(true);
-                        }}
+            <>
+              <table className="w-full min-w-full divide-y divide-gray-200 ">
+                <thead className="bg-white  sticky top-0 z-10">
+                  <tr>
+                    <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
+                      No
+                    </th>
+                    <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
+                      İlan Özeti
+                    </th>
+                    <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
+                      Fiyat
+                    </th>
+                    <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
+                      Görüldü
+                    </th>
+                    <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
+                      Favori
+                    </th>
+                    <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
+                      Mesaj
+                    </th>
+                    <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
+                      Durum
+                    </th>
+                    <th className="py-4 text-right text-xs font-medium uppercase tracking-wide text-gray-500 ">
+                      İşlemler
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200 ">
+                  {currentItems.map((property) => (
+                    <tr key={property._id} className="hover:bg-gray-50 ">
+                      <td
+                        className="py-4 first:pl-0 text-sm font-medium text-gray-700 "
+                        data-label="No"
                       >
-                        {getStatusText(property.status || "active")}
-                      </span>
-                    </td>
-                    <td
-                      className="py-4 last:pr-0 text-right w-[240px]"
-                      data-label="İşlemler"
-                    >
-                      <div className="flex items-center justify-center gap-2">
-                        <img
-                          src="/edit-icon.png"
-                          alt="edit"
-                          className="w-8 h-8 text-gray-500 hover:scale-110  cursor-pointer transition"
-                          onClick={() => {
-                            router.push(`/admin/ilani-duzenle/${property._id}`);
+                        #{property.no}
+                      </td>
+                      <td
+                        className="py-4 text-sm text-gray-500 "
+                        data-label="İlan Özeti"
+                      >
+                        <div className="flex items-center gap-4">
+                          <img
+                            src={
+                              property.images[0] || "https://placehold.co/96x96"
+                            }
+                            alt={property.title.tr}
+                            className="w-16 h-16 rounded-lg object-cover"
+                          />
+                          <div>
+                            <h3
+                              className="text-sm font-semibold text-gray-900 cursor-pointer "
+                              onClick={() => {
+                                window.open(
+                                  `/resident/${property.slug}`,
+                                  "_blank"
+                                );
+                              }}
+                            >
+                              {property.title.tr}
+                            </h3>
+                            <p className="line-clamp-2 text-gray-600  text-xs">
+                              {property.description.tr}
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                      <td
+                        className="py-4 text-sm font-semibold text-gray-900 "
+                        data-label="Fiyat"
+                      >
+                        {formatPrice(property.price)}
+                      </td>
+                      <td
+                        className="py-4 text-sm text-gray-700 "
+                        data-label="Görüldü"
+                      >
+                        <div className="flex items-center gap-1">
+                          <EyeIcon className="h-4 w-4 text-gray-500 " />
+                          <span className="text-sm font-medium">
+                            {Math.floor(Math.random() * 1000)}
+                          </span>
+                        </div>
+                      </td>
+                      <td
+                        className="py-4 text-sm text-gray-700 "
+                        data-label="Favori"
+                      >
+                        <div className="flex items-center gap-1">
+                          <HeartIcon className="h-4 w-4 text-gray-500 " />
+                          <span className="text-sm font-medium">
+                            {Math.floor(Math.random() * 100)}
+                          </span>
+                        </div>
+                      </td>
+                      <td
+                        className="py-4 text-sm text-gray-700 "
+                        data-label="Mesaj"
+                      >
+                        <div className="flex items-center gap-1">
+                          <EnvelopeIcon className="h-4 w-4 text-gray-500 " />
+                          <span className="text-sm font-medium">
+                            {Math.floor(Math.random() * 50)}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-4 text-sm" data-label="Durum">
+                        <span
+                          className=" rounded-md py-0.5 text-xs font-semibold text-white cursor-pointer w-[100px] flex items-center justify-center"
+                          style={{
+                            backgroundColor: getStatusBadgeColor(
+                              property.status || "active"
+                            ),
                           }}
-                        />
-                        <img
-                          src="/message-details-icon.png"
-                          alt="message-details"
-                          className="w-4 h-4 text-gray-500 hover:scale-110  cursor-pointer transition"
-                        />
-                        <img
-                          src="/location-icon.png"
-                          alt="location"
-                          className="w-5 h-5 text-gray-500 hover:scale-110  cursor-pointer transition"
-                        />
-                        <img
-                          src="/share-icon.png"
-                          alt="share"
-                          className="w-4 h-4 text-gray-500 hover:scale-110  cursor-pointer transition"
-                        />
-                        {property.isPublished && (
-                          <button
-                            className="flex items-center justify-center gap-2 w-[102px] h-[36px] border border-[#D9D9D9] rounded-lg py-2 px-2.5 text-xs font-medium text-[#FA9441] transition cursor-pointer"
-                            onClick={() => {
-                              setSelectedPropertyId(property._id);
-                              setUnpublishModalOpen(true);
-                            }}
-                          >
-                            <img
-                              src="/pause-icon.png"
-                              alt="pause"
-                              className="w-4 h-4"
-                            />
-                            Duraklat
-                          </button>
-                        )}
-
-                        {!property.isPublished && (
-                          <button
-                            className="flex items-center justify-center gap-2 w-[102px] h-[36px] border border-[#D9D9D9] rounded-lg py-2 px-2.5 text-xs font-medium text-[#1EB173] transition cursor-pointer"
-                            onClick={() => {
-                              setSelectedPropertyId(property._id);
-                              setPublishModalOpen(true);
-                            }}
-                          >
-                            <img
-                              src="/publish-icon.png"
-                              alt="publish"
-                              className="w-4 h-4"
-                            />
-                            Yayınla
-                          </button>
-                        )}
-
-                        <TrashIcon
-                          className="w-5 h-5 text-[#EF1A28] hover:text-red-600 cursor-pointer transition"
                           onClick={() => {
                             setSelectedPropertyId(property._id);
-                            setDeleteModalOpen(true);
+                            setSelectedStatus(property.status || "active");
+                            setStatusModalOpen(true);
                           }}
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                        >
+                          {getStatusText(property.status || "active")}
+                        </span>
+                      </td>
+                      <td
+                        className="py-4 last:pr-0 text-right w-[240px]"
+                        data-label="İşlemler"
+                      >
+                        <div className="flex items-center justify-center gap-2">
+                          <img
+                            src="/edit-icon.png"
+                            alt="edit"
+                            className="w-8 h-8 text-gray-500 hover:scale-110  cursor-pointer transition"
+                            onClick={() => {
+                              router.push(
+                                `/admin/ilani-duzenle/${property._id}`
+                              );
+                            }}
+                          />
+                          <img
+                            src="/message-details-icon.png"
+                            alt="message-details"
+                            className="w-4 h-4 text-gray-500 hover:scale-110  cursor-pointer transition"
+                          />
+                          <img
+                            src="/location-icon.png"
+                            alt="location"
+                            className="w-5 h-5 text-gray-500 hover:scale-110  cursor-pointer transition"
+                          />
+                          <img
+                            src="/share-icon.png"
+                            alt="share"
+                            className="w-4 h-4 text-gray-500 hover:scale-110  cursor-pointer transition"
+                          />
+                          {property.isPublished && (
+                            <button
+                              className="flex items-center justify-center gap-2 w-[102px] h-[36px] border border-[#D9D9D9] rounded-lg py-2 px-2.5 text-xs font-medium text-[#FA9441] transition cursor-pointer"
+                              onClick={() => {
+                                setSelectedPropertyId(property._id);
+                                setUnpublishModalOpen(true);
+                              }}
+                            >
+                              <img
+                                src="/pause-icon.png"
+                                alt="pause"
+                                className="w-4 h-4"
+                              />
+                              Duraklat
+                            </button>
+                          )}
+
+                          {!property.isPublished && (
+                            <button
+                              className="flex items-center justify-center gap-2 w-[102px] h-[36px] border border-[#D9D9D9] rounded-lg py-2 px-2.5 text-xs font-medium text-[#1EB173] transition cursor-pointer"
+                              onClick={() => {
+                                setSelectedPropertyId(property._id);
+                                setPublishModalOpen(true);
+                              }}
+                            >
+                              <img
+                                src="/publish-icon.png"
+                                alt="publish"
+                                className="w-4 h-4"
+                              />
+                              Yayınla
+                            </button>
+                          )}
+
+                          <TrashIcon
+                            className="w-5 h-5 text-[#EF1A28] hover:text-red-600 cursor-pointer transition"
+                            onClick={() => {
+                              setSelectedPropertyId(property._id);
+                              setDeleteModalOpen(true);
+                            }}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              {/* Pagination */}
+              <div className="flex items-center justify-between mt-6 py-4 border-t border-gray-200">
+                <div className="flex-1 flex justify-between sm:hidden">
+                  <button
+                    onClick={goToPrevPage}
+                    disabled={currentPage === 1}
+                    className={`relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md ${
+                      currentPage === 1
+                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                        : "bg-white text-gray-700 hover:bg-gray-50"
+                    }`}
+                  >
+                    Önceki
+                  </button>
+                  <button
+                    onClick={goToNextPage}
+                    disabled={currentPage === totalPages || totalPages === 0}
+                    className={`relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md ${
+                      currentPage === totalPages || totalPages === 0
+                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                        : "bg-white text-gray-700 hover:bg-gray-50"
+                    }`}
+                  >
+                    Sonraki
+                  </button>
+                </div>
+                <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                  <div>
+                    <p className="text-sm text-gray-700">
+                      <span className="font-medium">
+                        {indexOfFirstItem + 1}
+                      </span>
+                      {" - "}
+                      <span className="font-medium">
+                        {Math.min(indexOfLastItem, filteredProperties.length)}
+                      </span>
+                      {" / "}
+                      <span className="font-medium">
+                        {filteredProperties.length}
+                      </span>
+                      {" ilan gösteriliyor"}
+                    </p>
+                  </div>
+                  <div>
+                    <nav
+                      className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+                      aria-label="Pagination"
+                    >
+                      <button
+                        onClick={goToPrevPage}
+                        disabled={currentPage === 1}
+                        className={`relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 text-sm font-medium ${
+                          currentPage === 1
+                            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                            : "bg-white text-gray-500 hover:bg-gray-50"
+                        }`}
+                      >
+                        <span className="sr-only">Önceki</span>
+                        <svg
+                          className="h-5 w-5"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          aria-hidden="true"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+
+                      {/* Page numbers */}
+                      {Array.from({ length: Math.min(5, totalPages) }).map(
+                        (_, i) => {
+                          let pageNumber;
+
+                          // Logic to determine which page numbers to show
+                          if (totalPages <= 5) {
+                            pageNumber = i + 1;
+                          } else if (currentPage <= 3) {
+                            pageNumber = i + 1;
+                          } else if (currentPage >= totalPages - 2) {
+                            pageNumber = totalPages - 4 + i;
+                          } else {
+                            pageNumber = currentPage - 2 + i;
+                          }
+
+                          return (
+                            <button
+                              key={pageNumber}
+                              onClick={() => paginate(pageNumber)}
+                              className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                                currentPage === pageNumber
+                                  ? "z-10 bg-[#1EB173] border-[#1EB173] text-white"
+                                  : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50"
+                              }`}
+                            >
+                              {pageNumber}
+                            </button>
+                          );
+                        }
+                      )}
+
+                      <button
+                        onClick={goToNextPage}
+                        disabled={
+                          currentPage === totalPages || totalPages === 0
+                        }
+                        className={`relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 text-sm font-medium ${
+                          currentPage === totalPages || totalPages === 0
+                            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                            : "bg-white text-gray-500 hover:bg-gray-50"
+                        }`}
+                      >
+                        <span className="sr-only">Sonraki</span>
+                        <svg
+                          className="h-5 w-5"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          aria-hidden="true"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </nav>
+                  </div>
+                </div>
+              </div>
+            </>
           )}
         </div>
       </main>
