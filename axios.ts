@@ -18,6 +18,9 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
+export const mainWebsiteUrl =
+  process.env.NEXT_PUBLIC_WEBSITE_URL || "http://localhost:3033";
+
 // const axiosInstance = axios.create({ baseURL: CONFIG.serverUrl });
 
 axiosInstance.interceptors.response.use(
