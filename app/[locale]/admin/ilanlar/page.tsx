@@ -52,6 +52,7 @@ interface Property {
   createdAt: string;
   totalMessageCount: number;
   viewCount: number;
+  favoriteCount: number;
 }
 
 interface Message {
@@ -675,7 +676,7 @@ export default function AdminListings() {
                         <div className="flex items-center gap-1">
                           <HeartIcon className="h-4 w-4 text-gray-500 " />
                           <span className="text-sm font-medium">
-                            {Math.floor(Math.random() * 100)}
+                            {property.favoriteCount || 0}
                           </span>
                         </div>
                       </td>
