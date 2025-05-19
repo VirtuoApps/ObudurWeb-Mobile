@@ -7,6 +7,7 @@ import AuthPopup from "@/app/components/AuthPopup/AuthPopup";
 import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
 import { clearUser } from "@/app/store/userSlice";
 import axiosInstance, { mainWebsiteUrl } from "@/axios";
+import { MdFavoriteBorder } from "react-icons/md";
 
 export default function AuthBox() {
   const t = useTranslations("header");
@@ -71,6 +72,14 @@ export default function AuthBox() {
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
               Hesap Ayarları
+            </a>
+
+            <a
+              href="/favorilerim"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+            >
+              <MdFavoriteBorder className="mr-2" />
+              Favorilerim
             </a>
 
             {(user.role === "admin" || user.role === "super-admin") && (

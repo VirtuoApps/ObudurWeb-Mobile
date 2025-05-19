@@ -42,7 +42,7 @@ export const addToFavorites = createAsyncThunk(
   "favorites/addToFavorites",
   async (hotelId: string, { rejectWithValue }) => {
     try {
-      axiosInstance.post(`/favorites/hotels/${hotelId}`);
+      await axiosInstance.post(`/favorites/hotels/${hotelId}`);
       return hotelId;
     } catch (error) {
       return rejectWithValue("Failed to add to favorites");
@@ -55,7 +55,7 @@ export const removeFromFavorites = createAsyncThunk(
   "favorites/removeFromFavorites",
   async (hotelId: string, { rejectWithValue }) => {
     try {
-      axiosInstance.delete(`/favorites/hotels/${hotelId}`);
+      await axiosInstance.delete(`/favorites/hotels/${hotelId}`);
       return hotelId;
     } catch (error) {
       return rejectWithValue("Failed to remove from favorites");
