@@ -47,6 +47,10 @@ export interface Hotel {
   city: MultilingualText;
   country: MultilingualText;
   state: MultilingualText;
+  street: MultilingualText;
+  buildingNo: string;
+  apartmentNo: string;
+  postalCode: string;
   documents: any[];
   createdAt: string;
   updatedAt: string;

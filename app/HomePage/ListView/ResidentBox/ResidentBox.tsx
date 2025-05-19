@@ -15,6 +15,7 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 interface ResidentBoxProps {
   isFavorite?: boolean;
+  slug: string;
   type: string; // Satılık/Kiralık
   isOptinable?: boolean;
   residentTypeName: string;
@@ -29,6 +30,7 @@ interface ResidentBoxProps {
 
 export default function ResidentBox({
   isFavorite: propIsFavorite = false,
+  slug,
   type = "Satılık",
   isOptinable = false,
   residentTypeName = "Modern Villa",
@@ -53,7 +55,7 @@ export default function ResidentBox({
   return (
     <div
       className="w-full overflow-hidden bg-white rounded-xl hover:shadow-lg transition-shadow duration-300 cursor-pointer"
-      onClick={() => router.push(`/resident/${title}`)}
+      onClick={() => router.push(`/resident/${slug}`)}
     >
       {/* Image container with badges */}
       <div className="relative">

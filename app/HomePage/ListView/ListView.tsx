@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ResidentBox from "./ResidentBox/ResidentBox";
 import { Hotel } from "@/types/hotel.type";
+import { formatAddress } from "@/app/utils/addressFormatter";
 
 // Currency symbols mapping
 const currencySymbols: Record<string, string> = {
@@ -70,7 +71,7 @@ export default function ListView({ hotels }: { hotels: Hotel[] }) {
   const getLocalizedText = (textObj: any) => {
     return textObj && textObj[selectedLanguage]
       ? textObj[selectedLanguage]
-      : textObj.en || "";
+      : textObj?.en || "";
   };
 
   return (
@@ -78,6 +79,7 @@ export default function ListView({ hotels }: { hotels: Hotel[] }) {
       {hotels.map((hotel) => (
         <ResidentBox
           key={hotel._id}
+          slug={hotel.slug}
           type={getLocalizedText(hotel.listingType)}
           isOptinable={false}
           residentTypeName={getLocalizedText(hotel.housingType)}
@@ -86,7 +88,7 @@ export default function ListView({ hotels }: { hotels: Hotel[] }) {
           bedCount={hotel.bedRoomCount.toString()}
           floorCount={"2"}
           area={`${hotel.projectArea}m2`}
-          locationText={getLocalizedText(hotel.address)}
+          locationText={formatAddress(hotel, selectedLanguage)}
           image={hotel.images[0]}
           isFavorite={false}
         />

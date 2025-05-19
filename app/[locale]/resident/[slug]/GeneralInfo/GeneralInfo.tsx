@@ -6,6 +6,7 @@ import AreaIcon from "@/app/svgIcons/AreaIcon";
 import { useTranslations } from "next-intl";
 import { useHotelData } from "../hotelContext";
 import { LocalizedText } from "../page";
+import { formatAddress } from "@/app/utils/addressFormatter";
 
 interface FeatureIconProps {
   icon: React.ReactNode;
@@ -313,10 +314,20 @@ export default function GeneralInfo() {
             <span>{totalSize}m²</span>
           </div>
         </div>
-        {/* <div className="flex items-center gap-2 text-[#262626] text-sm sm:text-base">
+        <div className="flex items-center gap-2 text-[#262626] text-sm sm:text-base">
           <LocationIcon />
-          <span className="truncate">{address[currentLocale]}</span>
-        </div> */}
+          <span className="truncate">
+            {formatAddress({
+              street: hotelData.hotelDetails.address,
+              buildingNo: hotelData.hotelDetails.buildingNo,
+              apartmentNo: hotelData.hotelDetails.apartmentNo,
+              city: hotelData.hotelDetails.city,
+              state: hotelData.hotelDetails.state,
+              postalCode: hotelData.hotelDetails.postalCode,
+              country: hotelData.hotelDetails.country,
+            })}
+          </span>
+        </div>
       </div>
     </div>
   );

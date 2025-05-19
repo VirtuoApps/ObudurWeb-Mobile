@@ -84,6 +84,10 @@ interface HotelDetails {
   country: LocalizedText;
   floorCount: number;
   state: LocalizedText;
+  street: LocalizedText;
+  buildingNo: string;
+  apartmentNo: string;
+  postalCode: string;
 }
 
 interface PopulatedData {
