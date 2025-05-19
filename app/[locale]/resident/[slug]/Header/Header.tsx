@@ -1,18 +1,42 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { FaBars } from "react-icons/fa";
 import LanguageSwitcher from "@/app/components/LanguageSwitcher";
 import AuthBox from "@/app/HomePage/Header/AuthBox/AuthBox";
 import MenuItems from "./MenuItems/MenuItems";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
+import axiosInstance from "@/axios";
+import { useHotelData } from "../hotelContext";
 
 export default function Header() {
   const t = useTranslations("header");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const router = useRouter();
+
+  const { hotelData, locale } = useHotelData();
+  const hotelId = hotelData.hotelDetails._id;
+
+  useEffect(() => {
+    if (!hotelId) return;
+
+    const viewedHotels = JSON.parse(
+      localStorage.getItem("viewedHotels") || "{}"
+    );
+
+    if (!viewedHotels[hotelId]) {
+      axiosInstance
+        .post(`/hotels/${hotelId}/increase-view-count`)
+        .then(() => {
+          viewedHotels[hotelId] = true;
+          localStorage.setItem("viewedHotels", JSON.stringify(viewedHotels));
+        })
+        .catch((error) => {
+          console.error("Failed to increase view count:", error);
+        });
+    }
+  }, [hotelId]);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b shadow-sm py-4 bg-white h-[80px] w-full px-4 md:px-0">

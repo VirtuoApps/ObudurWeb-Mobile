@@ -14,6 +14,7 @@ import {
   TrashIcon,
   PauseIcon,
   PlayIcon,
+  CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 import axiosInstance from "@/axios";
 import { useRouter } from "next/navigation";
@@ -50,6 +51,24 @@ interface Property {
   updatedAt: string;
   createdAt: string;
   totalMessageCount: number;
+  viewCount: number;
+}
+
+interface Message {
+  _id: string;
+  senderUserId: string;
+  hotelId: string;
+  message: string;
+  isInitialMessage: boolean;
+  iWantToSeeProperty: boolean;
+  from: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  isSeen: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export default function AdminListings() {
@@ -78,6 +97,16 @@ export default function AdminListings() {
   const { user } = useAppSelector((state) => state.user);
 
   const router = useRouter();
+
+  const [messageModalOpen, setMessageModalOpen] = useState(false);
+  const [selectedPropertyMessages, setSelectedPropertyMessages] = useState<
+    Message[]
+  >([]);
+  const [activeMessageTab, setActiveMessageTab] = useState("unseen");
+  const [messagesLoading, setMessagesLoading] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(
+    null
+  );
 
   // Handle outside clicks to close dropdowns
   useEffect(() => {
@@ -295,6 +324,55 @@ export default function AdminListings() {
   useEffect(() => {
     setCurrentPage(1);
   }, [statusFilter, typeFilter]);
+
+  // Fetch messages for a property
+  const fetchPropertyMessages = async (propertyId: string) => {
+    try {
+      setMessagesLoading(true);
+      const response = await axiosInstance.get(`/hotel-messages/${propertyId}`);
+      setSelectedPropertyMessages(response.data);
+    } catch (error) {
+      console.error("Error fetching property messages:", error);
+    } finally {
+      setMessagesLoading(false);
+    }
+  };
+
+  // Update message seen status
+  const updateMessageSeenStatus = async (
+    messageId: string,
+    isSeen: boolean
+  ) => {
+    try {
+      await axiosInstance.patch(`/hotel-messages/${messageId}`, {
+        isSeen,
+      });
+
+      // Update local state
+      setSelectedPropertyMessages((prevMessages) =>
+        prevMessages.map((message) =>
+          message._id === messageId ? { ...message, isSeen } : message
+        )
+      );
+    } catch (error) {
+      console.error("Error updating message seen status:", error);
+    }
+  };
+
+  // Mark all messages as seen
+  const markAllAsSeen = async () => {
+    try {
+      const unseenMessages = selectedPropertyMessages.filter(
+        (message) => !message.isSeen
+      );
+
+      for (const message of unseenMessages) {
+        await updateMessageSeenStatus(message._id, true);
+      }
+    } catch (error) {
+      console.error("Error marking all messages as seen:", error);
+    }
+  };
 
   return (
     <div className="bg-[#ebeaf1] w-full h-full min-h-screen">
@@ -586,7 +664,7 @@ export default function AdminListings() {
                         <div className="flex items-center gap-1">
                           <EyeIcon className="h-4 w-4 text-gray-500 " />
                           <span className="text-sm font-medium">
-                            {Math.floor(Math.random() * 1000)}
+                            {property.viewCount || 0}
                           </span>
                         </div>
                       </td>
@@ -605,7 +683,15 @@ export default function AdminListings() {
                         className="py-4 text-sm text-gray-700 "
                         data-label="Mesaj"
                       >
-                        <div className="flex items-center gap-1">
+                        <div
+                          className="flex items-center gap-1 cursor-pointer"
+                          onClick={() => {
+                            setSelectedProperty(property);
+                            setSelectedPropertyId(property._id);
+                            fetchPropertyMessages(property._id);
+                            setMessageModalOpen(true);
+                          }}
+                        >
                           <EnvelopeIcon className="h-4 w-4 text-gray-500 " />
                           <span className="text-sm font-medium">
                             {property.totalMessageCount}
@@ -643,11 +729,6 @@ export default function AdminListings() {
                                 `/admin/ilani-duzenle/${property._id}`
                               );
                             }}
-                          />
-                          <img
-                            src="/message-details-icon.png"
-                            alt="message-details"
-                            className="w-4 h-4 text-gray-500 hover:scale-110  cursor-pointer transition"
                           />
                           <img
                             src="/location-icon.png"
@@ -1002,6 +1083,177 @@ export default function AdminListings() {
               >
                 {updateLoading ? "Yükleniyor..." : "Güncelle"}
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Messages modal */}
+      {messageModalOpen && selectedProperty && (
+        <div
+          className="fixed inset-0 flex items-center justify-center z-50"
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          }}
+        >
+          <div className="bg-white rounded-lg p-6 max-w-3xl w-full max-h-[80vh] flex flex-col">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-gray-700">
+                <span>{selectedProperty.title.tr}</span> -{" "}
+                <span className="text-sm text-gray-500">
+                  #{selectedProperty.no}
+                </span>
+              </h3>
+              <button
+                className="text-gray-500 hover:text-gray-700"
+                onClick={() => {
+                  setMessageModalOpen(false);
+                  setSelectedPropertyId(null);
+                  setSelectedProperty(null);
+                  setSelectedPropertyMessages([]);
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            {/* Message tabs */}
+            <div className="flex border-b border-gray-200 mb-4">
+              <button
+                className={`px-4 py-2 font-medium text-sm ${
+                  activeMessageTab === "unseen"
+                    ? "text-blue-600 border-b-2 border-blue-600"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+                onClick={() => setActiveMessageTab("unseen")}
+              >
+                Görülmemiş (
+                {selectedPropertyMessages.filter((m) => !m.isSeen).length})
+              </button>
+              <button
+                className={`px-4 py-2 font-medium text-sm ${
+                  activeMessageTab === "seen"
+                    ? "text-blue-600 border-b-2 border-blue-600"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+                onClick={() => setActiveMessageTab("seen")}
+              >
+                Görüldü (
+                {selectedPropertyMessages.filter((m) => m.isSeen).length})
+              </button>
+              {activeMessageTab === "unseen" &&
+                selectedPropertyMessages.filter((m) => !m.isSeen).length >
+                  0 && (
+                  <button
+                    className="ml-auto px-4 py-2 text-xs font-medium text-blue-600 hover:text-blue-800"
+                    onClick={markAllAsSeen}
+                  >
+                    Tümünü Okundu Olarak İşaretle
+                  </button>
+                )}
+            </div>
+
+            {/* Message content */}
+            <div className="flex-1 overflow-y-auto">
+              {messagesLoading ? (
+                <div className="flex justify-center items-center h-40">
+                  <span className="text-gray-500">Yükleniyor...</span>
+                </div>
+              ) : selectedPropertyMessages.length === 0 ? (
+                <div className="flex justify-center items-center h-40">
+                  <span className="text-gray-500">
+                    Bu ilanla ilgili henüz mesaj yok
+                  </span>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {selectedPropertyMessages
+                    .filter((message) =>
+                      activeMessageTab === "seen"
+                        ? message.isSeen
+                        : !message.isSeen
+                    )
+                    .sort(
+                      (a, b) =>
+                        new Date(b.createdAt).getTime() -
+                        new Date(a.createdAt).getTime()
+                    )
+                    .map((message) => (
+                      <div
+                        key={message._id}
+                        className={`p-4 rounded-lg ${
+                          message.isSeen ? "bg-gray-50" : "bg-blue-50"
+                        }`}
+                      >
+                        <div className="flex justify-between items-start mb-2">
+                          <div>
+                            <h4 className="font-medium text-gray-900">
+                              {message.firstName} {message.lastName}
+                            </h4>
+                            <p className="text-xs text-gray-500">
+                              {new Date(message.createdAt).toLocaleString(
+                                "tr-TR"
+                              )}
+                            </p>
+                          </div>
+                          <div className="flex items-center">
+                            <button
+                              className={`p-1 rounded-full ${
+                                message.isSeen
+                                  ? "text-gray-400 hover:text-gray-600"
+                                  : "text-blue-500 hover:text-blue-700"
+                              }`}
+                              onClick={() =>
+                                updateMessageSeenStatus(
+                                  message._id,
+                                  !message.isSeen
+                                )
+                              }
+                              title={
+                                message.isSeen
+                                  ? "Okunmadı Olarak İşaretle"
+                                  : "Okundu Olarak İşaretle"
+                              }
+                            >
+                              <CheckCircleIcon className="h-5 w-5" />
+                            </button>
+                          </div>
+                        </div>
+                        <p className="text-gray-700 mb-3">{message.message}</p>
+                        <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
+                          <div>
+                            <span className="font-medium">E-posta:</span>{" "}
+                            {message.email}
+                          </div>
+                          <div>
+                            <span className="font-medium">Telefon:</span>{" "}
+                            {message.phoneNumber}
+                          </div>
+                          {message.iWantToSeeProperty && (
+                            <div className="col-span-2 mt-2">
+                              <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">
+                                Müşteriyle görüşme talebi
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
