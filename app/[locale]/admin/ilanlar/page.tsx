@@ -49,6 +49,7 @@ interface Property {
   status: string;
   updatedAt: string;
   createdAt: string;
+  totalMessageCount: number;
 }
 
 export default function AdminListings() {
@@ -607,7 +608,7 @@ export default function AdminListings() {
                         <div className="flex items-center gap-1">
                           <EnvelopeIcon className="h-4 w-4 text-gray-500 " />
                           <span className="text-sm font-medium">
-                            {Math.floor(Math.random() * 50)}
+                            {property.totalMessageCount}
                           </span>
                         </div>
                       </td>
