@@ -45,6 +45,7 @@ interface Property {
   housingType: Translation;
   listingType: Translation;
   isPublished: boolean;
+  status: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -59,9 +60,11 @@ export default function AdminListings() {
   const [publishModalOpen, setPublishModalOpen] = useState(false);
   const [unpublishModalOpen, setUnpublishModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [statusModalOpen, setStatusModalOpen] = useState(false);
   const [selectedPropertyId, setSelectedPropertyId] = useState<string | null>(
     null
   );
+  const [selectedStatus, setSelectedStatus] = useState<string>("");
   const [updateLoading, setUpdateLoading] = useState(false);
 
   const statusDropdownRef = useRef<HTMLDivElement>(null);
@@ -167,6 +170,64 @@ export default function AdminListings() {
     } finally {
       setUpdateLoading(false);
       setSelectedPropertyId(null);
+    }
+  };
+
+  // Handle property status update
+  const handleUpdateStatus = async () => {
+    if (!selectedPropertyId || !selectedStatus) return;
+
+    try {
+      setUpdateLoading(true);
+      await axiosInstance.patch(`/admin/hotels/${selectedPropertyId}`, {
+        status: selectedStatus,
+      });
+
+      // Close modal
+      setStatusModalOpen(false);
+
+      // Refetch properties
+      await fetchProperties();
+    } catch (error) {
+      console.error("Error updating property status:", error);
+    } finally {
+      setUpdateLoading(false);
+      setSelectedPropertyId(null);
+      setSelectedStatus("");
+    }
+  };
+
+  const getStatusBadgeColor = (status: string) => {
+    switch (status) {
+      case "active":
+        return "#1EB173";
+      case "inactive":
+        return "#EF1A28";
+      case "optioned":
+        return "#E75234";
+      case "stopped":
+        return "#FA9441";
+      case "sold":
+        return "#362C75";
+      default:
+        return "#1EB173";
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case "active":
+        return "Aktif";
+      case "inactive":
+        return "Aktif Değil";
+      case "optioned":
+        return "Opsiyonlandı";
+      case "stopped":
+        return "Durduruldu";
+      case "sold":
+        return "Satıldı";
+      default:
+        return "Aktif";
     }
   };
 
@@ -410,8 +471,20 @@ export default function AdminListings() {
                       </div>
                     </td>
                     <td className="py-4 text-sm" data-label="Durum">
-                      <span className="inline-flex items-center rounded-md bg-[#1EB173] px-8 py-0.5 text-xs font-semibold text-white ">
-                        Aktif
+                      <span
+                        className=" rounded-md py-0.5 text-xs font-semibold text-white cursor-pointer w-[100px] flex items-center justify-center"
+                        style={{
+                          backgroundColor: getStatusBadgeColor(
+                            property.status || "active"
+                          ),
+                        }}
+                        onClick={() => {
+                          setSelectedPropertyId(property._id);
+                          setSelectedStatus(property.status || "active");
+                          setStatusModalOpen(true);
+                        }}
+                      >
+                        {getStatusText(property.status || "active")}
                       </span>
                     </td>
                     <td
@@ -595,6 +668,58 @@ export default function AdminListings() {
                 disabled={updateLoading}
               >
                 {updateLoading ? "Yükleniyor..." : "Sil"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Status update modal */}
+      {statusModalOpen && (
+        <div
+          className="fixed inset-0 flex items-center justify-center z-50"
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          }}
+        >
+          <div className="bg-white rounded-lg p-6 max-w-md w-full">
+            <h3 className="text-lg font-semibold mb-4 text-gray-700">
+              Durum Güncelle
+            </h3>
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Durum
+              </label>
+              <select
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
+                value={selectedStatus}
+                onChange={(e) => setSelectedStatus(e.target.value)}
+              >
+                <option value="active">Aktif</option>
+                <option value="inactive">Aktif Değil</option>
+                <option value="optioned">Opsiyonlandı</option>
+                <option value="stopped">Durduruldu</option>
+                <option value="sold">Satıldı</option>
+              </select>
+            </div>
+            <div className="flex justify-end gap-3">
+              <button
+                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition"
+                onClick={() => {
+                  setStatusModalOpen(false);
+                  setSelectedPropertyId(null);
+                  setSelectedStatus("");
+                }}
+                disabled={updateLoading}
+              >
+                İptal
+              </button>
+              <button
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                onClick={handleUpdateStatus}
+                disabled={updateLoading}
+              >
+                {updateLoading ? "Yükleniyor..." : "Güncelle"}
               </button>
             </div>
           </div>
