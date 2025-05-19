@@ -3,6 +3,14 @@ import { notFound } from "next/navigation";
 import Header from "../../Header/Header";
 import CreationSteps from "../../ilan-olustur/CreationSteps/CreationSteps";
 
+// Define the params type
+type PageProps = {
+  params: {
+    id: string;
+    locale: string;
+  };
+};
+
 // Function to fetch hotel data
 async function getHotelData(id: string) {
   noStore();
@@ -33,19 +41,12 @@ async function getHotelData(id: string) {
   }
 }
 
-export default async function EditHotelPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function Page({ params }: PageProps) {
   // Disable caching at the page level
   noStore();
 
-  // Await the params object
-  const resolvedParams = await params;
-
-  // Fetch hotel data
-  const hotelData = await getHotelData(resolvedParams.id);
+  // Fetch hotel data using the id directly from params
+  const hotelData = await getHotelData(params.id);
 
   // If hotel data not found, show 404
   if (!hotelData) {
