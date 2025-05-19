@@ -231,8 +231,35 @@ export default function AdminListings() {
     }
   };
 
+  // Filter properties based on status and type filters
+  const filteredProperties = properties.filter((property) => {
+    // Status filter
+    if (statusFilter !== "all") {
+      const statusKey = {
+        Aktif: "active",
+        "Aktif Değil": "inactive",
+        Opsiyonlandı: "optioned",
+        Durduruldu: "stopped",
+        Satıldı: "sold",
+      }[statusFilter];
+
+      if (property.status !== statusKey) {
+        return false;
+      }
+    }
+
+    // Type filter
+    if (typeFilter !== "all") {
+      if (property.listingType?.tr !== typeFilter) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+
   return (
-    <div className="bg-[#ebeaf1] w-full h-full">
+    <div className="bg-[#ebeaf1] w-full h-full min-h-screen">
       <Header />
       <main className="container mx-auto px-4 py-8">
         {/* Header section with filters */}
@@ -243,7 +270,7 @@ export default function AdminListings() {
                 Benim İlanlarım
               </h1>
               <p className="text-sm text-[#8F8F99] ">
-                {properties.length} ilan listeleniyor
+                {filteredProperties.length} ilan listeleniyor
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -401,7 +428,7 @@ export default function AdminListings() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 ">
-                {properties.map((property) => (
+                {filteredProperties.map((property) => (
                   <tr key={property._id} className="hover:bg-gray-50 ">
                     <td
                       className="py-4 first:pl-0 text-sm font-medium text-gray-700 "
