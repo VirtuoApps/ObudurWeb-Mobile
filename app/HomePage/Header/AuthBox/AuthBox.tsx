@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import AuthPopup from "@/app/components/AuthPopup/AuthPopup";
 import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
 import { clearUser } from "@/app/store/userSlice";
-import axiosInstance from "@/axios";
+import axiosInstance, { mainWebsiteUrl } from "@/axios";
 
 export default function AuthBox() {
   const t = useTranslations("header");
@@ -41,6 +41,8 @@ export default function AuthBox() {
     dispatch(clearUser());
     // Close dropdown
     setDropdownOpen(false);
+
+    window.location.href = "/";
   };
 
   if (user) {
@@ -70,6 +72,28 @@ export default function AuthBox() {
             >
               Hesap Ayarları
             </a>
+
+            {(user.role === "admin" || user.role === "super-admin") && (
+              <a
+                href="/admin/ilanlar"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                İlanlarım
+              </a>
+            )}
+
+            {user.role === "super-admin" && (
+              <a
+                href={`${mainWebsiteUrl}/auth/jwt/auto-login/${localStorage.getItem(
+                  "accessToken"
+                )}`}
+                target="_blank"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Admin Paneli
+              </a>
+            )}
+
             <button
               onClick={handleLogout}
               className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

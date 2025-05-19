@@ -17,6 +17,7 @@ import {
 } from "@heroicons/react/24/outline";
 import axiosInstance from "@/axios";
 import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/app/store/hooks";
 
 interface Price {
   amount: number;
@@ -69,6 +70,8 @@ export default function AdminListings() {
 
   const statusDropdownRef = useRef<HTMLDivElement>(null);
   const typeDropdownRef = useRef<HTMLDivElement>(null);
+
+  const { user } = useAppSelector((state) => state.user);
 
   const router = useRouter();
 
@@ -267,13 +270,44 @@ export default function AdminListings() {
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <h1 className="text-2xl font-semibold text-gray-800 font-bold">
-                Benim İlanlarım
+                {user?.role === "super-admin"
+                  ? "Tüm İlanlar"
+                  : "Benim İlanlarım"}
               </h1>
               <p className="text-sm text-[#8F8F99] ">
                 {filteredProperties.length} ilan listeleniyor
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
+              {/* Create listing button */}
+              <button
+                onClick={() => router.push("/admin/ilan-olustur")}
+                className="flex items-center justify-center gap-2 bg-[#1EB173] rounded-lg py-2 px-4 text-sm font-medium text-white hover:bg-[#19935f] transition"
+              >
+                <span>İlan Oluştur</span>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M10 4.16667V15.8333"
+                    stroke="white"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M4.16669 10H15.8334"
+                    stroke="white"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
               {/* Status filter dropdown */}
               <div className="relative" ref={statusDropdownRef}>
                 <button
@@ -396,6 +430,43 @@ export default function AdminListings() {
           {loading ? (
             <div className="flex justify-center items-center h-screen">
               <span className="text-gray-500 ">Yükleniyor...</span>
+            </div>
+          ) : filteredProperties.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16">
+              <h3 className="text-lg font-medium text-gray-700 mb-2">
+                Hiç ilanınız yok
+              </h3>
+              <p className="text-sm text-gray-500 mb-6">
+                İlk ilanınızı oluşturarak başlayın
+              </p>
+              <button
+                onClick={() => router.push("/admin/ilan-olustur")}
+                className="flex items-center justify-center gap-2 bg-[#1EB173] rounded-lg py-2 px-4 text-sm font-medium text-white hover:bg-[#19935f] transition"
+              >
+                <span>İlk İlanını Oluştur</span>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M10 4.16667V15.8333"
+                    stroke="white"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M4.16669 10H15.8334"
+                    stroke="white"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
             </div>
           ) : (
             <table className="w-full min-w-full divide-y divide-gray-200 ">
