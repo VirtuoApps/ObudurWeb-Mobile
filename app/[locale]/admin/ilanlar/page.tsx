@@ -96,6 +96,8 @@ export default function AdminListings() {
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  const [sortField, setSortField] = useState<string | null>(null);
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
   const statusDropdownRef = useRef<HTMLDivElement>(null);
   const typeDropdownRef = useRef<HTMLDivElement>(null);
@@ -273,32 +275,107 @@ export default function AdminListings() {
     }
   };
 
+  // Sorting handler
+  const handleSort = (field: string) => {
+    if (sortField === field) {
+      // Toggle direction if already sorting by this field
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      // Set new sort field and default to ascending
+      setSortField(field);
+      setSortDirection("asc");
+    }
+  };
+
+  // Get sort icon
+  const getSortIcon = (field: string) => {
+    if (sortField !== field) {
+      return <ArrowsUpDownIcon className="h-4 w-4 text-gray-400" />;
+    }
+    return sortDirection === "asc" ? (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        className="w-4 h-4 text-gray-600"
+      >
+        <path
+          fillRule="evenodd"
+          d="M10 3a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-1.5 0V3.75A.75.75 0 0 1 10 3Z"
+        />
+        <path
+          fillRule="evenodd"
+          d="M9.22 4.97a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 1 1-1.06 1.06L10 6.81l-3.47 3.47a.75.75 0 0 1-1.06-1.06l4.25-4.25Z"
+        />
+      </svg>
+    ) : (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        className="w-4 h-4 text-gray-600"
+      >
+        <path
+          fillRule="evenodd"
+          d="M10 17a.75.75 0 0 1-.75-.75V5.75a.75.75 0 0 1 1.5 0v10.5A.75.75 0 0 1 10 17Z"
+        />
+        <path
+          fillRule="evenodd"
+          d="M10.78 15.03a.75.75 0 0 1-1.06 0l-4.25-4.25a.75.75 0 1 1 1.06-1.06L10 13.19l3.47-3.47a.75.75 0 1 1 1.06 1.06l-4.25 4.25Z"
+        />
+      </svg>
+    );
+  };
+
   // Filter properties based on status and type filters
-  const filteredProperties = properties.filter((property) => {
-    // Status filter
-    if (statusFilter !== "all") {
-      const statusKey = {
-        Aktif: "active",
-        "Aktif Değil": "inactive",
-        Opsiyonlandı: "optioned",
-        Durduruldu: "stopped",
-        Satıldı: "sold",
-      }[statusFilter];
+  const filteredProperties = properties
+    .filter((property) => {
+      // Status filter
+      if (statusFilter !== "all") {
+        const statusKey = {
+          Aktif: "active",
+          "Aktif Değil": "inactive",
+          Opsiyonlandı: "optioned",
+          Durduruldu: "stopped",
+          Satıldı: "sold",
+        }[statusFilter];
 
-      if (property.status !== statusKey) {
-        return false;
+        if (property.status !== statusKey) {
+          return false;
+        }
       }
-    }
 
-    // Type filter
-    if (typeFilter !== "all") {
-      if (property.listingType?.tr !== typeFilter) {
-        return false;
+      // Type filter
+      if (typeFilter !== "all") {
+        if (property.listingType?.tr !== typeFilter) {
+          return false;
+        }
       }
-    }
 
-    return true;
-  });
+      return true;
+    })
+    .sort((a, b) => {
+      if (!sortField) return 0;
+
+      let comparison = 0;
+      switch (sortField) {
+        case "price":
+          const aPrice = a.price && a.price.length > 0 ? a.price[0].amount : 0;
+          const bPrice = b.price && b.price.length > 0 ? b.price[0].amount : 0;
+          comparison = aPrice - bPrice;
+          break;
+        case "date":
+          comparison =
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+          break;
+        case "messages":
+          comparison = (a.totalMessageCount || 0) - (b.totalMessageCount || 0);
+          break;
+        default:
+          return 0;
+      }
+      return sortDirection === "asc" ? comparison : -comparison;
+    });
 
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -599,8 +676,11 @@ export default function AdminListings() {
                     <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
                       İlan Özeti
                     </th>
-                    <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
-                      Fiyat
+                    <th
+                      className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 cursor-pointer flex items-center gap-1"
+                      onClick={() => handleSort("price")}
+                    >
+                      Fiyat {getSortIcon("price")}
                     </th>
                     <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
                       Görüldü
@@ -608,11 +688,20 @@ export default function AdminListings() {
                     <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
                       Favori
                     </th>
-                    <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
-                      Mesaj
+                    <th
+                      className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 cursor-pointer flex items-center gap-1"
+                      onClick={() => handleSort("messages")}
+                    >
+                      Mesaj {getSortIcon("messages")}
                     </th>
                     <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
                       Durum
+                    </th>
+                    <th
+                      className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 cursor-pointer flex items-center gap-1"
+                      onClick={() => handleSort("date")}
+                    >
+                      İlan Tarihi {getSortIcon("date")}
                     </th>
                     <th className="py-4 text-right text-xs font-medium uppercase tracking-wide text-gray-500 ">
                       İşlemler
@@ -721,6 +810,12 @@ export default function AdminListings() {
                         >
                           {getStatusText(property.status || "active")}
                         </span>
+                      </td>
+                      <td
+                        className="py-4 text-sm text-gray-700 "
+                        data-label="İlan Tarihi"
+                      >
+                        {new Date(property.createdAt).toLocaleDateString()}
                       </td>
                       <td
                         className="py-4 last:pr-0 text-right w-[240px]"
