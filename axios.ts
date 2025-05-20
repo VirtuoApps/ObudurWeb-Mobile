@@ -14,12 +14,20 @@ if (process.env.NODE_ENV === "production") {
   });
 } else {
   axiosInstance = axios.create({
-    baseURL: "http://localhost:8080/api/v1",
+    baseURL: "http://localhost:7070/api/v1",
   });
 }
 
 export const mainWebsiteUrl =
   process.env.NEXT_PUBLIC_WEBSITE_URL || "http://localhost:3033";
+
+// Set the auth token if it exists in localStorage
+if (typeof window !== "undefined") {
+  const token = localStorage.getItem("accessToken");
+  if (token) {
+    axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  }
+}
 
 // const axiosInstance = axios.create({ baseURL: CONFIG.serverUrl });
 
@@ -27,7 +35,9 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error && error.response && error.response.status === 401) {
-      localStorage.removeItem("accessToken");
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("accessToken");
+      }
     }
 
     return Promise.reject(

@@ -5,6 +5,9 @@ interface UserState {
   user: User | null;
   loading: boolean;
   error: string | null;
+  updateLoading: boolean;
+  updateError: string | null;
+  updateSuccess: boolean;
 }
 
 interface User {
@@ -18,10 +21,20 @@ interface User {
   updatedAt: string;
 }
 
+interface UpdateUserPayload {
+  email?: string;
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+}
+
 const initialState: UserState = {
   user: null,
   loading: false,
   error: null,
+  updateLoading: false,
+  updateError: null,
+  updateSuccess: false,
 };
 
 export const fetchUserData = createAsyncThunk(
@@ -36,6 +49,18 @@ export const fetchUserData = createAsyncThunk(
   }
 );
 
+export const updateUserData = createAsyncThunk(
+  "user/updateUserData",
+  async (userData: UpdateUserPayload, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.patch("/auth/mine", userData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue("Failed to update user data");
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -45,6 +70,10 @@ const userSlice = createSlice({
     },
     clearUser: (state) => {
       state.user = null;
+    },
+    resetUpdateStatus: (state) => {
+      state.updateSuccess = false;
+      state.updateError = null;
     },
   },
   extraReducers: (builder) => {
@@ -60,9 +89,24 @@ const userSlice = createSlice({
       .addCase(fetchUserData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(updateUserData.pending, (state) => {
+        state.updateLoading = true;
+        state.updateError = null;
+        state.updateSuccess = false;
+      })
+      .addCase(updateUserData.fulfilled, (state, action) => {
+        state.updateLoading = false;
+        state.user = action.payload;
+        state.updateSuccess = true;
+      })
+      .addCase(updateUserData.rejected, (state, action) => {
+        state.updateLoading = false;
+        state.updateError = action.payload as string;
+        state.updateSuccess = false;
       });
   },
 });
 
-export const { setUser, clearUser } = userSlice.actions;
+export const { setUser, clearUser, resetUpdateStatus } = userSlice.actions;
 export default userSlice.reducer;

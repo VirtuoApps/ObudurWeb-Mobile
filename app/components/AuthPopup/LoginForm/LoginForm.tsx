@@ -79,10 +79,14 @@ export default function LoginForm({
     } catch (error) {
       const axiosError = error as any;
 
-      if (axiosError.response && axiosError.response.data) {
-        if (axiosError.response.data.errorCode === "INVALID_EMAIL") {
+      console.log({
+        axiosError,
+      });
+
+      if (axiosError && axiosError.errorCode) {
+        if (axiosError.errorCode === "INVALID_EMAIL") {
           setLoginError(t("invalidEmail") || "Geçersiz e-posta adresi");
-        } else if (axiosError.response.data.errorCode === "INVALID_PASSWORD") {
+        } else if (axiosError.errorCode === "INVALID_PASSWORD") {
           setLoginError(t("invalidPassword") || "Geçersiz şifre");
         } else {
           setLoginError(

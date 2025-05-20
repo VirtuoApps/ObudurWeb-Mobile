@@ -317,5 +317,25 @@
   },
   "floorPlans": {
     "description": "Konutun tüm alanlarını teknik resimler üzerinde görebilir; gerekli sertifika ve dökümanlara ulaşabilirsiniz."
+  },
+  "accountForm": {
+    "title": "Hesap Bilgilerim",
+    "personalInfoTitle": "Kişisel Bilgilerim",
+    "emailLabel": "E-posta Adresi",
+    "firstNameLabel": "Ad",
+    "lastNameLabel": "Soyad",
+    "changePasswordTitle": "Şifre Değiştir",
+    "newPasswordLabel": "Yeni Şifre",
+    "confirmPasswordLabel": "Şifreyi Doğrula",
+    "updateButton": "Bilgilerimi Güncelle",
+    "updateProfileButton": "Bilgilerimi Güncelle",
+    "updatePasswordButton": "Şifremi Güncelle",
+    "updatingButton": "Güncelleniyor...",
+    "updateSuccess": "Bilgileriniz başarıyla güncellendi.",
+    "emailError": "Geçerli bir e-posta adresi girin",
+    "firstNameError": "Ad alanı zorunludur",
+    "lastNameError": "Soyad alanı zorunludur",
+    "passwordsNotMatchError": "Şifreler eşleşmiyor",
+    "passwordLengthError": "Şifre en az 6 karakter uzunluğunda olmalıdır"
   }
 }

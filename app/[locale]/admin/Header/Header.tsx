@@ -6,7 +6,12 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { FaBars } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-export default function Header() {
+
+interface HeaderProps {
+  customRedirectUrl?: string;
+}
+
+export default function Header({ customRedirectUrl }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const router = useRouter();
@@ -17,7 +22,7 @@ export default function Header() {
         {/* Logo */}
         <div
           className="flex items-center cursor-pointer"
-          onClick={() => router.push("/admin/ilanlar")}
+          onClick={() => router.push(customRedirectUrl || "/admin/ilanlar")}
         >
           <Image
             src="/obudur-logo.png"
