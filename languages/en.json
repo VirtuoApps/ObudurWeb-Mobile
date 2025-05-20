@@ -337,5 +337,15 @@
     "lastNameError": "Last name is required",
     "passwordsNotMatchError": "Passwords do not match",
     "passwordLengthError": "Password must be at least 6 characters long"
+  },
+  "footer": {
+    "newsletter": {
+      "placeholder": "Your Email Address",
+      "subscribe": "Subscribe",
+      "subscribing": "Subscribing...",
+      "subscribed": "Subscribed",
+      "successMessage": "You have subscribed to our newsletter",
+      "errorMessage": "An error occurred during the subscription process."
+    }
   }
 }

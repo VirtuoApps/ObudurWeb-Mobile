@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import { useHotelData } from "../../hotelContext";
 
 export default function MenuItems() {
   const t = useTranslations("residentMenu");
   const [activeSection, setActiveSection] = useState("images-section");
+
+  const { hotelData, locale } = useHotelData();
 
   const menuItems = [
     { key: "photos", label: t("photos"), sectionId: "images-section" },
@@ -14,14 +17,29 @@ export default function MenuItems() {
     },
     { key: "details", label: t("details"), sectionId: "details-section" },
     { key: "features", label: t("features"), sectionId: "features-section" },
-    {
+
+    // { key: "floorPlans", label: t("floorPlans"), sectionId: "plans-section" },
+  ];
+
+  if (hotelData.hotelDetails.video) {
+    menuItems.push({
       key: "virtualTour",
       label: t("virtualTour"),
       sectionId: "panoramic-section",
-    },
-    { key: "location", label: t("location"), sectionId: "location-section" },
-    { key: "floorPlans", label: t("floorPlans"), sectionId: "plans-section" },
-  ];
+    });
+
+    menuItems.push({
+      key: "location",
+      label: t("location"),
+      sectionId: "location-section",
+    });
+  } else {
+    menuItems.push({
+      key: "location",
+      label: t("location"),
+      sectionId: "location-section",
+    });
+  }
 
   useEffect(() => {
     const handleScroll = () => {

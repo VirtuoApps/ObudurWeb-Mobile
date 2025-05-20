@@ -337,5 +337,15 @@
     "lastNameError": "Soyad alanı zorunludur",
     "passwordsNotMatchError": "Şifreler eşleşmiyor",
     "passwordLengthError": "Şifre en az 6 karakter uzunluğunda olmalıdır"
+  },
+  "footer": {
+    "newsletter": {
+      "placeholder": "E-Posta Adresiniz",
+      "subscribe": "Abone Ol",
+      "subscribing": "Abone olunuyor...",
+      "subscribed": "Abone Oldunuz",
+      "successMessage": "E-posta listesine abone oldunuz",
+      "errorMessage": "Abonelik işlemi sırasında bir hata oluştu."
+    }
   }
 }

@@ -1,16 +1,52 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import axiosInstance from "../../../../../axios";
+import { useTranslations } from "next-intl";
 
 export default function Footer() {
+  const t = useTranslations("footer.newsletter");
+  const [email, setEmail] = useState("");
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    // Check if user is already subscribed
+    const subscribedEmail = localStorage.getItem("subscribedEmail");
+    if (subscribedEmail) {
+      setEmail(subscribedEmail);
+      setIsSubscribed(true);
+    }
+  }, []);
+
+  const handleSubscribe = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+
+    try {
+      await axiosInstance.post("/mail-droppers/subscribe", { email });
+      localStorage.setItem("subscribedEmail", email);
+      setIsSubscribed(true);
+    } catch (err) {
+      setError(t("errorMessage"));
+      console.error("Subscription error:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <footer className="w-full bg-white mt-32">
       {/* Primary top divider */}
       <div className="border-t border-slate-200"></div>
 
       <div className="max-w-7xl mx-auto px-4 lg:px-0">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 pt-8 pb-10">
+        <div className="flex flex-row justify-between pt-8 pb-10">
           {/* Column 1 */}
-          <nav className="col-span-1">
+          {/* <nav className="col-span-1">
             <ul className="space-y-2">
               <li>
                 <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
@@ -33,10 +69,10 @@ export default function Footer() {
                 </a>
               </li>
             </ul>
-          </nav>
+          </nav> */}
 
           {/* Column 2 */}
-          <nav className="col-span-1">
+          {/* <nav className="col-span-1">
             <ul className="space-y-2">
               <li>
                 <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
@@ -54,10 +90,10 @@ export default function Footer() {
                 </a>
               </li>
             </ul>
-          </nav>
+          </nav> */}
 
           {/* Column 3 */}
-          <nav className="col-span-1">
+          {/* <nav className="col-span-1">
             <ul className="space-y-2">
               <li>
                 <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
@@ -80,7 +116,7 @@ export default function Footer() {
                 </a>
               </li>
             </ul>
-          </nav>
+          </nav> */}
 
           {/* Column 4 */}
           <nav className="col-span-1">
@@ -104,22 +140,44 @@ export default function Footer() {
           </nav>
 
           {/* Newsletter Column */}
-          <div className="col-span-2 lg:col-span-2">
-            <form>
-              <div className="flex border-b border-gray-300 pb-4">
-                <input
-                  type="email"
-                  id="email"
-                  aria-label="E-posta adresiniz"
-                  placeholder="E-Posta Adresiniz"
-                  className="w-full max-w-xs rounded-l-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500  placeholder:text-gray-400"
-                />
-                <button
-                  type="submit"
-                  className="bg-slate-100 text-[#8C8C8C] text-sm px-4 rounded-xl  transition w-[200px]"
-                >
-                  Abone Ol
-                </button>
+          <div className="w-[400px]">
+            <form onSubmit={handleSubscribe}>
+              <div className="flex flex-col border-b border-gray-300 pb-4">
+                {isSubscribed ? (
+                  <p className="text-green-600 text-sm mb-2">
+                    {t("successMessage")}
+                  </p>
+                ) : error ? (
+                  <p className="text-red-500 text-sm mb-2">{error}</p>
+                ) : null}
+                <div className="flex">
+                  <input
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={isSubscribed || isLoading}
+                    aria-label={t("placeholder")}
+                    placeholder={t("placeholder")}
+                    className="w-full max-w-xs rounded-l-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-none placeholder:text-gray-400 text-gray-700 disabled:bg-gray-100"
+                    required
+                  />
+                  <button
+                    type="submit"
+                    disabled={isSubscribed || isLoading}
+                    className={`text-sm px-4 rounded-xl transition w-[200px] ${
+                      isSubscribed
+                        ? "bg-green-100 text-green-600"
+                        : "bg-slate-100 text-[#8C8C8C] hover:bg-slate-200"
+                    }`}
+                  >
+                    {isLoading
+                      ? t("subscribing")
+                      : isSubscribed
+                      ? t("subscribed")
+                      : t("subscribe")}
+                  </button>
+                </div>
               </div>
             </form>
           </div>
