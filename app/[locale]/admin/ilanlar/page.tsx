@@ -16,9 +16,10 @@ import {
   PlayIcon,
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
-import axiosInstance from "@/axios";
+import axiosInstance, { mainWebsiteUrl } from "@/axios";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/app/store/hooks";
+import { toast, Toaster } from "react-hot-toast";
 
 interface Price {
   amount: number;
@@ -53,6 +54,10 @@ interface Property {
   totalMessageCount: number;
   viewCount: number;
   favoriteCount: number;
+  location: {
+    type: string;
+    coordinates: number[];
+  };
 }
 
 interface Message {
@@ -377,7 +382,8 @@ export default function AdminListings() {
 
   return (
     <div className="bg-[#ebeaf1] w-full h-full min-h-screen">
-      <Header />
+      <Header customRedirectUrl="/" />
+      <Toaster position="top-center" />
       <main className="container mx-auto px-4 py-8">
         {/* Header section with filters */}
         <div className="  rounded-xl p-4 mb-6">
@@ -734,12 +740,37 @@ export default function AdminListings() {
                           <img
                             src="/location-icon.png"
                             alt="location"
-                            className="w-5 h-5 text-gray-500 hover:scale-110  cursor-pointer transition"
+                            className="w-5 h-5 text-gray-500 hover:scale-110 cursor-pointer transition"
+                            onClick={() => {
+                              if (
+                                property.location &&
+                                property.location.coordinates
+                              ) {
+                                const [lng, lat] =
+                                  property.location.coordinates;
+                                window.open(
+                                  `https://www.google.com/maps?q=${lat},${lng}`,
+                                  "_blank"
+                                );
+                              }
+                            }}
                           />
                           <img
                             src="/share-icon.png"
                             alt="share"
-                            className="w-4 h-4 text-gray-500 hover:scale-110  cursor-pointer transition"
+                            className="w-4 h-4 text-gray-500 hover:scale-110 cursor-pointer transition"
+                            onClick={() => {
+                              const url = `${mainWebsiteUrl}/resident/${property.slug}`;
+                              navigator.clipboard
+                                .writeText(url)
+                                .then(() => {
+                                  toast.success("Link kopyalandı");
+                                })
+                                .catch((err) => {
+                                  console.error("Kopyalama hatası:", err);
+                                  toast.error("Kopyalama işlemi başarısız");
+                                });
+                            }}
                           />
                           {property.isPublished && (
                             <button

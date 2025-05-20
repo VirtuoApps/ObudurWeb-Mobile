@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === "production") {
   });
 } else {
   axiosInstance = axios.create({
-    baseURL: "http://localhost:7070/api/v1",
+    baseURL: "http://localhost:8080/api/v1",
   });
 }
 
