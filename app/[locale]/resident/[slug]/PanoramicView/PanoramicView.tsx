@@ -3,9 +3,12 @@
 import React, { useState, Fragment } from "react";
 import { useTranslations } from "next-intl";
 import { Dialog, Transition } from "@headlessui/react";
-import ThreeSixty from "react-360-view";
 
-export default function PanoramicView() {
+type PanoramicViewProps = {
+  video: string;
+};
+
+export default function PanoramicView({ video }: PanoramicViewProps) {
   const [open, setOpen] = useState(false);
   const t = useTranslations("panoramicView");
 
@@ -64,7 +67,7 @@ export default function PanoramicView() {
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-full max-w-5xl transform overflow-hidden rounded-xl bg-white p-6 text-left align-middle shadow-xl">
-                <Dialog.Title className="sr-only">360 Tour</Dialog.Title>
+                <Dialog.Title className="sr-only">Video Tour</Dialog.Title>
                 <button
                   type="button"
                   className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
@@ -87,16 +90,14 @@ export default function PanoramicView() {
                   </svg>
                 </button>
                 <div className="w-full h-full flex justify-center">
-                  <ThreeSixty
-                    amount={36}
-                    imagePath="/tour/house/"
-                    fileName="house_{index}.jpg"
-                    autoplay={24}
-                    loop={1}
-                    buttonClass="dark"
-                    width={800}
-                    height={450}
-                  />
+                  <video
+                    src={video}
+                    controls
+                    autoPlay
+                    className="w-full max-h-[450px]"
+                  >
+                    Your browser does not support the video tag.
+                  </video>
                 </div>
               </Dialog.Panel>
             </Transition.Child>

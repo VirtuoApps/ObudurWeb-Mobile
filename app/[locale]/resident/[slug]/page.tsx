@@ -88,6 +88,7 @@ interface HotelDetails {
   buildingNo: string;
   apartmentNo: string;
   postalCode: string;
+  video: string;
 }
 
 interface PopulatedData {
@@ -125,6 +126,8 @@ export default async function ResidentPage({
   const hotelDataResponse = await axiosInstance.get(`hotels/${slug}`);
   const hotelData: HotelResponse = hotelDataResponse.data;
 
+  const video = hotelData.hotelDetails.video;
+
   return (
     <ClientWrapper hotelData={hotelData} locale={currentLocale}>
       <Header />
@@ -136,7 +139,7 @@ export default async function ResidentPage({
             <Descriptions />
             <Details />
             <FeaturesEquipment />
-            <PanoramicView />
+            {video && <PanoramicView video={video} />}
             <Location />
             {/* <PlansAndDocumentation /> */}
           </div>
