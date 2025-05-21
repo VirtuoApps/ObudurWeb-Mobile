@@ -60,8 +60,8 @@ export default function AuthBox() {
             </div>
           </div>
 
-          <div className="bg-gray-100 rounded-lg flex items-center justify-center py-3 px-2">
-            <GoPerson className="text-gray-600 text-2xl" />
+          <div className="bg-gray-100 rounded-lg flex items-center justify-center py-3 px-3">
+            <img src="/user-profile-03.png" className="w-6" />
           </div>
         </div>
 
@@ -128,8 +128,8 @@ export default function AuthBox() {
           <div className="text-sm text-gray-600">{t("login")}</div>
         </div>
 
-        <div className="bg-gray-100 rounded-lg flex items-center justify-center py-3 px-2">
-          <GoPerson className="text-gray-600 text-2xl" />
+        <div className="bg-gray-100 rounded-lg flex items-center justify-center py-3 px-3">
+          <img src="/user-profile-03.png" className="w-6" />
         </div>
       </div>
     </>
