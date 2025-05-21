@@ -200,7 +200,7 @@ export default function LoginForm({
           </button>
         </form>
 
-        <div className="mt-6 text-center text-sm text-gray-500">{t("or")}</div>
+        {/* <div className="mt-6 text-center text-sm text-gray-500">{t("or")}</div>
 
         <div className="mt-4 space-y-3">
           <button
@@ -222,7 +222,7 @@ export default function LoginForm({
             <img src="/google-icon.png" alt="Google" className="w-6 h-6 mr-3" />
             {t("continueWithGoogle")}
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
