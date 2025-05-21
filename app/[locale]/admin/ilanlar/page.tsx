@@ -855,7 +855,7 @@ export default function AdminListings() {
                             alt="share"
                             className="w-4 h-4 text-gray-500 hover:scale-110 cursor-pointer transition"
                             onClick={() => {
-                              const url = `${mainWebsiteUrl}/resident/${property.slug}`;
+                              const url = `https://obudur-website.vercel.app/resident/${property.slug}`;
                               navigator.clipboard
                                 .writeText(url)
                                 .then(() => {
