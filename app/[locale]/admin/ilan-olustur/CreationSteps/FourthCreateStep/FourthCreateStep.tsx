@@ -282,8 +282,10 @@ export default function FourthCreateStep() {
     return (
       <button
         type="button"
-        className={`inline-flex items-center gap-2 px-4 py-2 rounded-full transition border border-gray-300 text-gray-700 cursor-pointer ${
-          isSelected ? "bg-[#EBEAF1] " : "bg-transparent "
+        className={`inline-flex items-center gap-2 px-4 py-2 rounded-full transition border  cursor-pointer ${
+          isSelected
+            ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+            : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
         }`}
         onClick={() => toggleFeature(feature._id)}
       >

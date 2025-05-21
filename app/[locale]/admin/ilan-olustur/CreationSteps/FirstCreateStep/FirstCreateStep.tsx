@@ -295,10 +295,10 @@ export default function FirstCreateStep() {
               <div className="flex gap-2">
                 <button
                   type="button"
-                  className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition border border-[#6656AD] text-[#6656AD] ${
+                  className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer  ${
                     listingType && listingType.tr === "Satılık"
-                      ? "bg-[#EBEAF1] "
-                      : "bg-transparent "
+                      ? "bg-[#EBEAF180] border-[0.5px]  border-[#362C75] text-[#362C75]"
+                      : "bg-transparent border border-[#6656AD] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
                   }`}
                   onClick={() =>
                     setListingType(optionTranslations.listingType["Satılık"])
@@ -308,10 +308,10 @@ export default function FirstCreateStep() {
                 </button>
                 <button
                   type="button"
-                  className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition border border-[#6656AD] text-[#6656AD] ${
+                  className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer  ${
                     listingType && listingType.tr === "Kiralık"
-                      ? "bg-[#EBEAF1] "
-                      : "bg-transparent "
+                      ? "bg-[#EBEAF180] border-[0.5px]  border-[#362C75] text-[#362C75]"
+                      : "bg-transparent border border-[#6656AD] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
                   }`}
                   onClick={() =>
                     setListingType(optionTranslations.listingType["Kiralık"])
@@ -330,10 +330,10 @@ export default function FirstCreateStep() {
               <div className="flex gap-2">
                 <button
                   type="button"
-                  className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition border border-[#6656AD] text-[#6656AD] ${
+                  className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer ${
                     entranceType && entranceType.tr === "Arsa"
-                      ? "bg-[#EBEAF1] "
-                      : "bg-transparent "
+                      ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                      : "bg-transparent border border-[#6656AD] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
                   }`}
                   onClick={() =>
                     setEntranceType(optionTranslations.entranceType["Arsa"])
@@ -343,10 +343,10 @@ export default function FirstCreateStep() {
                 </button>
                 <button
                   type="button"
-                  className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition border border-[#6656AD] text-[#6656AD] ${
+                  className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer ${
                     entranceType && entranceType.tr === "Ev"
-                      ? "bg-[#EBEAF1] "
-                      : "bg-transparent "
+                      ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                      : "bg-transparent border border-[#6656AD] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
                   }`}
                   onClick={() =>
                     setEntranceType(optionTranslations.entranceType["Ev"])
@@ -356,10 +356,10 @@ export default function FirstCreateStep() {
                 </button>
                 <button
                   type="button"
-                  className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition border border-[#6656AD] text-[#6656AD] ${
+                  className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer ${
                     entranceType && entranceType.tr === "İş Yeri"
-                      ? "bg-[#EBEAF1] "
-                      : "bg-transparent "
+                      ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                      : "bg-transparent border border-[#6656AD] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
                   }`}
                   onClick={() =>
                     setEntranceType(optionTranslations.entranceType["İş Yeri"])
@@ -380,10 +380,10 @@ export default function FirstCreateStep() {
                   <button
                     key={cat.key}
                     type="button"
-                    className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition text-[#6656AD] border border-[#6656AD] ${
+                    className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer ${
                       housingType && housingType.tr === cat.tr
-                        ? "bg-[#EBEAF1] "
-                        : "bg-transparent  "
+                        ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                        : "bg-transparent border border-[#6656AD] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
                     }`}
                     onClick={() =>
                       setHousingType({
