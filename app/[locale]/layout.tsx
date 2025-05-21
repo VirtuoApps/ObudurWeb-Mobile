@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { ReduxProvider } from "../providers/ReduxProvider";
 import FavoritesProvider from "../providers/FavoritesProvider";
+import ProgressBar from "../components/ProgressBar";
+import { NavigationEventsProvider } from "../providers/NavigationEventsProvider";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -59,7 +61,12 @@ export default async function LocaleLayout({ children, params }: Props) {
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ReduxProvider>
-            <FavoritesProvider>{children}</FavoritesProvider>
+            <FavoritesProvider>
+              <NavigationEventsProvider>
+                <ProgressBar />
+                {children}
+              </NavigationEventsProvider>
+            </FavoritesProvider>
           </ReduxProvider>
         </NextIntlClientProvider>
       </body>

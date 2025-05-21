@@ -75,7 +75,7 @@ export default function ListView({ hotels }: { hotels: Hotel[] }) {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 bg-white  px-2 pb-28">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 bg-white  px-2 pb-28">
       {hotels.map((hotel) => (
         <ResidentBox
           key={hotel._id}
