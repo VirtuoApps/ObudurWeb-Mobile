@@ -3,6 +3,7 @@ import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import { useListingForm } from "../CreationSteps";
 import axiosInstance from "@/axios";
 import { useRouter } from "@/app/utils/router";
+import GoBackButton from "../../GoBackButton/GoBackButton";
 
 export default function FifthCreateStep() {
   const router = useRouter();
@@ -439,7 +440,7 @@ export default function FifthCreateStep() {
   };
 
   return (
-    <div className="min-h-screen bg-[#ECEBF4] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start p-4">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">
         <div className="flex flex-col md:flex-row p-10">
           {/* Left Info Panel - 30% width on desktop */}
@@ -454,9 +455,13 @@ export default function FifthCreateStep() {
               pellentesque quam augue commodo vitae. Pretium placerat
               ullamcorper proin massa.
             </p>
-            <span className="text-sm text-gray-600 mb-4 sm:mb-0 mt-auto">
-              Adım 5 / 5
-            </span>
+            <GoBackButton
+              handleBack={() => {
+                setCurrentStep(4);
+              }}
+              step={5}
+              totalSteps={5}
+            />
           </div>
 
           {/* Right Form Panel - 70% width on desktop */}
@@ -739,17 +744,7 @@ export default function FifthCreateStep() {
             </div>
 
             {/* Navigation buttons */}
-            <div className="mt-10 flex justify-between items-center">
-              <button
-                type="button"
-                onClick={() => setCurrentStep((prev) => prev - 1)}
-                className="flex items-center gap-2 text-[#6656AD] hover:text-[#5349a0] transition"
-                disabled={isSubmitting}
-              >
-                <ChevronLeftIcon className="h-5 w-5" />
-                <span>Geri</span>
-              </button>
-
+            <div className="mt-10 flex justify-end items-center">
               <button
                 type="button"
                 onClick={handleComplete}

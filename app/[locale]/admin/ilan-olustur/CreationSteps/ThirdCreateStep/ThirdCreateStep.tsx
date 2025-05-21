@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { useListingForm } from "../CreationSteps";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import GoBackButton from "../../GoBackButton/GoBackButton";
 
 interface Language {
   _id: string;
@@ -440,7 +441,7 @@ export default function ThirdCreateStep() {
   };
 
   return (
-    <div className="min-h-screen bg-[#ECEBF4] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start p-4">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">
         <div className="flex flex-col md:flex-row p-10">
           {/* Left Info Panel - 30% width on desktop */}
@@ -472,9 +473,7 @@ export default function ThirdCreateStep() {
                 ))}
               </div>
             </div>
-            <span className="text-sm text-gray-600 mb-4 sm:mb-0 mt-auto">
-              Adım 3 / 5
-            </span>
+            <GoBackButton handleBack={handleBack} step={3} totalSteps={5} />
           </div>
 
           {/* Right Form Panel - 70% width on desktop */}
@@ -746,16 +745,7 @@ export default function ThirdCreateStep() {
             </div>
 
             {/* Step navigation buttons */}
-            <div className="mt-10 flex flex-col sm:flex-row justify-between items-center">
-              <button
-                type="button"
-                onClick={handleBack}
-                className="w-full mb-4 sm:mb-0 sm:w-auto bg-white hover:bg-gray-50 text-[#6656AD] font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition border border-[#6656AD]"
-              >
-                <ChevronLeftIcon className="h-5 w-5" />
-                Geri
-              </button>
-
+            <div className="mt-10 flex flex-col sm:flex-row justify-end items-center">
               <button
                 type="button"
                 onClick={handleContinue}
