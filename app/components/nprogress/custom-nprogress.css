@@ -1,0 +1,5 @@
+/* Hide the default NProgress bar and spinner */
+#nprogress .bar,
+#nprogress .spinner {
+  display: none !important;
+} 
