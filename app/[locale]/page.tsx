@@ -9,9 +9,9 @@ export default async function Home() {
   // Disable caching at the page level
   noStore();
 
-  const featuresResponse = await axiosInstance.get("/features/general");
+  const allFeaturesResponse = await axiosInstance.get("/features/all-options");
 
-  const features = featuresResponse.data as Feature[];
+  const features = allFeaturesResponse.data as Feature[];
 
   const hotelsResponse = await axiosInstance.get("/hotels");
 

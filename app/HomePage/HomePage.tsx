@@ -43,6 +43,9 @@ export default function HomePage({
   const [currentView, setCurrentView] = useState<"map" | "list">("map");
   const [filters, setFilters] = useState<FilterType | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
+  const [sortOption, setSortOption] = useState<
+    "ascending" | "descending" | null
+  >(null);
 
   // States moved from FilterPopup component
   const [minPrice, setMinPrice] = useState<number | "">("");
@@ -302,7 +305,11 @@ export default function HomePage({
           totalHotelsCount={hotels.length}
         />
       ) : (
-        <ListView hotels={filteredHotels} />
+        <ListView
+          hotels={filteredHotels}
+          sortOption={sortOption}
+          setSortOption={setSortOption}
+        />
       )}
       {/* <ViewSwitcher currentView={currentView} setCurrentView={setCurrentView} /> */}
     </div>

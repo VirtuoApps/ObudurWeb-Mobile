@@ -183,14 +183,14 @@ export default function FilterList({
       <div
         className={`bg-white flex flex-row ${
           currentView === "map"
-            ? "fixed top-24 left-0 right-0"
-            : "mt-5 mb-7 relative"
-        } z-10 w-[60%] mx-auto shadow-lg rounded-2xl`}
+            ? "fixed top-24 left-0 right-0 w-[60%] shadow-lg"
+            : "mt-5 mb-7 relative w-full"
+        } z-10  mx-auto  rounded-2xl`}
       >
         {showRightArrow && (
           <button
             onClick={scrollRight}
-            className="absolute right-18 top-1/2 -translate-y-1/2 z-10 bg-white p-1 rounded-lg border border-gray-200 shadow-md cursor-pointer"
+            className="absolute right-23 top-1/2 -translate-y-1/2 z-10 bg-white p-1 rounded-lg border border-gray-200 shadow-md cursor-pointer"
           >
             <FiChevronRight className="text-gray-600 text-sm" />
           </button>
@@ -209,7 +209,10 @@ export default function FilterList({
           onClick={onChangeCurrentView}
           className="flex items-center justify-center border-r px-4 py-4 border-gray-200  cursor-pointer transition-all duration-200 hover:bg-gray-100 -2xl"
         >
-          <ListViewIcon />
+          {currentView === "map" && <ListViewIcon />}
+          {currentView !== "map" && (
+            <img src="/map-icon.png" className="w-4 h-4" />
+          )}
         </div>
         <div className="flex-1 flex items-center relative overflow-hidden">
           <div
@@ -219,33 +222,29 @@ export default function FilterList({
             {features.map((filterItem) => (
               <div
                 key={filterItem._id}
-                className={`flex flex-row items-center cursor-pointer rounded-lg px-3 py-2 whitespace-nowrap ${
+                className={`flex flex-row items-center cursor-pointer rounded-lg px-3 py-2 whitespace-nowrap transition-colors duration-200 ${
                   selectedFeatures.some((sf) => sf._id === filterItem._id)
                     ? "bg-gray-100"
-                    : "hover:bg-gray-100"
+                    : "bg-white hover:bg-gray-100"
                 }`}
                 onClick={() => handleFilterClick(filterItem)}
               >
-                <img
-                  src={filterItem.iconUrl}
-                  alt={
-                    typeof filterItem.name === "object"
+                <div className="flex items-center w-full">
+                  <img
+                    src={filterItem.iconUrl}
+                    alt={
+                      typeof filterItem.name === "object"
+                        ? filterItem.name.en
+                        : String(filterItem.name)
+                    }
+                    className="w-6 h-6 object-contain flex-shrink-0"
+                  />
+                  <p className="text-xs ml-2 font-light text-gray-500">
+                    {typeof filterItem.name === "object"
                       ? filterItem.name.en
-                      : String(filterItem.name)
-                  }
-                  className="w-8 h-8 object-contain"
-                />
-                <p
-                  className={`text-xs ml-2 font-light ${
-                    selectedFeatures.some((sf) => sf._id === filterItem._id)
-                      ? "text-gray-500"
-                      : "text-gray-500"
-                  }`}
-                >
-                  {typeof filterItem.name === "object"
-                    ? filterItem.name.en
-                    : String(filterItem.name)}
-                </p>
+                      : String(filterItem.name)}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
