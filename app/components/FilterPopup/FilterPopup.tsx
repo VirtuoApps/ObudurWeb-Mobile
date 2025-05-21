@@ -176,6 +176,11 @@ export default function FilterPopup({
     }
   }, [currencyCode, setCurrencyCode]);
 
+  const [interiorFeaturesCollapsed, setInteriorFeaturesCollapsed] =
+    useState(true);
+  const [exteriorFeaturesCollapsed, setExteriorFeaturesCollapsed] =
+    useState(true);
+
   if (!isOpen) return null;
 
   return (
@@ -186,7 +191,7 @@ export default function FilterPopup({
         style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
       ></div>
 
-      <div className="relative bg-white rounded-2xl shadow-xl max-w-md w-full mx-auto max-h-[90vh] flex flex-col">
+      <div className="relative bg-white rounded-2xl shadow-xl max-w-[600px] w-full mx-auto max-h-[90vh] flex flex-col">
         {/* Header - Fixed at top */}
         <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-2xl">
           <div className="flex items-center justify-between">
@@ -232,7 +237,7 @@ export default function FilterPopup({
                 {t("location") || "Location"}
               </h3>
               <button
-                className="text-sm text-purple-600 hover:underline cursor-pointer"
+                className="text-sm text-[#8c8c8c] hover:underline cursor-pointer"
                 onClick={() => setSelectedLocation(null)}
               >
                 {t("reset")}
@@ -365,7 +370,7 @@ export default function FilterPopup({
                 {t("estateType") || "Emlak Tipi"}
               </h3>
               <button
-                className="text-sm text-purple-600 hover:underline cursor-pointer"
+                className="text-sm text-[#8c8c8c] hover:underline cursor-pointer"
                 onClick={() =>
                   setSelectedPropertyType && setSelectedPropertyType(null)
                 }
@@ -460,7 +465,7 @@ export default function FilterPopup({
                 {t("category") || "Kategori"}
               </h3>
               <button
-                className="text-sm text-purple-600 hover:underline cursor-pointer"
+                className="text-sm text-[#8c8c8c] hover:underline cursor-pointer"
                 onClick={() => setSelectedCategory && setSelectedCategory(null)}
               >
                 {t("reset")}
@@ -550,7 +555,7 @@ export default function FilterPopup({
                 {t("priceLabel")} ({currencyCode})
               </h3>
               <button
-                className="text-sm text-purple-600 hover:underline cursor-pointer"
+                className="text-sm text-[#8c8c8c] hover:underline cursor-pointer"
                 onClick={() => {
                   setMinPrice("");
                   setMaxPrice("");
@@ -624,7 +629,7 @@ export default function FilterPopup({
                 {t("rooms")}
               </h3>
               <button
-                className="text-sm text-purple-600 hover:underline cursor-pointer"
+                className="text-sm text-[#8c8c8c] hover:underline cursor-pointer"
                 onClick={() => setRoomCount("")}
               >
                 {t("reset")}
@@ -712,7 +717,7 @@ export default function FilterPopup({
                 {t("bathrooms") || "Bathrooms"}
               </h3>
               <button
-                className="text-sm text-purple-600 hover:underline cursor-pointer"
+                className="text-sm text-[#8c8c8c] hover:underline cursor-pointer"
                 onClick={() => setBathroomCount("")}
               >
                 {t("reset")}
@@ -805,7 +810,7 @@ export default function FilterPopup({
                 {t("area")}
               </h3>
               <button
-                className="text-sm text-purple-600 hover:underline cursor-pointer"
+                className="text-sm text-[#8c8c8c] hover:underline cursor-pointer"
                 onClick={() => {
                   setMinArea("");
                   setMaxArea("");
@@ -874,80 +879,104 @@ export default function FilterPopup({
 
           {/* Interior Features Section */}
           <div className="mt-6">
-            <div className="flex items-center justify-between">
+            <div
+              className="flex items-center justify-between cursor-pointer"
+              onClick={() =>
+                setInteriorFeaturesCollapsed(!interiorFeaturesCollapsed)
+              }
+            >
               <h3 className="text-sm font-semibold text-gray-700">
                 {t("interiorFeatures")}
               </h3>
-              <button
-                className="text-sm text-purple-600 hover:underline cursor-pointer"
-                onClick={resetFeatures}
-              >
-                {t("reset")}
+              <button className="text-sm text-[#8c8c8c] hover:underline cursor-pointer">
+                <img
+                  src="/chevron-down.png"
+                  className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
+                    !interiorFeaturesCollapsed ? "rotate-180" : ""
+                  }`}
+                />
               </button>
             </div>
-            <div className="mt-3 overflow-y-auto max-h-48">
-              <div className="flex flex-wrap gap-2 ">
-                {filterOptions.interiorFeatures.map((feature) => {
-                  const isSelected = interiorFeatures.find(
-                    (f: any) => f._id === feature._id
-                  );
+            {!interiorFeaturesCollapsed && (
+              <div className="mt-3 overflow-y-auto max-h-48">
+                <div className="flex flex-wrap gap-2 ">
+                  {filterOptions.interiorFeatures.map((feature) => {
+                    const isSelected = interiorFeatures.find(
+                      (f: any) => f._id === feature._id
+                    );
 
-                  return (
-                    <button
-                      key={feature._id}
-                      onClick={() => toggleFeature(feature)}
-                      className={`inline-flex items-center ${
-                        isSelected
-                          ? "bg-purple-100 border-purple-300 text-purple-700"
-                          : "bg-white border-gray-100 text-gray-600"
-                      } border rounded-full px-3 py-1 text-xs font-medium  cursor-pointer`}
-                    >
-                      <img src={feature.iconUrl} className="w-4 h-4 mr-2" />
-                      {feature.name.tr}
-                    </button>
-                  );
-                })}
+                    return (
+                      <button
+                        key={feature._id}
+                        onClick={() => toggleFeature(feature)}
+                        className={`inline-flex items-center ${
+                          isSelected
+                            ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                            : "bg-white border-gray-100 text-gray-600"
+                        } border rounded-[16px] h-[40px] px-3 py-1 text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
+                      >
+                        <img
+                          src={feature.iconUrl}
+                          className="w-[24px] h-[24px] mr-2"
+                        />
+                        {feature.name.tr}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Exterior Features Section */}
           <div className="mt-6">
-            <div className="flex items-center justify-between">
+            <div
+              className="flex items-center justify-between cursor-pointer"
+              onClick={() =>
+                setExteriorFeaturesCollapsed(!exteriorFeaturesCollapsed)
+              }
+            >
               <h3 className="text-sm font-semibold text-gray-700">
                 {t("exteriorFeatures") || "Dış Özellikler"}
               </h3>
-              <button
-                className="text-sm text-purple-600 hover:underline cursor-pointer"
-                onClick={resetExteriorFeatures}
-              >
-                {t("reset")}
+              <button className="text-sm text-[#8c8c8c] hover:underline cursor-pointer">
+                <img
+                  src="/chevron-down.png"
+                  className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
+                    !exteriorFeaturesCollapsed ? "rotate-180" : ""
+                  }`}
+                />
               </button>
             </div>
-            <div className="mt-3 overflow-y-auto max-h-48">
-              <div className="flex flex-wrap gap-2">
-                {filterOptions.outsideFeatures.map((feature) => {
-                  const isSelected = selectedExteriorFeatures.find(
-                    (f: any) => f._id === feature._id
-                  );
+            {!exteriorFeaturesCollapsed && (
+              <div className="mt-3 overflow-y-auto max-h-48">
+                <div className="flex flex-wrap gap-2">
+                  {filterOptions.outsideFeatures.map((feature) => {
+                    const isSelected = selectedExteriorFeatures.find(
+                      (f: any) => f._id === feature._id
+                    );
 
-                  return (
-                    <button
-                      key={feature._id}
-                      onClick={() => toggleExteriorFeature(feature)}
-                      className={`inline-flex items-center ${
-                        isSelected
-                          ? "bg-purple-100 border-purple-300 text-purple-700"
-                          : "bg-white border-gray-100 text-gray-600"
-                      } border rounded-full px-3 py-1 text-xs font-medium cursor-pointer`}
-                    >
-                      <img src={feature.iconUrl} className="w-4 h-4 mr-2" />
-                      {feature.name.tr}
-                    </button>
-                  );
-                })}
+                    return (
+                      <button
+                        key={feature._id}
+                        onClick={() => toggleExteriorFeature(feature)}
+                        className={`inline-flex items-center ${
+                          isSelected
+                            ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                            : "bg-white border-gray-100 text-gray-600"
+                        } border rounded-[16px] h-[40px] px-3 py-1 text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
+                      >
+                        <img
+                          src={feature.iconUrl}
+                          className="w-[24px] h-[24px] mr-2"
+                        />
+                        {feature.name.tr}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Location Features Section */}
@@ -959,33 +988,45 @@ export default function FilterPopup({
         {/* Footer Buttons - Fixed at bottom */}
         <div className="sticky bottom-0 left-0 right-0 bg-white z-10 p-6 border-t border-gray-100 rounded-b-2xl">
           <div className="grid grid-cols-2 gap-4">
-            <button
-              className="w-full py-3 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50"
-              onClick={() => {
-                setMinPrice("");
-                setMaxPrice("");
-                setMinArea("");
-                setMaxArea("");
-                setRoomCount("");
-                setBathroomCount("");
-                setInteriorFeatures([]);
-                setSelectedExteriorFeatures([]);
-                setSelectedLocation(null);
-                setSelectedPropertyType && setSelectedPropertyType(null);
-                setSelectedCategory && setSelectedCategory(null);
+            {(minPrice !== "" ||
+              maxPrice !== "" ||
+              minArea !== "" ||
+              maxArea !== "" ||
+              roomCount !== "" ||
+              bathroomCount !== "" ||
+              interiorFeatures.length > 0 ||
+              selectedExteriorFeatures.length > 0 ||
+              selectedLocation ||
+              selectedPropertyType ||
+              selectedCategory) && (
+              <button
+                className="w-full py-3 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50"
+                onClick={() => {
+                  setMinPrice("");
+                  setMaxPrice("");
+                  setMinArea("");
+                  setMaxArea("");
+                  setRoomCount("");
+                  setBathroomCount("");
+                  setInteriorFeatures([]);
+                  setSelectedExteriorFeatures([]);
+                  setSelectedLocation(null);
+                  setSelectedPropertyType && setSelectedPropertyType(null);
+                  setSelectedCategory && setSelectedCategory(null);
 
-                setFilters({
-                  listingType: null,
-                  state: null,
-                  propertyType: null,
-                  roomAsText: null,
-                });
+                  setFilters({
+                    listingType: null,
+                    state: null,
+                    propertyType: null,
+                    roomAsText: null,
+                  });
 
-                onClose && onClose();
-              }}
-            >
-              {t("clearAll")}
-            </button>
+                  onClose && onClose();
+                }}
+              >
+                {t("clearAll")}
+              </button>
+            )}
             <button
               onClick={() => {
                 setFilters({
@@ -1004,7 +1045,21 @@ export default function FilterPopup({
                 });
                 onClose && onClose();
               }}
-              className="w-full py-3 text-sm font-medium text-white bg-[#5E5691] rounded-lg cursor-pointer"
+              className={`w-full py-3 text-sm font-medium text-white bg-[#5E5691] rounded-lg cursor-pointer ${
+                minPrice !== "" ||
+                maxPrice !== "" ||
+                minArea !== "" ||
+                maxArea !== "" ||
+                roomCount !== "" ||
+                bathroomCount !== "" ||
+                interiorFeatures.length > 0 ||
+                selectedExteriorFeatures.length > 0 ||
+                selectedLocation ||
+                selectedPropertyType ||
+                selectedCategory
+                  ? "col-span-1"
+                  : "col-span-2"
+              }`}
             >
               {t("apply")}
             </button>

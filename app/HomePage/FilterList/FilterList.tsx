@@ -207,7 +207,7 @@ export default function FilterList({
 
         <div
           onClick={onChangeCurrentView}
-          className="flex items-center justify-center border-r px-4 py-4 border-gray-200  cursor-pointer transition-all duration-200 hover:bg-gray-100 -2xl"
+          className="flex items-center justify-center border-r px-4 py-4 border-gray-200  cursor-pointer transition-all duration-200 hover:bg-[#F5F5F5] -2xl"
         >
           {currentView === "map" && <ListViewIcon />}
           {currentView !== "map" && (
@@ -222,10 +222,10 @@ export default function FilterList({
             {features.map((filterItem) => (
               <div
                 key={filterItem._id}
-                className={`flex flex-row items-center cursor-pointer rounded-lg px-3 py-2 whitespace-nowrap transition-colors duration-200 ${
+                className={`flex flex-row items-center cursor-pointer rounded-2xl px-3 py-2 whitespace-nowrap transition-colors duration-200 ${
                   selectedFeatures.some((sf) => sf._id === filterItem._id)
-                    ? "bg-gray-100"
-                    : "bg-white hover:bg-gray-100"
+                    ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75] "
+                    : "bg-white hover:bg-[#F5F5F5]"
                 }`}
                 onClick={() => handleFilterClick(filterItem)}
               >
@@ -237,9 +237,9 @@ export default function FilterList({
                         ? filterItem.name.en
                         : String(filterItem.name)
                     }
-                    className="w-6 h-6 object-contain flex-shrink-0"
+                    className="w-[24px] h-[24px] object-contain flex-shrink-0"
                   />
-                  <p className="text-xs ml-2 font-light text-gray-500">
+                  <p className="text-[14px] ml-2 text-[#595959] font-medium">
                     {typeof filterItem.name === "object"
                       ? filterItem.name.en
                       : String(filterItem.name)}
