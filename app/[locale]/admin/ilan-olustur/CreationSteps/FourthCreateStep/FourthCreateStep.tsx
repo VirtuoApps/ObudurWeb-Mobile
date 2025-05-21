@@ -12,6 +12,7 @@ import {
 } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import GoBackButton from "../../GoBackButton/GoBackButton";
+import { CustomSelect } from "../SecondCreateStep/SecondCreateStep";
 
 interface Feature {
   _id: string;
@@ -411,10 +412,10 @@ export default function FourthCreateStep() {
                   <button
                     key={option.value}
                     type="button"
-                    className={`inline-flex items-center gap-2 px-4 py-2 rounded-full transition border border-gray-300 text-gray-700 cursor-pointer ${
+                    className={`inline-flex items-center gap-2 px-4 py-2 rounded-full transition border cursor-pointer ${
                       orientation === option.value
-                        ? "bg-[#EBEAF1] "
-                        : "bg-transparent "
+                        ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75] "
+                        : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
                     }`}
                     onClick={() => handleOrientationChange(option.value)}
                   >
@@ -450,28 +451,18 @@ export default function FourthCreateStep() {
               {/* Add new distance form */}
               <div className="flex flex-wrap gap-3 mb-4">
                 <div className="w-full md:w-[45%]">
-                  <select
-                    className="w-full h-10 px-3 border border-gray-300 rounded-lg text-gray-600"
+                  <CustomSelect
+                    options={distanceTypes.map((type) => ({
+                      value: type._id,
+                      label:
+                        type.name[selectedLanguage as keyof typeof type.name] ||
+                        type.name.tr ||
+                        type.name.en,
+                    }))}
                     value={newDistanceTypeId}
-                    onChange={(e) => setNewDistanceTypeId(e.target.value)}
-                  >
-                    <option value="">Uzaklık tipi seçin</option>
-                    {distanceTypes.map((type) => {
-                      const langKey =
-                        selectedLanguage as keyof typeof type.name;
-                      const isAlreadyAdded = distances.some(
-                        (d) => d.typeId === type._id
-                      );
-                      if (!isAlreadyAdded) {
-                        return (
-                          <option key={type._id} value={type._id}>
-                            {type.name[langKey] || type.name.tr || type.name.en}
-                          </option>
-                        );
-                      }
-                      return null;
-                    })}
-                  </select>
+                    onChange={(value) => setNewDistanceTypeId(value)}
+                    placeholder="Uzaklık tipi seçin"
+                  />
                 </div>
                 <div className="w-full md:w-[25%]">
                   <div className="relative">

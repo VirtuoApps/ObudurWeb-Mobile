@@ -1,12 +1,97 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   ChevronRightIcon,
   ChevronLeftIcon,
   ChevronDownIcon,
+  ChevronUpIcon,
 } from "@heroicons/react/24/solid";
 import { useListingForm } from "../CreationSteps";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import GoBackButton from "../../GoBackButton/GoBackButton";
+
+// Custom Select component that matches the design
+interface SelectOption {
+  value: string | number;
+  label: string;
+}
+
+interface CustomSelectProps {
+  options: SelectOption[];
+  value: string | number;
+  onChange: (value: string) => void;
+  placeholder?: string;
+}
+
+export const CustomSelect: React.FC<CustomSelectProps> = ({
+  options,
+  value,
+  onChange,
+  placeholder = "Select option",
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const selectedOption = options.find(
+    (option) => option.value.toString() === value.toString()
+  );
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      <button
+        type="button"
+        className="w-full h-12 rounded-lg border border-gray-300 bg-white px-4 flex items-center justify-between text-[#262626] focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span className="truncate">
+          {selectedOption ? selectedOption.label : placeholder}
+        </span>
+        {isOpen ? (
+          <img
+            src="/chevron-down.png"
+            className="w-[24px] h-[24px] rotate-180"
+          />
+        ) : (
+          <img src="/chevron-down.png" className="w-[24px] h-[24px] " />
+        )}
+      </button>
+
+      {isOpen && (
+        <div className="absolute left-0 z-10 mt-1 w-full origin-top-right rounded-[16px] bg-white shadow-lg border border-gray-200">
+          <div className="py-1 max-h-60 overflow-auto">
+            {options.map((option) => (
+              <div
+                key={option.value}
+                className="px-4 py-3 hover:bg-gray-100 cursor-pointer text-[#595959]"
+                onClick={() => {
+                  onChange(option.value.toString());
+                  setIsOpen(false);
+                }}
+              >
+                {option.label}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default function SecondCreateStep() {
   const [errors, setErrors] = useState<string[]>([]);
@@ -83,22 +168,18 @@ export default function SecondCreateStep() {
 
   // Kitchen type options
   const kitchenTypeOptions = [
-    { value: "americanKitchen", tr: "Amerikan Mutfak", en: "American Kitchen" },
-    { value: "separateKitchen", tr: "Ayrı Mutfak", en: "Separate Kitchen" },
-    { value: "openKitchen", tr: "Açık Mutfak", en: "Open Kitchen" },
-    { value: "islandKitchen", tr: "Ada Mutfak", en: "Island Kitchen" },
-    { value: "cornerKitchen", tr: "Köşe Mutfak", en: "Corner Kitchen" },
+    { value: "americanKitchen", label: "Amerikan Mutfak" },
+    { value: "separateKitchen", label: "Ayrı Mutfak" },
+    { value: "openKitchen", label: "Açık Mutfak" },
+    { value: "islandKitchen", label: "Ada Mutfak" },
+    { value: "cornerKitchen", label: "Köşe Mutfak" },
   ];
 
-  // Generate options for select inputs
-  const generateOptions = (min: number, max: number) => {
-    const options = [];
+  // Generate options for number-based selects
+  const generateNumberOptions = (min: number, max: number): SelectOption[] => {
+    const options: SelectOption[] = [];
     for (let i = min; i <= max; i++) {
-      options.push(
-        <option key={i} value={i}>
-          {i}
-        </option>
-      );
+      options.push({ value: i, label: i.toString() });
     }
     return options;
   };
@@ -245,22 +326,12 @@ export default function SecondCreateStep() {
 
               <div className="flex flex-row gap-4 mb-6">
                 <div className="relative w-[100px]">
-                  <div className="relative">
-                    <select
-                      value={selectedCurrency}
-                      onChange={(e) => handleCurrencyChange(e.target.value)}
-                      className="w-full h-12 appearance-none rounded-lg border border-gray-300 bg-white px-4 pr-8 text-[#262626] focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40"
-                    >
-                      {currencyOptions.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                      <ChevronDownIcon className="h-4 w-4" />
-                    </div>
-                  </div>
+                  <CustomSelect
+                    options={currencyOptions}
+                    value={selectedCurrency}
+                    onChange={handleCurrencyChange}
+                    placeholder="Para Birimi"
+                  />
                 </div>
 
                 <div className="flex-1">
@@ -398,14 +469,12 @@ export default function SecondCreateStep() {
                 >
                   Oda Sayısı
                 </label>
-                <select
-                  id="roomCount"
+                <CustomSelect
+                  options={generateNumberOptions(0, 10)}
                   value={roomCount || 0}
-                  onChange={(e) => setRoomCount(parseInt(e.target.value))}
-                  className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                >
-                  {generateOptions(0, 10)}
-                </select>
+                  onChange={(value) => setRoomCount(parseInt(value))}
+                  placeholder="Seçiniz"
+                />
               </div>
               <div className="w-full sm:w-1/2">
                 <label
@@ -414,14 +483,12 @@ export default function SecondCreateStep() {
                 >
                   Banyo Sayısı
                 </label>
-                <select
-                  id="bathroomCount"
+                <CustomSelect
+                  options={generateNumberOptions(0, 5)}
                   value={bathroomCount || 0}
-                  onChange={(e) => setBathroomCount(parseInt(e.target.value))}
-                  className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                >
-                  {generateOptions(0, 5)}
-                </select>
+                  onChange={(value) => setBathroomCount(parseInt(value))}
+                  placeholder="Seçiniz"
+                />
               </div>
             </div>
 
@@ -434,14 +501,12 @@ export default function SecondCreateStep() {
                 >
                   Yatak Odası Sayısı
                 </label>
-                <select
-                  id="bedRoomCount"
+                <CustomSelect
+                  options={generateNumberOptions(0, 5)}
                   value={bedRoomCount || 0}
-                  onChange={(e) => setBedRoomCount(parseInt(e.target.value))}
-                  className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                >
-                  {generateOptions(0, 5)}
-                </select>
+                  onChange={(value) => setBedRoomCount(parseInt(value))}
+                  placeholder="Seçiniz"
+                />
               </div>
               <div className="w-full sm:w-1/2">
                 <label
@@ -450,14 +515,12 @@ export default function SecondCreateStep() {
                 >
                   Kat Sayısı
                 </label>
-                <select
-                  id="floorCount"
+                <CustomSelect
+                  options={generateNumberOptions(0, 5)}
                   value={floorCount || 0}
-                  onChange={(e) => setFloorCount(parseInt(e.target.value))}
-                  className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                >
-                  {generateOptions(0, 5)}
-                </select>
+                  onChange={(value) => setFloorCount(parseInt(value))}
+                  placeholder="Seçiniz"
+                />
               </div>
             </div>
 
@@ -489,35 +552,39 @@ export default function SecondCreateStep() {
               >
                 Mutfak Tipi
               </label>
-              <select
-                id="kitchenType"
+              <CustomSelect
+                options={kitchenTypeOptions}
                 value={
                   kitchenType?.tr
                     ? kitchenTypeOptions.find(
-                        (option) => option.tr === kitchenType.tr
-                      )?.value
+                        (option) => option.label === kitchenType.tr
+                      )?.value || ""
                     : ""
                 }
-                onChange={(e) => {
+                onChange={(value) => {
                   const selected = kitchenTypeOptions.find(
-                    (option) => option.value === e.target.value
+                    (option) => option.value === value
                   );
                   if (selected) {
                     setKitchenType({
-                      tr: selected.tr,
-                      en: selected.en,
+                      tr: selected.label,
+                      en:
+                        selected.value === "americanKitchen"
+                          ? "American Kitchen"
+                          : selected.value === "separateKitchen"
+                          ? "Separate Kitchen"
+                          : selected.value === "openKitchen"
+                          ? "Open Kitchen"
+                          : selected.value === "islandKitchen"
+                          ? "Island Kitchen"
+                          : selected.value === "cornerKitchen"
+                          ? "Corner Kitchen"
+                          : "",
                     });
                   }
                 }}
-                className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-              >
-                <option value="">Seçiniz</option>
-                {kitchenTypeOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.tr}
-                  </option>
-                ))}
-              </select>
+                placeholder="Seçiniz"
+              />
             </div>
 
             {/* Step navigation buttons */}
