@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/app/utils/router";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { fetchUserData } from "../../store/userSlice";
 import AccountForm from "./AccountForm";

@@ -5,7 +5,7 @@ import AuthBox from "@/app/HomePage/Header/AuthBox/AuthBox";
 import Image from "next/image";
 import React, { useState } from "react";
 import { FaBars } from "react-icons/fa";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/app/utils/router";
 
 interface HeaderProps {
   customRedirectUrl?: string;

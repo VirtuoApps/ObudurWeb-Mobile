@@ -17,7 +17,7 @@ import {
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 import axiosInstance, { mainWebsiteUrl } from "@/axios";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/app/utils/router";
 import { useAppSelector } from "@/app/store/hooks";
 import { toast, Toaster } from "react-hot-toast";
 

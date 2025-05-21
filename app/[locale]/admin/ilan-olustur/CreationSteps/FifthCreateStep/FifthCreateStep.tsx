@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import { useListingForm } from "../CreationSteps";
 import axiosInstance from "@/axios";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/app/utils/router";
 
 export default function FifthCreateStep() {
   const router = useRouter();

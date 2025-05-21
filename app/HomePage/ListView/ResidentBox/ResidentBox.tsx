@@ -12,7 +12,7 @@ import BedIcon from "@/app/svgIcons/BedIcon";
 import FloorCountIcon from "@/app/svgIcons/FloorCountIcon";
 import AreaIcon from "@/app/svgIcons/AreaIcon";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/app/utils/router";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/app/store/store";
 import AuthPopup from "@/app/components/AuthPopup/AuthPopup";

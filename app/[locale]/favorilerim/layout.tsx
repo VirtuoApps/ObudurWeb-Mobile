@@ -5,7 +5,7 @@ import Image from "next/image";
 import AuthBox from "@/app/HomePage/Header/AuthBox/AuthBox";
 import LanguageSwitcher from "@/app/components/LanguageSwitcher";
 import { FaBars } from "react-icons/fa";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/app/utils/router";
 
 export default function FavoritesLayout({
   children,

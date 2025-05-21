@@ -6,7 +6,7 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import HomeDetailsPopup from "./HomeDetailsPopup/HomeDetailsPopup";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/app/utils/router";
 import { Hotel } from "@/types/hotel.type";
 
 const containerStyle = {

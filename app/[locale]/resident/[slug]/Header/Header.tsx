@@ -6,7 +6,8 @@ import { FaBars } from "react-icons/fa";
 import LanguageSwitcher from "@/app/components/LanguageSwitcher";
 import AuthBox from "@/app/HomePage/Header/AuthBox/AuthBox";
 import MenuItems from "./MenuItems/MenuItems";
-import { useRouter, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useRouter } from "@/app/utils/router";
 import axiosInstance from "@/axios";
 import { useHotelData } from "../hotelContext";
 

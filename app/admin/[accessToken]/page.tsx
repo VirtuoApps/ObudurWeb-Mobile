@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useRouter } from "@/app/utils/router";
 import axiosInstance from "@/axios";
 import { useAppDispatch } from "@/app/store/hooks";
 import { fetchUserData } from "@/app/store/userSlice";

@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/app/store/store";
 import { fetchUserFavorites } from "@/app/store/favoritesSlice";
 import ResidentBox from "@/app/HomePage/ListView/ResidentBox/ResidentBox";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/app/utils/router";
 import { useTranslations } from "next-intl";
 import AuthPopup from "@/app/components/AuthPopup/AuthPopup";
 

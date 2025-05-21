@@ -8,6 +8,7 @@ import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
 import { clearUser } from "@/app/store/userSlice";
 import axiosInstance, { mainWebsiteUrl } from "@/axios";
 import { MdFavoriteBorder } from "react-icons/md";
+import { Link } from "@/app/components/nprogress";
 
 export default function AuthBox() {
   const t = useTranslations("header");
@@ -67,28 +68,28 @@ export default function AuthBox() {
         {/* Dropdown Menu */}
         {dropdownOpen && (
           <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50 py-1">
-            <a
+            <Link
               href="/account"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
               Hesap Ayarları
-            </a>
+            </Link>
 
-            <a
+            <Link
               href="/favorilerim"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
             >
               <MdFavoriteBorder className="mr-2" />
               Favorilerim
-            </a>
+            </Link>
 
             {(user.role === "admin" || user.role === "super-admin") && (
-              <a
+              <Link
                 href="/admin/ilanlar"
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
                 İlanlarım
-              </a>
+              </Link>
             )}
 
             {user.role === "super-admin" && (
