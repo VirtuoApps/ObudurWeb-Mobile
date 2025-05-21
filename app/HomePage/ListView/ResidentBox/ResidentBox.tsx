@@ -4,6 +4,8 @@ import {
   HomeIcon,
   ArrowsPointingOutIcon,
   BuildingOffice2Icon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 import { MdFavoriteBorder } from "react-icons/md";
 import { MdOutlineFavorite } from "react-icons/md";
@@ -34,6 +36,7 @@ interface ResidentBoxProps {
   area: string;
   locationText: string;
   image?: string;
+  images?: string[];
   hotelId: string; // Add hotelId for API calls
 }
 
@@ -50,10 +53,13 @@ export default function ResidentBox({
   area = "240m²",
   locationText = "814 E Highland Dr, Seattle, WA 98102",
   image = "/example-house.png",
+  images = ["/example-house.png"],
   hotelId,
 }: ResidentBoxProps) {
   const t = useTranslations("residentBox");
   const [isAuthPopupOpen, setIsAuthPopupOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.user.user);
   const favorites = useSelector(
@@ -61,6 +67,9 @@ export default function ResidentBox({
   );
 
   const router = useRouter();
+
+  // Use images array if provided, otherwise create array from single image
+  const imageArray = images.length > 0 ? images : [image];
 
   // Check if this hotel is in favorites
   const isFavorite = favorites.some((favorite) => favorite.hotelId === hotelId);
@@ -89,19 +98,53 @@ export default function ResidentBox({
     }
   };
 
+  const handlePrevImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? imageArray.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNextImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === imageArray.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
   return (
     <>
       <div
         className="w-full overflow-hidden bg-white rounded-xl hover:shadow-lg transition-shadow duration-300 cursor-pointer"
         onClick={() => router.push(`/resident/${slug}`)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
         {/* Image container with badges */}
         <div className="relative">
           <img
-            src={image}
+            src={imageArray[currentImageIndex]}
             alt={title}
             className="w-full h-48 object-cover rounded-lg"
           />
+
+          {/* Navigation buttons */}
+          {imageArray.length > 1 && isHovered && (
+            <div className="absolute bottom-2 left-2 flex space-x-2">
+              <button
+                onClick={handlePrevImage}
+                className="bg-white bg-opacity-50 hover:bg-opacity-70 text-white rounded-lg p-2 transition-all cursor-pointer"
+              >
+                <ChevronLeftIcon className="w-4 h-4 text-gray-800" />
+              </button>
+              <button
+                onClick={handleNextImage}
+                className="bg-white bg-opacity-50 hover:bg-opacity-70 text-white rounded-lg p-2 transition-all cursor-pointer"
+              >
+                <ChevronRightIcon className="w-4 h-4 text-gray-800" />
+              </button>
+            </div>
+          )}
 
           {/* Sale badge */}
           <div className="absolute top-3 left-3 flex flex-row items-center">

@@ -91,6 +91,7 @@ export default function ListView({ hotels }: { hotels: Hotel[] }) {
           area={`${hotel.projectArea}m2`}
           locationText={formatAddress(hotel, selectedLanguage)}
           image={hotel.images[0]}
+          images={hotel.images}
           isFavorite={false}
         />
       ))}
