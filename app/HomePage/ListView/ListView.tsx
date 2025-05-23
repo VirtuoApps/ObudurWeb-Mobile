@@ -12,6 +12,13 @@ const currencySymbols: Record<string, string> = {
   RUB: "₽",
 };
 
+// Helper function to get localized text
+export const getLocalizedText = (textObj: any, selectedLanguage: string) => {
+  return textObj && textObj[selectedLanguage]
+    ? textObj[selectedLanguage]
+    : textObj?.en || "";
+};
+
 export default function ListView({
   hotels,
   sortOption,
@@ -78,13 +85,6 @@ export default function ListView({
       : `${price.amount}${symbol}`;
   };
 
-  // Helper function to get localized text
-  const getLocalizedText = (textObj: any) => {
-    return textObj && textObj[selectedLanguage]
-      ? textObj[selectedLanguage]
-      : textObj?.en || "";
-  };
-
   // Helper function to get numeric price for sorting
   const getNumericPrice = (hotel: Hotel) => {
     if (!hotel.price || hotel.price.length === 0) return 0;
@@ -124,10 +124,13 @@ export default function ListView({
             key={hotel._id}
             hotelId={hotel._id}
             slug={hotel.slug}
-            type={getLocalizedText(hotel.listingType)}
+            type={getLocalizedText(hotel.listingType, selectedLanguage)}
             isOptinable={false}
-            residentTypeName={getLocalizedText(hotel.housingType)}
-            title={getLocalizedText(hotel.title)}
+            residentTypeName={getLocalizedText(
+              hotel.housingType,
+              selectedLanguage
+            )}
+            title={getLocalizedText(hotel.title, selectedLanguage)}
             price={getDisplayPrice(hotel)}
             bedCount={hotel.bedRoomCount.toString()}
             floorCount={"2"}

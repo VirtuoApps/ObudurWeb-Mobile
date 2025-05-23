@@ -8,6 +8,9 @@ import {
 import HomeDetailsPopup from "./HomeDetailsPopup/HomeDetailsPopup";
 import { useRouter } from "@/app/utils/router";
 import { Hotel } from "@/types/hotel.type";
+import ResidentBox from "../ListView/ResidentBox/ResidentBox";
+import { formatAddress } from "@/app/utils/addressFormatter";
+import { getLocalizedText } from "../ListView/ListView";
 
 const containerStyle = {
   width: "100%",
@@ -227,9 +230,9 @@ export default function GoogleMapView({
               labelOrigin: new window.google.maps.Point(100, 25),
             }}
             onClick={() => {
-              router.push(`/resident/${hotel.slug}`);
+              // router.push(`/resident/${hotel.slug}`);
               // Alternative: show info window
-              // setSelectedHotel(hotel);
+              setSelectedHotel(hotel);
             }}
           />
         );
@@ -243,10 +246,24 @@ export default function GoogleMapView({
           }}
           onCloseClick={() => setSelectedHotel(null)}
         >
-          <div>
-            <h3>{selectedHotel.title.en}</h3>
-            <p>{getDisplayPrice(selectedHotel)}</p>
-          </div>
+          <ResidentBox
+            key={selectedHotel._id}
+            hotelId={selectedHotel._id}
+            slug={selectedHotel.slug}
+            type={getLocalizedText(selectedHotel.listingType, "en")}
+            isOptinable={false}
+            residentTypeName={getLocalizedText(selectedHotel.housingType, "en")}
+            title={getLocalizedText(selectedHotel.title, "en")}
+            price={getDisplayPrice(selectedHotel)}
+            bedCount={selectedHotel.bedRoomCount.toString()}
+            floorCount={"2"}
+            area={`${selectedHotel.projectArea}m2`}
+            locationText={formatAddress(selectedHotel, "en ")}
+            image={selectedHotel.images[0]}
+            images={selectedHotel.images}
+            isFavorite={false}
+            roomAsText={selectedHotel.roomAsText}
+          />
         </InfoWindow>
       )}
     </GoogleMap>

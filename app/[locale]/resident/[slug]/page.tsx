@@ -11,6 +11,7 @@ import Location from "./Location/Location";
 import PanoramicView from "./PanoramicView/PanoramicView";
 import PlansAndDocumentation from "./PlansAndDocumentation/PlansAndDocumentation";
 import ClientWrapper from "./ClientWrapper";
+import NotFound from "../../not-found";
 
 // Types for API response
 interface LocalizedText {
@@ -89,6 +90,7 @@ interface HotelDetails {
   apartmentNo: string;
   postalCode: string;
   video: string;
+  isPublished: boolean;
 }
 
 interface PopulatedData {
@@ -125,6 +127,10 @@ export default async function ResidentPage({
 
   const hotelDataResponse = await axiosInstance.get(`hotels/${slug}`);
   const hotelData: HotelResponse = hotelDataResponse.data;
+
+  if (!hotelData.hotelDetails.isPublished) {
+    return <NotFound />;
+  }
 
   const video = hotelData.hotelDetails.video;
 
