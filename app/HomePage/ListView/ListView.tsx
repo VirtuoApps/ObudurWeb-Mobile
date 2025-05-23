@@ -118,7 +118,7 @@ export default function ListView({
         setSortOption={setSortOption}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 bg-white  px-2 pb-28">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-5 gap-4 bg-white  px-2 pb-28">
         {sortedHotels.map((hotel) => (
           <ResidentBox
             key={hotel._id}
@@ -136,6 +136,7 @@ export default function ListView({
             image={hotel.images[0]}
             images={hotel.images}
             isFavorite={false}
+            roomAsText={hotel.roomAsText}
           />
         ))}
       </div>

@@ -35,6 +35,7 @@ interface ResidentBoxProps {
   floorCount: string;
   area: string;
   locationText: string;
+  roomAsText: string;
   image?: string;
   images?: string[];
   hotelId: string; // Add hotelId for API calls
@@ -52,6 +53,7 @@ export default function ResidentBox({
   floorCount = "2",
   area = "240m²",
   locationText = "814 E Highland Dr, Seattle, WA 98102",
+  roomAsText = "1+1",
   image = "/example-house.png",
   images = ["/example-house.png"],
   hotelId,
@@ -148,7 +150,7 @@ export default function ResidentBox({
 
           {/* Sale badge */}
           <div className="absolute top-3 left-3 flex flex-row items-center">
-            <div className=" bg-white border border-gray-200 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-lg">
+            <div className=" bg-white border border-[#D9D9D9] text-[#5E5691] text-xs font-semibold px-3 py-1 rounded-lg">
               {type}
             </div>
             {isOptinable && (
@@ -173,23 +175,23 @@ export default function ResidentBox({
         {/* Content */}
         <div className="p-4">
           {/* Property type */}
-          <p className="text-xs text-gray-500 font-medium mb-1">
+          <p className="text-base text-[#8C8C8C] font-medium mb-1">
             {residentTypeName}
           </p>
 
           <div className="flex flex-row items-center justify-between mb-4">
             {/* Title */}
-            <h3 className="text-base font-bold text-gray-800 ">{title}</h3>
+            <h3 className="text-base font-bold text-[#262626] ">{title}</h3>
 
             {/* Price */}
-            <p className="text-sm font-bold text-[#362C75]">{price}</p>
+            <p className="text-base font-bold text-[#362C75]">{price}</p>
           </div>
 
           {/* Features */}
-          <div className="flex justify-between items-center mb-4 text-sm text-gray-800 font-semibold">
+          <div className="flex justify-between items-center mb-4 text-sm text-[#262626] font-semibold">
             <div className="flex items-center space-x-1">
               <BedIcon />
-              <span>{bedCount}</span>
+              <span>{roomAsText}</span>
             </div>
 
             <div className="flex items-center space-x-1">
@@ -204,8 +206,8 @@ export default function ResidentBox({
           </div>
 
           {/* Location */}
-          <div className="flex items-start space-x-1 text-xs text-gray-500">
-            <MapPinIcon className="w-4 h-4 flex-shrink-0 mt-0.5" />
+          <div className="flex items-start space-x-1 text-[14px] text-[#8C8C8C]">
+            <img src="/marker-02.png" className="w-[16px] h-[16px] mr-1" />
             <span>{locationText}</span>
           </div>
         </div>
