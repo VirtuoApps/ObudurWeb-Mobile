@@ -50,7 +50,7 @@ export default function MiddleSearchBox({
         ${
           isMobileMenu
             ? "flex flex-col w-full gap-3"
-            : "flex items-center gap-2 border border-gray-100 px-4 py-2 rounded-lg"
+            : "flex items-center gap-2 border border-gray-100 px-4  rounded-lg"
         }
       `}
     >
@@ -86,12 +86,16 @@ export default function MiddleSearchBox({
         filterOptions={filterOptions}
       />
 
+      <div className="bg-[#F5F5F5] w-[1px] h-[24px]"></div>
+
       {/* Emlak Tipi */}
       <PropertyType
         selectedPropertyType={selectedPropertyType}
         setSelectedPropertyType={setSelectedPropertyType}
         filterOptions={filterOptions}
       />
+
+      <div className="bg-[#F5F5F5] w-[1px] h-[24px]"></div>
 
       {/* Kategori */}
       <CategorySelect

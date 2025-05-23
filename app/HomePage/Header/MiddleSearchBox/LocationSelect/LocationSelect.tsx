@@ -77,7 +77,7 @@ export default function LocationSelect({
           <>
             <PopoverButton
               ref={buttonRef}
-              className={`flex items-center text-gray-700 px-3 py-1.5 text-sm cursor-pointer ${
+              className={`flex items-center text-gray-700 px-3 py-1.5 text-sm cursor-pointer outline-none ${
                 isMobileMenu
                   ? "w-full border rounded-md border-gray-200 justify-between"
                   : "w-[150px]"
@@ -101,7 +101,10 @@ export default function LocationSelect({
                   </>
                 ) : (
                   <>
-                    <MapPinIcon className="h-4 w-4 mr-1 flex-shrink-0" />
+                    <img
+                      src="/marker-02.png"
+                      className="w-[20px] h-[20px] mr-1"
+                    />
                     <span className="truncate">
                       {selectedLocation
                         ? `${selectedLocation.name}`
@@ -110,9 +113,12 @@ export default function LocationSelect({
                   </>
                 )}
               </div>
-              <ChevronDownIcon
-                className="h-5 w-5 text-gray-400 ml-2"
-                aria-hidden="true"
+
+              <img
+                src="/chevron-down.png"
+                className={`w-[24px] h-[24px] ml-auto ${
+                  isOpen ? "rotate-180" : ""
+                }`}
               />
             </PopoverButton>
 
@@ -122,7 +128,7 @@ export default function LocationSelect({
                 isMobileMenu ? "left-0" : "left-1/2 -translate-x-1/2"
               }`}
             >
-              <div className="w-full max-w-md flex-auto overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
+              <div className="w-full max-w-[250px] flex-auto overflow-hidden rounded-[16px] bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
                 <div className="p-4">
                   {filteredLocations.length > 0 ? (
                     filteredLocations.map((location) => (
