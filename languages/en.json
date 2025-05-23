@@ -12,7 +12,8 @@
     "language": "Language",
     "english": "English",
     "turkish": "Turkish",
-    "welcome": "Welcome"
+    "welcome": "Welcome",
+    "postListing": "Post Listing"
   },
   "filter": {
     "title": "Filters",

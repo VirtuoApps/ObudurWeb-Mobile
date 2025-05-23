@@ -12,7 +12,8 @@
     "language": "Dil",
     "english": "İngilizce",
     "turkish": "Türkçe",
-    "welcome": "Hoş Geldiniz"
+    "welcome": "Hoş Geldiniz",
+    "postListing": "İlan Ver"
   },
   "filter": {
     "title": "Filtreler",
