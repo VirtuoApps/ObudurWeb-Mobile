@@ -44,6 +44,7 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
     useState<ExistingMessage | null>(null);
   const [submitError, setSubmitError] = useState("");
   const [isAuthPopupOpen, setIsAuthPopupOpen] = useState(false);
+  const [phoneCopied, setPhoneCopied] = useState(false);
   const t = useTranslations("contactBox");
 
   const { user } = useAppSelector((state) => state.user);
@@ -188,6 +189,7 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
   };
 
   const managerName = `${hotelData.manager.firstName} ${hotelData.manager.lastName}`;
+  const managerPhone = hotelData.manager.phoneNumber;
 
   const maskName = (name: string) => {
     return name
@@ -201,9 +203,48 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
       .join(" ");
   };
 
-  console.log({
-    isAuthPopupOpen,
-  });
+  const maskPhone = (phone: string) => {
+    return phone
+      .split(" ")
+      .map((part) => {
+        if (!part) return "";
+        return `${part.slice(0, 4)}${Array(part.length - 4)
+          .fill("*")
+          .join("")}`;
+      })
+      .join(" ");
+  };
+
+  const copyPhoneToClipboard = async () => {
+    if (isLoginned && managerPhone) {
+      try {
+        await navigator.clipboard.writeText(managerPhone);
+        setPhoneCopied(true);
+        // Hide the success message after 2 seconds
+        setTimeout(() => {
+          setPhoneCopied(false);
+        }, 2000);
+      } catch (error) {
+        console.error("Failed to copy phone number:", error);
+        // Fallback for older browsers
+        const textArea = document.createElement("textarea");
+        textArea.value = managerPhone;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+          document.execCommand("copy");
+          setPhoneCopied(true);
+          setTimeout(() => {
+            setPhoneCopied(false);
+          }, 2000);
+        } catch (fallbackError) {
+          console.error("Fallback copy failed:", fallbackError);
+        }
+        document.body.removeChild(textArea);
+      }
+    }
+  };
 
   return (
     <>
@@ -237,8 +278,15 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
           </div>
 
           <div className="flex gap-2 mt-5">
-            <button className="flex-1 bg-[#EC755D] text-white py-2 px-4 rounded-xl font-medium cursor-pointer">
-              {isLoginned ? t("call") : "+90 512 *** ** **"}
+            <button
+              onClick={() => {
+                if (isLoginned) {
+                  copyPhoneToClipboard();
+                }
+              }}
+              className="flex-1 bg-[#EC755D] text-white py-2 px-4 rounded-xl font-medium cursor-pointer"
+            >
+              {isLoginned ? managerPhone : maskPhone(managerPhone)}
             </button>
             <button className="flex-1 bg-[#FCFCFC] text-gray-800 py-2 px-4 rounded-xl border border-gray-200 font-medium cursor-pointer">
               {t("allListings")}
@@ -246,7 +294,16 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
           </div>
         </div>
 
-        {/* Action Buttons */}
+        {/* Success message for phone copy */}
+        {phoneCopied && (
+          <div className="mx-4 mt-2 mb-2">
+            <div className="bg-green-50 p-3 rounded-xl border border-green-200">
+              <p className="text-green-700 text-sm font-medium text-center">
+                {t("phoneCopied")}
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Contact Form */}
         {!isLoginned && (

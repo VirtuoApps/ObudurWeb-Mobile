@@ -223,7 +223,8 @@
     "messageSent": "Mesaj Gönderildi",
     "messageSentTitle": "Mesaj Gönderildi",
     "messageSentDescription": "Bu mülk için zaten iletişime geçtiniz. Emlak danışmanı sizinle en kısa sürede iletişime geçecektir.",
-    "errorSendingMessage": "Mesaj gönderilirken bir hata oluştu. Lütfen tekrar deneyin."
+    "errorSendingMessage": "Mesaj gönderilirken bir hata oluştu. Lütfen tekrar deneyin.",
+    "phoneCopied": "📞 Telefon numarası panoya kopyalandı!"
   },
   "generalInfo": {
     "listingNumber": "İlan No: #{id}",
