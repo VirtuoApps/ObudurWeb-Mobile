@@ -47,3 +47,44 @@ body {
   -ms-overflow-style: none !important;
   scrollbar-width: none !important;
 }
+
+/* Custom styling for react-phone-number-input */
+.PhoneInput {
+  display: flex;
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  overflow: hidden;
+  padding-left: 10px;
+}
+
+.PhoneInput--focus {
+  border-color: #5E5691;
+  box-shadow: 0 0 0 2px rgba(94, 86, 145, 0.2);
+}
+
+.PhoneInput--error {
+  border-color: #ef4444;
+}
+
+.PhoneInputCountrySelect {
+  border: none;
+  background: #f9fafb;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.PhoneInputInput {
+  border: none;
+  outline: none;
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #374151;
+  background: white;
+}
+
+.PhoneInputInput:focus {
+  outline: none;
+}

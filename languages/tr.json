@@ -326,6 +326,8 @@
     "emailLabel": "E-posta Adresi",
     "firstNameLabel": "Ad",
     "lastNameLabel": "Soyad",
+    "phoneNumberLabel": "Telefon Numarası",
+    "phoneNumberPlaceholder": "Telefon numarası girin",
     "changePasswordTitle": "Şifre Değiştir",
     "newPasswordLabel": "Yeni Şifre",
     "confirmPasswordLabel": "Şifreyi Doğrula",

@@ -8,12 +8,15 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { updateUserData, resetUpdateStatus } from "../../store/userSlice";
 import { useTranslations } from "next-intl";
 import axiosInstance from "../../../axios";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 interface User {
   _id: string;
   email: string;
   firstName?: string;
   lastName?: string;
+  phoneNumber?: string;
   role: string;
   verified: boolean;
   createdAt: string;
@@ -39,6 +42,7 @@ export default function AccountForm({ user }: AccountFormProps) {
     email: z.string().email(t("emailError")),
     firstName: z.string().min(1, t("firstNameError")),
     lastName: z.string().min(1, t("lastNameError")),
+    phoneNumber: z.string().optional(),
   });
 
   const passwordSchema = z
@@ -57,6 +61,8 @@ export default function AccountForm({ user }: AccountFormProps) {
   const {
     register: registerPersonalInfo,
     handleSubmit: handleSubmitPersonalInfo,
+    setValue: setPersonalInfoValue,
+    watch: watchPersonalInfo,
     formState: { errors: personalInfoErrors, isDirty: personalInfoIsDirty },
   } = useForm<PersonalInfoData>({
     resolver: zodResolver(personalInfoSchema),
@@ -64,6 +70,7 @@ export default function AccountForm({ user }: AccountFormProps) {
       email: user?.email || "",
       firstName: user?.firstName || "",
       lastName: user?.lastName || "",
+      phoneNumber: user?.phoneNumber || "",
     },
   });
 
@@ -79,6 +86,15 @@ export default function AccountForm({ user }: AccountFormProps) {
       confirmPassword: "",
     },
   });
+
+  // Watch phone number to track changes
+  const phoneNumber = watchPersonalInfo("phoneNumber");
+
+  // Check if phone number has changed
+  const phoneNumberChanged = phoneNumber !== (user?.phoneNumber || "");
+
+  // Check if any field has changed (including phone number)
+  const hasChanges = personalInfoIsDirty || phoneNumberChanged;
 
   // Handle successful update and process the new accessToken
   useEffect(() => {
@@ -107,6 +123,8 @@ export default function AccountForm({ user }: AccountFormProps) {
     if (data.firstName !== user.firstName)
       updateData.firstName = data.firstName;
     if (data.lastName !== user.lastName) updateData.lastName = data.lastName;
+    if (data.phoneNumber !== user.phoneNumber)
+      updateData.phoneNumber = data.phoneNumber;
 
     if (Object.keys(updateData).length > 0) {
       setProfileUpdateLoading(true);
@@ -254,14 +272,43 @@ export default function AccountForm({ user }: AccountFormProps) {
                 )}
               </div>
             </div>
+
+            <div>
+              <label
+                htmlFor="phoneNumber"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                {t("phoneNumberLabel")}
+              </label>
+              <PhoneInput
+                id="phoneNumber"
+                placeholder={t("phoneNumberPlaceholder")}
+                value={phoneNumber}
+                onChange={(value) =>
+                  setPersonalInfoValue("phoneNumber", value, {
+                    shouldDirty: true,
+                    shouldValidate: true,
+                  })
+                }
+                defaultCountry="TR"
+                className={
+                  personalInfoErrors.phoneNumber ? "PhoneInput--error" : ""
+                }
+              />
+              {personalInfoErrors.phoneNumber && (
+                <p className="text-red-500 text-xs mt-1">
+                  {personalInfoErrors.phoneNumber.message}
+                </p>
+              )}
+            </div>
           </div>
 
           <div>
             <button
               type="submit"
-              disabled={profileUpdateLoading || !personalInfoIsDirty}
+              disabled={profileUpdateLoading || !hasChanges}
               className={`w-full py-2 px-4 rounded-md font-medium ${
-                profileUpdateLoading || !personalInfoIsDirty
+                profileUpdateLoading || !hasChanges
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-[#5E5691] text-white hover:bg-[#4D4777] transition-colors"
               }`}

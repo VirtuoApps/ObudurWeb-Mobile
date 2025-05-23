@@ -326,6 +326,8 @@
     "emailLabel": "Email Address",
     "firstNameLabel": "First Name",
     "lastNameLabel": "Last Name",
+    "phoneNumberLabel": "Phone Number",
+    "phoneNumberPlaceholder": "Enter phone number",
     "changePasswordTitle": "Change Password",
     "newPasswordLabel": "New Password",
     "confirmPasswordLabel": "Confirm Password",
