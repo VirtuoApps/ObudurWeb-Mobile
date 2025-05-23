@@ -159,13 +159,13 @@ export default function Footer() {
                     disabled={isSubscribed || isLoading}
                     aria-label={t("placeholder")}
                     placeholder={t("placeholder")}
-                    className="w-full max-w-xs rounded-l-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-none placeholder:text-gray-400 text-gray-700 disabled:bg-gray-100"
+                    className="w-full max-w-xs rounded-l-md px-3 py-2 text-sm focus:outline-none focus:ring-none focus::border-none outline-none placeholder:text-gray-400 text-gray-700 disabled:bg-gray-100"
                     required
                   />
                   <button
                     type="submit"
                     disabled={isSubscribed || isLoading}
-                    className={`text-sm px-4 rounded-xl transition w-[200px] ${
+                    className={`text-sm ml-4 px-4 rounded-xl transition w-[200px] ${
                       isSubscribed
                         ? "bg-green-100 text-green-600"
                         : "bg-slate-100 text-[#8C8C8C] hover:bg-slate-200"

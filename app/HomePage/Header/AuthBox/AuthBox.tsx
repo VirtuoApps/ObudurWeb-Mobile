@@ -67,30 +67,84 @@ export default function AuthBox() {
 
         {/* Dropdown Menu */}
         {dropdownOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50 py-1">
+          <div className="absolute -right-4 mt-2 min-w-[320px]   bg-white rounded-[16px] shadow-lg z-50 py-1">
+            <div className="px-4  border-b border-gray-100 pb-3">
+              <p className="text-[#362C75] text-[16px] font-bold">
+                {user.firstName} {user.lastName}
+              </p>
+              <p className="text-[#A39EC0] text-[14px]">{user.email}</p>
+            </div>
+
             <Link
               href="/account"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              className=" px-4 py-2 text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center"
             >
-              Hesap Ayarları
+              <img
+                src="/user-profile-settings-2.png"
+                className="w-[20px] h-[20px] mr-2"
+              />
+              Profil Detayları
             </Link>
 
             <Link
-              href="/favorilerim"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+              href="/bildirimler"
+              className=" px-4 py-2 text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center"
             >
-              <MdFavoriteBorder className="mr-2" />
-              Favorilerim
+              <img src="/bell-01.png" className="w-[20px] h-[20px] mr-2" />
+              Bildirimler (3)
             </Link>
+
+            <Link
+              href="/Mesajlar"
+              className=" px-4 py-2 text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center"
+            >
+              <img src="/mail-01.png" className="w-[20px] h-[20px] mr-2" />
+              Mesajlar (2)
+            </Link>
+
+            <div className="border-b border-gray-100 my-2"></div>
 
             {(user.role === "admin" || user.role === "super-admin") && (
               <Link
-                href="/admin/ilanlar"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                href="/ilanlarim"
+                className=" px-4 py-2 text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center"
               >
+                <img src="/favourite.png" className="w-[20px] h-[20px] mr-2" />
                 İlanlarım
               </Link>
             )}
+
+            <Link
+              href="/favorilerim"
+              className=" px-4 py-2 text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center"
+            >
+              <img src="/heart.png" className="w-[20px] h-[20px] mr-2" />
+              Favori ilanlar
+            </Link>
+
+            <Link
+              href="/favori-aramalar"
+              className=" px-4 py-2 text-[14px] text-[#262626]  hover:bg-gray-100 flex flex-row items-center"
+            >
+              <img src="/search-02.png" className="w-[20px] h-[20px] mr-2" />
+              Favori aramalar
+            </Link>
+
+            <div className="border-b border-gray-100 my-2"></div>
+
+            <Link
+              href="/iletisim-kanallari"
+              className=" px-4 py-2 text-[14px] text-[#595959]  hover:bg-gray-100 flex flex-row items-center"
+            >
+              İletişim Kanalları
+            </Link>
+
+            <Link
+              href="/gayrimenkul-ofisleri"
+              className=" px-4 py-2 text-[14px] text-[#595959]  hover:bg-gray-100 flex flex-row items-center"
+            >
+              Gayrimenkul Ofislerimiz
+            </Link>
 
             {user.role === "super-admin" && (
               <a
@@ -98,15 +152,40 @@ export default function AuthBox() {
                   "accessToken"
                 )}`}
                 target="_blank"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                className=" px-4 py-2 text-[14px] text-[#595959]  hover:bg-gray-100 flex flex-row items-center"
               >
                 Admin Paneli
               </a>
             )}
 
+            <div className="border-b border-gray-100 my-2"></div>
+
+            <Link
+              href="/gayrimenkul-ofisleri"
+              className=" px-4 py-2 text-[12px] font-[500] text-[#595959]  hover:bg-gray-100 flex flex-row items-center"
+            >
+              Sık Sorulan Sorular
+            </Link>
+
+            <Link
+              href="/geri-bildirim"
+              className=" px-4 py-2 text-[12px] font-[500] text-[#595959]  hover:bg-gray-100 flex flex-row items-center"
+            >
+              Geri Bildirim
+            </Link>
+
+            <Link
+              href="/kullanici-sozlesmeleri"
+              className=" px-4 py-2 text-[12px] font-[500] text-[#595959]  hover:bg-gray-100 flex flex-row items-center"
+            >
+              Kullanıcı Sözleşmeleri
+            </Link>
+
+            <div className="border-b border-gray-100 my-2"></div>
+
             <button
               onClick={handleLogout}
-              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              className="block w-full text-left px-4 py-2 text-[12px] text-[#EF1A28] hover:bg-gray-100 cursor-pointer"
             >
               Çıkış Yap
             </button>
