@@ -191,7 +191,8 @@
     "features": "Özellikler & Donanımlar",
     "virtualTour": "360 Sanal Tur",
     "location": "Lokasyon",
-    "floorPlans": "Kat Planları ve Dökümanlar"
+    "floorPlans": "Kat Planları ve Dökümanlar",
+    "viewAll": "Hepsini Gör"
   },
   "contactBox": {
     "getMoreInfo": "Daha Fazla Bilgi Al",

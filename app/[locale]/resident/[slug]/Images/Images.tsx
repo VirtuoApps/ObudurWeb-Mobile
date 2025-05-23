@@ -7,10 +7,12 @@ import { IoMdClose } from "react-icons/io";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import GridIcon from "@/app/svgIcons/GridIcon";
 import { useHotelData } from "../hotelContext";
+import { useTranslations } from "next-intl";
 
 export default function Images() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const t = useTranslations("residentMenu");
 
   const { hotelData, locale } = useHotelData();
 
@@ -120,8 +122,7 @@ export default function Images() {
           onClick={() => openModal(0)}
           className="absolute bottom-4 right-4 px-4 py-2 bg-white text-black rounded shadow hover:bg-gray-100 transition flex flex-row items-center cursor-pointer"
         >
-          <GridIcon />
-          <span className="ml-3 text-[#5E5691]">Bütün Fotoğrafları Gör</span>
+          <span className=" text-[#5E5691]">{t("viewAll")}</span>
         </button>
       </div>
 

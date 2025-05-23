@@ -191,7 +191,8 @@
     "features": "Features & Amenities",
     "virtualTour": "360 Virtual Tour",
     "location": "Location",
-    "floorPlans": "Floor Plans & Documents"
+    "floorPlans": "Floor Plans & Documents",
+    "viewAll": "View All"
   },
   "contactBox": {
     "getMoreInfo": "Get More Information",
