@@ -457,6 +457,49 @@ export default function AdminListings() {
     }
   };
 
+  const renderStatusByProperty = (property: any) => {
+    if (property.isPublished && property.isConfirmedByAdmin) {
+      return (
+        <span
+          className=" rounded-md py-0.5 text-xs font-semibold text-white cursor-pointer w-[100px] flex items-center justify-center"
+          style={{
+            backgroundColor: "#1EB173",
+          }}
+        >
+          Aktif
+        </span>
+      );
+    }
+
+    if (property.isPublished && !property.isConfirmedByAdmin) {
+      return (
+        <span
+          className=" rounded-md py-0.5 text-xs font-semibold text-white cursor-pointer w-[100px] flex items-center justify-center"
+          style={{
+            backgroundColor: "#FA9441",
+          }}
+        >
+          Onay Bekliyor
+        </span>
+      );
+    }
+
+    if (!property.isPublished) {
+      return (
+        <span
+          className=" rounded-md py-0.5 text-xs font-semibold text-white cursor-pointer w-[100px] flex items-center justify-center"
+          style={{
+            backgroundColor: "#362C75",
+          }}
+        >
+          Duraklatıldı
+        </span>
+      );
+    }
+
+    return null;
+  };
+
   return (
     <div className="bg-[#ebeaf1] w-full h-full min-h-screen">
       <Header customRedirectUrl="/" />
@@ -795,21 +838,7 @@ export default function AdminListings() {
                         </div>
                       </td>
                       <td className="py-4 text-sm" data-label="Durum">
-                        <span
-                          className=" rounded-md py-0.5 text-xs font-semibold text-white cursor-pointer w-[100px] flex items-center justify-center"
-                          style={{
-                            backgroundColor: getStatusBadgeColor(
-                              property.status || "active"
-                            ),
-                          }}
-                          onClick={() => {
-                            setSelectedPropertyId(property._id);
-                            setSelectedStatus(property.status || "active");
-                            setStatusModalOpen(true);
-                          }}
-                        >
-                          {getStatusText(property.status || "active")}
-                        </span>
+                        {renderStatusByProperty(property)}
                       </td>
                       <td
                         className="py-4 text-sm text-gray-700 "
