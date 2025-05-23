@@ -34,7 +34,7 @@ export default function AutoLogin() {
         await dispatch(fetchUserData());
 
         // Redirect to admin dashboard
-        router.replace("/admin/ilanlar");
+        router.replace("/admin/ilan-olustur");
       } catch (error) {
         console.error("Auto login failed:", error);
         router.replace("/admin/login");
