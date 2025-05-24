@@ -12,4 +12,5 @@ export type FilterType = {
   interiorFeatureIds?: string[] | null;
   exteriorFeatureIds?: string[] | null;
   locationFeatureIds?: string[] | null;
+  isNewSelected?: boolean | null;
 };

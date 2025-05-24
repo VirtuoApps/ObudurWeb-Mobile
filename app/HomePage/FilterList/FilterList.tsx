@@ -24,6 +24,8 @@ import ListViewIcon from "@/app/svgIcons/ListViewIcon";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { Feature } from "@/types/feature.type";
 import { FilterOptions } from "@/types/filter-options.type";
+import { FilterType } from "@/types/filter.type";
+import NewFilterItem from "./NewFilterItem/NewFilterItem";
 const iconClassName = "text-xl";
 const iconColor = "rgba(0,0,0,0.6)";
 
@@ -42,6 +44,7 @@ export default function FilterList({
   setSelectedPropertyType,
   selectedCategory,
   setSelectedCategory,
+  filters,
   setFilters,
   minPrice,
   setMinPrice,
@@ -77,6 +80,7 @@ export default function FilterList({
   setSelectedPropertyType: (selectedPropertyType: any) => void;
   selectedCategory: any;
   setSelectedCategory: (selectedCategory: any) => void;
+  filters: FilterType | null;
   setFilters: (filters: any) => void;
   minPrice: number | "";
   setMinPrice: React.Dispatch<React.SetStateAction<number | "">>;
@@ -221,13 +225,14 @@ export default function FilterList({
             ref={scrollContainerRef}
             className="flex flex-row items-center overflow-x-auto scrollbar-hide w-full no-scrollbar px-3 py-2 gap-3"
           >
+            <NewFilterItem filters={filters} setFilters={setFilters} />
             {allQuickFilters.map((filterItem) => (
               <div
                 key={filterItem._id}
                 className={`flex flex-row items-center cursor-pointer rounded-2xl px-3 py-2 whitespace-nowrap transition-colors duration-200 ${
                   selectedFeatures.some((sf) => sf._id === filterItem._id)
                     ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75] "
-                    : "bg-white hover:bg-[#F5F5F5]"
+                    : "bg-white hover:bg-[#F5F5F5] border-[0.5px] border-transparent"
                 }`}
                 onClick={() => handleFilterClick(filterItem)}
               >

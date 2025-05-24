@@ -193,6 +193,16 @@ export default function HomePage({
         );
       });
     }
+
+    if (filters.isNewSelected) {
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+      filteredHotels = filteredHotels.filter((hotel) => {
+        const hotelCreatedAt = new Date(hotel.createdAt);
+        return hotelCreatedAt >= sevenDaysAgo;
+      });
+    }
   }
 
   if (selectedFeatures.length > 0) {
@@ -278,6 +288,7 @@ export default function HomePage({
         setSelectedPropertyType={setSelectedPropertyType}
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
+        filters={filters || null}
         setFilters={setFilters}
         minPrice={minPrice}
         setMinPrice={setMinPrice}
