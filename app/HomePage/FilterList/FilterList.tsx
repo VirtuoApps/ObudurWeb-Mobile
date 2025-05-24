@@ -61,6 +61,7 @@ export default function FilterList({
   setCurrencyCode,
   interiorFeatures,
   setInteriorFeatures,
+  allQuickFilters,
 }: {
   onChangeCurrentView: () => void;
   currentView: "map" | "list";
@@ -95,6 +96,7 @@ export default function FilterList({
   setCurrencyCode: React.Dispatch<React.SetStateAction<string>>;
   interiorFeatures: any[];
   setInteriorFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  allQuickFilters: Feature[];
 }) {
   const t = useTranslations("filterList");
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
@@ -219,7 +221,7 @@ export default function FilterList({
             ref={scrollContainerRef}
             className="flex flex-row items-center overflow-x-auto scrollbar-hide w-full no-scrollbar px-3 py-2 gap-3"
           >
-            {features.map((filterItem) => (
+            {allQuickFilters.map((filterItem) => (
               <div
                 key={filterItem._id}
                 className={`flex flex-row items-center cursor-pointer rounded-2xl px-3 py-2 whitespace-nowrap transition-colors duration-200 ${

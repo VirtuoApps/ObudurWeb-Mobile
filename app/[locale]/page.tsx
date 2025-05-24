@@ -21,6 +21,10 @@ export default async function Home() {
     "/hotels/filter-options"
   );
 
+  const allQuickFiltersResponse = await axiosInstance.get(
+    "/features/all-quick-filters"
+  );
+
   const filterOptions = filterOptionsResponse.data as FilterOptions;
 
   return (
@@ -29,6 +33,7 @@ export default async function Home() {
         features={features}
         hotels={hotels}
         filterOptions={filterOptions}
+        allQuickFilters={allQuickFiltersResponse.data as Feature[]}
       />
     </>
   );

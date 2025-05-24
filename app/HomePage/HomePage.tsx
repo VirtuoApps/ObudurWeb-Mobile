@@ -34,10 +34,12 @@ export default function HomePage({
   features,
   hotels,
   filterOptions,
+  allQuickFilters,
 }: {
   features: Feature[];
   hotels: Hotel[];
   filterOptions: FilterOptions;
+  allQuickFilters: Feature[];
 }) {
   const t = useTranslations("common");
   const [currentView, setCurrentView] = useState<"map" | "list">("map");
@@ -295,6 +297,7 @@ export default function HomePage({
         setCurrencyCode={setCurrencyCode}
         interiorFeatures={interiorFeatures}
         setInteriorFeatures={setInteriorFeatures}
+        allQuickFilters={allQuickFilters}
       />
       {filters && filteredHotels.length === 0 ? (
         <NoResultsFound />
