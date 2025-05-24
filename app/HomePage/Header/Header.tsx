@@ -37,8 +37,8 @@ export default function Header({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="relative border-b shadow-sm py-4 bg-white h-[80px] w-full px-4 md:px-0">
-      <div className="container mx-auto flex flex-wrap items-center justify-between">
+    <header className="relative border-b shadow-sm py-4 bg-white h-[80px] w-full px-0 md:px-0">
+      <div className=" mx-auto flex flex-wrap items-center justify-between px-12">
         {/* Logo */}
         <div className="flex items-center">
           <Image
@@ -51,7 +51,7 @@ export default function Header({
         </div>
 
         {/* Center Navigation - Hidden on mobile, shown on md and larger */}
-        <div className="hidden md:flex md:flex-1 md:justify-center md:px-4 lg:px-8">
+        <div className="hidden md:flex md:flex-1 md:justify-center md:px-4 lg:px-8 ">
           <MiddleSearchBox
             setFilters={setFilters}
             filterOptions={filterOptions}

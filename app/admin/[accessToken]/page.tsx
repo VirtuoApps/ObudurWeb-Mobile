@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useRouter } from "@/app/utils/router";
 import axiosInstance from "@/axios";
 import { useAppDispatch } from "@/app/store/hooks";
@@ -10,6 +10,7 @@ import { fetchUserData } from "@/app/store/userSlice";
 export default function AutoLogin() {
   const router = useRouter();
   const params = useParams();
+  const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -33,8 +34,15 @@ export default function AutoLogin() {
         // Fetch user data to update Redux store
         await dispatch(fetchUserData());
 
-        // Redirect to admin dashboard
-        router.replace("/admin/ilan-olustur");
+        // Check for pageLink query parameter
+        const pageLink = searchParams.get("pageLink");
+
+        // Redirect to specified page or default admin dashboard
+        if (pageLink) {
+          router.replace(pageLink);
+        } else {
+          router.replace("/admin/ilan-olustur");
+        }
       } catch (error) {
         console.error("Auto login failed:", error);
         router.replace("/admin/login");
@@ -42,7 +50,7 @@ export default function AutoLogin() {
     };
 
     autoLogin();
-  }, [params, router, dispatch]);
+  }, [params, router, dispatch, searchParams]);
 
   return (
     <html lang="tr">
