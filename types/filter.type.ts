@@ -13,4 +13,7 @@ export type FilterType = {
   exteriorFeatureIds?: string[] | null;
   locationFeatureIds?: string[] | null;
   isNewSelected?: boolean | null;
+  isOnePlusOneSelected?: boolean | null;
+  isTwoPlusOneSelected?: boolean | null;
+  isThreePlusOneSelected?: boolean | null;
 };

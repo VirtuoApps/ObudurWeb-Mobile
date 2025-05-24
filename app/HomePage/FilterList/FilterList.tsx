@@ -26,6 +26,7 @@ import { Feature } from "@/types/feature.type";
 import { FilterOptions } from "@/types/filter-options.type";
 import { FilterType } from "@/types/filter.type";
 import NewFilterItem from "./NewFilterItem/NewFilterItem";
+import SizeFilterItem from "./SizeFilterItem/SizeFilterıtem";
 const iconClassName = "text-xl";
 const iconColor = "rgba(0,0,0,0.6)";
 
@@ -226,6 +227,45 @@ export default function FilterList({
             className="flex flex-row items-center overflow-x-auto scrollbar-hide w-full no-scrollbar px-3 py-2 gap-3"
           >
             <NewFilterItem filters={filters} setFilters={setFilters} />
+            <SizeFilterItem
+              isSelected={filters?.isOnePlusOneSelected || false}
+              onToggleSelected={() =>
+                setFilters({
+                  ...filters,
+                  isOnePlusOneSelected: !filters?.isOnePlusOneSelected,
+                  isTwoPlusOneSelected: false,
+                  isThreePlusOneSelected: false,
+                })
+              }
+              iconUrl="/1+1.png"
+              text="1+1"
+            />
+            <SizeFilterItem
+              isSelected={filters?.isTwoPlusOneSelected || false}
+              onToggleSelected={() =>
+                setFilters({
+                  ...filters,
+                  isTwoPlusOneSelected: !filters?.isTwoPlusOneSelected,
+                  isOnePlusOneSelected: false,
+                  isThreePlusOneSelected: false,
+                })
+              }
+              iconUrl="/2+1.png"
+              text="2+1"
+            />
+            <SizeFilterItem
+              isSelected={filters?.isThreePlusOneSelected || false}
+              onToggleSelected={() =>
+                setFilters({
+                  ...filters,
+                  isThreePlusOneSelected: !filters?.isThreePlusOneSelected,
+                  isOnePlusOneSelected: false,
+                  isTwoPlusOneSelected: false,
+                })
+              }
+              iconUrl="/3+1.png"
+              text="3+1"
+            />
             {allQuickFilters.map((filterItem) => (
               <div
                 key={filterItem._id}

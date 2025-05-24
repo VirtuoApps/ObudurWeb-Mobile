@@ -203,6 +203,24 @@ export default function HomePage({
         return hotelCreatedAt >= sevenDaysAgo;
       });
     }
+
+    if (filters.isOnePlusOneSelected) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return hotel.roomAsText === "1+1";
+      });
+    }
+
+    if (filters.isTwoPlusOneSelected) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return hotel.roomAsText === "2+1";
+      });
+    }
+
+    if (filters.isThreePlusOneSelected) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return hotel.roomAsText === "3+1";
+      });
+    }
   }
 
   if (selectedFeatures.length > 0) {
