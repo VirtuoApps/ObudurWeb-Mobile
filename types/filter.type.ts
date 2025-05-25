@@ -11,6 +11,7 @@ export type FilterType = {
   maxProjectArea?: number | null;
   interiorFeatureIds?: string[] | null;
   exteriorFeatureIds?: string[] | null;
+  accessibilityFeatureIds?: string[] | null;
   locationFeatureIds?: string[] | null;
   isNewSelected?: boolean | null;
   isOnePlusOneSelected?: boolean | null;

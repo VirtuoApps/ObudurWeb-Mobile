@@ -65,6 +65,10 @@ export default function FilterList({
   setCurrencyCode,
   interiorFeatures,
   setInteriorFeatures,
+  accessibilityFeatures,
+  setAccessibilityFeatures,
+  selectedAccessibilityFeatures,
+  setSelectedAccessibilityFeatures,
   allQuickFilters,
 }: {
   onChangeCurrentView: () => void;
@@ -101,6 +105,10 @@ export default function FilterList({
   setCurrencyCode: React.Dispatch<React.SetStateAction<string>>;
   interiorFeatures: any[];
   setInteriorFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  accessibilityFeatures: any[];
+  setAccessibilityFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  selectedAccessibilityFeatures: any[];
+  setSelectedAccessibilityFeatures: React.Dispatch<React.SetStateAction<any[]>>;
   allQuickFilters: Feature[];
 }) {
   const t = useTranslations("filterList");
@@ -186,6 +194,10 @@ export default function FilterList({
         setCurrencyCode={setCurrencyCode}
         interiorFeatures={interiorFeatures}
         setInteriorFeatures={setInteriorFeatures}
+        accessibilityFeatures={accessibilityFeatures}
+        setAccessibilityFeatures={setAccessibilityFeatures}
+        selectedAccessibilityFeatures={selectedAccessibilityFeatures}
+        setSelectedAccessibilityFeatures={setSelectedAccessibilityFeatures}
       />
       <div
         className={`bg-white flex flex-row ${

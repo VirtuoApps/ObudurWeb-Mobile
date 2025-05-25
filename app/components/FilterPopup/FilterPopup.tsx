@@ -35,7 +35,7 @@ import { IoSchool, IoRestaurantOutline } from "react-icons/io5";
 import { BiTrain, BiStore, BiHealth } from "react-icons/bi";
 import { currencyOptions } from "../LanguageSwitcher";
 import { useLocale, useTranslations } from "next-intl";
-import { FilterOptions } from "@/types/filter-options.type";
+import { FilterOptions, Feature } from "@/types/filter-options.type";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import {
   ChevronDownIcon as ChevronDownSolidIcon,
@@ -78,6 +78,10 @@ type FilterPopupProps = {
   setCurrencyCode: React.Dispatch<React.SetStateAction<string>>;
   interiorFeatures: any[];
   setInteriorFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  accessibilityFeatures: any[];
+  setAccessibilityFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  selectedAccessibilityFeatures: any[];
+  setSelectedAccessibilityFeatures: React.Dispatch<React.SetStateAction<any[]>>;
 };
 
 export default function FilterPopup({
@@ -111,6 +115,10 @@ export default function FilterPopup({
   setCurrencyCode,
   interiorFeatures,
   setInteriorFeatures,
+  accessibilityFeatures,
+  setAccessibilityFeatures,
+  selectedAccessibilityFeatures,
+  setSelectedAccessibilityFeatures,
 }: FilterPopupProps) {
   const t = useTranslations("filter");
   const listingTypeTranslations = useTranslations("listingType");
@@ -156,6 +164,14 @@ export default function FilterPopup({
     );
   };
 
+  const toggleAccessibilityFeature = (feature: Feature) => {
+    setSelectedAccessibilityFeatures((prev: any[]) =>
+      prev.some((f: any) => f._id === feature._id)
+        ? prev.filter((f: any) => f._id !== feature._id)
+        : [...prev, feature]
+    );
+  };
+
   const resetFeatures = () => {
     setInteriorFeatures([]);
   };
@@ -179,6 +195,8 @@ export default function FilterPopup({
   const [interiorFeaturesCollapsed, setInteriorFeaturesCollapsed] =
     useState(true);
   const [exteriorFeaturesCollapsed, setExteriorFeaturesCollapsed] =
+    useState(true);
+  const [accessibilityFeaturesCollapsed, setAccessibilityFeaturesCollapsed] =
     useState(true);
 
   if (!isOpen) return null;
@@ -942,6 +960,69 @@ export default function FilterPopup({
             )}
           </div>
 
+          {/* Accessibility Features Section */}
+          {filterOptions.accessibilityFeatures &&
+            filterOptions.accessibilityFeatures.length > 0 && (
+              <div className="mt-6">
+                <div
+                  className="flex items-center justify-between cursor-pointer"
+                  onClick={() =>
+                    setAccessibilityFeaturesCollapsed(
+                      !accessibilityFeaturesCollapsed
+                    )
+                  }
+                >
+                  <h3 className="text-base font-semibold text-gray-700">
+                    {t("accessibilityFeatures") ||
+                      "Engelliye ve Yaşlıya Yönelik Özellikler"}
+                  </h3>
+                  <button className="text-sm text-[#8c8c8c] hover:underline cursor-pointer">
+                    <img
+                      src="/chevron-down.png"
+                      className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
+                        !accessibilityFeaturesCollapsed ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                </div>
+                {!accessibilityFeaturesCollapsed && (
+                  <div className="mt-3 ">
+                    <div className="flex flex-wrap gap-2">
+                      {(filterOptions.accessibilityFeatures || []).map(
+                        (feature) => {
+                          const isSelected = selectedAccessibilityFeatures.find(
+                            (f: any) => f._id === feature._id
+                          );
+
+                          return (
+                            <button
+                              key={feature._id}
+                              onClick={() =>
+                                toggleAccessibilityFeature(feature)
+                              }
+                              className={`inline-flex items-center ${
+                                isSelected
+                                  ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                                  : "bg-white border-gray-100 text-gray-600"
+                              } border rounded-[16px] h-[40px] px-3 py-1 text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
+                            >
+                              {feature.iconUrl && (
+                                <img
+                                  src={feature.iconUrl}
+                                  className="w-[24px] h-[24px] mr-2"
+                                />
+                              )}
+                              {feature.name.tr}
+                            </button>
+                          );
+                        }
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
           {/* Location Features Section */}
 
           {/* Add some bottom padding to prevent content from hiding behind the fixed footer */}
@@ -959,6 +1040,7 @@ export default function FilterPopup({
               bathroomCount !== "" ||
               interiorFeatures.length > 0 ||
               selectedExteriorFeatures.length > 0 ||
+              selectedAccessibilityFeatures.length > 0 ||
               selectedLocation ||
               selectedPropertyType ||
               selectedCategory) && (
@@ -973,6 +1055,7 @@ export default function FilterPopup({
                   setBathroomCount("");
                   setInteriorFeatures([]);
                   setSelectedExteriorFeatures([]);
+                  setSelectedAccessibilityFeatures([]);
                   setSelectedLocation(null);
                   setSelectedPropertyType && setSelectedPropertyType(null);
                   setSelectedCategory && setSelectedCategory(null);
@@ -1005,6 +1088,9 @@ export default function FilterPopup({
                   exteriorFeatureIds: selectedExteriorFeatures.map(
                     (f: any) => f._id
                   ),
+                  accessibilityFeatureIds: selectedAccessibilityFeatures.map(
+                    (f: any) => f._id
+                  ),
                 });
                 onClose && onClose();
               }}
@@ -1017,6 +1103,7 @@ export default function FilterPopup({
                 bathroomCount !== "" ||
                 interiorFeatures.length > 0 ||
                 selectedExteriorFeatures.length > 0 ||
+                selectedAccessibilityFeatures.length > 0 ||
                 selectedLocation ||
                 selectedPropertyType ||
                 selectedCategory
