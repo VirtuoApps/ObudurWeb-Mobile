@@ -40,4 +40,5 @@ export interface FilterOptions {
   outsideFeatures: Feature[];
   generalFeatures: Feature[];
   accessibilityFeatures: Feature[];
+  faceFeatures: Feature[];
 }

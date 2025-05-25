@@ -40,6 +40,7 @@
     "bathroomsSelect": "Select Bathroom Count",
     "exteriorFeatures": "Exterior Features",
     "accessibilityFeatures": "Features for Disabled and Elderly",
+    "faceFeatures": "Facade",
     "locationFeatures": "Location Features",
     "selectLocation": "Select Location",
     "selectEstateType": "Select Property Type",

@@ -69,6 +69,10 @@ export default function FilterList({
   setAccessibilityFeatures,
   selectedAccessibilityFeatures,
   setSelectedAccessibilityFeatures,
+  faceFeatures,
+  setFaceFeatures,
+  selectedFaceFeatures,
+  setSelectedFaceFeatures,
   allQuickFilters,
 }: {
   onChangeCurrentView: () => void;
@@ -109,6 +113,10 @@ export default function FilterList({
   setAccessibilityFeatures: React.Dispatch<React.SetStateAction<any[]>>;
   selectedAccessibilityFeatures: any[];
   setSelectedAccessibilityFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  faceFeatures: any[];
+  setFaceFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  selectedFaceFeatures: any[];
+  setSelectedFaceFeatures: React.Dispatch<React.SetStateAction<any[]>>;
   allQuickFilters: Feature[];
 }) {
   const t = useTranslations("filterList");
@@ -198,6 +206,10 @@ export default function FilterList({
         setAccessibilityFeatures={setAccessibilityFeatures}
         selectedAccessibilityFeatures={selectedAccessibilityFeatures}
         setSelectedAccessibilityFeatures={setSelectedAccessibilityFeatures}
+        faceFeatures={faceFeatures}
+        setFaceFeatures={setFaceFeatures}
+        selectedFaceFeatures={selectedFaceFeatures}
+        setSelectedFaceFeatures={setSelectedFaceFeatures}
       />
       <div
         className={`bg-white flex flex-row ${

@@ -64,6 +64,8 @@ export default function HomePage({
   const [selectedAccessibilityFeatures, setSelectedAccessibilityFeatures] =
     useState<any[]>([]);
   const [accessibilityFeatures, setAccessibilityFeatures] = useState<any[]>([]);
+  const [selectedFaceFeatures, setSelectedFaceFeatures] = useState<any[]>([]);
+  const [faceFeatures, setFaceFeatures] = useState<any[]>([]);
   const [currencyCode, setCurrencyCode] = useState("₺");
 
   const [selectedLocation, setSelectedLocation] = useState<any | null>(null);
@@ -205,6 +207,14 @@ export default function HomePage({
       });
     }
 
+    if (filters.faceFeatureIds) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return filters.faceFeatureIds!.some(
+          (featureId: string) => hotel.face === featureId
+        );
+      });
+    }
+
     if (filters.isNewSelected) {
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
@@ -269,6 +279,8 @@ export default function HomePage({
             setSelectedExteriorFeatures([]);
             setSelectedAccessibilityFeatures([]);
             setAccessibilityFeatures([]);
+            setSelectedFaceFeatures([]);
+            setFaceFeatures([]);
             setMinPrice("");
             setMaxPrice("");
             setMinArea("");
@@ -339,6 +351,10 @@ export default function HomePage({
         setSelectedAccessibilityFeatures={setSelectedAccessibilityFeatures}
         accessibilityFeatures={accessibilityFeatures}
         setAccessibilityFeatures={setAccessibilityFeatures}
+        selectedFaceFeatures={selectedFaceFeatures}
+        setSelectedFaceFeatures={setSelectedFaceFeatures}
+        faceFeatures={faceFeatures}
+        setFaceFeatures={setFaceFeatures}
         currencyCode={currencyCode}
         setCurrencyCode={setCurrencyCode}
         interiorFeatures={interiorFeatures}

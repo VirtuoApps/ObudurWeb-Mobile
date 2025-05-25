@@ -42,6 +42,7 @@ export interface Hotel {
   entranceType: MultilingualText;
   listingType: MultilingualText;
   featureIds: string[];
+  face?: string;
   distances: Distance[];
   location: GeoPoint;
   city: MultilingualText;

@@ -82,6 +82,10 @@ type FilterPopupProps = {
   setAccessibilityFeatures: React.Dispatch<React.SetStateAction<any[]>>;
   selectedAccessibilityFeatures: any[];
   setSelectedAccessibilityFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  faceFeatures: any[];
+  setFaceFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  selectedFaceFeatures: any[];
+  setSelectedFaceFeatures: React.Dispatch<React.SetStateAction<any[]>>;
 };
 
 export default function FilterPopup({
@@ -109,6 +113,8 @@ export default function FilterPopup({
   setRoomCount,
   bathroomCount,
   setBathroomCount,
+  selectedFeatures,
+  setSelectedFeatures,
   selectedExteriorFeatures,
   setSelectedExteriorFeatures,
   currencyCode,
@@ -119,6 +125,10 @@ export default function FilterPopup({
   setAccessibilityFeatures,
   selectedAccessibilityFeatures,
   setSelectedAccessibilityFeatures,
+  faceFeatures,
+  setFaceFeatures,
+  selectedFaceFeatures,
+  setSelectedFaceFeatures,
 }: FilterPopupProps) {
   const t = useTranslations("filter");
   const listingTypeTranslations = useTranslations("listingType");
@@ -172,6 +182,14 @@ export default function FilterPopup({
     );
   };
 
+  const toggleFaceFeature = (feature: Feature) => {
+    setSelectedFaceFeatures((prev: any[]) =>
+      prev.some((f: any) => f._id === feature._id)
+        ? prev.filter((f: any) => f._id !== feature._id)
+        : [feature]
+    );
+  };
+
   const resetFeatures = () => {
     setInteriorFeatures([]);
   };
@@ -198,6 +216,7 @@ export default function FilterPopup({
     useState(true);
   const [accessibilityFeaturesCollapsed, setAccessibilityFeaturesCollapsed] =
     useState(true);
+  const [faceFeaturesCollapsed, setFaceFeaturesCollapsed] = useState(true);
 
   if (!isOpen) return null;
 
@@ -1023,6 +1042,62 @@ export default function FilterPopup({
               </div>
             )}
 
+          {/* Face Features Section */}
+          {filterOptions.faceFeatures &&
+            filterOptions.faceFeatures.length > 0 && (
+              <div className="mt-6">
+                <div
+                  className="flex items-center justify-between cursor-pointer"
+                  onClick={() =>
+                    setFaceFeaturesCollapsed(!faceFeaturesCollapsed)
+                  }
+                >
+                  <h3 className="text-base font-semibold text-gray-700">
+                    {t("faceFeatures") || "Cephe"}
+                  </h3>
+                  <button className="text-sm text-[#8c8c8c] hover:underline cursor-pointer">
+                    <img
+                      src="/chevron-down.png"
+                      className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
+                        !faceFeaturesCollapsed ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                </div>
+                {!faceFeaturesCollapsed && (
+                  <div className="mt-3 ">
+                    <div className="flex flex-wrap gap-2">
+                      {(filterOptions.faceFeatures || []).map((feature) => {
+                        const isSelected = selectedFaceFeatures.find(
+                          (f: any) => f._id === feature._id
+                        );
+
+                        return (
+                          <button
+                            key={feature._id}
+                            onClick={() => toggleFaceFeature(feature)}
+                            className={`inline-flex items-center ${
+                              isSelected
+                                ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                                : "bg-white border-gray-100 text-gray-600"
+                            } border rounded-[16px] h-[40px] px-3 py-1 text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
+                          >
+                            {feature.iconUrl && (
+                              <img
+                                src={feature.iconUrl}
+                                className="w-[24px] h-[24px] mr-2"
+                              />
+                            )}
+                            {feature.name.tr}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
           {/* Location Features Section */}
 
           {/* Add some bottom padding to prevent content from hiding behind the fixed footer */}
@@ -1041,6 +1116,7 @@ export default function FilterPopup({
               interiorFeatures.length > 0 ||
               selectedExteriorFeatures.length > 0 ||
               selectedAccessibilityFeatures.length > 0 ||
+              selectedFaceFeatures.length > 0 ||
               selectedLocation ||
               selectedPropertyType ||
               selectedCategory) && (
@@ -1056,6 +1132,7 @@ export default function FilterPopup({
                   setInteriorFeatures([]);
                   setSelectedExteriorFeatures([]);
                   setSelectedAccessibilityFeatures([]);
+                  setSelectedFaceFeatures([]);
                   setSelectedLocation(null);
                   setSelectedPropertyType && setSelectedPropertyType(null);
                   setSelectedCategory && setSelectedCategory(null);
@@ -1091,6 +1168,7 @@ export default function FilterPopup({
                   accessibilityFeatureIds: selectedAccessibilityFeatures.map(
                     (f: any) => f._id
                   ),
+                  faceFeatureIds: selectedFaceFeatures.map((f: any) => f._id),
                 });
                 onClose && onClose();
               }}
@@ -1104,6 +1182,7 @@ export default function FilterPopup({
                 interiorFeatures.length > 0 ||
                 selectedExteriorFeatures.length > 0 ||
                 selectedAccessibilityFeatures.length > 0 ||
+                selectedFaceFeatures.length > 0 ||
                 selectedLocation ||
                 selectedPropertyType ||
                 selectedCategory
