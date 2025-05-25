@@ -97,6 +97,7 @@ interface PopulatedData {
   generalFeatures: Feature[];
   insideFeatures: Feature[];
   outsideFeatures: Feature[];
+  quickFilters: Feature[];
   distances: Distance[];
 }
 

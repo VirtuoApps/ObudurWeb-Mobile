@@ -250,6 +250,8 @@ export default function GeneralInfo() {
   // Get general features for the icons
   const generalFeatures = hotelData.populatedData.generalFeatures;
 
+  const quickFilters = hotelData.populatedData.quickFilters;
+
   // Format price with currency
   const mainPrice = price[0]?.amount || 0;
   const currency = price[0]?.currency || "USD";
@@ -285,10 +287,16 @@ export default function GeneralInfo() {
       {/* Features Icons Row - Scrollable on mobile */}
       <div className="flex overflow-x-auto py-3 sm:py-4 justify-between no-scrollbar">
         <div className="flex gap-4 justify-between min-w-full">
-          {generalFeatures.slice(0, 6).map((feature) => (
+          {quickFilters.slice(0, 6).map((feature) => (
             <FeatureIcon
               key={feature._id}
-              icon={<VillaIcon />} // Ideally we would map the right icon based on the feature type
+              icon={
+                <img
+                  src={feature.iconUrl}
+                  alt={feature.name[currentLocale]}
+                  className="w-6 h-6"
+                />
+              }
               label={feature.name[currentLocale]}
             />
           ))}

@@ -18,7 +18,7 @@ import {
   MdKitchen,
 } from "react-icons/md";
 import { LuSettings2 } from "react-icons/lu";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import FilterPopup from "@/app/components/FilterPopup/FilterPopup";
 import ListViewIcon from "@/app/svgIcons/ListViewIcon";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
@@ -120,6 +120,7 @@ export default function FilterList({
   allQuickFilters: Feature[];
 }) {
   const t = useTranslations("filterList");
+  const locale = useLocale();
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
@@ -312,7 +313,9 @@ export default function FilterList({
                   />
                   <p className="text-[14px] ml-2 text-[#595959] font-medium">
                     {typeof filterItem.name === "object"
-                      ? filterItem.name.en
+                      ? filterItem.name[
+                          locale as keyof typeof filterItem.name
+                        ] || filterItem.name.en
                       : String(filterItem.name)}
                   </p>
                 </div>
