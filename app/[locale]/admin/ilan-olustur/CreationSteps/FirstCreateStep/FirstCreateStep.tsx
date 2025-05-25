@@ -12,8 +12,21 @@ interface Language {
   isDefault: boolean;
 }
 
+interface PropertyType {
+  _id: string;
+  name: {
+    tr: string;
+    en: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
 export default function FirstCreateStep() {
   const [languages, setLanguages] = useState<Language[]>([]);
+  const [propertyTypes, setPropertyTypes] = useState<PropertyType[]>([]);
+  const [categories, setCategories] = useState<PropertyType[]>([]);
   const [selectedLanguage, setSelectedLanguage] = useState<string>("en");
   const [isLoading, setIsLoading] = useState(true);
   const [errors, setErrors] = useState<string[]>([]);
@@ -33,32 +46,46 @@ export default function FirstCreateStep() {
     setCurrentStep,
   } = useListingForm();
 
-  // Fetch available languages
+  // Fetch available languages, property types, and categories
   useEffect(() => {
-    const fetchLanguages = async () => {
+    const fetchData = async () => {
       try {
         setIsLoading(true);
         const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
-        const response = await axiosInstance.get(
+
+        // Fetch languages
+        const languagesResponse = await axiosInstance.get(
           `${baseUrl}/admin/languages/all-options`
         );
-        setLanguages(response.data);
+        setLanguages(languagesResponse.data);
 
         // Set default language from response
-        const defaultLang = response.data.find(
+        const defaultLang = languagesResponse.data.find(
           (lang: Language) => lang.isDefault
         );
         if (defaultLang) {
           setSelectedLanguage(defaultLang.code);
         }
+
+        // Fetch property types (for "Emlak Tipi Seçin" section)
+        const propertyTypesResponse = await axiosInstance.get(
+          `${baseUrl}/admin/hotel-types/all-options`
+        );
+        setPropertyTypes(propertyTypesResponse.data);
+
+        // Fetch categories (for "Kategori Seçin" section)
+        const categoriesResponse = await axiosInstance.get(
+          `${baseUrl}/admin/hotel-categories/all-options`
+        );
+        setCategories(categoriesResponse.data);
       } catch (error) {
-        console.error("Error fetching languages:", error);
+        console.error("Error fetching data:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchLanguages();
+    fetchData();
   }, []);
 
   // Validate all required fields
@@ -200,23 +227,6 @@ export default function FirstCreateStep() {
       Satılık: { tr: "Satılık", en: "For Sale" },
       Kiralık: { tr: "Kiralık", en: "For Rent" },
     },
-    entranceType: {
-      Arsa: { tr: "Arsa", en: "Land" },
-      Ev: { tr: "Ev", en: "House" },
-      "İş Yeri": { tr: "İş Yeri", en: "Commercial" },
-    },
-    housingCategories: [
-      { key: "daire", tr: "Daire", en: "Apartment" },
-      { key: "villa", tr: "Villa", en: "Villa" },
-      { key: "müstakil", tr: "Müstakil Ev", en: "Detached House" },
-      { key: "çiftlik", tr: "Çiftlik Evi", en: "Farm House" },
-      { key: "rezidans", tr: "Rezidans", en: "Residence" },
-      { key: "köşk", tr: "Köşk & Konak", en: "Mansion" },
-      { key: "yalı", tr: "Yalı", en: "Waterfront Mansion" },
-      { key: "yalıDairesi", tr: "Yalı Dairesi", en: "Waterfront Apartment" },
-      { key: "yazlık", tr: "Yazlık", en: "Summer House" },
-      { key: "kooperatif", tr: "Kooperatif", en: "Cooperative" },
-    ],
   };
 
   return (
@@ -328,45 +338,25 @@ export default function FirstCreateStep() {
                 Emlak Tipi Seçin
               </h2>
               <div className="flex gap-2">
-                <button
-                  type="button"
-                  className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer ${
-                    entranceType && entranceType.tr === "Arsa"
-                      ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
-                      : "bg-transparent border border-[#6656AD] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
-                  }`}
-                  onClick={() =>
-                    setEntranceType(optionTranslations.entranceType["Arsa"])
-                  }
-                >
-                  Arsa
-                </button>
-                <button
-                  type="button"
-                  className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer ${
-                    entranceType && entranceType.tr === "Ev"
-                      ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
-                      : "bg-transparent border border-[#6656AD] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
-                  }`}
-                  onClick={() =>
-                    setEntranceType(optionTranslations.entranceType["Ev"])
-                  }
-                >
-                  Ev
-                </button>
-                <button
-                  type="button"
-                  className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer ${
-                    entranceType && entranceType.tr === "İş Yeri"
-                      ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
-                      : "bg-transparent border border-[#6656AD] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
-                  }`}
-                  onClick={() =>
-                    setEntranceType(optionTranslations.entranceType["İş Yeri"])
-                  }
-                >
-                  İş Yeri
-                </button>
+                {propertyTypes.map((type) => (
+                  <button
+                    key={type._id}
+                    type="button"
+                    className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer ${
+                      entranceType && entranceType.tr === type.name.tr
+                        ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                        : "bg-transparent border border-[#6656AD] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
+                    }`}
+                    onClick={() =>
+                      setEntranceType({
+                        tr: type.name.tr,
+                        en: type.name.en,
+                      })
+                    }
+                  >
+                    {selectedLanguage === "tr" ? type.name.tr : type.name.en}
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -376,23 +366,23 @@ export default function FirstCreateStep() {
                 Kategori Seçin
               </h2>
               <div className="flex flex-wrap gap-2">
-                {optionTranslations.housingCategories.map((cat) => (
+                {categories.map((cat) => (
                   <button
-                    key={cat.key}
+                    key={cat._id}
                     type="button"
                     className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer ${
-                      housingType && housingType.tr === cat.tr
+                      housingType && housingType.tr === cat.name.tr
                         ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
                         : "bg-transparent border border-[#6656AD] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
                     }`}
                     onClick={() =>
                       setHousingType({
-                        tr: cat.tr,
-                        en: cat.en,
+                        tr: cat.name.tr,
+                        en: cat.name.en,
                       })
                     }
                   >
-                    {selectedLanguage === "tr" ? cat.tr : cat.en}
+                    {selectedLanguage === "tr" ? cat.name.tr : cat.name.en}
                   </button>
                 ))}
               </div>
