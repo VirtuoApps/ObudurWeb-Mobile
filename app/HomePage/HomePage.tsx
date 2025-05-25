@@ -198,6 +198,9 @@ export default function HomePage({
     }
 
     if (filters.accessibilityFeatureIds) {
+      console.log({
+        accessibilityFeatureIds: filters.accessibilityFeatureIds,
+      });
       filteredHotels = filteredHotels.filter((hotel) => {
         return filters.accessibilityFeatureIds!.every((featureId: string) =>
           hotel.featureIds.includes(featureId)
