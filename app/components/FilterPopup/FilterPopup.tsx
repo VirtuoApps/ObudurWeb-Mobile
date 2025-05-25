@@ -233,7 +233,7 @@ export default function FilterPopup({
           {/* Location Section */}
           <div className="mt-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-gray-700">
+              <h3 className="text-base font-semibold text-gray-700">
                 {t("location") || "Location"}
               </h3>
               <button
@@ -366,7 +366,7 @@ export default function FilterPopup({
           {/* Property Type Section */}
           <div className="mt-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-gray-700">
+              <h3 className="text-base font-semibold text-gray-700">
                 {t("estateType") || "Emlak Tipi"}
               </h3>
               <button
@@ -461,7 +461,7 @@ export default function FilterPopup({
           {/* Category Section */}
           <div className="mt-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-gray-700">
+              <h3 className="text-base font-semibold text-gray-700">
                 {t("category") || "Kategori"}
               </h3>
               <button
@@ -551,7 +551,7 @@ export default function FilterPopup({
           {/* Price Section */}
           <div className="mt-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-gray-700">
+              <h3 className="text-base font-semibold text-gray-700">
                 {t("priceLabel")} ({currencyCode})
               </h3>
               <button
@@ -625,7 +625,7 @@ export default function FilterPopup({
           {/* Room Count Section */}
           <div className="mt-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-gray-700">
+              <h3 className="text-base font-semibold text-gray-700">
                 {t("rooms")}
               </h3>
               <button
@@ -713,7 +713,7 @@ export default function FilterPopup({
           {/* Bathroom Count Section */}
           <div className="mt-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-gray-700">
+              <h3 className="text-base font-semibold text-gray-700">
                 {t("bathrooms") || "Bathrooms"}
               </h3>
               <button
@@ -806,7 +806,7 @@ export default function FilterPopup({
           {/* Area Section */}
           <div className="mt-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-gray-700">
+              <h3 className="text-base font-semibold text-gray-700">
                 {t("area")}
               </h3>
               <button
@@ -885,7 +885,7 @@ export default function FilterPopup({
                 setInteriorFeaturesCollapsed(!interiorFeaturesCollapsed)
               }
             >
-              <h3 className="text-sm font-semibold text-gray-700">
+              <h3 className="text-base font-semibold text-gray-700">
                 {t("interiorFeatures")}
               </h3>
               <button className="text-sm text-[#8c8c8c] hover:underline cursor-pointer">
@@ -898,7 +898,7 @@ export default function FilterPopup({
               </button>
             </div>
             {!interiorFeaturesCollapsed && (
-              <div className="mt-3 overflow-y-auto max-h-48">
+              <div className="mt-3 ">
                 <div className="flex flex-wrap gap-2 ">
                   {filterOptions.interiorFeatures.map((feature) => {
                     const isSelected = interiorFeatures.find(
@@ -949,7 +949,7 @@ export default function FilterPopup({
               </button>
             </div>
             {!exteriorFeaturesCollapsed && (
-              <div className="mt-3 overflow-y-auto max-h-48">
+              <div className="mt-3 ">
                 <div className="flex flex-wrap gap-2">
                   {filterOptions.outsideFeatures.map((feature) => {
                     const isSelected = selectedExteriorFeatures.find(
