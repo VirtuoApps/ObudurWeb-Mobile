@@ -513,39 +513,56 @@ export default function FourthCreateStep() {
 
               {/* Add new distance form */}
               <div className="space-y-4 mb-6">
-                <div className="w-full">
-                  <CustomSelect
-                    options={distanceTypes.map((type) => ({
-                      value: type._id,
-                      label:
-                        type.name[selectedLanguage as keyof typeof type.name] ||
-                        type.name.tr ||
-                        type.name.en,
-                    }))}
-                    value={newDistanceTypeId}
-                    onChange={(value) => setNewDistanceTypeId(value)}
-                    placeholder="Uzaklık Tipi"
-                  />
-                </div>
-                <div className="w-full">
-                  <input
-                    type="number"
-                    step="0.1"
-                    min="0"
-                    className="w-full h-12 px-4 border border-[#E2E2E2] rounded-lg placeholder:text-gray-400 text-gray-700 focus:outline-none focus:border-[#5D568D]"
-                    placeholder="Lokasyona olan uzaklığı yazın (Km)"
-                    value={newDistanceValue}
-                    onChange={(e) => setNewDistanceValue(e.target.value)}
-                  />
-                </div>
-                <button
-                  type="button"
-                  onClick={addDistance}
-                  className="px-6 py-2 bg-[#5D568D] text-white rounded-lg flex items-center justify-center gap-2 hover:bg-[#4A4570] transition-colors cursor-pointer"
-                >
-                  <PlusIcon className="h-5 w-5" />
-                  Ekle
-                </button>
+                {distanceTypes.filter(
+                  (type) => !distances.some((d) => d.typeId === type._id)
+                ).length > 0 ? (
+                  <>
+                    <div className="w-full">
+                      <CustomSelect
+                        options={distanceTypes
+                          .filter(
+                            (type) =>
+                              !distances.some((d) => d.typeId === type._id)
+                          )
+                          .map((type) => ({
+                            value: type._id,
+                            label:
+                              type.name[
+                                selectedLanguage as keyof typeof type.name
+                              ] ||
+                              type.name.tr ||
+                              type.name.en,
+                          }))}
+                        value={newDistanceTypeId}
+                        onChange={(value) => setNewDistanceTypeId(value)}
+                        placeholder="Uzaklık Tipi"
+                      />
+                    </div>
+                    <div className="w-full">
+                      <input
+                        type="number"
+                        step="0.1"
+                        min="0"
+                        className="w-full h-12 px-4 border border-[#E2E2E2] rounded-lg placeholder:text-gray-400 text-gray-700 focus:outline-none focus:border-[#5D568D]"
+                        placeholder="Lokasyona olan uzaklığı yazın (Km)"
+                        value={newDistanceValue}
+                        onChange={(e) => setNewDistanceValue(e.target.value)}
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={addDistance}
+                      className="px-6 py-2 bg-[#5D568D] text-white rounded-lg flex items-center justify-center gap-2 hover:bg-[#4A4570] transition-colors cursor-pointer"
+                    >
+                      <PlusIcon className="h-5 w-5" />
+                      Ekle
+                    </button>
+                  </>
+                ) : (
+                  <div className="text-center py-4 text-gray-500">
+                    <p>Tüm lokasyon tipleri eklenmiştir.</p>
+                  </div>
+                )}
               </div>
 
               {/* Separator line */}
