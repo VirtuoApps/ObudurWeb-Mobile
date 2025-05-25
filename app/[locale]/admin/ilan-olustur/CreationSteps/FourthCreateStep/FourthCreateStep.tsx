@@ -503,12 +503,17 @@ export default function FourthCreateStep() {
             />
 
             {/* Distances Section */}
-            <div className="mt-8">
-              <h2 className="font-semibold mb-3 text-[#262626]">Uzaklıklar</h2>
+            <div className="mt-8 bg-white px-0 rounded-lg">
+              <h2 className="text-xl font-bold text-[#181818] mb-2">
+                Lokasyon Özellikleri
+              </h2>
+              <p className="text-sm text-[#6C6C6C] mb-6">
+                Gayrimenkulün merkezi lokasyonlara olan uzaklığını belirtin.
+              </p>
 
               {/* Add new distance form */}
-              <div className="flex flex-wrap gap-3 mb-4">
-                <div className="w-full md:w-[45%]">
+              <div className="space-y-4 mb-6">
+                <div className="w-full">
                   <CustomSelect
                     options={distanceTypes.map((type) => ({
                       value: type._id,
@@ -519,135 +524,79 @@ export default function FourthCreateStep() {
                     }))}
                     value={newDistanceTypeId}
                     onChange={(value) => setNewDistanceTypeId(value)}
-                    placeholder="Uzaklık tipi seçin"
+                    placeholder="Uzaklık Tipi"
                   />
                 </div>
-                <div className="w-full md:w-[25%]">
-                  <div className="relative">
-                    <input
-                      type="number"
-                      step="0.1"
-                      min="0"
-                      className="w-full h-10 px-3 border border-gray-300 rounded-lg placeholder:text-gray-400 text-gray-700"
-                      placeholder="Uzaklık"
-                      value={newDistanceValue}
-                      onChange={(e) => setNewDistanceValue(e.target.value)}
-                    />
-                    <span className="absolute right-3 top-2.5 text-gray-500">
-                      km
-                    </span>
-                  </div>
+                <div className="w-full">
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    className="w-full h-12 px-4 border border-[#E2E2E2] rounded-lg placeholder:text-gray-400 text-gray-700 focus:outline-none focus:border-[#5D568D]"
+                    placeholder="Lokasyona olan uzaklığı yazın (Km)"
+                    value={newDistanceValue}
+                    onChange={(e) => setNewDistanceValue(e.target.value)}
+                  />
                 </div>
-                <div className="w-full md:w-auto">
-                  <button
-                    type="button"
-                    onClick={addDistance}
-                    className="h-10 px-4 bg-[#6656AD] text-white rounded-lg flex items-center"
-                  >
-                    <PlusIcon className="h-4 w-4 mr-1" />
-                    Ekle
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={addDistance}
+                  className="px-6 py-2 bg-[#5D568D] text-white rounded-lg flex items-center justify-center gap-2 hover:bg-[#4A4570] transition-colors cursor-pointer"
+                >
+                  <PlusIcon className="h-5 w-5" />
+                  Ekle
+                </button>
               </div>
 
-              {/* Current distances */}
+              {/* Separator line */}
+              <div className="border-t border-[#E2E2E2] mb-6"></div>
+
+              {/* Current distances as chips */}
               {distances.length > 0 && (
-                <div className="mt-4">
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h3 className="font-medium mb-2 text-gray-700">
-                      Eklenen Uzaklıklar
-                    </h3>
-                    <div className="space-y-2">
-                      {distances.map((distance) => (
-                        <div
-                          key={distance.typeId}
-                          className="flex items-center justify-between py-2 px-3 bg-white rounded-md border border-gray-200 text-gray-700"
-                        >
-                          <div className="flex items-center gap-2">
-                            {distanceTypes.find(
-                              (dt) => dt._id === distance.typeId
-                            )?.iconUrl && (
-                              <div className="w-5 h-5 relative">
-                                <Image
-                                  src={
-                                    distanceTypes.find(
-                                      (dt) => dt._id === distance.typeId
-                                    )?.iconUrl || ""
-                                  }
-                                  alt={getDistanceTypeName(distance.typeId)}
-                                  width={20}
-                                  height={20}
-                                  className="object-contain"
-                                />
-                              </div>
-                            )}
-                            <span>{getDistanceTypeName(distance.typeId)}</span>
-                          </div>
-                          <div className="flex items-center">
-                            {editingDistanceId === distance.typeId ? (
-                              <>
-                                <div className="relative mr-2">
-                                  <input
-                                    type="number"
-                                    step="0.1"
-                                    min="0"
-                                    className="w-20 h-8 px-3 border border-gray-300 rounded-lg placeholder:text-gray-400 text-gray-700"
-                                    value={editingDistanceValue}
-                                    onChange={(e) =>
-                                      setEditingDistanceValue(e.target.value)
-                                    }
-                                  />
-                                  <span className="absolute right-3 top-1.5 text-gray-500 text-sm">
-                                    {getDistanceTypeUnit(distance.typeId)}
-                                  </span>
-                                </div>
-                                <button
-                                  type="button"
-                                  onClick={saveEditedDistance}
-                                  className="text-green-500 mr-1"
-                                >
-                                  <CheckIcon className="h-4 w-4" />
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={cancelEditingDistance}
-                                  className="text-gray-500 mr-1"
-                                >
-                                  <XMarkIcon className="h-4 w-4" />
-                                </button>
-                              </>
-                            ) : (
-                              <>
-                                <span className="mr-6">
-                                  {distance.value}{" "}
-                                  {getDistanceTypeUnit(distance.typeId)}
-                                </span>
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    startEditingDistance(
-                                      distance.typeId,
-                                      distance.value
-                                    )
-                                  }
-                                  className="text-blue-500 mr-2"
-                                >
-                                  <PencilIcon className="h-4 w-4" />
-                                </button>
-                              </>
-                            )}
-                            <button
-                              type="button"
-                              onClick={() => removeDistance(distance.typeId)}
-                              className="text-red-500"
-                            >
-                              <TrashIcon className="h-4 w-4" />
-                            </button>
-                          </div>
+                <div className="flex flex-wrap gap-3">
+                  {distances.map((distance) => (
+                    <div
+                      key={distance.typeId}
+                      className="flex items-center gap-3 h-10 px-4 border-[0.5px] border-[#362C75] rounded-[20px] bg-[#EBEAF180]"
+                    >
+                      {/* Icon */}
+                      {distanceTypes.find((dt) => dt._id === distance.typeId)
+                        ?.iconUrl && (
+                        <div className="w-6 h-6 relative flex-shrink-0">
+                          <Image
+                            src={
+                              distanceTypes.find(
+                                (dt) => dt._id === distance.typeId
+                              )?.iconUrl || ""
+                            }
+                            alt={getDistanceTypeName(distance.typeId)}
+                            width={24}
+                            height={24}
+                            className="object-contain"
+                          />
                         </div>
-                      ))}
+                      )}
+
+                      {/* Location name */}
+                      <span className="text-sm font-medium text-[#362C75]">
+                        {getDistanceTypeName(distance.typeId)}
+                      </span>
+
+                      {/* Distance value */}
+                      <span className="text-sm text-[#8C8C8C]">
+                        {distance.value} {getDistanceTypeUnit(distance.typeId)}
+                      </span>
+
+                      {/* Close button */}
+                      <button
+                        type="button"
+                        onClick={() => removeDistance(distance.typeId)}
+                        className="text-[#333] hover:text-red-500 transition-colors ml-1 cursor-pointer"
+                      >
+                        <img src="/x-03.png" alt="x" className="w-6 h-6" />
+                      </button>
                     </div>
-                  </div>
+                  ))}
                 </div>
               )}
             </div>

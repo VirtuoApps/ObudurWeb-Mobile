@@ -55,29 +55,32 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
     <div className="relative" ref={dropdownRef}>
       <button
         type="button"
-        className="w-full h-12 rounded-lg border border-gray-300 bg-white px-4 flex items-center justify-between text-[#262626] focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40"
+        className="w-full h-12 rounded-lg border border-[#E2E2E2] bg-white px-4 flex items-center justify-between text-[#262626] focus:outline-none focus:border-[#5D568D] hover:border-[#5D568D] transition-colors"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span className="truncate">
+        <span className="truncate text-left">
           {selectedOption ? selectedOption.label : placeholder}
         </span>
         {isOpen ? (
           <img
             src="/chevron-down.png"
-            className="w-[24px] h-[24px] rotate-180"
+            className="w-[24px] h-[24px] rotate-180 flex-shrink-0"
           />
         ) : (
-          <img src="/chevron-down.png" className="w-[24px] h-[24px] " />
+          <img
+            src="/chevron-down.png"
+            className="w-[24px] h-[24px] flex-shrink-0"
+          />
         )}
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 z-10 mt-1 w-full origin-top-right rounded-[16px] bg-white shadow-lg border border-gray-200">
+        <div className="absolute left-0 z-10 mt-1 w-full origin-top-right rounded-lg bg-white shadow-lg border border-[#E2E2E2]">
           <div className="py-1 max-h-60 overflow-auto">
             {options.map((option) => (
               <div
                 key={option.value}
-                className="px-4 py-3 hover:bg-gray-100 cursor-pointer text-[#595959]"
+                className="px-4 py-3 hover:bg-[#F5F5F5] cursor-pointer text-[#262626] transition-colors"
                 onClick={() => {
                   onChange(option.value.toString());
                   setIsOpen(false);
