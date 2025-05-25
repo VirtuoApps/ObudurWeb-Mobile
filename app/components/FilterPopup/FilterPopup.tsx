@@ -363,191 +363,6 @@ export default function FilterPopup({
             </div>
           </div>
 
-          {/* Property Type Section */}
-          <div className="mt-6">
-            <div className="flex items-center justify-between">
-              <h3 className="text-base font-semibold text-gray-700">
-                {t("estateType") || "Emlak Tipi"}
-              </h3>
-              <button
-                className="text-sm text-[#8c8c8c] hover:underline cursor-pointer"
-                onClick={() =>
-                  setSelectedPropertyType && setSelectedPropertyType(null)
-                }
-              >
-                {t("reset")}
-              </button>
-            </div>
-            <div className="mt-3">
-              <Popover className="relative w-full">
-                {({ open }) => {
-                  const [isOpen, setIsOpen] = useState(false);
-                  const buttonRef = useRef<HTMLButtonElement>(null);
-
-                  useEffect(() => {
-                    if (open !== isOpen) {
-                      setIsOpen(open);
-                    }
-                  }, [open, isOpen]);
-
-                  const propertyTypes = filterOptions.housingType.map(
-                    (propertyType) => ({
-                      name: (propertyType as any)[locale],
-                      href: "#",
-                    })
-                  );
-
-                  const handlePropertyTypeSelect = (propertyType: any) => {
-                    setSelectedPropertyType &&
-                      setSelectedPropertyType(propertyType);
-                    setIsOpen(false);
-                    buttonRef.current?.click();
-                  };
-
-                  return (
-                    <>
-                      <PopoverButton
-                        ref={buttonRef}
-                        className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-700"
-                      >
-                        <div className="flex items-center">
-                          <HomeIcon className="h-4 w-4 mr-1 flex-shrink-0" />
-                          <span className="truncate">
-                            {selectedPropertyType
-                              ? selectedPropertyType.name
-                              : t("selectEstateType") || "Select Property Type"}
-                          </span>
-                        </div>
-                        <ChevronDownSolidIcon
-                          className="h-5 w-5 text-gray-400 ml-2"
-                          aria-hidden="true"
-                        />
-                      </PopoverButton>
-
-                      <PopoverPanel className="absolute z-20 mt-2 w-full max-w-md py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
-                        <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
-                          <div className="p-4">
-                            {propertyTypes.map((propertyType) => (
-                              <div
-                                key={propertyType.name}
-                                className="group relative flex items-center gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
-                                onClick={() =>
-                                  handlePropertyTypeSelect(propertyType)
-                                }
-                              >
-                                <div className="mt-1 flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                                  <HomeIcon
-                                    className="h-5 w-5 text-gray-600 group-hover:text-indigo-600"
-                                    aria-hidden="true"
-                                  />
-                                </div>
-                                <div>
-                                  <div className="font-semibold text-gray-900">
-                                    {propertyType.name}
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </PopoverPanel>
-                    </>
-                  );
-                }}
-              </Popover>
-            </div>
-          </div>
-
-          {/* Category Section */}
-          <div className="mt-6">
-            <div className="flex items-center justify-between">
-              <h3 className="text-base font-semibold text-gray-700">
-                {t("category") || "Kategori"}
-              </h3>
-              <button
-                className="text-sm text-[#8c8c8c] hover:underline cursor-pointer"
-                onClick={() => setSelectedCategory && setSelectedCategory(null)}
-              >
-                {t("reset")}
-              </button>
-            </div>
-            <div className="mt-3">
-              <Popover className="relative w-full">
-                {({ open }) => {
-                  const [isOpen, setIsOpen] = useState(false);
-                  const buttonRef = useRef<HTMLButtonElement>(null);
-
-                  useEffect(() => {
-                    if (open !== isOpen) {
-                      setIsOpen(open);
-                    }
-                  }, [open, isOpen]);
-
-                  const categories = filterOptions.roomAsText.map(
-                    (category) => ({
-                      name: category,
-                      href: "#",
-                    })
-                  );
-
-                  const handleCategorySelect = (category: any) => {
-                    setSelectedCategory && setSelectedCategory(category);
-                    setIsOpen(false);
-                    buttonRef.current?.click();
-                  };
-
-                  return (
-                    <>
-                      <PopoverButton
-                        ref={buttonRef}
-                        className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-700"
-                      >
-                        <div className="flex items-center">
-                          <TagIcon className="h-4 w-4 mr-1 flex-shrink-0" />
-                          <span className="truncate">
-                            {selectedCategory
-                              ? selectedCategory.name
-                              : t("selectCategory") || "Select Category"}
-                          </span>
-                        </div>
-                        <ChevronDownSolidIcon
-                          className="h-5 w-5 text-gray-400 ml-2"
-                          aria-hidden="true"
-                        />
-                      </PopoverButton>
-
-                      <PopoverPanel className="absolute z-20 mt-2 w-full max-w-md py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
-                        <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
-                          <div className="p-4">
-                            {categories.map((category) => (
-                              <div
-                                key={category.name}
-                                className="group relative flex items-center gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
-                                onClick={() => handleCategorySelect(category)}
-                              >
-                                <div className="mt-1 flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                                  <TagIcon
-                                    className="h-5 w-5 text-gray-600 group-hover:text-indigo-600"
-                                    aria-hidden="true"
-                                  />
-                                </div>
-                                <div>
-                                  <div className="font-semibold text-gray-900">
-                                    {category.name}
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </PopoverPanel>
-                    </>
-                  );
-                }}
-              </Popover>
-            </div>
-          </div>
-
           {/* Price Section */}
           <div className="mt-6">
             <div className="flex items-center justify-between">
@@ -622,184 +437,161 @@ export default function FilterPopup({
             </div>
           </div>
 
-          {/* Room Count Section */}
-          <div className="mt-6">
-            <div className="flex items-center justify-between">
-              <h3 className="text-base font-semibold text-gray-700">
-                {t("rooms")}
-              </h3>
-              <button
-                className="text-sm text-[#8c8c8c] hover:underline cursor-pointer"
-                onClick={() => setRoomCount("")}
-              >
-                {t("reset")}
-              </button>
-            </div>
-            <div className="mt-3">
-              <Popover className="relative w-full">
-                {({ open }) => {
-                  const [isOpen, setIsOpen] = useState(false);
-                  const buttonRef = useRef<HTMLButtonElement>(null);
+          <div className="flex flex-row justify-between gap-2">
+            {/* Room Count Section */}
+            <div className="mt-6 w-1/2">
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-semibold text-gray-700">
+                  {t("rooms")}
+                </h3>
+              </div>
+              <div className="mt-3">
+                <Popover className="relative w-full">
+                  {({ open }) => {
+                    const [isOpen, setIsOpen] = useState(false);
+                    const buttonRef = useRef<HTMLButtonElement>(null);
 
-                  useEffect(() => {
-                    if (open !== isOpen) {
-                      setIsOpen(open);
-                    }
-                  }, [open, isOpen]);
+                    useEffect(() => {
+                      if (open !== isOpen) {
+                        setIsOpen(open);
+                      }
+                    }, [open, isOpen]);
 
-                  const roomOptions = filterOptions.roomCount.map((room) => ({
-                    name: room,
-                    href: "#",
-                  }));
-
-                  const handleRoomSelect = (room: any) => {
-                    setRoomCount(room.name);
-                    setIsOpen(false);
-                    buttonRef.current?.click();
-                  };
-
-                  return (
-                    <>
-                      <PopoverButton
-                        ref={buttonRef}
-                        className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-700"
-                      >
-                        <div className="flex items-center">
-                          <HomeIcon className="h-4 w-4 mr-1 flex-shrink-0" />
-                          <span className="truncate">
-                            {roomCount
-                              ? roomCount
-                              : t("roomsSelect") || "Select Room Count"}
-                          </span>
-                        </div>
-                        <ChevronDownSolidIcon
-                          className="h-5 w-5 text-gray-400 ml-2"
-                          aria-hidden="true"
-                        />
-                      </PopoverButton>
-
-                      <PopoverPanel className="absolute z-20 mt-2 w-full max-w-md py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
-                        <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
-                          <div className="p-4">
-                            {roomOptions.map((room) => (
-                              <div
-                                key={room.name}
-                                className="group relative flex items-center gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
-                                onClick={() => handleRoomSelect(room)}
-                              >
-                                <div className="mt-1 flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                                  <HomeIcon
-                                    className="h-5 w-5 text-gray-600 group-hover:text-indigo-600"
-                                    aria-hidden="true"
-                                  />
-                                </div>
-                                <div>
-                                  <div className="font-semibold text-gray-900">
-                                    {room.name}
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </PopoverPanel>
-                    </>
-                  );
-                }}
-              </Popover>
-            </div>
-          </div>
-
-          {/* Bathroom Count Section */}
-          <div className="mt-6">
-            <div className="flex items-center justify-between">
-              <h3 className="text-base font-semibold text-gray-700">
-                {t("bathrooms") || "Bathrooms"}
-              </h3>
-              <button
-                className="text-sm text-[#8c8c8c] hover:underline cursor-pointer"
-                onClick={() => setBathroomCount("")}
-              >
-                {t("reset")}
-              </button>
-            </div>
-            <div className="mt-3">
-              <Popover className="relative w-full">
-                {({ open }) => {
-                  const [isOpen, setIsOpen] = useState(false);
-                  const buttonRef = useRef<HTMLButtonElement>(null);
-
-                  useEffect(() => {
-                    if (open !== isOpen) {
-                      setIsOpen(open);
-                    }
-                  }, [open, isOpen]);
-
-                  const bathroomOptions = filterOptions.bathroomCount.map(
-                    (bathroom: number) => ({
-                      name: bathroom.toString(),
+                    const roomOptions = filterOptions.roomCount.map((room) => ({
+                      name: room,
                       href: "#",
-                    })
-                  );
+                    }));
 
-                  const handleBathroomSelect = (bathroom: {
-                    name: string;
-                    href: string;
-                  }) => {
-                    setBathroomCount(bathroom.name);
-                    setIsOpen(false);
-                    buttonRef.current?.click();
-                  };
+                    const handleRoomSelect = (room: any) => {
+                      setRoomCount(room.name);
+                      setIsOpen(false);
+                      buttonRef.current?.click();
+                    };
 
-                  return (
-                    <>
-                      <PopoverButton
-                        ref={buttonRef}
-                        className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-700"
-                      >
-                        <div className="flex items-center">
-                          <HomeIcon className="h-4 w-4 mr-1 flex-shrink-0" />
-                          <span className="truncate">
-                            {bathroomCount
-                              ? bathroomCount
-                              : t("bathroomsSelect") || "Select Bathroom Count"}
-                          </span>
-                        </div>
-                        <ChevronDownSolidIcon
-                          className="h-5 w-5 text-gray-400 ml-2"
-                          aria-hidden="true"
-                        />
-                      </PopoverButton>
+                    return (
+                      <>
+                        <PopoverButton
+                          ref={buttonRef}
+                          className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-700"
+                        >
+                          <div className="flex items-center">
+                            <span className="truncate">
+                              {roomCount
+                                ? roomCount
+                                : t("roomsSelect") || "Select Room Count"}
+                            </span>
+                          </div>
+                          <ChevronDownSolidIcon
+                            className="h-5 w-5 text-gray-400 ml-2"
+                            aria-hidden="true"
+                          />
+                        </PopoverButton>
 
-                      <PopoverPanel className="absolute z-20 mt-2 w-full max-w-md py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
-                        <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
-                          <div className="p-4">
-                            {bathroomOptions.map((bathroom) => (
-                              <div
-                                key={bathroom.name}
-                                className="group relative flex items-center gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
-                                onClick={() => handleBathroomSelect(bathroom)}
-                              >
-                                <div className="mt-1 flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                                  <HomeIcon
-                                    className="h-5 w-5 text-gray-600 group-hover:text-indigo-600"
-                                    aria-hidden="true"
-                                  />
-                                </div>
-                                <div>
-                                  <div className="font-semibold text-gray-900">
-                                    {bathroom.name}
+                        <PopoverPanel className="absolute z-20 mt-2 w-full max-w-md py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
+                          <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
+                            <div className="p-4">
+                              {roomOptions.map((room) => (
+                                <div
+                                  key={room.name}
+                                  className="group relative flex items-center gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
+                                  onClick={() => handleRoomSelect(room)}
+                                >
+                                  <div>
+                                    <div className="font-semibold text-gray-900">
+                                      {room.name}
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            ))}
+                              ))}
+                            </div>
                           </div>
-                        </div>
-                      </PopoverPanel>
-                    </>
-                  );
-                }}
-              </Popover>
+                        </PopoverPanel>
+                      </>
+                    );
+                  }}
+                </Popover>
+              </div>
+            </div>
+
+            {/* Bathroom Count Section */}
+            <div className="mt-6 w-1/2">
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-semibold text-gray-700">
+                  {t("bathrooms") || "Bathrooms"}
+                </h3>
+              </div>
+              <div className="mt-3">
+                <Popover className="relative w-full">
+                  {({ open }) => {
+                    const [isOpen, setIsOpen] = useState(false);
+                    const buttonRef = useRef<HTMLButtonElement>(null);
+
+                    useEffect(() => {
+                      if (open !== isOpen) {
+                        setIsOpen(open);
+                      }
+                    }, [open, isOpen]);
+
+                    const bathroomOptions = filterOptions.bathroomCount.map(
+                      (bathroom: number) => ({
+                        name: bathroom.toString(),
+                        href: "#",
+                      })
+                    );
+
+                    const handleBathroomSelect = (bathroom: {
+                      name: string;
+                      href: string;
+                    }) => {
+                      setBathroomCount(bathroom.name);
+                      setIsOpen(false);
+                      buttonRef.current?.click();
+                    };
+
+                    return (
+                      <>
+                        <PopoverButton
+                          ref={buttonRef}
+                          className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-700"
+                        >
+                          <div className="flex items-center">
+                            <span className="truncate">
+                              {bathroomCount
+                                ? bathroomCount
+                                : t("bathroomsSelect") ||
+                                  "Select Bathroom Count"}
+                            </span>
+                          </div>
+                          <ChevronDownSolidIcon
+                            className="h-5 w-5 text-gray-400 ml-2"
+                            aria-hidden="true"
+                          />
+                        </PopoverButton>
+
+                        <PopoverPanel className="absolute z-20 mt-2 w-full max-w-md py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
+                          <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
+                            <div className="p-4">
+                              {bathroomOptions.map((bathroom) => (
+                                <div
+                                  key={bathroom.name}
+                                  className="group relative flex items-center gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
+                                  onClick={() => handleBathroomSelect(bathroom)}
+                                >
+                                  <div>
+                                    <div className="font-semibold text-gray-900">
+                                      {bathroom.name}
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </PopoverPanel>
+                      </>
+                    );
+                  }}
+                </Popover>
+              </div>
             </div>
           </div>
 
@@ -877,6 +669,177 @@ export default function FilterPopup({
             </div>
           </div>
 
+          {/* Property Type Section */}
+          <div className="mt-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-semibold text-gray-700">
+                {t("estateType") || "Emlak Tipi"}
+              </h3>
+              <button
+                className="text-sm text-[#8c8c8c] hover:underline cursor-pointer"
+                onClick={() =>
+                  setSelectedPropertyType && setSelectedPropertyType(null)
+                }
+              >
+                {t("reset")}
+              </button>
+            </div>
+            <div className="mt-3">
+              <Popover className="relative w-full">
+                {({ open }) => {
+                  const [isOpen, setIsOpen] = useState(false);
+                  const buttonRef = useRef<HTMLButtonElement>(null);
+
+                  useEffect(() => {
+                    if (open !== isOpen) {
+                      setIsOpen(open);
+                    }
+                  }, [open, isOpen]);
+
+                  const propertyTypes = filterOptions.housingType.map(
+                    (propertyType) => ({
+                      name: (propertyType as any)[locale],
+                      href: "#",
+                    })
+                  );
+
+                  const handlePropertyTypeSelect = (propertyType: any) => {
+                    setSelectedPropertyType &&
+                      setSelectedPropertyType(propertyType);
+                    setIsOpen(false);
+                    buttonRef.current?.click();
+                  };
+
+                  return (
+                    <>
+                      <PopoverButton
+                        ref={buttonRef}
+                        className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-700"
+                      >
+                        <div className="flex items-center">
+                          <span className="truncate">
+                            {selectedPropertyType
+                              ? selectedPropertyType.name
+                              : t("selectEstateType") || "Select Property Type"}
+                          </span>
+                        </div>
+                        <ChevronDownSolidIcon
+                          className="h-5 w-5 text-gray-400 ml-2"
+                          aria-hidden="true"
+                        />
+                      </PopoverButton>
+
+                      <PopoverPanel className="absolute z-20 mt-2 w-full max-w-md py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
+                        <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
+                          <div className="p-4">
+                            {propertyTypes.map((propertyType) => (
+                              <div
+                                key={propertyType.name}
+                                className="group relative flex items-center gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
+                                onClick={() =>
+                                  handlePropertyTypeSelect(propertyType)
+                                }
+                              >
+                                <div>
+                                  <div className="font-semibold text-gray-900">
+                                    {propertyType.name}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </PopoverPanel>
+                    </>
+                  );
+                }}
+              </Popover>
+            </div>
+          </div>
+
+          {/* Category Section */}
+          <div className="mt-6">
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-semibold text-gray-700">
+                {t("category") || "Kategori"}
+              </h3>
+              <button
+                className="text-sm text-[#8c8c8c] hover:underline cursor-pointer"
+                onClick={() => setSelectedCategory && setSelectedCategory(null)}
+              >
+                {t("reset")}
+              </button>
+            </div>
+            <div className="mt-3">
+              <Popover className="relative w-full">
+                {({ open }) => {
+                  const [isOpen, setIsOpen] = useState(false);
+                  const buttonRef = useRef<HTMLButtonElement>(null);
+
+                  useEffect(() => {
+                    if (open !== isOpen) {
+                      setIsOpen(open);
+                    }
+                  }, [open, isOpen]);
+
+                  const categories = filterOptions.roomAsText.map(
+                    (category) => ({
+                      name: category,
+                      href: "#",
+                    })
+                  );
+
+                  const handleCategorySelect = (category: any) => {
+                    setSelectedCategory && setSelectedCategory(category);
+                    setIsOpen(false);
+                    buttonRef.current?.click();
+                  };
+
+                  return (
+                    <>
+                      <PopoverButton
+                        ref={buttonRef}
+                        className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-700"
+                      >
+                        <div className="flex items-center">
+                          <span className="truncate">
+                            {selectedCategory
+                              ? selectedCategory.name
+                              : t("selectCategory") || "Select Category"}
+                          </span>
+                        </div>
+                        <ChevronDownSolidIcon
+                          className="h-5 w-5 text-gray-400 ml-2"
+                          aria-hidden="true"
+                        />
+                      </PopoverButton>
+
+                      <PopoverPanel className="absolute z-20 mt-2 w-full max-w-md py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
+                        <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
+                          <div className="p-4">
+                            {categories.map((category) => (
+                              <div
+                                key={category.name}
+                                className="group relative flex items-center gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
+                                onClick={() => handleCategorySelect(category)}
+                              >
+                                <div>
+                                  <div className="font-semibold text-gray-900">
+                                    {category.name}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </PopoverPanel>
+                    </>
+                  );
+                }}
+              </Popover>
+            </div>
+          </div>
+
           {/* Interior Features Section */}
           <div className="mt-6">
             <div
@@ -936,7 +899,7 @@ export default function FilterPopup({
                 setExteriorFeaturesCollapsed(!exteriorFeaturesCollapsed)
               }
             >
-              <h3 className="text-sm font-semibold text-gray-700">
+              <h3 className="text-base font-semibold text-gray-700">
                 {t("exteriorFeatures") || "Dış Özellikler"}
               </h3>
               <button className="text-sm text-[#8c8c8c] hover:underline cursor-pointer">
