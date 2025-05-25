@@ -48,17 +48,29 @@ interface Language {
   isDefault: boolean;
 }
 
-// Orientation options
-const orientationOptions = [
-  { value: "west", label: "Batı", icon: "/west.png" },
-  { value: "east", label: "Doğu", icon: "/east.png" },
-  { value: "south", label: "Güney", icon: "/south.png" },
-  { value: "north", label: "Kuzey", icon: "/north.png" },
-];
+interface OrientationOption {
+  _id: string;
+  name: {
+    tr: string;
+    en: string;
+  };
+  iconUrl: string;
+  featureType: "face";
+  isQuickFilter: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
 
 export default function FourthCreateStep() {
   const [features, setFeatures] = useState<Feature[]>([]);
   const [distanceTypes, setDistanceTypes] = useState<DistanceType[]>([]);
+  const [orientationOptions, setOrientationOptions] = useState<
+    OrientationOption[]
+  >([]);
+  const [elderlyDisabledFeatures, setElderlyDisabledFeatures] = useState<
+    Feature[]
+  >([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errors, setErrors] = useState<string[]>([]);
   const [selectedLanguage, setSelectedLanguage] = useState<string>("tr");
@@ -143,6 +155,38 @@ export default function FourthCreateStep() {
     };
 
     fetchDistanceTypes();
+  }, []);
+
+  // Fetch orientation options (face features)
+  useEffect(() => {
+    const fetchOrientationOptions = async () => {
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
+        const response = await axiosInstance.get(`${baseUrl}/features/face`);
+        setOrientationOptions(response.data);
+      } catch (error) {
+        console.error("Error fetching orientation options:", error);
+      }
+    };
+
+    fetchOrientationOptions();
+  }, []);
+
+  // Fetch elderly and disabled features
+  useEffect(() => {
+    const fetchElderlyDisabledFeatures = async () => {
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
+        const response = await axiosInstance.get(
+          `${baseUrl}/features/for-olds-and-disabled`
+        );
+        setElderlyDisabledFeatures(response.data);
+      } catch (error) {
+        console.error("Error fetching elderly and disabled features:", error);
+      }
+    };
+
+    fetchElderlyDisabledFeatures();
   }, []);
 
   // Toggle feature selection
@@ -410,23 +454,31 @@ export default function FourthCreateStep() {
               <div className="flex flex-wrap gap-4">
                 {orientationOptions.map((option) => (
                   <button
-                    key={option.value}
+                    key={option._id}
                     type="button"
                     className={`inline-flex items-center gap-2 px-4 py-2 rounded-full transition border cursor-pointer ${
-                      orientation === option.value
+                      orientation === option._id
                         ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75] "
                         : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
                     }`}
-                    onClick={() => handleOrientationChange(option.value)}
+                    onClick={() => handleOrientationChange(option._id)}
                   >
                     <Image
-                      src={option.icon}
-                      alt={option.label}
+                      src={option.iconUrl}
+                      alt={
+                        option.name[
+                          selectedLanguage as keyof typeof option.name
+                        ] || ""
+                      }
                       width={20}
                       height={20}
                       className="object-contain"
                     />
-                    <span className="font-medium ml-2">{option.label}</span>
+                    <span className="font-medium ml-2">
+                      {option.name[
+                        selectedLanguage as keyof typeof option.name
+                      ] || ""}
+                    </span>
                   </button>
                 ))}
               </div>
@@ -443,6 +495,12 @@ export default function FourthCreateStep() {
 
             {/* Exterior Features */}
             <FeatureSection title="Dış Özellikler" features={outsideFeatures} />
+
+            {/* Elderly and Disabled Features */}
+            <FeatureSection
+              title="Engelliye ve Yaşlıya Yönelik Özellikler"
+              features={elderlyDisabledFeatures}
+            />
 
             {/* Distances Section */}
             <div className="mt-8">
