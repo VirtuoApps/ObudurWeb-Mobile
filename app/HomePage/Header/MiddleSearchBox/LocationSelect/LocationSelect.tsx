@@ -205,6 +205,27 @@ export default function LocationSelect({
                       placeholder={t("searchLocation")}
                       className="outline-none w-full bg-transparent"
                       onClick={(e) => e.stopPropagation()}
+                      onKeyDown={(e) => {
+                        e.stopPropagation();
+                        // Prevent space from closing the popover
+                        if (e.key === " ") {
+                          e.preventDefault();
+                          // Manually add space to the input value
+                          const input = e.target as HTMLInputElement;
+                          const start = input.selectionStart || 0;
+                          const end = input.selectionEnd || 0;
+                          const newValue =
+                            searchQuery.slice(0, start) +
+                            " " +
+                            searchQuery.slice(end);
+                          setSearchQuery(newValue);
+                          // Set cursor position after the space
+                          setTimeout(() => {
+                            input.setSelectionRange(start + 1, start + 1);
+                          }, 0);
+                        }
+                      }}
+                      onKeyUp={(e) => e.stopPropagation()}
                       autoFocus
                     />
                   </>
