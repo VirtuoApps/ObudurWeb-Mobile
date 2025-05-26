@@ -110,6 +110,20 @@ export default function HomePage({
 
   let filteredHotels = hotels;
 
+  if (selectedLocation) {
+    //Check name includes
+    console.log({
+      selectedLocation,
+      lowecase: selectedLocation.name.toLocaleLowerCase("tr"),
+    });
+    filteredHotels = filteredHotels.filter((hotel) => {
+      const hotelFullAddress = `${hotel.city.tr}, ${hotel.state.tr}, ${hotel.country.tr}`;
+      return hotelFullAddress
+        .toLowerCase()
+        .includes(selectedLocation.name.toLocaleLowerCase("tr"));
+    });
+  }
+
   if (filters) {
     if (filters.listingType) {
       filteredHotels = filteredHotels.filter((hotel) =>
@@ -389,7 +403,7 @@ export default function HomePage({
           </div>
         )}
 
-        {filters && filteredHotels.length === 0 ? (
+        {(filters || selectedLocation) && filteredHotels.length === 0 ? (
           <div
             className={`transition-all duration-400 ease-out ${
               isTransitioning
