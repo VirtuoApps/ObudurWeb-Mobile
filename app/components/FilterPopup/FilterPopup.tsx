@@ -544,13 +544,6 @@ export default function FilterPopup({
                               <div className="p-3 text-center text-gray-500">
                                 {t("selectLocation") || "Search location"}
                               </div>
-                            ) : !isSearching &&
-                              !isFetchingCoordinates &&
-                              searchQuery.length >= 3 &&
-                              displayLocations.length === 0 ? (
-                              <div className="p-3 text-center text-gray-500">
-                                {t("notFound") || "No locations found"}
-                              </div>
                             ) : null}
                           </div>
                         </div>
