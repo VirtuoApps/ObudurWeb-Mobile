@@ -49,6 +49,10 @@ export default function HomePage({
     "ascending" | "descending" | null
   >(null);
 
+  // Transition states
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [nextView, setNextView] = useState<"map" | "list" | null>(null);
+
   // States moved from FilterPopup component
   const [minPrice, setMinPrice] = useState<number | "">("");
   const [maxPrice, setMaxPrice] = useState<number | "">("");
@@ -84,6 +88,25 @@ export default function HomePage({
       setSelectedCurrency(savedCurrency);
     }
   }, []);
+
+  // Handle view transitions
+  const handleViewChange = (newView: "map" | "list") => {
+    if (newView === currentView || isTransitioning) return;
+
+    setIsTransitioning(true);
+    setNextView(newView);
+
+    // After fade out completes, change the view
+    setTimeout(() => {
+      setCurrentView(newView);
+      setNextView(null);
+
+      // After view change, fade back in
+      setTimeout(() => {
+        setIsTransitioning(false);
+      }, 50);
+    }, 300);
+  };
 
   let filteredHotels = hotels;
 
@@ -314,13 +337,9 @@ export default function HomePage({
         currentView={currentView}
         listingType={listingType}
         setListingType={setListingType}
-        onChangeCurrentView={() => {
-          if (currentView === "map") {
-            setCurrentView("list");
-          } else {
-            setCurrentView("map");
-          }
-        }}
+        onChangeCurrentView={() =>
+          handleViewChange(currentView === "map" ? "list" : "map")
+        }
         filterOptions={filterOptions}
         selectedLocation={selectedLocation}
         setSelectedLocation={setSelectedLocation}
@@ -358,21 +377,61 @@ export default function HomePage({
         setInteriorFeatures={setInteriorFeatures}
         allQuickFilters={allQuickFilters}
       />
-      {filters && filteredHotels.length === 0 ? (
-        <NoResultsFound />
-      ) : currentView === "map" ? (
-        <MapView
-          key={selectedFeatures.length}
-          hotels={filteredHotels}
-          totalHotelsCount={hotels.length}
-        />
-      ) : (
-        <ListView
-          hotels={filteredHotels}
-          sortOption={sortOption}
-          setSortOption={setSortOption}
-        />
-      )}
+
+      {/* View Container with Transitions */}
+      <div className="relative overflow-hidden">
+        {/* Loading overlay during transitions */}
+        {isTransitioning && (
+          <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-10 flex items-center justify-center">
+            <div className="loading-pulse">
+              <div className="w-8 h-8 border-2 border-[#5E5691] border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          </div>
+        )}
+
+        {filters && filteredHotels.length === 0 ? (
+          <div
+            className={`transition-all duration-400 ease-out ${
+              isTransitioning
+                ? "opacity-0 transform translate-y-6 scale-95"
+                : "opacity-100 transform translate-y-0 scale-100 animate-fade-in-up"
+            }`}
+          >
+            <NoResultsFound />
+          </div>
+        ) : (
+          <div
+            className={`transition-all duration-400 ease-out ${
+              isTransitioning
+                ? "opacity-0 transform translate-y-6 scale-95"
+                : "opacity-100 transform translate-y-0 scale-100"
+            } ${
+              currentView === "map"
+                ? "map-to-list-transition"
+                : "list-to-map-transition"
+            }`}
+          >
+            {currentView === "map" ? (
+              <div className={!isTransitioning ? "animate-slide-in-left" : ""}>
+                <MapView
+                  key={selectedFeatures.length}
+                  hotels={filteredHotels}
+                  totalHotelsCount={hotels.length}
+                />
+              </div>
+            ) : (
+              <div className={!isTransitioning ? "animate-slide-in-right" : ""}>
+                <ListView
+                  hotels={filteredHotels}
+                  sortOption={sortOption}
+                  setSortOption={setSortOption}
+                />
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
       {/* <ViewSwitcher currentView={currentView} setCurrentView={setCurrentView} /> */}
     </div>
   );

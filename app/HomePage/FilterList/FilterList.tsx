@@ -239,17 +239,22 @@ export default function FilterList({
 
         <div
           onClick={onChangeCurrentView}
-          className="flex items-center justify-center border-r px-4 py-4 border-gray-200  cursor-pointer transition-all duration-200 hover:bg-[#F5F5F5] -2xl"
+          className="flex items-center justify-center border-r px-4 py-4 border-gray-200 cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#F5F5F5] hover:scale-105 active:scale-95 group btn-view-switch"
         >
-          {currentView === "map" && <ListViewIcon />}
-          {currentView !== "map" && (
-            <img src="/map-icon.png" className="w-4 h-4" />
-          )}
+          <div className="transition-transform duration-300 ease-in-out group-hover:rotate-12">
+            {currentView === "map" && <ListViewIcon />}
+            {currentView !== "map" && (
+              <img
+                src="/map-icon.png"
+                className="w-4 h-4 transition-all duration-300"
+              />
+            )}
+          </div>
         </div>
         <div className="flex-1 flex items-center relative overflow-hidden">
           <div
             ref={scrollContainerRef}
-            className="flex flex-row items-center overflow-x-auto scrollbar-hide w-full no-scrollbar px-3 py-2 gap-3"
+            className="flex flex-row items-center overflow-x-auto scrollbar-hide w-full no-scrollbar px-3 py-2 gap-3 filter-scroll"
           >
             <NewFilterItem filters={filters} setFilters={setFilters} />
             <SizeFilterItem
