@@ -42,9 +42,9 @@
     "accessibilityFeatures": "Engelliye ve Yaşlıya Yönelik Özellikler",
     "faceFeatures": "Cephe",
     "locationFeatures": "Konum Özellikleri",
-    "selectLocation": "Konum Arayın",
-    "selectEstateType": "Emlak Tipi Seçin",
-    "selectCategory": "Kategori Seçin",
+    "selectLocation": "Nerede ev arıyorsun?",
+    "selectEstateType": "Emlak Tipi",
+    "selectCategory": "Kategori",
     "notFound": "Sonuç bulunamadı",
     "features": {
       "cableTV": "Kablo TV",

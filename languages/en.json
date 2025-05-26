@@ -42,9 +42,9 @@
     "accessibilityFeatures": "Features for Disabled and Elderly",
     "faceFeatures": "Facade",
     "locationFeatures": "Location Features",
-    "selectLocation": "Search Location",
-    "selectEstateType": "Select Property Type",
-    "selectCategory": "Select Category",
+    "selectLocation": "Where are you looking for a house?",
+    "selectEstateType": "Select Property",
+    "selectCategory": "Category",
     "notFound": "No results found",
     "features": {
       "cableTV": "Cable TV",
