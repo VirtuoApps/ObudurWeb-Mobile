@@ -117,7 +117,7 @@ export default function ResidentBox({
   return (
     <>
       <div
-        className="w-full overflow-hidden bg-white rounded-xl hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+        className="w-full overflow-hidden bg-white rounded-xl  transition-shadow duration-300 cursor-pointer"
         onClick={() => router.push(`/resident/${slug}`)}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -131,8 +131,14 @@ export default function ResidentBox({
           />
 
           {/* Navigation buttons */}
-          {imageArray.length > 1 && isHovered && (
-            <div className="absolute bottom-2 left-2 flex space-x-2">
+          {imageArray.length > 1 && (
+            <div
+              className={`absolute bottom-2 left-2 flex space-x-2 transition-all duration-300 ease-in-out ${
+                isHovered
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-4 pointer-events-none"
+              }`}
+            >
               <button
                 onClick={handlePrevImage}
                 className="bg-white bg-opacity-50 hover:bg-opacity-70 text-white rounded-lg p-2 transition-all cursor-pointer"
