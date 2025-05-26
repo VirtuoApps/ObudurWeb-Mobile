@@ -53,9 +53,9 @@ type FeatureGroupProps = {
 // Feature Item Component
 const FeatureItem: React.FC<FeatureItemProps> = ({ label, imageUrl }) => {
   return (
-    <li className="flex items-center gap-2 md:gap-3 text-[#31286A]">
-      <img src={imageUrl} alt={label} className="w-7 h-7" />
-      <span className="text-gray-700 text-sm md:text-base font-medium">
+    <li className="flex items-center gap-2 md:gap-3 text-[#595959]">
+      <img src={imageUrl} alt={label} className="w-6 h-6" />
+      <span className="text-[#595959] text-sm md:text-base font-medium">
         {label}
       </span>
     </li>
@@ -73,10 +73,7 @@ const FeatureGroup: React.FC<FeatureGroupProps> = ({
   return (
     <div className="mt-12">
       <h3 className="text-lg font-semibold text-gray-900 mb-6">{title}</h3>
-      <ul
-        role="list"
-        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 "
-      >
+      <ul role="list" className="flex flex-wrap gap-3 md:gap-6">
         {features.map((feature, index) => (
           <FeatureItem
             key={index}
