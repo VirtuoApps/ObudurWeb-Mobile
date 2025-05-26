@@ -258,8 +258,6 @@ export default function FilterList({
                 setFilters({
                   ...filters,
                   isOnePlusOneSelected: !filters?.isOnePlusOneSelected,
-                  isTwoPlusOneSelected: false,
-                  isThreePlusOneSelected: false,
                 })
               }
               iconUrl="/1+1.png"
@@ -271,8 +269,6 @@ export default function FilterList({
                 setFilters({
                   ...filters,
                   isTwoPlusOneSelected: !filters?.isTwoPlusOneSelected,
-                  isOnePlusOneSelected: false,
-                  isThreePlusOneSelected: false,
                 })
               }
               iconUrl="/2+1.png"
@@ -284,8 +280,6 @@ export default function FilterList({
                 setFilters({
                   ...filters,
                   isThreePlusOneSelected: !filters?.isThreePlusOneSelected,
-                  isOnePlusOneSelected: false,
-                  isTwoPlusOneSelected: false,
                 })
               }
               iconUrl="/3+1.png"
