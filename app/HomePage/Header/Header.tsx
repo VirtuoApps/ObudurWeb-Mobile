@@ -21,6 +21,8 @@ export default function Header({
   setSelectedPropertyType,
   setSelectedCategory,
   setSelectedLocation,
+  searchRadius,
+  setSearchRadius,
 }: {
   setFilters: (filters: FilterType) => void;
   filterOptions: FilterOptions;
@@ -32,6 +34,8 @@ export default function Header({
   setSelectedPropertyType: (propertyType: any) => void;
   setSelectedCategory: (category: any) => void;
   setSelectedLocation: (location: any) => void;
+  searchRadius?: number;
+  setSearchRadius?: (radius: number) => void;
 }) {
   const t = useTranslations("header");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -63,6 +67,8 @@ export default function Header({
             setSelectedPropertyType={setSelectedPropertyType}
             setSelectedCategory={setSelectedCategory}
             setSelectedLocation={setSelectedLocation}
+            searchRadius={searchRadius}
+            setSearchRadius={setSearchRadius}
           />
         </div>
 
@@ -100,6 +106,8 @@ export default function Header({
               setSelectedLocation={setSelectedLocation}
               setSelectedPropertyType={setSelectedPropertyType}
               setSelectedCategory={setSelectedCategory}
+              searchRadius={searchRadius}
+              setSearchRadius={setSearchRadius}
             />
           </div>
           <div className="flex flex-row justify-between gap-4">

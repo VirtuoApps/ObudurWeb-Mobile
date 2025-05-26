@@ -17,6 +17,8 @@ interface MiddleSearchBoxProps {
   setSelectedLocation: (location: any) => void;
   setSelectedPropertyType: (propertyType: any) => void;
   setSelectedCategory: (category: any) => void;
+  searchRadius?: number;
+  setSearchRadius?: (radius: number) => void;
 }
 
 export default function MiddleSearchBox({
@@ -31,6 +33,8 @@ export default function MiddleSearchBox({
   setSelectedLocation,
   setSelectedPropertyType,
   setSelectedCategory,
+  searchRadius,
+  setSearchRadius,
 }: MiddleSearchBoxProps) {
   const t = useTranslations("listingType");
   const filterT = useTranslations("filter");
@@ -84,6 +88,8 @@ export default function MiddleSearchBox({
         setSelectedLocation={setSelectedLocation}
         isMobileMenu={isMobileMenu}
         filterOptions={filterOptions}
+        searchRadius={searchRadius}
+        setSearchRadius={setSearchRadius}
       />
 
       <div className="bg-[#F5F5F5] w-[1px] h-[24px]"></div>

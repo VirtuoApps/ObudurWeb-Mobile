@@ -13,6 +13,8 @@ type LocationSelectProps = {
   setSelectedLocation: (location: any[0]) => void;
   isMobileMenu?: boolean;
   filterOptions: FilterOptions;
+  searchRadius?: number; // Search radius in kilometers
+  setSearchRadius?: (radius: number) => void;
 };
 
 interface PlaceSuggestion {
@@ -20,11 +22,21 @@ interface PlaceSuggestion {
   placeId: string;
 }
 
+interface LocationWithCoordinates {
+  name: string;
+  description: string;
+  href: string;
+  place_id: string;
+  coordinates?: [number, number]; // [longitude, latitude]
+}
+
 export default function LocationSelect({
   selectedLocation,
   setSelectedLocation,
   isMobileMenu = false,
   filterOptions,
+  searchRadius,
+  setSearchRadius,
 }: LocationSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,6 +44,7 @@ export default function LocationSelect({
   const [suggestions, setSuggestions] = useState<PlaceSuggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [isSearching, setIsSearching] = useState(false);
+  const [isFetchingCoordinates, setIsFetchingCoordinates] = useState(false);
   const locale = useLocale();
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -99,8 +112,45 @@ export default function LocationSelect({
     place_id: suggestion.placeId,
   }));
 
-  const handleLocationSelect = (location: any) => {
-    setSelectedLocation(location);
+  // Fetch coordinates for selected location
+  const fetchLocationCoordinates = async (
+    placeId: string
+  ): Promise<[number, number] | null> => {
+    try {
+      setIsFetchingCoordinates(true);
+      const response = await fetch(
+        `/api/places/details?placeId=${encodeURIComponent(
+          placeId
+        )}&language=${locale}`
+      );
+
+      const data = await response.json();
+
+      if (data.status === "OK" && data.result?.geometry?.location) {
+        const { lat, lng } = data.result.geometry.location;
+        return [lng, lat]; // Return as [longitude, latitude] to match GeoJSON format
+      }
+
+      return null;
+    } catch (error) {
+      console.error("Error fetching location coordinates:", error);
+      return null;
+    } finally {
+      setIsFetchingCoordinates(false);
+    }
+  };
+
+  const handleLocationSelect = async (location: any) => {
+    // Fetch coordinates for the selected location
+    const coordinates = await fetchLocationCoordinates(location.place_id);
+
+    // Create location object with coordinates
+    const locationWithCoordinates: LocationWithCoordinates = {
+      ...location,
+      coordinates,
+    };
+
+    setSelectedLocation(locationWithCoordinates);
     setShowSearch(false);
     setIsOpen(false);
     setSuggestions([]);
@@ -169,6 +219,11 @@ export default function LocationSelect({
                         ? `${selectedLocation.name}`
                         : t("location")}
                     </span>
+                    {/* {selectedLocation && searchRadius && (
+                      <span className="ml-1 text-xs text-gray-500">
+                        ({searchRadius}km)
+                      </span>
+                    )} */}
                   </>
                 )}
               </div>
@@ -189,14 +244,42 @@ export default function LocationSelect({
             >
               <div className="w-full max-w-[250px] flex-auto overflow-hidden rounded-[16px] bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
                 <div className="p-4">
-                  {isSearching && (
+                  {(isSearching || isFetchingCoordinates) && (
                     <div className="p-3 text-center text-gray-500">
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900 mx-auto"></div>
-                      <span className="ml-2">Searching...</span>
+                      <span className="ml-2">
+                        {isSearching ? "Searching..." : "Getting location..."}
+                      </span>
                     </div>
                   )}
 
-                  {!isSearching && searchResults.length > 0
+                  {/* Show radius selector if location is selected */}
+                  {/* {selectedLocation && setSearchRadius && (
+                    <div className="mb-4 p-3 border-b border-gray-200">
+                      <div className="text-sm font-medium text-gray-700 mb-2">
+                        Search Radius
+                      </div>
+                      <div className="flex gap-2">
+                        {[10, 25, 50, 100].map((radius) => (
+                          <button
+                            key={radius}
+                            onClick={() => setSearchRadius(radius)}
+                            className={`px-3 py-1 text-xs rounded-full border transition-colors ${
+                              searchRadius === radius
+                                ? "bg-[#5E5691] text-white border-[#5E5691]"
+                                : "bg-white text-gray-600 border-gray-300 hover:border-[#5E5691]"
+                            }`}
+                          >
+                            {radius}km
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )} */}
+
+                  {!isSearching &&
+                  !isFetchingCoordinates &&
+                  searchResults.length > 0
                     ? searchResults.map((location, index) => (
                         <div
                           key={location.place_id || `${location.name}-${index}`}
@@ -214,7 +297,8 @@ export default function LocationSelect({
                         </div>
                       ))
                     : !searchQuery &&
-                      !isSearching && (
+                      !isSearching &&
+                      !isFetchingCoordinates && (
                         <div className="p-3 text-center text-gray-500">
                           {t("searchLocation")}
                         </div>

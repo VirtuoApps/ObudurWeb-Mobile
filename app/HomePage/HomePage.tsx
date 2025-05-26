@@ -12,6 +12,7 @@ import { Hotel } from "@/types/hotel.type";
 import { FilterType } from "@/types/filter.type";
 import { FilterOptions } from "@/types/filter-options.type";
 import { currencyOptions } from "@/app/components/LanguageSwitcher";
+import { filterHotelsByProximity } from "@/app/utils/geoUtils";
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
   loading: () => {
@@ -80,6 +81,7 @@ export default function HomePage({
   const [listingType, setListingType] = useState<"For Sale" | "For Rent">(
     "For Sale"
   );
+  const [searchRadius, setSearchRadius] = useState<number>(5); // Default 50km radius
 
   useEffect(() => {
     // Get selected currency from localStorage
@@ -110,18 +112,15 @@ export default function HomePage({
 
   let filteredHotels = hotels;
 
-  if (selectedLocation) {
-    //Check name includes
-    console.log({
-      selectedLocation,
-      lowecase: selectedLocation.name.toLocaleLowerCase("tr"),
-    });
-    filteredHotels = filteredHotels.filter((hotel) => {
-      const hotelFullAddress = `${hotel.city.tr}, ${hotel.state.tr}, ${hotel.country.tr}`;
-      return hotelFullAddress
-        .toLowerCase()
-        .includes(selectedLocation.name.toLocaleLowerCase("tr"));
-    });
+  if (selectedLocation && selectedLocation.coordinates) {
+    // Filter hotels by proximity to selected location using the selected radius
+    const [targetLon, targetLat] = selectedLocation.coordinates;
+    filteredHotels = filterHotelsByProximity(
+      filteredHotels,
+      targetLat,
+      targetLon,
+      searchRadius
+    );
   }
 
   if (filters) {
@@ -343,6 +342,8 @@ export default function HomePage({
         setSelectedPropertyType={setSelectedPropertyType}
         setSelectedCategory={setSelectedCategory}
         setSelectedLocation={setSelectedLocation}
+        searchRadius={searchRadius}
+        setSearchRadius={setSearchRadius}
       />
       <FilterList
         features={features}
@@ -431,6 +432,8 @@ export default function HomePage({
                   key={selectedFeatures.length}
                   hotels={filteredHotels}
                   totalHotelsCount={hotels.length}
+                  selectedLocation={selectedLocation}
+                  searchRadius={searchRadius}
                 />
               </div>
             ) : (

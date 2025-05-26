@@ -3,6 +3,7 @@ import {
   GoogleMap,
   Marker,
   InfoWindow,
+  Circle,
   useJsApiLoader,
 } from "@react-google-maps/api";
 import HomeDetailsPopup from "./HomeDetailsPopup/HomeDetailsPopup";
@@ -28,9 +29,13 @@ const currencySymbols: Record<string, string> = {
 export default function GoogleMapView({
   hotels,
   totalHotelsCount,
+  selectedLocation,
+  searchRadius,
 }: {
   hotels: Hotel[];
   totalHotelsCount: number;
+  selectedLocation?: any;
+  searchRadius?: number;
 }) {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyA64Bc3Y55vRFuugh8jxMon9ySYur4SvXY",
@@ -237,6 +242,45 @@ export default function GoogleMapView({
           />
         );
       })}
+
+      {/* Show search radius circle if location is selected */}
+      {/* TODO: For showing search radius circle, we need to add a new endpoint to the backend to get the search radius circle */}
+      {/* {selectedLocation && selectedLocation.coordinates && searchRadius && (
+        <>
+          <Circle
+            center={{
+              lat: selectedLocation.coordinates[1],
+              lng: selectedLocation.coordinates[0],
+            }}
+            radius={searchRadius * 1000} // Convert km to meters
+            options={{
+              fillColor: "#5E5691",
+              fillOpacity: 0.1,
+              strokeColor: "#5E5691",
+              strokeOpacity: 0.3,
+              strokeWeight: 2,
+            }}
+          />
+          <Marker
+            position={{
+              lat: selectedLocation.coordinates[1],
+              lng: selectedLocation.coordinates[0],
+            }}
+            icon={{
+              url:
+                "data:image/svg+xml;charset=UTF-8," +
+                encodeURIComponent(`
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="8" fill="#5E5691" stroke="white" stroke-width="2"/>
+                  <circle cx="12" cy="12" r="3" fill="white"/>
+                </svg>
+              `),
+              scaledSize: new window.google.maps.Size(24, 24),
+              anchor: new window.google.maps.Point(12, 12),
+            }}
+          />
+        </>
+      )} */}
 
       {selectedHotel && selectedHotel.location && (
         <InfoWindow
