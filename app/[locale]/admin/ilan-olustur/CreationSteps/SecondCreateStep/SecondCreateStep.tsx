@@ -98,7 +98,6 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
 
 export default function SecondCreateStep() {
   const [errors, setErrors] = useState<string[]>([]);
-  const [selectedCurrency, setSelectedCurrency] = useState<string>("TRY");
 
   // Use context for form state and navigation
   const {
@@ -123,14 +122,23 @@ export default function SecondCreateStep() {
     setCurrentStep,
   } = useListingForm();
 
-  // Handle amount change for the selected currency
-  const handlePriceChange = (amount: string) => {
-    const numericAmount = amount === "" ? 0 : parseFloat(amount);
+  // Handle amount change for a specific currency
+  const handlePriceChange = (currency: string, amount: string) => {
+    // Only allow numbers and decimal point
+    const numericValue = amount.replace(/[^0-9.]/g, "");
+    // Prevent multiple decimal points
+    const parts = numericValue.split(".");
+    const validValue =
+      parts.length > 2
+        ? parts[0] + "." + parts.slice(1).join("")
+        : numericValue;
+
+    const numericAmount = validValue === "" ? 0 : parseFloat(validValue);
 
     setPrice((prevPrice) => {
       // Check if this currency already exists
       const existingCurrencyIndex = prevPrice?.findIndex(
-        (p) => p.currency === selectedCurrency
+        (p) => p.currency === currency
       );
 
       if (existingCurrencyIndex !== undefined && existingCurrencyIndex >= 0) {
@@ -145,7 +153,7 @@ export default function SecondCreateStep() {
         // Add new currency
         return [
           ...(prevPrice || []),
-          { currency: selectedCurrency, amount: numericAmount },
+          { currency: currency, amount: numericAmount },
         ];
       }
     });
@@ -157,17 +165,6 @@ export default function SecondCreateStep() {
     const currencyPrice = price.find((p) => p.currency === currency);
     return currencyPrice ? currencyPrice.amount : 0;
   };
-
-  // Handle currency change
-  const handleCurrencyChange = (currency: string) => {
-    setSelectedCurrency(currency);
-  };
-
-  // Currency options
-  const currencyOptions = [
-    { value: "TRY", label: "TL" },
-    { value: "USD", label: "USD" },
-  ];
 
   // Kitchen type options
   const kitchenTypeOptions = [
@@ -327,83 +324,45 @@ export default function SecondCreateStep() {
             <div className="mb-6">
               <h2 className="font-semibold mb-4 text-[#262626]">Fiyat</h2>
 
-              <div className="flex flex-row gap-4 mb-6">
-                <div className="relative w-[100px]">
-                  <CustomSelect
-                    options={currencyOptions}
-                    value={selectedCurrency}
-                    onChange={handleCurrencyChange}
-                    placeholder="Para Birimi"
-                  />
+              <div className="flex flex-col sm:flex-row gap-4 mb-4">
+                <div className="w-full sm:w-1/2">
+                  <label className="font-medium block mb-2 text-[#262626]">
+                    Fiyat (TRY)
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium">
+                      ₺
+                    </span>
+                    <input
+                      type="text"
+                      value={getPriceForCurrency("TRY") || ""}
+                      onChange={(e) => handlePriceChange("TRY", e.target.value)}
+                      className="w-full h-12 rounded-lg border border-gray-300 pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                      placeholder="Fiyat yazın"
+                    />
+                  </div>
                 </div>
 
-                <div className="flex-1">
+                <div className="w-full sm:w-1/2">
+                  <label className="font-medium block mb-2 text-[#262626]">
+                    Fiyat (USD)
+                  </label>
                   <div className="relative">
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium">
+                      $
+                    </span>
                     <input
-                      type="number"
-                      value={getPriceForCurrency(selectedCurrency) || ""}
-                      onChange={(e) => handlePriceChange(e.target.value)}
-                      className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                      placeholder="Fiyat girin"
-                      min="0"
+                      type="text"
+                      value={getPriceForCurrency("USD") || ""}
+                      onChange={(e) => handlePriceChange("USD", e.target.value)}
+                      className="w-full h-12 rounded-lg border border-gray-300 pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                      placeholder="Fiyat yazın"
                     />
-                    <div className="absolute inset-y-0 right-2 flex flex-col items-center justify-center">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const currentPrice =
-                            getPriceForCurrency(selectedCurrency) || 0;
-                          handlePriceChange((currentPrice + 1).toString());
-                        }}
-                        className="text-gray-500 h-6 w-6 flex items-center justify-center"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-3 w-3"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 15l7-7 7 7"
-                          />
-                        </svg>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const currentPrice =
-                            getPriceForCurrency(selectedCurrency) || 0;
-                          if (currentPrice > 0) {
-                            handlePriceChange((currentPrice - 1).toString());
-                          }
-                        }}
-                        className="text-gray-500 h-6 w-6 flex items-center justify-center"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-3 w-3"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 9l-7 7-7-7"
-                          />
-                        </svg>
-                      </button>
-                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="text-xs text-gray-500">
+              {/* <div className="text-xs text-gray-500">
                 <p>Her iki para biriminde fiyat belirtmeniz gerekmektedir.</p>
                 <div className="mt-1 text-sm">
                   {price?.map((p) => (
@@ -418,7 +377,7 @@ export default function SecondCreateStep() {
                     </span>
                   ))}
                 </div>
-              </div>
+              </div> */}
             </div>
 
             {/* Areas - Side by side */}
@@ -431,15 +390,20 @@ export default function SecondCreateStep() {
                   Metrekare (Brüt)
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   id="projectArea"
                   value={projectArea || ""}
-                  onChange={(e) =>
-                    setProjectArea(parseFloat(e.target.value) || 0)
-                  }
+                  onChange={(e) => {
+                    const numericValue = e.target.value.replace(/[^0-9.]/g, "");
+                    const parts = numericValue.split(".");
+                    const validValue =
+                      parts.length > 2
+                        ? parts[0] + "." + parts.slice(1).join("")
+                        : numericValue;
+                    setProjectArea(parseFloat(validValue) || 0);
+                  }}
                   className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
                   placeholder="Brüt m²"
-                  min="0"
                 />
               </div>
               <div className="w-full sm:w-1/2">
@@ -450,15 +414,20 @@ export default function SecondCreateStep() {
                   Metrekare (Net)
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   id="totalSize"
                   value={totalSize || ""}
-                  onChange={(e) =>
-                    setTotalSize(parseFloat(e.target.value) || 0)
-                  }
+                  onChange={(e) => {
+                    const numericValue = e.target.value.replace(/[^0-9.]/g, "");
+                    const parts = numericValue.split(".");
+                    const validValue =
+                      parts.length > 2
+                        ? parts[0] + "." + parts.slice(1).join("")
+                        : numericValue;
+                    setTotalSize(parseFloat(validValue) || 0);
+                  }}
                   className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
                   placeholder="Net m²"
-                  min="0"
                 />
               </div>
             </div>
@@ -536,14 +505,21 @@ export default function SecondCreateStep() {
                 Yapım Yılı
               </label>
               <input
-                type="number"
+                type="text"
                 id="buildYear"
                 value={buildYear || ""}
-                onChange={(e) => setBuildYear(parseInt(e.target.value) || 0)}
+                onChange={(e) => {
+                  const numericValue = e.target.value.replace(/[^0-9]/g, "");
+                  const year = parseInt(numericValue) || 0;
+                  const currentYear = new Date().getFullYear();
+                  if (year >= 1900 && year <= currentYear) {
+                    setBuildYear(year);
+                  } else if (numericValue === "") {
+                    setBuildYear(0);
+                  }
+                }}
                 className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
                 placeholder="Yapım yılı"
-                min="1900"
-                max={new Date().getFullYear()}
               />
             </div>
 
