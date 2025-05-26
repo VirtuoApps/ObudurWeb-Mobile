@@ -42,9 +42,10 @@
     "accessibilityFeatures": "Features for Disabled and Elderly",
     "faceFeatures": "Facade",
     "locationFeatures": "Location Features",
-    "selectLocation": "Select Location",
+    "selectLocation": "Search Location",
     "selectEstateType": "Select Property Type",
     "selectCategory": "Select Category",
+    "notFound": "No results found",
     "features": {
       "cableTV": "Cable TV",
       "wifi": "Wi-Fi",

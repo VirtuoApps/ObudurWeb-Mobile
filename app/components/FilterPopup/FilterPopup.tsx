@@ -135,13 +135,93 @@ export default function FilterPopup({
 
   const locale = useLocale();
 
-  const locations = filterOptions.state.map((state) => ({
-    name: (state as any)[locale],
-    description: `${(state.cityOfTheState as any)[locale]}/${
-      (state.countryOfTheState as any)[locale]
-    }`,
-    href: "#",
-  }));
+  // Location search state variables - similar to LocationSelect.tsx
+  const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const [isFetchingCoordinates, setIsFetchingCoordinates] = useState(false);
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Remove locale-based locations - we only want Google Places suggestions
+  // const locations = filterOptions.state.map((state) => ({
+  //   name: (state as any)[locale],
+  //   description: `${(state.cityOfTheState as any)[locale]}/${
+  //     (state.countryOfTheState as any)[locale]
+  //   }`,
+  //   href: "#",
+  // }));
+
+  // Fetch suggestions as user types - similar to LocationSelect.tsx
+  const fetchLocationSuggestions = async (searchQuery: string) => {
+    if (searchQuery.length < 3) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+
+    setIsSearching(true);
+    try {
+      const response = await fetch(
+        `/api/places/autocomplete?input=${encodeURIComponent(
+          searchQuery
+        )}&language=${locale}`
+      );
+
+      const data = await response.json();
+
+      if (data.status === "OK" && data.predictions) {
+        const newSuggestions = data.predictions.map((prediction: any) => ({
+          name: prediction.description.split(",")[0],
+          description: prediction.description
+            .split(",")
+            .slice(1)
+            .join(",")
+            .trim(),
+          href: "#",
+          place_id: prediction.place_id,
+        }));
+        setSuggestions(newSuggestions);
+        setShowSuggestions(true);
+      } else {
+        setSuggestions([]);
+        setShowSuggestions(false);
+      }
+    } catch (error) {
+      console.error("Error fetching suggestions:", JSON.stringify(error));
+      setSuggestions([]);
+      setShowSuggestions(false);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  // Fetch coordinates for selected location
+  const fetchLocationCoordinates = async (
+    placeId: string
+  ): Promise<[number, number] | null> => {
+    try {
+      setIsFetchingCoordinates(true);
+      const response = await fetch(
+        `/api/places/details?placeId=${encodeURIComponent(
+          placeId
+        )}&language=${locale}`
+      );
+
+      const data = await response.json();
+
+      if (data.status === "OK" && data.result?.geometry?.location) {
+        const { lat, lng } = data.result.geometry.location;
+        return [lng, lat]; // Return as [longitude, latitude] to match GeoJSON format
+      }
+
+      return null;
+    } catch (error) {
+      console.error("Error fetching location coordinates:", error);
+      return null;
+    } finally {
+      setIsFetchingCoordinates(false);
+    }
+  };
 
   const incrementValue = (
     setValue: React.Dispatch<React.SetStateAction<number | "">>,
@@ -297,28 +377,62 @@ export default function FilterPopup({
                   useEffect(() => {
                     if (!isOpen) {
                       setSearchQuery("");
+                      setSuggestions([]);
+                      setShowSuggestions(false);
                     }
                     if (isOpen && !showSearch) {
                       setShowSearch(true);
                     }
                   }, [isOpen, showSearch]);
 
-                  const filteredLocations = locations.filter(
-                    (location) =>
-                      location.name
-                        .toLowerCase()
-                        .includes(searchQuery.toLowerCase()) ||
-                      location.description
-                        .toLowerCase()
-                        .includes(searchQuery.toLowerCase())
-                  );
+                  // Debounced search effect
+                  useEffect(() => {
+                    if (searchTimeoutRef.current) {
+                      clearTimeout(searchTimeoutRef.current);
+                    }
 
-                  const handleLocationSelect = (location: any) => {
-                    setSelectedLocation(location);
+                    if (searchQuery.length >= 3) {
+                      searchTimeoutRef.current = setTimeout(() => {
+                        fetchLocationSuggestions(searchQuery);
+                      }, 300);
+                    } else {
+                      setSuggestions([]);
+                      setShowSuggestions(false);
+                    }
+
+                    return () => {
+                      if (searchTimeoutRef.current) {
+                        clearTimeout(searchTimeoutRef.current);
+                      }
+                    };
+                  }, [searchQuery]);
+
+                  const handleLocationSelect = async (location: any) => {
+                    // Fetch coordinates for the selected location if it has place_id
+                    let locationWithCoordinates = location;
+                    if (location.place_id) {
+                      const coordinates = await fetchLocationCoordinates(
+                        location.place_id
+                      );
+                      locationWithCoordinates = {
+                        ...location,
+                        coordinates,
+                      };
+                    }
+
+                    setSelectedLocation(locationWithCoordinates);
                     setShowSearch(false);
                     setIsOpen(false);
+                    setSuggestions([]);
+                    setShowSuggestions(false);
                     buttonRef.current?.click();
                   };
+
+                  // Combine suggestions with filtered locations for display
+                  const displayLocations =
+                    showSuggestions && suggestions.length > 0
+                      ? suggestions
+                      : [];
 
                   return (
                     <>
@@ -339,6 +453,30 @@ export default function FilterPopup({
                                 }
                                 className="outline-none w-full bg-transparent"
                                 onClick={(e) => e.stopPropagation()}
+                                onKeyDown={(e) => {
+                                  e.stopPropagation();
+                                  // Prevent space from closing the popover
+                                  if (e.key === " ") {
+                                    e.preventDefault();
+                                    // Manually add space to the input value
+                                    const input = e.target as HTMLInputElement;
+                                    const start = input.selectionStart || 0;
+                                    const end = input.selectionEnd || 0;
+                                    const newValue =
+                                      searchQuery.slice(0, start) +
+                                      " " +
+                                      searchQuery.slice(end);
+                                    setSearchQuery(newValue);
+                                    // Set cursor position after the space
+                                    setTimeout(() => {
+                                      input.setSelectionRange(
+                                        start + 1,
+                                        start + 1
+                                      );
+                                    }, 0);
+                                  }
+                                }}
+                                onKeyUp={(e) => e.stopPropagation()}
                                 autoFocus
                               />
                             </>
@@ -359,37 +497,66 @@ export default function FilterPopup({
                         />
                       </PopoverButton>
 
-                      <PopoverPanel className="absolute z-20 mt-2 w-full max-w-md py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
+                      <PopoverPanel className="absolute z-20 mt-2 w-full py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
                         <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
                           <div className="p-4">
-                            {filteredLocations.length > 0 ? (
-                              filteredLocations.map((location) => (
-                                <div
-                                  key={location.name}
-                                  className="group relative flex gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
-                                  onClick={() => handleLocationSelect(location)}
-                                >
-                                  <div className="mt-1 flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                                    <MapPinIcon
-                                      className="h-5 w-5 text-gray-600 group-hover:text-indigo-600"
-                                      aria-hidden="true"
-                                    />
-                                  </div>
-                                  <div>
-                                    <div className="font-semibold text-gray-900">
-                                      {location.name}
+                            {(isSearching || isFetchingCoordinates) && (
+                              <div className="p-3 text-center text-gray-500">
+                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900 mx-auto"></div>
+                                <span className="ml-2">
+                                  {isSearching
+                                    ? "Searching..."
+                                    : "Getting location..."}
+                                </span>
+                              </div>
+                            )}
+
+                            {!isSearching &&
+                            !isFetchingCoordinates &&
+                            displayLocations.length > 0 ? (
+                              displayLocations.map(
+                                (location: any, index: number) => (
+                                  <div
+                                    key={
+                                      location.place_id ||
+                                      `${location.name}-${index}`
+                                    }
+                                    className="group relative flex gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
+                                    onClick={() =>
+                                      handleLocationSelect(location)
+                                    }
+                                  >
+                                    <div className="mt-1 flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                                      <MapPinIcon
+                                        className="h-5 w-5 text-gray-600 group-hover:text-indigo-600"
+                                        aria-hidden="true"
+                                      />
                                     </div>
-                                    <p className="mt-1 text-gray-600">
-                                      {location.description}
-                                    </p>
+                                    <div>
+                                      <div className="font-semibold text-gray-900">
+                                        {location.name}
+                                      </div>
+                                      <p className="mt-1 text-gray-600">
+                                        {location.description}
+                                      </p>
+                                    </div>
                                   </div>
-                                </div>
-                              ))
-                            ) : (
+                                )
+                              )
+                            ) : !searchQuery &&
+                              !isSearching &&
+                              !isFetchingCoordinates ? (
+                              <div className="p-3 text-center text-gray-500">
+                                {t("selectLocation") || "Search location"}
+                              </div>
+                            ) : !isSearching &&
+                              !isFetchingCoordinates &&
+                              searchQuery.length >= 3 &&
+                              displayLocations.length === 0 ? (
                               <div className="p-3 text-center text-gray-500">
                                 {t("notFound") || "No locations found"}
                               </div>
-                            )}
+                            ) : null}
                           </div>
                         </div>
                       </PopoverPanel>
@@ -404,7 +571,7 @@ export default function FilterPopup({
           <div className="mt-6">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-semibold text-gray-700">
-                {t("priceLabel")} ({currencyCode})
+                {t("priceLabel")}
               </h3>
               <button
                 className="text-sm text-[#8c8c8c] hover:underline cursor-pointer"
@@ -419,17 +586,40 @@ export default function FilterPopup({
             <div className="grid grid-cols-2 gap-4 mt-3">
               <div className="relative flex items-center">
                 <input
+                  type="text"
                   value={minPrice}
                   onChange={(e) => {
                     const value = e.target.value;
-                    if (value === "" || !isNaN(Number(value))) {
+                    // Only allow numbers
+                    if (value === "" || /^\d+$/.test(value)) {
                       setMinPrice(value === "" ? "" : Number(value));
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    // Allow backspace, delete, tab, escape, enter, and arrow keys
+                    if (
+                      [8, 9, 27, 13, 37, 38, 39, 40, 46].indexOf(e.keyCode) !==
+                        -1 ||
+                      // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                      (e.keyCode === 65 && e.ctrlKey === true) ||
+                      (e.keyCode === 67 && e.ctrlKey === true) ||
+                      (e.keyCode === 86 && e.ctrlKey === true) ||
+                      (e.keyCode === 88 && e.ctrlKey === true)
+                    ) {
+                      return;
+                    }
+                    // Ensure that it is a number and stop the keypress
+                    if (
+                      (e.shiftKey || e.keyCode < 48 || e.keyCode > 57) &&
+                      (e.keyCode < 96 || e.keyCode > 105)
+                    ) {
+                      e.preventDefault();
                     }
                   }}
                   placeholder={t("minValue")}
                   className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
-                <div className="absolute right-2 flex flex-col">
+                {/* <div className="absolute right-2 flex flex-col">
                   <button
                     onClick={() => incrementValue(setMinPrice, minPrice)}
                     className="text-gray-500 hover:text-gray-700"
@@ -442,21 +632,44 @@ export default function FilterPopup({
                   >
                     <ChevronDownIcon className="w-4 h-4" />
                   </button>
-                </div>
+                </div> */}
               </div>
               <div className="relative flex items-center">
                 <input
+                  type="text"
                   value={maxPrice}
                   onChange={(e) => {
                     const value = e.target.value;
-                    if (value === "" || !isNaN(Number(value))) {
+                    // Only allow numbers
+                    if (value === "" || /^\d+$/.test(value)) {
                       setMaxPrice(value === "" ? "" : Number(value));
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    // Allow backspace, delete, tab, escape, enter, and arrow keys
+                    if (
+                      [8, 9, 27, 13, 37, 38, 39, 40, 46].indexOf(e.keyCode) !==
+                        -1 ||
+                      // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                      (e.keyCode === 65 && e.ctrlKey === true) ||
+                      (e.keyCode === 67 && e.ctrlKey === true) ||
+                      (e.keyCode === 86 && e.ctrlKey === true) ||
+                      (e.keyCode === 88 && e.ctrlKey === true)
+                    ) {
+                      return;
+                    }
+                    // Ensure that it is a number and stop the keypress
+                    if (
+                      (e.shiftKey || e.keyCode < 48 || e.keyCode > 57) &&
+                      (e.keyCode < 96 || e.keyCode > 105)
+                    ) {
+                      e.preventDefault();
                     }
                   }}
                   placeholder={t("maxValue")}
                   className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
-                <div className="absolute right-2 flex flex-col">
+                {/* <div className="absolute right-2 flex flex-col">
                   <button
                     onClick={() => incrementValue(setMaxPrice, maxPrice)}
                     className="text-gray-500 hover:text-gray-700"
@@ -469,7 +682,7 @@ export default function FilterPopup({
                   >
                     <ChevronDownIcon className="w-4 h-4" />
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -524,7 +737,7 @@ export default function FilterPopup({
                           />
                         </PopoverButton>
 
-                        <PopoverPanel className="absolute z-20 mt-2 w-full max-w-md py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
+                        <PopoverPanel className="absolute z-20 mt-2 w-full py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
                           <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
                             <div className="p-4">
                               {roomOptions.map((room) => (
@@ -605,7 +818,7 @@ export default function FilterPopup({
                           />
                         </PopoverButton>
 
-                        <PopoverPanel className="absolute z-20 mt-2 w-full max-w-md py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
+                        <PopoverPanel className="absolute z-20 mt-2 w-full py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
                           <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
                             <div className="p-4">
                               {bathroomOptions.map((bathroom) => (
@@ -651,17 +864,40 @@ export default function FilterPopup({
             <div className="grid grid-cols-2 gap-4 mt-3">
               <div className="relative flex items-center">
                 <input
+                  type="text"
                   value={minArea}
                   onChange={(e) => {
                     const value = e.target.value;
-                    if (value === "" || !isNaN(Number(value))) {
+                    // Only allow numbers
+                    if (value === "" || /^\d+$/.test(value)) {
                       setMinArea(value === "" ? "" : Number(value));
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    // Allow backspace, delete, tab, escape, enter, and arrow keys
+                    if (
+                      [8, 9, 27, 13, 37, 38, 39, 40, 46].indexOf(e.keyCode) !==
+                        -1 ||
+                      // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                      (e.keyCode === 65 && e.ctrlKey === true) ||
+                      (e.keyCode === 67 && e.ctrlKey === true) ||
+                      (e.keyCode === 86 && e.ctrlKey === true) ||
+                      (e.keyCode === 88 && e.ctrlKey === true)
+                    ) {
+                      return;
+                    }
+                    // Ensure that it is a number and stop the keypress
+                    if (
+                      (e.shiftKey || e.keyCode < 48 || e.keyCode > 57) &&
+                      (e.keyCode < 96 || e.keyCode > 105)
+                    ) {
+                      e.preventDefault();
                     }
                   }}
                   placeholder={t("minValue")}
                   className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
-                <div className="absolute right-2 flex flex-col">
+                {/* <div className="absolute right-2 flex flex-col">
                   <button
                     onClick={() => incrementValue(setMinArea, minArea)}
                     className="text-gray-500 hover:text-gray-700"
@@ -674,21 +910,44 @@ export default function FilterPopup({
                   >
                     <ChevronDownIcon className="w-4 h-4" />
                   </button>
-                </div>
+                </div> */}
               </div>
               <div className="relative flex items-center">
                 <input
+                  type="text"
                   value={maxArea}
                   onChange={(e) => {
                     const value = e.target.value;
-                    if (value === "" || !isNaN(Number(value))) {
+                    // Only allow numbers
+                    if (value === "" || /^\d+$/.test(value)) {
                       setMaxArea(value === "" ? "" : Number(value));
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    // Allow backspace, delete, tab, escape, enter, and arrow keys
+                    if (
+                      [8, 9, 27, 13, 37, 38, 39, 40, 46].indexOf(e.keyCode) !==
+                        -1 ||
+                      // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                      (e.keyCode === 65 && e.ctrlKey === true) ||
+                      (e.keyCode === 67 && e.ctrlKey === true) ||
+                      (e.keyCode === 86 && e.ctrlKey === true) ||
+                      (e.keyCode === 88 && e.ctrlKey === true)
+                    ) {
+                      return;
+                    }
+                    // Ensure that it is a number and stop the keypress
+                    if (
+                      (e.shiftKey || e.keyCode < 48 || e.keyCode > 57) &&
+                      (e.keyCode < 96 || e.keyCode > 105)
+                    ) {
+                      e.preventDefault();
                     }
                   }}
                   placeholder={t("maxValue")}
                   className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
-                <div className="absolute right-2 flex flex-col">
+                {/* <div className="absolute right-2 flex flex-col">
                   <button
                     onClick={() => incrementValue(setMaxArea, maxArea)}
                     className="text-gray-500 hover:text-gray-700"
@@ -701,7 +960,7 @@ export default function FilterPopup({
                   >
                     <ChevronDownIcon className="w-4 h-4" />
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -766,7 +1025,7 @@ export default function FilterPopup({
                         />
                       </PopoverButton>
 
-                      <PopoverPanel className="absolute z-20 mt-2 w-full max-w-md py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
+                      <PopoverPanel className="absolute z-20 mt-2 w-full py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
                         <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
                           <div className="p-4">
                             {propertyTypes.map((propertyType) => (
@@ -851,7 +1110,7 @@ export default function FilterPopup({
                         />
                       </PopoverButton>
 
-                      <PopoverPanel className="absolute z-20 mt-2 w-full max-w-md py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
+                      <PopoverPanel className="absolute z-20 mt-2 w-full py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
                         <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
                           <div className="p-4">
                             {categories.map((category) => (
@@ -876,6 +1135,62 @@ export default function FilterPopup({
               </Popover>
             </div>
           </div>
+
+          {/* Face Features Section */}
+          {filterOptions.faceFeatures &&
+            filterOptions.faceFeatures.length > 0 && (
+              <div className="mt-6">
+                <div
+                  className="flex items-center justify-between cursor-pointer"
+                  onClick={() =>
+                    setFaceFeaturesCollapsed(!faceFeaturesCollapsed)
+                  }
+                >
+                  <h3 className="text-base font-semibold text-gray-700">
+                    {t("faceFeatures") || "Cephe"}
+                  </h3>
+                  <button className="text-sm text-[#8c8c8c] hover:underline cursor-pointer">
+                    <img
+                      src="/chevron-down.png"
+                      className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
+                        !faceFeaturesCollapsed ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                </div>
+                {!faceFeaturesCollapsed && (
+                  <div className="mt-3 ">
+                    <div className="flex flex-wrap gap-2">
+                      {(filterOptions.faceFeatures || []).map((feature) => {
+                        const isSelected = selectedFaceFeatures.find(
+                          (f: any) => f._id === feature._id
+                        );
+
+                        return (
+                          <button
+                            key={feature._id}
+                            onClick={() => toggleFaceFeature(feature)}
+                            className={`inline-flex items-center ${
+                              isSelected
+                                ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                                : "bg-white border-gray-100 text-gray-600"
+                            } border rounded-[16px] h-[40px] px-3 py-1 text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
+                          >
+                            {feature.iconUrl && (
+                              <img
+                                src={feature.iconUrl}
+                                className="w-[24px] h-[24px] mr-2"
+                              />
+                            )}
+                            {feature.name.tr}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
 
           {/* Interior Features Section */}
           <div className="mt-6">
@@ -1036,62 +1351,6 @@ export default function FilterPopup({
                           );
                         }
                       )}
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-
-          {/* Face Features Section */}
-          {filterOptions.faceFeatures &&
-            filterOptions.faceFeatures.length > 0 && (
-              <div className="mt-6">
-                <div
-                  className="flex items-center justify-between cursor-pointer"
-                  onClick={() =>
-                    setFaceFeaturesCollapsed(!faceFeaturesCollapsed)
-                  }
-                >
-                  <h3 className="text-base font-semibold text-gray-700">
-                    {t("faceFeatures") || "Cephe"}
-                  </h3>
-                  <button className="text-sm text-[#8c8c8c] hover:underline cursor-pointer">
-                    <img
-                      src="/chevron-down.png"
-                      className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
-                        !faceFeaturesCollapsed ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
-                </div>
-                {!faceFeaturesCollapsed && (
-                  <div className="mt-3 ">
-                    <div className="flex flex-wrap gap-2">
-                      {(filterOptions.faceFeatures || []).map((feature) => {
-                        const isSelected = selectedFaceFeatures.find(
-                          (f: any) => f._id === feature._id
-                        );
-
-                        return (
-                          <button
-                            key={feature._id}
-                            onClick={() => toggleFaceFeature(feature)}
-                            className={`inline-flex items-center ${
-                              isSelected
-                                ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
-                                : "bg-white border-gray-100 text-gray-600"
-                            } border rounded-[16px] h-[40px] px-3 py-1 text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
-                          >
-                            {feature.iconUrl && (
-                              <img
-                                src={feature.iconUrl}
-                                className="w-[24px] h-[24px] mr-2"
-                              />
-                            )}
-                            {feature.name.tr}
-                          </button>
-                        );
-                      })}
                     </div>
                   </div>
                 )}
