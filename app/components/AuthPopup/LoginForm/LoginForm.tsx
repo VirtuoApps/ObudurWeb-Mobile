@@ -188,7 +188,7 @@ export default function LoginForm({
           <button
             type="submit"
             disabled={!isValid || isLoading}
-            className={`w-full py-2 px-4 rounded-2xl font-medium cursor-pointer ${
+            className={`w-full py-[16px] px-[24px] rounded-2xl font-medium text-[16px] cursor-pointer ${
               isValid && !isLoading
                 ? "bg-[#5E5691] text-white"
                 : "bg-[#F0F0F0] cursor-not-allowed text-gray-500"

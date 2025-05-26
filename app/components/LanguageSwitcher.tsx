@@ -78,7 +78,7 @@ export default function LanguageSwitcher() {
         onClick={() => setIsOpen(true)}
         className="inline-flex justify-center rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 cursor-pointer"
       >
-        <img src="/globe.png" className="w-8" />
+        <img src="/globe.png" className="w-[24px] h-[24px]" />
       </button>
 
       {isOpen && (
