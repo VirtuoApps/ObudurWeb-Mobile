@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaPlus } from "react-icons/fa"; // Assuming you have react-icons installed
-import GeneralSelect from "@/app/components/GeneralSelect/GeneralSelect";
+import CitySelect from "@/app/components/CitySelect/CitySelect";
 import SuccessPopup from "@/app/components/SuccessPopup/SuccessPopup";
 
 export default function FormSection() {
@@ -13,13 +13,6 @@ export default function FormSection() {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // Replace with your actual city options
-  const cityOptions = [
-    { id: "istanbul", name: "İstanbul" },
-    { id: "ankara", name: "Ankara" },
-    { id: "izmir", name: "İzmir" },
-  ];
 
   const handleCitySelect = (city: any) => {
     setSelectedCity(city);
@@ -132,18 +125,16 @@ export default function FormSection() {
               <label htmlFor="city" className="sr-only">
                 Şehir
               </label>
-              <GeneralSelect
-                selectedItem={selectedCity}
-                onSelect={handleCitySelect}
-                options={cityOptions}
+              <CitySelect
+                selectedCity={selectedCity}
+                setSelectedCity={handleCitySelect}
                 defaultText="Şehir"
-                extraClassName="w-full px-4 py-4 border border-gray-200 rounded-2xl  focus:border-indigo-500 sm:text-sm bg-[#fff] text-gray-500 focus:none  focus:ring-0"
-                popoverMaxWidth="400"
+                extraClassName="w-full px-4 py-4 border border-[#F0F0F0] rounded-2xl focus:border-indigo-500 sm:text-sm bg-[#fff] text-gray-500 focus:none focus:ring-0"
               />
             </div>
 
             <div
-              className="relative border border-gray-200 rounded-2xl bg-[#fff] flex items-center justify-between px-4 py-4 cursor-pointer"
+              className="relative border border-[#F0F0F0] rounded-2xl bg-[#fff] flex items-center justify-between px-4 py-4 cursor-pointer"
               onClick={handleDocumentClick}
             >
               <label

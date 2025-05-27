@@ -75,7 +75,10 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
+                <a
+                  href="/bayimiz-olun"
+                  className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                >
                   Bayimiz Olun
                 </a>
               </li>
