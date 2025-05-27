@@ -3,6 +3,7 @@ import ResidentBox from "./ResidentBox/ResidentBox";
 import { Hotel } from "@/types/hotel.type";
 import { formatAddress } from "@/app/utils/addressFormatter";
 import SortAndSaveFiltering from "./SortAndSaveFiltering/SortAndSaveFiltering";
+import { useLocale } from "next-intl";
 
 // Currency symbols mapping
 const currencySymbols: Record<string, string> = {
@@ -31,38 +32,28 @@ export default function ListView({
   >;
 }) {
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
-  const [selectedLanguage, setSelectedLanguage] = useState<string>("en");
+  const selectedLanguage = useLocale();
 
-  // Get selected currency and language from localStorage
+  // Get selected currency from localStorage
   useEffect(() => {
     const storedCurrency = localStorage.getItem("selectedCurrency");
-    const storedLanguage = localStorage.getItem("selectedLanguage");
 
     if (storedCurrency) {
       setSelectedCurrency(storedCurrency);
     }
 
-    if (storedLanguage) {
-      setSelectedLanguage(storedLanguage);
-    }
-
-    // Setup listener for currency and language changes
+    // Setup listener for currency changes
     const handleStorageChange = () => {
       const currency = localStorage.getItem("selectedCurrency");
-      const language = localStorage.getItem("selectedLanguage");
 
       if (currency && currency !== selectedCurrency) {
         setSelectedCurrency(currency);
-      }
-
-      if (language && language !== selectedLanguage) {
-        setSelectedLanguage(language);
       }
     };
 
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
-  }, [selectedCurrency, selectedLanguage]);
+  }, [selectedCurrency]);
 
   // Helper function to get display price in the selected currency
   const getDisplayPrice = (hotel: Hotel) => {
