@@ -10,11 +10,11 @@ export default function FormTexts() {
         Obudur, işini büyütmek isteyen bağımsız emlakçılara güvenilir bir zemin
         sunar.
       </p>
-      <p className="text-base text-[#595959] mb-1">
+      <p className="text-base text-[#595959] font-medium">
         Eğitimden teknolojiye, pazarlamadan kurumsal kimliğe kadar her adımda
         yanındayız.
       </p>
-      <p className="text-base text-[#595959]">
+      <p className="text-base text-[#595959] font-medium">
         Kendi ofisini açarken yalnız kalmak istemiyorsan, başvurunu yap:
         aradığın o destek, O Budur.
       </p>
