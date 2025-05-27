@@ -58,23 +58,31 @@ export default function MiddleSearchBox({
         }
       `}
     >
-      {/* Satılık / Kiralık */}
-      <div className={`flex rounded-md  ${isMobileMenu ? "w-full" : "mr-2"}`}>
+      {/* Satılık / Kiralık - Animated Switch */}
+      <div
+        className={`relative flex rounded-md bg-gray-50 p-1 ${
+          isMobileMenu ? "w-full" : "mr-2"
+        }`}
+      >
+        {/* Moving background */}
+        <div
+          className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-[#362C75] rounded transition-transform duration-300 ease-in-out ${
+            listingType === "For Sale" ? "translate-x-0" : "translate-x-full"
+          }`}
+        />
+
+        {/* Buttons */}
         <button
-          className={`px-4 py-1.5 text-sm font-medium transition-colors duration-200 cursor-pointer rounded-md w-[100px] ${
-            listingType === "For Sale"
-              ? "bg-[#362C75] text-white"
-              : "bg-gray-50 text-gray-700"
+          className={`relative z-10 px-4 py-1.5 text-sm font-medium transition-colors duration-300 cursor-pointer rounded-lg flex-1 ${
+            listingType === "For Sale" ? "text-white" : "text-gray-700"
           }`}
           onClick={() => setListingType("For Sale")}
         >
           {t("forSale")}
         </button>
         <button
-          className={`px-4 py-1.5 text-sm font-medium transition-colors duration-200 cursor-pointer rounded-md w-[100px] ${
-            listingType === "For Rent"
-              ? "bg-[#362C75] text-white"
-              : "bg-gray-50 text-gray-700"
+          className={`relative z-10 px-4 py-1.5 text-sm font-medium transition-colors duration-300 cursor-pointer rounded-lg flex-1 ${
+            listingType === "For Rent" ? "text-white" : "text-gray-700"
           }`}
           onClick={() => setListingType("For Rent")}
         >
