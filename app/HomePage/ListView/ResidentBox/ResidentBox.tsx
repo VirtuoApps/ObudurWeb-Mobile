@@ -156,7 +156,13 @@ export default function ResidentBox({
 
           {/* Sale badge */}
           <div className="absolute top-3 left-3 flex flex-row items-center">
-            <div className=" bg-white border border-[#D9D9D9] text-[#5E5691] text-xs font-semibold px-3 py-1 rounded-lg">
+            <div
+              className={`bg-white border border-[#D9D9D9] ${
+                type === "Kiralık" || type === "For Rent"
+                  ? "text-[#00A9DC]"
+                  : "text-[#5E5691]"
+              }  text-xs font-semibold px-3 py-1 rounded-lg`}
+            >
               {type}
             </div>
             {isOptinable && (
@@ -216,7 +222,10 @@ export default function ResidentBox({
 
           {/* Location */}
           <div className="flex items-start space-x-1 text-[14px] text-[#8C8C8C]">
-            <img src="/marker-02.png" className="w-[16px] h-[16px] mr-1" />
+            <img
+              src="/marker-02_(3).png"
+              className="w-[16px] h-[16px] mr-1 translate-y-1"
+            />
             <span>{locationText}</span>
           </div>
         </div>
