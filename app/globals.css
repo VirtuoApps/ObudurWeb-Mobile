@@ -43,6 +43,10 @@ body {
   display: none !important;
 }
 
+.gm-style-iw-tc {
+  display: none !important;
+}
+
 .no-scrollbar {
   -ms-overflow-style: none !important;
   scrollbar-width: none !important;
@@ -228,4 +232,28 @@ body {
 
 .list-to-map-transition {
   transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Hide InfoWindow pointer/arrow */
+.gm-style .gm-style-iw-chr {
+  display: none !important;
+}
+
+/* Remove InfoWindow background and border */
+.gm-style .gm-style-iw-d {
+  overflow: visible !important;
+}
+
+.gm-style .gm-style-iw {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+
+/* Remove close button styling conflicts */
+.gm-style .gm-style-iw-tc {
+  background: transparent !important;
+  border: none !important;
 }

@@ -66,8 +66,32 @@ export default function GoogleMapView({
     return () => window.removeEventListener("storage", handleStorageChange);
   }, [selectedCurrency]);
 
-  // Calculate the center based on the average of all coordinates
+  // Calculate the center based on selectedLocation first, then average of all coordinates
   const center = useMemo(() => {
+    if (
+      selectedHotel &&
+      selectedHotel.location &&
+      selectedHotel.location.coordinates &&
+      selectedHotel.location.coordinates.length === 2
+    ) {
+      return {
+        lat: selectedHotel.location.coordinates[1],
+        lng: selectedHotel.location.coordinates[0],
+      };
+    }
+
+    // If selectedLocation is provided, use it as center
+    if (
+      selectedLocation &&
+      selectedLocation.coordinates &&
+      selectedLocation.coordinates.length === 2
+    ) {
+      return {
+        lat: selectedLocation.coordinates[1],
+        lng: selectedLocation.coordinates[0],
+      };
+    }
+
     if (!hotels || hotels.length === 0) {
       return { lat: 36.855, lng: 30.805 }; // Default center if no hotels
     }
@@ -99,7 +123,7 @@ export default function GoogleMapView({
       lat: sum.lat / validHotels.length,
       lng: sum.lng / validHotels.length,
     };
-  }, [hotels]);
+  }, [hotels, selectedLocation, selectedHotel]);
 
   const onLoad = useCallback(function callback(map: google.maps.Map) {
     setMapInstance(map);
@@ -111,6 +135,21 @@ export default function GoogleMapView({
 
   useEffect(() => {
     if (mapInstance) {
+      // If selectedLocation is provided, center on it with appropriate zoom
+      if (
+        selectedLocation &&
+        selectedLocation.coordinates &&
+        selectedLocation.coordinates.length === 2
+      ) {
+        const position = {
+          lat: selectedLocation.coordinates[1],
+          lng: selectedLocation.coordinates[0],
+        };
+        mapInstance.setCenter(position);
+        mapInstance.setZoom(13); // Good zoom level for selected location
+        return;
+      }
+
       const validHotels = hotels.filter(
         (hotel) =>
           hotel.location &&
@@ -149,7 +188,7 @@ export default function GoogleMapView({
         mapInstance.setZoom(14); // Default overview zoom for all hotels
       }
     }
-  }, [mapInstance, hotels, center, totalHotelsCount]);
+  }, [mapInstance, hotels, center, totalHotelsCount, selectedLocation]);
 
   if (!isLoaded) return <div>Loading...</div>;
 
@@ -210,6 +249,9 @@ export default function GoogleMapView({
           lng: hotel.location.coordinates[0],
         };
 
+        // Check if this hotel is selected
+        const isSelected = selectedHotel && selectedHotel._id === hotel._id;
+
         return (
           <Marker
             key={hotel._id || index}
@@ -223,7 +265,7 @@ export default function GoogleMapView({
             icon={{
               // Draw a 200 x 50 rectangle with rounded corners (12px radius)
               path: "M12,0 L188,0 Q200,0 200,12 L200,38 Q200,50 188,50 L12,50 Q0,50 0,38 L0,12 Q0,0 12,0 Z",
-              fillColor: "#5E5691",
+              fillColor: isSelected ? "#171231" : "#5E5691",
               fillOpacity: 1,
               strokeWeight: 0,
               scale: 0.4,
@@ -244,7 +286,6 @@ export default function GoogleMapView({
       })}
 
       {/* Show search radius circle if location is selected */}
-      {/* TODO: For showing search radius circle, we need to add a new endpoint to the backend to get the search radius circle */}
       {/* {selectedLocation && selectedLocation.coordinates && searchRadius && (
         <>
           <Circle
@@ -289,25 +330,44 @@ export default function GoogleMapView({
             lng: selectedHotel.location.coordinates[0],
           }}
           onCloseClick={() => setSelectedHotel(null)}
+          options={{
+            disableAutoPan: false,
+            pixelOffset: new window.google.maps.Size(0, -8), // 8px spacing above the marker
+          }}
         >
-          <ResidentBox
-            key={selectedHotel._id}
-            hotelId={selectedHotel._id}
-            slug={selectedHotel.slug}
-            type={getLocalizedText(selectedHotel.listingType, "en")}
-            isOptinable={false}
-            residentTypeName={getLocalizedText(selectedHotel.housingType, "en")}
-            title={getLocalizedText(selectedHotel.title, "en")}
-            price={getDisplayPrice(selectedHotel)}
-            bedCount={selectedHotel.bedRoomCount.toString()}
-            floorCount={"2"}
-            area={`${selectedHotel.projectArea}m2`}
-            locationText={formatAddress(selectedHotel, "en ")}
-            image={selectedHotel.images[0]}
-            images={selectedHotel.images}
-            isFavorite={false}
-            roomAsText={selectedHotel.roomAsText}
-          />
+          <div
+            className="max-w-[356px] p-0 m-0"
+            style={{
+              background: "white",
+              borderRadius: "12px",
+              boxShadow: "0 8px 32px rgba(0, 0, 0, 0.12)",
+              border: "none",
+              padding: "0",
+              margin: "0",
+            }}
+          >
+            <ResidentBox
+              key={selectedHotel._id}
+              hotelId={selectedHotel._id}
+              slug={selectedHotel.slug}
+              type={getLocalizedText(selectedHotel.listingType, "en")}
+              isOptinable={false}
+              residentTypeName={getLocalizedText(
+                selectedHotel.housingType,
+                "en"
+              )}
+              title={getLocalizedText(selectedHotel.title, "en")}
+              price={getDisplayPrice(selectedHotel)}
+              bedCount={selectedHotel.bedRoomCount.toString()}
+              floorCount={"2"}
+              area={`${selectedHotel.projectArea}m2`}
+              locationText={formatAddress(selectedHotel, "en ")}
+              image={selectedHotel.images[0]}
+              images={selectedHotel.images}
+              isFavorite={false}
+              roomAsText={selectedHotel.roomAsText}
+            />
+          </div>
         </InfoWindow>
       )}
     </GoogleMap>
