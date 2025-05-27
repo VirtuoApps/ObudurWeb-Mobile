@@ -76,7 +76,7 @@ export default function LanguageSwitcher() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(true)}
-        className="inline-flex justify-center rounded-md bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 cursor-pointer"
+        className="w-[48px] h-[48px] flex items-center justify-center hover:bg-gray-100 transition-all duration-200 rounded-lg cursor-pointer"
       >
         <img src="/globe.png" className="w-[24px] h-[24px]" />
       </button>
