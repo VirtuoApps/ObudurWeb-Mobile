@@ -67,7 +67,7 @@ const LikeButton = ({
 };
 
 export default function AuthBox({
-  showLikeButton = true,
+  showLikeButton = false,
   hideCreateListingButton = false,
 }: {
   showLikeButton?: boolean;
