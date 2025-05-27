@@ -510,13 +510,9 @@ export default function SecondCreateStep() {
                 value={buildYear || ""}
                 onChange={(e) => {
                   const numericValue = e.target.value.replace(/[^0-9]/g, "");
-                  const year = parseInt(numericValue) || 0;
-                  const currentYear = new Date().getFullYear();
-                  if (year >= 1900 && year <= currentYear) {
-                    setBuildYear(year);
-                  } else if (numericValue === "") {
-                    setBuildYear(0);
-                  }
+                  setBuildYear(
+                    numericValue === "" ? 0 : parseInt(numericValue)
+                  );
                 }}
                 className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
                 placeholder="Yapım yılı"

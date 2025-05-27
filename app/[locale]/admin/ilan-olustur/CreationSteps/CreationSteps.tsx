@@ -54,12 +54,12 @@ export interface HotelData {
 
 // Define the context type
 type ListingFormContextType = {
-  listingType: MultilangText;
-  setListingType: React.Dispatch<React.SetStateAction<MultilangText>>;
-  entranceType: MultilangText;
-  setEntranceType: React.Dispatch<React.SetStateAction<MultilangText>>;
-  housingType: MultilangText;
-  setHousingType: React.Dispatch<React.SetStateAction<MultilangText>>;
+  listingType: MultilangText | null;
+  setListingType: React.Dispatch<React.SetStateAction<MultilangText | null>>;
+  entranceType: MultilangText | null;
+  setEntranceType: React.Dispatch<React.SetStateAction<MultilangText | null>>;
+  housingType: MultilangText | null;
+  setHousingType: React.Dispatch<React.SetStateAction<MultilangText | null>>;
   title: MultilangText;
   setTitle: React.Dispatch<React.SetStateAction<MultilangText>>;
   description: MultilangText;
@@ -135,11 +135,11 @@ type ListingFormContextType = {
 
 // Create the context with default values
 export const ListingFormContext = createContext<ListingFormContextType>({
-  listingType: { tr: "Satılık", en: "For Sale" },
+  listingType: null,
   setListingType: () => {},
-  entranceType: { tr: "Ev", en: "House" },
+  entranceType: null,
   setEntranceType: () => {},
-  housingType: { tr: "Villa", en: "Villa" },
+  housingType: null,
   setHousingType: () => {},
   title: { tr: "", en: "" },
   setTitle: () => {},
@@ -223,18 +223,9 @@ export default function CreationSteps({
   hotelData,
 }: CreationStepsProps) {
   // All form states moved from FirstCreateStep
-  const [listingType, setListingType] = useState<MultilangText>({
-    tr: "Satılık",
-    en: "For Sale",
-  });
-  const [entranceType, setEntranceType] = useState<MultilangText>({
-    tr: "Ev",
-    en: "House",
-  });
-  const [housingType, setHousingType] = useState<MultilangText>({
-    tr: "Villa",
-    en: "Villa",
-  });
+  const [listingType, setListingType] = useState<MultilangText | null>(null);
+  const [entranceType, setEntranceType] = useState<MultilangText | null>(null);
+  const [housingType, setHousingType] = useState<MultilangText | null>(null);
   const [title, setTitle] = useState<MultilangText>({
     tr: "",
     en: "",
