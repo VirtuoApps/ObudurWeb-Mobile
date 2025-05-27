@@ -519,39 +519,10 @@ export default function AdminListings() {
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
-              {/* Create listing button */}
-              <button
-                onClick={() => router.push("/admin/ilan-olustur")}
-                className="flex items-center justify-center gap-2 bg-[#1EB173] rounded-lg py-2 px-4 text-sm font-medium text-white hover:bg-[#19935f] transition"
-              >
-                <span>İlan Oluştur</span>
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M10 4.16667V15.8333"
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M4.16669 10H15.8334"
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
               {/* Status filter dropdown */}
               <div className="relative" ref={statusDropdownRef}>
                 <button
-                  className="flex items-center justify-between gap-2 bg-white  rounded-lg w-[180px] py-2 px-4 text-sm text-gray-700  border border-gray-200  "
+                  className="flex items-center justify-between gap-2 bg-white  rounded-2xl w-[240px] py-4 px-4 text-sm text-gray-700  border border-gray-200  "
                   onClick={() => setStatusDropdownOpen(!statusDropdownOpen)}
                 >
                   <span>{statusFilter === "all" ? "Durum" : statusFilter}</span>
@@ -562,7 +533,7 @@ export default function AdminListings() {
                   />
                 </button>
                 {statusDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white  rounded-lg shadow-lg z-50 border border-gray-200 text-gray-700">
+                  <div className="absolute right-0 mt-2 w-[240px] bg-white  rounded-lg shadow-lg z-50 border border-gray-200 text-gray-700">
                     <ul className="py-1">
                       <li
                         className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
@@ -617,7 +588,7 @@ export default function AdminListings() {
               {/* Listing type filter dropdown */}
               <div className="relative" ref={typeDropdownRef}>
                 <button
-                  className="flex items-center justify-between gap-2 bg-white w-[180px]  rounded-lg px-4 py-2 text-sm text-gray-700  border border-gray-200 "
+                  className="flex items-center justify-between gap-2 bg-white rounded-2xl w-[240px] py-4 px-4 text-sm text-gray-700  border border-gray-200 "
                   onClick={() => setTypeDropdownOpen(!typeDropdownOpen)}
                 >
                   <span>{typeFilter === "all" ? "İlan Türü" : typeFilter}</span>
@@ -628,7 +599,7 @@ export default function AdminListings() {
                   />
                 </button>
                 {typeDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white  rounded-lg shadow-lg z-50 border border-gray-200 text-gray-700 ">
+                  <div className="absolute right-0 mt-2 w-[240px] bg-white  rounded-lg shadow-lg z-50 border border-gray-200 text-gray-700 ">
                     <ul className="py-1">
                       <li
                         className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
@@ -666,7 +637,7 @@ export default function AdminListings() {
         </div>
 
         {/* Table/card section */}
-        <div className="bg-white  rounded-2xl shadow-md p-6 overflow-auto">
+        <div className="bg-white  rounded-2xl shadow-md p-6 px-0 overflow-auto">
           {loading ? (
             <div className="flex justify-center items-center h-screen">
               <span className="text-gray-500 ">Yükleniyor...</span>
@@ -710,58 +681,62 @@ export default function AdminListings() {
             </div>
           ) : (
             <>
-              <table className="w-full min-w-full divide-y divide-gray-200 ">
+              <table
+                className="w-full min-w-full divide-y divide-gray-200"
+                style={{ borderCollapse: "separate", borderSpacing: 0 }}
+              >
                 <thead className="bg-white  sticky top-0 z-10">
                   <tr>
-                    <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
+                    <th className="py-4 px-4 text-left text-sm   tracking-wide text-[#595959] font-bold border-r border-[#F0F0F0]">
                       No
                     </th>
-                    <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
+                    <th className="py-4 px-4 text-left text-sm font-bold  tracking-wide text-[#595959] border-r border-[#F0F0F0]">
                       İlan Özeti
                     </th>
                     <th
-                      className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 cursor-pointer flex items-center gap-1"
+                      className="py-4 px-4 text-left text-sm font-bold  tracking-wide text-[#595959] cursor-pointer flex items-center gap-1 border-r border-[#F0F0F0]"
                       onClick={() => handleSort("price")}
                     >
                       Fiyat {getSortIcon("price")}
                     </th>
-                    <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
+                    <th className="py-4 px-4 text-left text-sm font-bold  tracking-wide text-[#595959] border-r border-[#F0F0F0]">
                       Görüldü
                     </th>
-                    <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
+                    <th className="py-4 px-4 text-left text-sm font-bold  tracking-wide text-[#595959] border-r border-[#F0F0F0]">
                       Favori
                     </th>
                     <th
-                      className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 cursor-pointer flex items-center gap-1"
+                      className="py-4 px-4 text-left text-sm font-bold  tracking-wide text-[#595959] cursor-pointer flex items-center gap-1 border-r border-[#F0F0F0]"
                       onClick={() => handleSort("messages")}
                     >
                       Mesaj {getSortIcon("messages")}
                     </th>
-                    <th className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 ">
+                    <th className="py-4 px-4 text-left text-sm font-bold  tracking-wide text-[#595959] border-r border-[#F0F0F0]">
                       Durum
                     </th>
-                    <th
-                      className="py-4 text-left text-xs font-medium uppercase tracking-wide text-gray-500 cursor-pointer flex items-center gap-1"
-                      onClick={() => handleSort("date")}
-                    >
-                      İlan Tarihi {getSortIcon("date")}
-                    </th>
-                    <th className="py-4 text-right text-xs font-medium uppercase tracking-wide text-gray-500 ">
+
+                    <th className="py-4 px-4 text-right text-sm font-bold  tracking-wide text-[#595959]">
                       İşlemler
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 ">
-                  {currentItems.map((property) => (
-                    <tr key={property._id} className="hover:bg-gray-50 ">
+                  {currentItems.map((property, index) => (
+                    <tr
+                      key={property._id}
+                      className="hover:bg-gray-50"
+                      style={{
+                        backgroundColor: index % 2 === 0 ? "#F5F5F566" : "#fff",
+                      }}
+                    >
                       <td
-                        className="py-4 first:pl-0 text-sm font-medium text-gray-700 "
+                        className="py-4 px-4 text-sm font-medium text-gray-700 border-r border-[#F0F0F0]"
                         data-label="No"
                       >
                         #{property.no}
                       </td>
                       <td
-                        className="py-4 text-sm text-gray-500 "
+                        className="py-4 px-4 text-sm text-gray-500 border-r border-[#F0F0F0]"
                         data-label="İlan Özeti"
                       >
                         <div className="flex items-center gap-4">
@@ -773,8 +748,11 @@ export default function AdminListings() {
                             className="w-16 h-16 rounded-lg object-cover"
                           />
                           <div>
+                            <p className=" text-[#8C8C8C]  text-[14px]">
+                              {property.listingType.tr}
+                            </p>
                             <h3
-                              className="text-sm font-semibold text-gray-900 cursor-pointer "
+                              className="text-sm font-bold text-[#262626] cursor-pointer "
                               onClick={() => {
                                 window.open(
                                   `/resident/${property.slug}`,
@@ -784,20 +762,17 @@ export default function AdminListings() {
                             >
                               {property.title.tr}
                             </h3>
-                            <p className="line-clamp-2 text-gray-600  text-xs">
-                              {property.description.tr}
-                            </p>
                           </div>
                         </div>
                       </td>
                       <td
-                        className="py-4 text-sm font-semibold text-gray-900 "
+                        className="py-4 px-4 text-sm font-semibold text-gray-900 border-r border-[#F0F0F0]"
                         data-label="Fiyat"
                       >
                         {formatPrice(property.price)}
                       </td>
                       <td
-                        className="py-4 text-sm text-gray-700 "
+                        className="py-4 px-4 text-sm text-gray-700 border-r border-[#F0F0F0]"
                         data-label="Görüldü"
                       >
                         <div className="flex items-center gap-1">
@@ -808,7 +783,7 @@ export default function AdminListings() {
                         </div>
                       </td>
                       <td
-                        className="py-4 text-sm text-gray-700 "
+                        className="py-4 px-4 text-sm text-gray-700 border-r border-[#F0F0F0]"
                         data-label="Favori"
                       >
                         <div className="flex items-center gap-1">
@@ -819,7 +794,7 @@ export default function AdminListings() {
                         </div>
                       </td>
                       <td
-                        className="py-4 text-sm text-gray-700 "
+                        className="py-4 px-4 text-sm text-gray-700 border-r border-[#F0F0F0]"
                         data-label="Mesaj"
                       >
                         <div
@@ -837,17 +812,15 @@ export default function AdminListings() {
                           </span>
                         </div>
                       </td>
-                      <td className="py-4 text-sm" data-label="Durum">
+                      <td
+                        className="py-4 px-4 text-sm border-r border-[#F0F0F0]"
+                        data-label="Durum"
+                      >
                         {renderStatusByProperty(property)}
                       </td>
+
                       <td
-                        className="py-4 text-sm text-gray-700 "
-                        data-label="İlan Tarihi"
-                      >
-                        {new Date(property.createdAt).toLocaleDateString()}
-                      </td>
-                      <td
-                        className="py-4 last:pr-0 text-right w-[240px]"
+                        className="py-4 px-4 text-right w-[240px]"
                         data-label="İşlemler"
                       >
                         <div className="flex items-center justify-center gap-2">
