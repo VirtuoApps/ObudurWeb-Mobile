@@ -79,10 +79,10 @@ export default function MenuItems() {
       {menuItems.map((item) => (
         <p
           key={item.key}
-          className={`text-sm font-medium cursor-pointer hover:border-b-2 hover:border-gray-700 transition-all duration-200 border-b-2 ${
+          className={`text-sm font-medium cursor-pointer hover:border-b-2 hover:border-[#8C8C8C] transition-all duration-200 border-b-2 ${
             activeSection === item.sectionId
-              ? "border-gray-700 text-gray-900"
-              : "border-transparent text-gray-700"
+              ? "border-[#8C8C8C] text-[#8C8C8C]"
+              : "border-transparent text-[#8C8C8C] hover:text-[#8C8C8C]"
           }`}
           onClick={() => scrollToSection(item.sectionId)}
         >

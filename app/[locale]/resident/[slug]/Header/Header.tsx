@@ -41,7 +41,7 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b shadow-sm py-4 bg-white h-[80px] w-full px-4 md:px-0">
-      <div className="w-full px-4 mx-auto flex flex-wrap items-center justify-between">
+      <div className="w-full px-4 mx-auto flex flex-wrap items-center">
         {/* Logo */}
         <div
           className="flex items-center cursor-pointer"
@@ -55,13 +55,15 @@ export default function Header() {
           />
         </div>
 
-        <div className="hidden md:block">
+        <div className="w-[1px] h-[16px] bg-[#D9D9D9] ml-12"></div>
+
+        <div className="hidden md:block ml-12">
           <MenuItems />
         </div>
 
         {/* Right Side Items for Desktop */}
-        <div className="hidden md:flex items-center gap-4">
-          <AuthBox />
+        <div className="hidden md:flex items-center gap-4 ml-auto">
+          <AuthBox showLikeButton={true} />
           <LanguageSwitcher />
         </div>
 
