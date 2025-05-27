@@ -33,7 +33,7 @@ function MapLoadingIndicator() {
 
 export default function HomePage({
   features,
-  hotels,
+  hotels: hotelsFromParam,
   filterOptions,
   allQuickFilters,
 }: {
@@ -42,6 +42,8 @@ export default function HomePage({
   filterOptions: FilterOptions;
   allQuickFilters: Feature[];
 }) {
+  let hotels = hotelsFromParam;
+
   const t = useTranslations("common");
   const [currentView, setCurrentView] = useState<"map" | "list">("map");
   const [filters, setFilters] = useState<FilterType | null>(null);
@@ -110,6 +112,12 @@ export default function HomePage({
     }, 300);
   };
 
+  if (listingType) {
+    hotels = hotels.filter((hotel) =>
+      Object.values(hotel.listingType).some((value) => value === listingType)
+    );
+  }
+
   let filteredHotels = hotels;
 
   if (selectedLocation && selectedLocation.coordinates) {
@@ -124,14 +132,6 @@ export default function HomePage({
   }
 
   if (filters) {
-    if (filters.listingType) {
-      filteredHotels = filteredHotels.filter((hotel) =>
-        Object.values(hotel.listingType).some(
-          (value) => value === filters.listingType
-        )
-      );
-    }
-
     if (filters.state) {
       filteredHotels = filteredHotels.filter((hotel) =>
         Object.values(hotel.state).some((value) => value === filters.state)

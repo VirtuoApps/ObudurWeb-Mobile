@@ -76,7 +76,7 @@ export default function GoogleMapView({
       selectedHotel.location.coordinates.length === 2
     ) {
       return {
-        lat: selectedHotel.location.coordinates[1],
+        lat: selectedHotel.location.coordinates[1] + 0.01,
         lng: selectedHotel.location.coordinates[0],
       };
     }
@@ -137,6 +137,7 @@ export default function GoogleMapView({
   useEffect(() => {
     if (mapInstance) {
       // If selectedLocation is provided, center on it with appropriate zoom
+
       if (
         selectedLocation &&
         selectedLocation.coordinates &&
@@ -147,7 +148,7 @@ export default function GoogleMapView({
           lng: selectedLocation.coordinates[0],
         };
         mapInstance.setCenter(position);
-        mapInstance.setZoom(13); // Good zoom level for selected location
+        mapInstance.setZoom(5); // Good zoom level for selected location
         return;
       }
 
