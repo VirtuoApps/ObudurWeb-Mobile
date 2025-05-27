@@ -73,7 +73,7 @@ const FeatureGroup: React.FC<FeatureGroupProps> = ({
   return (
     <div className="mt-12">
       <h3 className="text-lg font-semibold text-gray-900 mb-6">{title}</h3>
-      <ul role="list" className="flex flex-wrap gap-3 md:gap-6">
+      <ul role="list" className="flex flex-wrap gap-5 md:gap-8">
         {features.map((feature, index) => (
           <FeatureItem
             key={index}
