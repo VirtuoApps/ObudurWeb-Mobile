@@ -181,7 +181,7 @@ export default function ResidentBox({
         {/* Content */}
         <div className="p-4">
           {/* Property type */}
-          <p className="text-base text-[#8C8C8C] font-medium mb-1">
+          <p className="text-base text-[#8C8C8C] font-medium">
             {residentTypeName}
           </p>
 
@@ -194,16 +194,19 @@ export default function ResidentBox({
           </div>
 
           {/* Features */}
-          <div className="flex justify-between items-center mb-4 text-sm text-[#262626] font-semibold">
+          <div className="flex justify-between items-center mb-4 text-sm text-[#595959] font-semibold">
             <div className="flex items-center space-x-1">
               <BedIcon />
               <span>{roomAsText}</span>
             </div>
 
+            <div className="w-[1px] h-[20px] bg-[#D9D9D9]"></div>
+
             <div className="flex items-center space-x-1">
               <FloorCountIcon />
               <span>{floorCount}</span>
             </div>
+            <div className="w-[1px] h-[20px] bg-[#D9D9D9]"></div>
 
             <div className="flex items-center space-x-1">
               <AreaIcon />
