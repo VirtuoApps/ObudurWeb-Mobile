@@ -46,7 +46,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 lg:px-0">
         <div className="flex flex-row justify-between pt-8 pb-10">
           {/* Column 1 */}
-          {/* <nav className="col-span-1">
+          <nav className="col-span-1">
             <ul className="space-y-2">
               <li>
                 <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
@@ -55,7 +55,7 @@ export default function Footer() {
               </li>
               <li>
                 <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
-                  Sıkak İlanlar
+                  Satılık İlanlar
                 </a>
               </li>
               <li>
@@ -63,22 +63,12 @@ export default function Footer() {
                   Kiralık İlanlar
                 </a>
               </li>
-              <li>
-                <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
-                  Şu Anda Popüler
-                </a>
-              </li>
             </ul>
-          </nav> */}
+          </nav>
 
           {/* Column 2 */}
-          {/* <nav className="col-span-1">
+          <nav className="col-span-1">
             <ul className="space-y-2">
-              <li>
-                <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
-                  Hakkımızda
-                </a>
-              </li>
               <li>
                 <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
                   Kariyer
@@ -89,20 +79,30 @@ export default function Footer() {
                   Bayimiz Olun
                 </a>
               </li>
-            </ul>
-          </nav> */}
-
-          {/* Column 3 */}
-          {/* <nav className="col-span-1">
-            <ul className="space-y-2">
               <li>
                 <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
-                  Yardım Merkezi
+                  Satış Ofizlerimiz
                 </a>
               </li>
               <li>
                 <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
-                  Gizlilik & Şartlar
+                  İletişim
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+          {/* Column 3 */}
+          <nav className="col-span-1">
+            <ul className="space-y-2">
+              <li>
+                <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
+                  Geri Bildirim
+                </a>
+              </li>
+              <li>
+                <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
+                  Kullanıcı Sözleşmeleri
                 </a>
               </li>
               <li>
@@ -112,11 +112,11 @@ export default function Footer() {
               </li>
               <li>
                 <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
-                  Döviz Para Birimi
+                  Dil & Para Birimi
                 </a>
               </li>
             </ul>
-          </nav> */}
+          </nav>
 
           {/* Column 4 */}
           <nav className="col-span-1">
