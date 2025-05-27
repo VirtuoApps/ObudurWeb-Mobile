@@ -73,7 +73,7 @@ export default function MiddleSearchBox({
 
         {/* Buttons */}
         <button
-          className={`relative z-10 px-4 py-1.5 text-sm font-medium transition-colors duration-300 cursor-pointer rounded-lg flex-1 ${
+          className={`relative z-10 py-1.5 text-sm font-medium transition-colors duration-300 cursor-pointer rounded-lg flex-1 min-w-[100px] flex items-center justify-center ${
             listingType === "For Sale" ? "text-white" : "text-gray-700"
           }`}
           onClick={() => setListingType("For Sale")}
@@ -81,7 +81,7 @@ export default function MiddleSearchBox({
           {t("forSale")}
         </button>
         <button
-          className={`relative z-10 px-4 py-1.5 text-sm font-medium transition-colors duration-300 cursor-pointer rounded-lg flex-1 ${
+          className={`relative z-10 py-1.5 text-sm font-medium transition-colors duration-300 cursor-pointer rounded-lg flex-1 min-w-[100px] flex items-center justify-center ${
             listingType === "For Rent" ? "text-white" : "text-gray-700"
           }`}
           onClick={() => setListingType("For Rent")}

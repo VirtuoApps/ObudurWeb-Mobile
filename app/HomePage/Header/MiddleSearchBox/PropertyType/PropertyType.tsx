@@ -42,7 +42,7 @@ export default function PropertyType({
       onSelect={handlePropertyTypeSelect}
       options={propertyTypes}
       defaultText={t("propertyType")}
-      extraClassName="min-w-[200px]"
+      extraClassName="min-w-[150px]"
       popoverMaxWidth="250"
     />
   );
