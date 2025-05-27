@@ -68,8 +68,10 @@ const LikeButton = ({
 
 export default function AuthBox({
   showLikeButton = true,
+  hideCreateListingButton = false,
 }: {
   showLikeButton?: boolean;
+  hideCreateListingButton?: boolean;
 }) {
   const t = useTranslations("header");
   const [isOpen, setIsOpen] = useState(false);
@@ -125,7 +127,8 @@ export default function AuthBox({
           )}
 
           {(user.role === "admin" || user.role === "super-admin") &&
-            !showLikeButton && (
+            !showLikeButton &&
+            !hideCreateListingButton && (
               <button
                 onClick={(e) => {
                   e.stopPropagation();
