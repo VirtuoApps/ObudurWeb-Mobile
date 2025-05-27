@@ -521,19 +521,10 @@ export default function FilterPopup({
                                       handleLocationSelect(location)
                                     }
                                   >
-                                    <div className="mt-1 flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                                      <MapPinIcon
-                                        className="h-5 w-5 text-gray-600 group-hover:text-indigo-600"
-                                        aria-hidden="true"
-                                      />
-                                    </div>
                                     <div>
-                                      <div className="font-semibold text-gray-900">
+                                      <div className="font-normal text-[#595959]">
                                         {location.name}
                                       </div>
-                                      <p className="mt-1 text-gray-600">
-                                        {location.description}
-                                      </p>
                                     </div>
                                   </div>
                                 )
@@ -1380,8 +1371,7 @@ export default function FilterPopup({
             <button
               onClick={() => {
                 setFilters({
-                  listingType: listingType,
-                  state: selectedLocation?.name || null,
+                  listingType: listingType ? listingType : null,
                   propertyType: selectedPropertyType?.name || null,
                   roomAsText: selectedCategory?.name || null,
                   roomCount: roomCount,

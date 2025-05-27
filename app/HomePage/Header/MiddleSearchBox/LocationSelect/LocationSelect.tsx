@@ -248,22 +248,15 @@ export default function LocationSelect({
                   </>
                 )}
               </div>
-
-              <img
-                src="/chevron-down.png"
-                className={`w-[24px] h-[24px] ml-auto ${
-                  isOpen ? "rotate-180" : ""
-                }`}
-              />
             </PopoverButton>
 
             <PopoverPanel
               transition
-              className={`absolute z-20 mt-2 w-screen max-w-xs px-4 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in ${
-                isMobileMenu ? "left-0" : "left-1/2 -translate-x-1/2"
+              className={`absolute z-20 mt-2 w-screen max-w-2xl px-4 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in ${
+                isMobileMenu ? "left-0" : "-left-5"
               }`}
             >
-              <div className="w-full max-w-[250px] flex-auto overflow-hidden rounded-[16px] bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
+              <div className="w-full max-w-[450px] flex-auto overflow-hidden rounded-[16px] bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
                 <div className="p-4">
                   {(isSearching || isFetchingCoordinates) && (
                     <div className="p-3 text-center text-gray-500">
@@ -308,12 +301,9 @@ export default function LocationSelect({
                           onClick={() => handleLocationSelect(location)}
                         >
                           <div className="flex-1">
-                            <div className="font-semibold text-gray-900 flex items-center">
+                            <div className="font-normal text-[#595959] flex items-center">
                               {location.name}
                             </div>
-                            <p className="mt-1 text-gray-600">
-                              {location.description}
-                            </p>
                           </div>
                         </div>
                       ))

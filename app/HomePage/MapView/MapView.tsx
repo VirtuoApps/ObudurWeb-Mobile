@@ -148,7 +148,7 @@ export default function GoogleMapView({
           lng: selectedLocation.coordinates[0],
         };
         mapInstance.setCenter(position);
-        mapInstance.setZoom(5); // Good zoom level for selected location
+        mapInstance.setZoom(13); // Good zoom level for selected location
         return;
       }
 

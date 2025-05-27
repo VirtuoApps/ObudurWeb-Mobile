@@ -85,6 +85,10 @@ export default function HomePage({
   );
   const [searchRadius, setSearchRadius] = useState<number>(5); // Default 50km radius
 
+  console.log({
+    filters,
+  });
+
   useEffect(() => {
     // Get selected currency from localStorage
     const savedCurrency = localStorage.getItem("selectedCurrency");
@@ -219,7 +223,7 @@ export default function HomePage({
       });
     }
 
-    if (filters.interiorFeatureIds) {
+    if (filters.interiorFeatureIds && filters.interiorFeatureIds.length > 0) {
       filteredHotels = filteredHotels.filter((hotel) => {
         return filters.interiorFeatureIds!.every((featureId) =>
           hotel.featureIds.includes(featureId)
@@ -227,7 +231,7 @@ export default function HomePage({
       });
     }
 
-    if (filters.exteriorFeatureIds) {
+    if (filters.exteriorFeatureIds && filters.exteriorFeatureIds.length > 0) {
       filteredHotels = filteredHotels.filter((hotel) => {
         return filters.exteriorFeatureIds!.every((featureId) =>
           hotel.featureIds.includes(featureId)
@@ -235,7 +239,10 @@ export default function HomePage({
       });
     }
 
-    if (filters.accessibilityFeatureIds) {
+    if (
+      filters.accessibilityFeatureIds &&
+      filters.accessibilityFeatureIds.length > 0
+    ) {
       filteredHotels = filteredHotels.filter((hotel) => {
         return filters.accessibilityFeatureIds!.every((featureId: string) =>
           hotel.featureIds.includes(featureId)
@@ -243,7 +250,7 @@ export default function HomePage({
       });
     }
 
-    if (filters.faceFeatureIds) {
+    if (filters.faceFeatureIds && filters.faceFeatureIds.length > 0) {
       filteredHotels = filteredHotels.filter((hotel) => {
         return filters.faceFeatureIds!.some(
           (featureId: string) => hotel.face === featureId
