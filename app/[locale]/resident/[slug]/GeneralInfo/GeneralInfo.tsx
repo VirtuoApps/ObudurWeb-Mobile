@@ -267,7 +267,7 @@ export default function GeneralInfo() {
       {/* Title and Price Section */}
       <div className="mb-4 sm:mb-6">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-0">
-          <h1 className="text-4xl  font-serif font-medium text-[#262626] order-2 sm:order-1 sm:max-w-2xl">
+          <h1 className="text-4xl   font-medium text-[#262626] order-2 sm:order-1 sm:max-w-2xl">
             {title[currentLocale]}
           </h1>
           <div className="text-left sm:text-right order-1 sm:order-2 flex justify-between sm:block items-center">
