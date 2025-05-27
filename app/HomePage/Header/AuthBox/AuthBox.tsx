@@ -248,13 +248,6 @@ export default function AuthBox({
             <div className="border-b border-gray-100 my-2"></div>
 
             <Link
-              href="/gayrimenkul-ofisleri"
-              className=" px-4 py-2 text-[12px] font-[500] text-[#595959]  hover:bg-gray-100 flex flex-row items-center"
-            >
-              Sık Sorulan Sorular
-            </Link>
-
-            <Link
               href="/geri-bildirim"
               className=" px-4 py-2 text-[12px] font-[500] text-[#595959]  hover:bg-gray-100 flex flex-row items-center"
             >
