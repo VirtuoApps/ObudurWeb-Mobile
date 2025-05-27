@@ -44,6 +44,7 @@ export default function GoogleMapView({
   const [selectedHotel, setSelectedHotel] = useState<Hotel | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
   const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
+  const [hideSelectedHotel, setHideSelectedHotel] = useState(false);
 
   const router = useRouter();
 
@@ -233,6 +234,7 @@ export default function GoogleMapView({
       }}
       onLoad={onLoad}
       onUnmount={onUnmount}
+      onClick={() => setHideSelectedHotel(true)}
     >
       {hotels.map((hotel, index) => {
         if (
@@ -250,7 +252,10 @@ export default function GoogleMapView({
         };
 
         // Check if this hotel is selected
-        const isSelected = selectedHotel && selectedHotel._id === hotel._id;
+        const isSelected =
+          selectedHotel &&
+          selectedHotel._id === hotel._id &&
+          !hideSelectedHotel;
 
         return (
           <Marker
@@ -279,6 +284,7 @@ export default function GoogleMapView({
             onClick={() => {
               // router.push(`/resident/${hotel.slug}`);
               // Alternative: show info window
+              setHideSelectedHotel(false);
               setSelectedHotel(hotel);
             }}
           />
@@ -323,7 +329,7 @@ export default function GoogleMapView({
         </>
       )} */}
 
-      {selectedHotel && selectedHotel.location && (
+      {selectedHotel && selectedHotel.location && !hideSelectedHotel && (
         <InfoWindow
           position={{
             lat: selectedHotel.location.coordinates[1],
