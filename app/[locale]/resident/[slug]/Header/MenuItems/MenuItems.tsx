@@ -77,17 +77,31 @@ export default function MenuItems() {
   return (
     <div className="flex md:flex-row flex-col w-full items-center gap-10 mb-20 md:mb-0">
       {menuItems.map((item) => (
-        <p
+        <div
           key={item.key}
-          className={`text-sm font-medium cursor-pointer hover:text-[#362C75] transition-all duration-200  ${
+          className={`text-sm font-medium cursor-pointer transition-all duration-200 overflow-hidden h-5 relative group ${
             activeSection === item.sectionId
-              ? " text-[#362C75]"
-              : "border-transparent text-[#8C8C8C] hover:text-[#8C8C8C]"
+              ? "text-[#362C75]"
+              : "text-[#8C8C8C]"
           }`}
           onClick={() => scrollToSection(item.sectionId)}
         >
-          {item.label}
-        </p>
+          {/* Normal text */}
+          <p
+            className={`transition-transform duration-300 ease-in-out group-hover:-translate-y-full ${
+              activeSection === item.sectionId
+                ? "text-[#362C75]"
+                : "text-[#8C8C8C]"
+            }`}
+          >
+            {item.label}
+          </p>
+
+          {/* Hover text (purple) */}
+          <p className="absolute top-0 left-0 text-[#362C75] translate-y-full transition-transform duration-300 ease-in-out group-hover:translate-y-0">
+            {item.label}
+          </p>
+        </div>
       ))}
     </div>
   );
