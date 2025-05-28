@@ -37,7 +37,7 @@ const LikeButton = ({
       onClick={handleClick}
       className={`
          rounded-lg transition-all duration-300 hover:bg-gray-100
-        w-[48px] h-[48px] flex items-center justify-center
+        w-[48px] h-[48px] flex items-center justify-center cursor-pointer
         ${isAnimating ? "scale-110" : "scale-100"}
       `}
     >
