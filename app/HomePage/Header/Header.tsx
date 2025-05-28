@@ -41,7 +41,7 @@ export default function Header({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="relative border-b shadow-sm py-4 bg-white h-[80px] w-full px-0 md:px-0">
+    <header className="relative border-b border-[#F0F0F0] py-4 bg-white h-[80px] w-full px-0 md:px-0">
       <div className=" mx-auto flex flex-wrap items-center justify-between px-12">
         {/* Logo */}
         <div className="flex items-center">
