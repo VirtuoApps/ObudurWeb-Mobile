@@ -397,24 +397,7 @@ export default function FourthCreateStep() {
               <p>görmesini sağlayabilirsiniz. Doğru özellik</p>
               <p>seçimi ilanınızın değerini artıracaktır.</p>
             </div>
-            <div className="mt-6">
-              <div className="flex gap-2 flex-wrap">
-                {languages.map((language) => (
-                  <button
-                    key={language._id}
-                    type="button"
-                    className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition border border-[#6656AD] text-[#6656AD] ${
-                      selectedLanguage === language.code
-                        ? "bg-[#EBEAF1] "
-                        : "bg-transparent "
-                    }`}
-                    onClick={() => setSelectedLanguage(language.code)}
-                  >
-                    {language.nativeName}
-                  </button>
-                ))}
-              </div>
-            </div>
+
             <GoBackButton handleBack={handleBack} step={4} totalSteps={5} />
           </div>
 

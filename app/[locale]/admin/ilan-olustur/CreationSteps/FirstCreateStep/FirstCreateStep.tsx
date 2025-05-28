@@ -12,6 +12,18 @@ interface Language {
   isDefault: boolean;
 }
 
+interface Category {
+  _id: string;
+  name: {
+    tr: string;
+    en: string;
+  };
+  hotelTypeId: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
 interface PropertyType {
   _id: string;
   name: {
@@ -21,13 +33,12 @@ interface PropertyType {
   createdAt: string;
   updatedAt: string;
   __v: number;
+  categories: Category[];
 }
 
 export default function FirstCreateStep() {
   const [languages, setLanguages] = useState<Language[]>([]);
   const [propertyTypes, setPropertyTypes] = useState<PropertyType[]>([]);
-  const [categories, setCategories] = useState<PropertyType[]>([]);
-  const [selectedLanguage, setSelectedLanguage] = useState<string>("en");
   const [isLoading, setIsLoading] = useState(true);
   const [errors, setErrors] = useState<string[]>([]);
 
@@ -46,7 +57,7 @@ export default function FirstCreateStep() {
     setCurrentStep,
   } = useListingForm();
 
-  // Fetch available languages, property types, and categories
+  // Fetch available languages and property types with categories
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -59,25 +70,11 @@ export default function FirstCreateStep() {
         );
         setLanguages(languagesResponse.data);
 
-        // Set default language from response
-        const defaultLang = languagesResponse.data.find(
-          (lang: Language) => lang.isDefault
-        );
-        if (defaultLang) {
-          setSelectedLanguage(defaultLang.code);
-        }
-
-        // Fetch property types (for "Emlak Tipi Seçin" section)
+        // Fetch property types with their categories
         const propertyTypesResponse = await axiosInstance.get(
           `${baseUrl}/admin/hotel-types/all-options`
         );
         setPropertyTypes(propertyTypesResponse.data);
-
-        // Fetch categories (for "Kategori Seçin" section)
-        const categoriesResponse = await axiosInstance.get(
-          `${baseUrl}/admin/hotel-categories/all-options`
-        );
-        setCategories(categoriesResponse.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -87,6 +84,70 @@ export default function FirstCreateStep() {
 
     fetchData();
   }, []);
+
+  // Get all categories from all property types
+  const getAllCategories = (): Category[] => {
+    return propertyTypes.flatMap((type) => type.categories || []);
+  };
+
+  // Get categories for the selected property type
+  const getFilteredCategories = (): Category[] => {
+    if (!entranceType) {
+      return getAllCategories();
+    }
+
+    const selectedPropertyType = propertyTypes.find(
+      (type) =>
+        type.name.tr === entranceType.tr && type.name.en === entranceType.en
+    );
+
+    return selectedPropertyType?.categories || [];
+  };
+
+  // Handle property type selection
+  const handlePropertyTypeSelect = (type: PropertyType) => {
+    setEntranceType({
+      tr: type.name.tr,
+      en: type.name.en,
+    });
+
+    // Clear housing type if it's not in the new property type's categories
+    if (housingType) {
+      const isValidCategory = type.categories.some(
+        (cat) =>
+          cat.name.tr === housingType.tr && cat.name.en === housingType.en
+      );
+      if (!isValidCategory) {
+        setHousingType(null);
+      }
+    }
+  };
+
+  // Handle category selection
+  const handleCategorySelect = (category: Category) => {
+    setHousingType({
+      tr: category.name.tr,
+      en: category.name.en,
+    });
+
+    // Auto-select the property type for this category if not already selected
+    const categoryPropertyType = propertyTypes.find(
+      (type) => type._id === category.hotelTypeId
+    );
+
+    if (categoryPropertyType) {
+      if (
+        !entranceType ||
+        entranceType.tr !== categoryPropertyType.name.tr ||
+        entranceType.en !== categoryPropertyType.name.en
+      ) {
+        setEntranceType({
+          tr: categoryPropertyType.name.tr,
+          en: categoryPropertyType.name.en,
+        });
+      }
+    }
+  };
 
   // Validate all required fields
   const validateFields = () => {
@@ -155,34 +216,11 @@ export default function FirstCreateStep() {
     }
   };
 
-  // Handle language-specific input changes for text fields only
-  const handleLanguageSpecificChange = (field: string, value: string) => {
-    switch (field) {
-      case "title":
-        setTitle((prev) => ({
-          ...prev,
-          [selectedLanguage]: value,
-        }));
-        break;
-      case "description":
-        setDescription((prev) => ({
-          ...prev,
-          [selectedLanguage]: value,
-        }));
-        break;
-      default:
-        break;
-    }
-  };
-
-  // Get current language value for a field
-  const getLanguageValue = (field: MultilangText | undefined): string => {
-    if (!field) return "";
-    return field[selectedLanguage] || "";
-  };
-
   // Helper to get field class name based on error state
-  const getFieldClassName = (fieldType: "title" | "description"): string => {
+  const getFieldClassName = (
+    fieldType: "title" | "description",
+    language: "tr" | "en"
+  ): string => {
     const baseClasses =
       fieldType === "title"
         ? "w-full h-12 rounded-lg border "
@@ -192,12 +230,12 @@ export default function FirstCreateStep() {
       if (fieldType === "title") {
         return (
           e.includes("başlığını") &&
-          e.includes(selectedLanguage === "en" ? "English" : "Türkçe")
+          e.includes(language === "en" ? "English" : "Türkçe")
         );
       } else {
         return (
           e.includes("açıklamasını") &&
-          e.includes(selectedLanguage === "en" ? "English" : "Türkçe")
+          e.includes(language === "en" ? "English" : "Türkçe")
         );
       }
     });
@@ -244,24 +282,7 @@ export default function FirstCreateStep() {
               <p>sağlayabilirsiniz. Doğru kategori seçimi</p>
               <p>ilanınızın görünürlüğünü artıracaktır.</p>
             </div>
-            <div className="mt-6">
-              <div className="flex gap-2 flex-wrap">
-                {languages.map((language) => (
-                  <button
-                    key={language._id}
-                    type="button"
-                    className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition border border-[#6656AD] text-[#6656AD] ${
-                      selectedLanguage === language.code
-                        ? "bg-[#EBEAF1] "
-                        : "bg-transparent "
-                    }`}
-                    onClick={() => setSelectedLanguage(language.code)}
-                  >
-                    {language.nativeName}
-                  </button>
-                ))}
-              </div>
-            </div>
+
             <span className="text-sm text-gray-600 mb-4 sm:mb-0 mt-auto">
               Adım 1 / 5
             </span>
@@ -295,11 +316,9 @@ export default function FirstCreateStep() {
               </div>
             )}
 
-            {/* Language Selector - Only for text inputs */}
-
             {/* Sale or Rent */}
             <div className="mb-6">
-              <h2 className="font-semibold mb-2 text-[#262626]">
+              <h2 className="font-semibold mb-2 text-[#262626] text-2xl">
                 Satılık mı, kiralık mı?
               </h2>
               <div className="flex gap-2">
@@ -308,7 +327,7 @@ export default function FirstCreateStep() {
                   className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer  ${
                     listingType && listingType.tr === "Satılık"
                       ? "bg-[#EBEAF180] border-[0.5px]  border-[#362C75] text-[#362C75]"
-                      : "bg-transparent border border-[#6656AD] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
+                      : "bg-transparent border-[0.5px] border-[#BFBFBF] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
                   }`}
                   onClick={() =>
                     setListingType(optionTranslations.listingType["Satılık"])
@@ -321,7 +340,7 @@ export default function FirstCreateStep() {
                   className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer  ${
                     listingType && listingType.tr === "Kiralık"
                       ? "bg-[#EBEAF180] border-[0.5px]  border-[#362C75] text-[#362C75]"
-                      : "bg-transparent border border-[#6656AD] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
+                      : "bg-transparent border-[0.5px] border-[#BFBFBF] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
                   }`}
                   onClick={() =>
                     setListingType(optionTranslations.listingType["Kiralık"])
@@ -334,10 +353,10 @@ export default function FirstCreateStep() {
 
             {/* Property Type */}
             <div className="mt-6">
-              <h2 className="font-semibold mb-2 text-[#262626]">
+              <h2 className="font-semibold mb-2 text-[#262626] text-2xl">
                 Emlak Tipi Seçin
               </h2>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 {propertyTypes.map((type) => (
                   <button
                     key={type._id}
@@ -345,16 +364,11 @@ export default function FirstCreateStep() {
                     className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer ${
                       entranceType && entranceType.tr === type.name.tr
                         ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
-                        : "bg-transparent border border-[#6656AD] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
+                        : "bg-transparent border-[0.5px] border-[#BFBFBF] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
                     }`}
-                    onClick={() =>
-                      setEntranceType({
-                        tr: type.name.tr,
-                        en: type.name.en,
-                      })
-                    }
+                    onClick={() => handlePropertyTypeSelect(type)}
                   >
-                    {selectedLanguage === "tr" ? type.name.tr : type.name.en}
+                    {type.name.tr}
                   </button>
                 ))}
               </div>
@@ -362,78 +376,131 @@ export default function FirstCreateStep() {
 
             {/* Category */}
             <div className="mt-6">
-              <h2 className="font-semibold mb-2 text-[#262626]">
+              <h2 className="font-semibold mb-2 text-[#262626] text-2xl">
                 Kategori Seçin
+                {entranceType && (
+                  <span className="text-sm font-normal text-gray-500 ml-2">
+                    ({entranceType.tr} kategorileri)
+                  </span>
+                )}
+                {!entranceType && (
+                  <span className="text-sm font-normal text-gray-500 ml-2">
+                    (Tüm kategoriler)
+                  </span>
+                )}
               </h2>
               <div className="flex flex-wrap gap-2">
-                {categories.map((cat) => (
+                {getFilteredCategories().map((cat) => (
                   <button
                     key={cat._id}
                     type="button"
                     className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer ${
                       housingType && housingType.tr === cat.name.tr
                         ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
-                        : "bg-transparent border border-[#6656AD] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
+                        : "bg-transparent border-[0.5px] border-[#BFBFBF] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
                     }`}
-                    onClick={() =>
-                      setHousingType({
-                        tr: cat.name.tr,
-                        en: cat.name.en,
-                      })
-                    }
+                    onClick={() => handleCategorySelect(cat)}
                   >
-                    {selectedLanguage === "tr" ? cat.name.tr : cat.name.en}
+                    {cat.name.tr}
                   </button>
                 ))}
               </div>
+              {getFilteredCategories().length === 0 && (
+                <p className="text-gray-500 text-sm mt-2">
+                  Bu emlak tipi için kategori bulunamadı.
+                </p>
+              )}
             </div>
 
             {/* Listing Title */}
-            <div className="mt-8">
-              <label
-                htmlFor="title"
-                className="font-semibold block mb-2 text-[#262626]"
-              >
-                İlan Başlığı{" "}
-                {selectedLanguage === "en" ? "(English)" : "(Türkçe)"}
-              </label>
-              <input
-                type="text"
-                id="title"
-                value={getLanguageValue(title)}
-                onChange={(e) =>
-                  handleLanguageSpecificChange("title", e.target.value)
-                }
-                className={getFieldClassName("title")}
-                placeholder={
-                  selectedLanguage === "en"
-                    ? "Enter a title for your listing"
-                    : "İlanınız için bir başlık girin"
-                }
-              />
-            </div>
+            <div className="mt-8 space-y-6">
+              {/* Turkish Title */}
 
-            {/* Description */}
-            <div className="mt-6">
-              <label
-                htmlFor="description"
-                className="font-semibold block mb-2 text-[#262626]"
-              >
-                Açıklama {selectedLanguage === "en" ? "(English)" : "(Türkçe)"}
-              </label>
-              <textarea
-                id="description"
-                value={getLanguageValue(description)}
-                onChange={(e) =>
-                  handleLanguageSpecificChange("description", e.target.value)
-                }
-                className={getFieldClassName("description")}
-                placeholder={
-                  selectedLanguage === "en"
-                    ? "Provide detailed information about your listing"
-                    : "İlanınız hakkında detaylı bilgi verin"
-                }
-              />
+              <h2 className="font-semibold mb-2 text-[#262626] text-2xl">
+                İlan Başlığı ve Açıklaması
+              </h2>
+              <div>
+                <h3 className="font-semibold text-base mb-4 text-[#262626]">
+                  Türkçe{" "}
+                  <span className="text-[#595959] text-base font-normal">
+                    Zorunlu
+                  </span>
+                </h3>
+                <div className="space-y-4">
+                  <div>
+                    <input
+                      type="text"
+                      id="title-tr"
+                      value={title?.tr || ""}
+                      onChange={(e) =>
+                        setTitle((prev) => ({
+                          ...prev,
+                          tr: e.target.value,
+                        }))
+                      }
+                      className={getFieldClassName("title", "tr")}
+                      placeholder=" İlan Başlığı"
+                    />
+                  </div>
+
+                  <div>
+                    <textarea
+                      id="description-tr"
+                      value={description?.tr || ""}
+                      onChange={(e) =>
+                        setDescription((prev) => ({
+                          ...prev,
+                          tr: e.target.value,
+                        }))
+                      }
+                      className={getFieldClassName("description", "tr")}
+                      placeholder="  İlan Açıklaması"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* English Title */}
+              <div>
+                <h3 className="font-semibold text-base mb-4 text-[#262626]">
+                  English{" "}
+                  <span className="text-[#595959] text-base font-normal">
+                    Zorunlu
+                  </span>
+                </h3>
+                <div className="space-y-4">
+                  <div>
+                    <input
+                      type="text"
+                      id="title-en"
+                      value={title?.en || ""}
+                      onChange={(e) =>
+                        setTitle((prev) => ({
+                          ...prev,
+                          en: e.target.value,
+                        }))
+                      }
+                      className={getFieldClassName("title", "en")}
+                      placeholder="Title"
+                    />
+                  </div>
+
+                  <div>
+                    <textarea
+                      id="description-en"
+                      value={description?.en || ""}
+                      onChange={(e) =>
+                        setDescription((prev) => ({
+                          ...prev,
+                          en: e.target.value,
+                        }))
+                      }
+                      className={getFieldClassName("description", "en")}
+                      placeholder="Description"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Step counter and continue button */}
