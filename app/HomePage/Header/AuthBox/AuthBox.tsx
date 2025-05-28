@@ -36,13 +36,14 @@ const LikeButton = ({
     <button
       onClick={handleClick}
       className={`
-        p-2 rounded-lg transition-all duration-300 hover:bg-gray-100
+         rounded-lg transition-all duration-300 hover:bg-gray-100
+        w-[48px] h-[48px] flex items-center justify-center
         ${isAnimating ? "scale-110" : "scale-100"}
       `}
     >
       <svg
-        width="16"
-        height="16"
+        width="24"
+        height="24"
         viewBox="0 0 24 21"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
