@@ -5,6 +5,9 @@ import {
   XMarkIcon,
   ChevronUpIcon,
   ChevronDownIcon,
+  PlusIcon,
+  MinusIcon,
+  MapPinIcon,
 } from "@heroicons/react/24/outline";
 import { RiWifiFill } from "react-icons/ri";
 import { AiFillSafetyCertificate, AiOutlineFire } from "react-icons/ai";
@@ -35,15 +38,20 @@ import { IoSchool, IoRestaurantOutline } from "react-icons/io5";
 import { BiTrain, BiStore, BiHealth } from "react-icons/bi";
 import { currencyOptions } from "../LanguageSwitcher";
 import { useLocale, useTranslations } from "next-intl";
-import { FilterOptions, Feature } from "@/types/filter-options.type";
+import {
+  FilterOptions,
+  Feature,
+  HotelType,
+  HotelCategory,
+} from "@/types/filter-options.type";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import {
   ChevronDownIcon as ChevronDownSolidIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
-import { MapPinIcon } from "@heroicons/react/24/outline";
 import { HomeIcon } from "@heroicons/react/24/outline";
 import { TagIcon } from "@heroicons/react/24/outline";
+import axiosInstance from "@/axios";
 
 type FilterPopupProps = {
   isOpen: boolean;
@@ -141,6 +149,34 @@ export default function FilterPopup({
   const [isSearching, setIsSearching] = useState(false);
   const [isFetchingCoordinates, setIsFetchingCoordinates] = useState(false);
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Hotel types state
+  const [hotelTypes, setHotelTypes] = useState<HotelType[]>([]);
+  const [isLoadingHotelTypes, setIsLoadingHotelTypes] = useState(false);
+
+  // Fetch hotel types from API
+  useEffect(() => {
+    const fetchHotelTypes = async () => {
+      try {
+        setIsLoadingHotelTypes(true);
+        const response = await axiosInstance.get(
+          "/admin/hotel-types/all-options"
+        );
+        setHotelTypes(response.data);
+      } catch (error) {
+        console.error("Error fetching hotel types:", error);
+        // Fallback to filterOptions if API fails
+        setHotelTypes(filterOptions.hotelTypes || []);
+      } finally {
+        setIsLoadingHotelTypes(false);
+      }
+    };
+
+    if (isOpen) {
+      // Only fetch when popup is open
+      fetchHotelTypes();
+    }
+  }, [isOpen, filterOptions]);
 
   // Remove locale-based locations - we only want Google Places suggestions
   // const locations = filterOptions.state.map((state) => ({
@@ -562,16 +598,19 @@ export default function FilterPopup({
                       }
                     }, [open, isOpen]);
 
-                    const propertyTypes = filterOptions.housingType.map(
-                      (propertyType) => ({
-                        name: (propertyType as any)[locale],
-                        href: "#",
-                      })
-                    );
+                    const propertyTypes = hotelTypes.map((hotelType) => ({
+                      _id: hotelType._id,
+                      name:
+                        (hotelType.name as any)[locale] || hotelType.name.tr,
+                      href: "#",
+                      originalData: hotelType, // Keep reference to original data for category filtering
+                    }));
 
                     const handlePropertyTypeSelect = (propertyType: any) => {
                       setSelectedPropertyType &&
                         setSelectedPropertyType(propertyType);
+                      // Reset category when property type changes
+                      setSelectedCategory && setSelectedCategory(null);
                       setIsOpen(false);
                       buttonRef.current?.click();
                     };
@@ -601,7 +640,7 @@ export default function FilterPopup({
                             <div className="p-4">
                               {propertyTypes.map((propertyType) => (
                                 <div
-                                  key={propertyType.name}
+                                  key={propertyType._id}
                                   className="group relative flex items-center gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
                                   onClick={() =>
                                     handlePropertyTypeSelect(propertyType)
@@ -638,17 +677,30 @@ export default function FilterPopup({
                       }
                     }, [open, isOpen]);
 
-                    const categories = filterOptions.roomAsText.map(
-                      (category) => ({
-                        name: category,
-                        href: "#",
-                      })
-                    );
+                    const categories = selectedPropertyType?.originalData
+                      ?.categories
+                      ? selectedPropertyType.originalData.categories.map(
+                          (category: HotelCategory) => ({
+                            _id: category._id,
+                            name:
+                              (category.name as any)[locale] ||
+                              category.name.tr,
+                            href: "#",
+                            originalData: category,
+                          })
+                        )
+                      : filterOptions.roomAsText.map((category: string) => ({
+                          name: category,
+                          href: "#",
+                        }));
 
                     const handleCategorySelect = (category: any) => {
-                      setSelectedCategory && setSelectedCategory(category);
-                      setIsOpen(false);
-                      buttonRef.current?.click();
+                      // Only allow selection if property type is selected and has categories
+                      if (selectedPropertyType?.originalData?.categories) {
+                        setSelectedCategory && setSelectedCategory(category);
+                        setIsOpen(false);
+                        buttonRef.current?.click();
+                      }
                     };
 
                     return (

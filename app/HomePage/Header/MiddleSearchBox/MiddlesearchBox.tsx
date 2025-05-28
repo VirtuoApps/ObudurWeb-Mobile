@@ -44,7 +44,9 @@ export default function MiddleSearchBox({
       listingType: listingType,
       state: selectedLocation?.name || null,
       propertyType: selectedPropertyType?.name || null,
+      propertyTypeId: selectedPropertyType?._id || null,
       roomAsText: selectedCategory?.name || null,
+      categoryId: selectedCategory?._id || null,
     });
   };
 
@@ -107,6 +109,7 @@ export default function MiddleSearchBox({
         selectedPropertyType={selectedPropertyType}
         setSelectedPropertyType={setSelectedPropertyType}
         filterOptions={filterOptions}
+        setSelectedCategory={setSelectedCategory}
       />
 
       <div className="bg-[#F5F5F5] w-[1px] h-[24px]"></div>
@@ -116,6 +119,8 @@ export default function MiddleSearchBox({
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
         filterOptions={filterOptions}
+        selectedPropertyType={selectedPropertyType}
+        setSelectedPropertyType={setSelectedPropertyType}
       />
 
       {/* Search Button */}

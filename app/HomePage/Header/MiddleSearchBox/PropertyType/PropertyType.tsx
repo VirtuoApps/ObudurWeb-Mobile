@@ -2,34 +2,61 @@ import { useState, useEffect, useRef } from "react";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useTranslations, useLocale } from "next-intl";
-import { FilterOptions } from "@/types/filter-options.type";
+import { FilterOptions, HotelType } from "@/types/filter-options.type";
 import GeneralSelect from "@/app/components/GeneralSelect/GeneralSelect";
+import axiosInstance from "@/axios";
 
 type PropertyTypeProps = {
   selectedPropertyType?: any | null;
   setSelectedPropertyType?: (propertyType: any) => void;
   filterOptions: FilterOptions;
+  setSelectedCategory?: (category: any) => void;
 };
 
 export default function PropertyType({
   selectedPropertyType = null,
   setSelectedPropertyType = () => {},
   filterOptions,
+  setSelectedCategory = () => {},
 }: PropertyTypeProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [hotelTypes, setHotelTypes] = useState<HotelType[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const locale = useLocale();
 
-  const propertyTypes = filterOptions.housingType.map((propertyType) => ({
-    name: (propertyType as any)[locale],
+  useEffect(() => {
+    const fetchHotelTypes = async () => {
+      try {
+        setIsLoading(true);
+        const response = await axiosInstance.get(
+          "/admin/hotel-types/all-options"
+        );
+        setHotelTypes(response.data);
+      } catch (error) {
+        console.error("Error fetching hotel types:", error);
+        setHotelTypes(filterOptions.hotelTypes || []);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchHotelTypes();
+  }, [filterOptions]);
+
+  const propertyTypes = hotelTypes.map((hotelType) => ({
+    _id: hotelType._id,
+    name: (hotelType.name as any)[locale] || hotelType.name.tr,
     href: "#",
+    originalData: hotelType,
   }));
 
   const handlePropertyTypeSelect = (
     propertyType: (typeof propertyTypes)[0]
   ) => {
     setSelectedPropertyType(propertyType);
+    setSelectedCategory(null);
     setIsOpen(false);
     buttonRef.current?.click();
   };

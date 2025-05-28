@@ -96,7 +96,8 @@
     "notFound": "No results found"
   },
   "categories": {
-    "category": "Category"
+    "category": "Category",
+    "selectPropertyFirst": "Select Property Type First"
   },
   "map": {
     "viewDetails": "View Details",

@@ -2,7 +2,9 @@ export type FilterType = {
   listingType: string | null;
   state: string | null;
   propertyType: string | null;
+  propertyTypeId?: string | null;
   roomAsText: string | null;
+  categoryId?: string | null;
   minPrice?: number | null;
   maxPrice?: number | null;
   roomCount?: number | null;

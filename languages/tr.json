@@ -96,7 +96,8 @@
     "notFound": "Sonuç bulunamadı"
   },
   "categories": {
-    "category": "Kategori"
+    "category": "Kategori",
+    "selectPropertyFirst": "Önce Emlak Tipi Seçin"
   },
   "map": {
     "viewDetails": "Detayları Gör",

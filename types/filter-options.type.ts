@@ -26,6 +26,25 @@ export interface Feature {
   __v: number;
 }
 
+// New interfaces for hotel types and categories
+export interface HotelCategory {
+  _id: string;
+  name: LocalizedText;
+  hotelTypeId: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface HotelType {
+  _id: string;
+  name: LocalizedText;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  categories: HotelCategory[];
+}
+
 export interface FilterOptions {
   city: LocalizedText[];
   country: LocalizedText[];
@@ -41,4 +60,6 @@ export interface FilterOptions {
   generalFeatures: Feature[];
   accessibilityFeatures: Feature[];
   faceFeatures: Feature[];
+  // Add hotel types for the new API structure
+  hotelTypes?: HotelType[];
 }
