@@ -7,6 +7,7 @@ import { fetchUserData } from "../../store/userSlice";
 import AccountForm from "./AccountForm";
 import Header from "../admin/Header/Header";
 import { useTranslations } from "next-intl";
+import Footer from "../resident/[slug]/Footer/Footer";
 
 export default function AccountPage() {
   const router = useRouter();
@@ -35,6 +36,7 @@ export default function AccountPage() {
       <div className="max-w-[1440px] mx-auto px-[60px] py-12">
         {user && <AccountForm user={user} />}
       </div>
+      <Footer />
     </div>
   );
 }
