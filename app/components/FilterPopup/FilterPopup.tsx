@@ -52,6 +52,8 @@ import {
 import { HomeIcon } from "@heroicons/react/24/outline";
 import { TagIcon } from "@heroicons/react/24/outline";
 import axiosInstance from "@/axios";
+import { Hotel } from "@/types/hotel.type";
+import { filterHotelsByProximity } from "@/app/utils/geoUtils";
 
 type FilterPopupProps = {
   isOpen: boolean;
@@ -95,6 +97,9 @@ type FilterPopupProps = {
   setFaceFeatures: React.Dispatch<React.SetStateAction<any[]>>;
   selectedFaceFeatures: any[];
   setSelectedFaceFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  hotels: Hotel[];
+  selectedCurrency: string;
+  searchRadius: number;
 };
 
 export default function FilterPopup({
@@ -139,6 +144,9 @@ export default function FilterPopup({
   setFaceFeatures,
   selectedFaceFeatures,
   setSelectedFaceFeatures,
+  hotels,
+  selectedCurrency,
+  searchRadius,
 }: FilterPopupProps) {
   const t = useTranslations("filter");
   const listingTypeTranslations = useTranslations("listingType");
@@ -335,6 +343,181 @@ export default function FilterPopup({
   const [accessibilityFeaturesCollapsed, setAccessibilityFeaturesCollapsed] =
     useState(true);
   const [faceFeaturesCollapsed, setFaceFeaturesCollapsed] = useState(true);
+
+  // Calculate filtered results count
+  const getFilteredResultsCount = () => {
+    let filteredHotels = hotels;
+
+    // Filter by listing type
+    if (listingType) {
+      filteredHotels = filteredHotels.filter((hotel) =>
+        Object.values(hotel.listingType).some((value) => value === listingType)
+      );
+    }
+
+    // Filter by location proximity
+    if (selectedLocation && selectedLocation.coordinates) {
+      const [targetLon, targetLat] = selectedLocation.coordinates;
+      filteredHotels = filterHotelsByProximity(
+        filteredHotels,
+        targetLat,
+        targetLon,
+        searchRadius
+      );
+    }
+
+    // Filter by property type
+    if (selectedPropertyType?.name) {
+      filteredHotels = filteredHotels.filter((hotel) =>
+        Object.values(hotel.housingType).some(
+          (value) => value === selectedPropertyType.name
+        )
+      );
+    }
+
+    // Filter by category (room type)
+    if (selectedCategory?.name) {
+      filteredHotels = filteredHotels.filter(
+        (hotel) => hotel.roomAsText === selectedCategory.name
+      );
+    }
+
+    // Filter by price
+    if (minPrice !== "") {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        const priceInSelectedCurrency = hotel.price.find(
+          (price) => price.currency === selectedCurrency
+        );
+        return priceInSelectedCurrency
+          ? priceInSelectedCurrency.amount >= Number(minPrice)
+          : true;
+      });
+    }
+
+    if (maxPrice !== "") {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        const priceInSelectedCurrency = hotel.price.find(
+          (price) => price.currency === selectedCurrency
+        );
+        return priceInSelectedCurrency
+          ? priceInSelectedCurrency.amount <= Number(maxPrice)
+          : true;
+      });
+    }
+
+    // Filter by room count
+    if (roomCount !== "") {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return hotel.roomCount === parseInt(roomCount);
+      });
+    }
+
+    // Filter by bathroom count
+    if (bathroomCount !== "") {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return hotel.bathroomCount === parseInt(bathroomCount);
+      });
+    }
+
+    // Filter by area
+    if (minArea !== "") {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return hotel.projectArea >= Number(minArea);
+      });
+    }
+
+    if (maxArea !== "") {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return hotel.projectArea <= Number(maxArea);
+      });
+    }
+
+    // Filter by interior features
+    if (interiorFeatures.length > 0) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return interiorFeatures.every((feature) =>
+          hotel.featureIds.includes(feature._id)
+        );
+      });
+    }
+
+    // Filter by exterior features
+    if (selectedExteriorFeatures.length > 0) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return selectedExteriorFeatures.every((feature) =>
+          hotel.featureIds.includes(feature._id)
+        );
+      });
+    }
+
+    // Filter by accessibility features
+    if (selectedAccessibilityFeatures.length > 0) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return selectedAccessibilityFeatures.every((feature) =>
+          hotel.featureIds.includes(feature._id)
+        );
+      });
+    }
+
+    // Filter by face features
+    if (selectedFaceFeatures.length > 0) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return selectedFaceFeatures.some(
+          (feature) => hotel.face === feature._id
+        );
+      });
+    }
+
+    // Filter by selected features (quick filters)
+    if (selectedFeatures.length > 0) {
+      filteredHotels = filteredHotels.filter((hotel) =>
+        selectedFeatures.every((selectedFeature) =>
+          hotel.featureIds.some((hotelFeature: string | { _id: string }) => {
+            if (
+              typeof hotelFeature === "object" &&
+              hotelFeature !== null &&
+              "_id" in hotelFeature
+            ) {
+              return hotelFeature._id === selectedFeature._id;
+            }
+            return hotelFeature === selectedFeature._id;
+          })
+        )
+      );
+    }
+
+    // Filter by room size quick filters
+    if (filters) {
+      if (
+        filters.isOnePlusOneSelected ||
+        filters.isTwoPlusOneSelected ||
+        filters.isThreePlusOneSelected
+      ) {
+        const selectedRoomTypes: string[] = [];
+        if (filters.isOnePlusOneSelected) selectedRoomTypes.push("1+1");
+        if (filters.isTwoPlusOneSelected) selectedRoomTypes.push("2+1");
+        if (filters.isThreePlusOneSelected) selectedRoomTypes.push("3+1");
+
+        filteredHotels = filteredHotels.filter((hotel) => {
+          return selectedRoomTypes.includes(hotel.roomAsText);
+        });
+      }
+
+      if (filters.isNewSelected) {
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+        filteredHotels = filteredHotels.filter((hotel) => {
+          const hotelCreatedAt = new Date(hotel.createdAt);
+          return hotelCreatedAt >= sevenDaysAgo;
+        });
+      }
+    }
+
+    return filteredHotels.length;
+  };
+
+  const resultsCount = getFilteredResultsCount();
 
   if (!isOpen) return null;
 
@@ -1472,7 +1655,12 @@ export default function FilterPopup({
                 });
                 onClose && onClose();
               }}
-              className={`w-full h-[56px] text-sm font-medium text-white bg-[#5E5691] rounded-lg cursor-pointer ${
+              disabled={resultsCount === 0}
+              className={`w-full h-[56px] text-sm font-medium text-white rounded-lg cursor-pointer ${
+                resultsCount === 0
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-[#5E5691] hover:bg-[#4a4574]"
+              } ${
                 minPrice !== "" ||
                 maxPrice !== "" ||
                 minArea !== "" ||
@@ -1495,7 +1683,19 @@ export default function FilterPopup({
                   : "col-span-2"
               }`}
             >
-              {t("apply")}
+              {resultsCount === 0
+                ? locale === "tr"
+                  ? "Uygun İlan Yok"
+                  : "No Matching Listings"
+                : `${t("apply")} (${resultsCount} ${
+                    resultsCount === 1
+                      ? locale === "tr"
+                        ? "ilan"
+                        : "listing"
+                      : locale === "tr"
+                      ? "ilan"
+                      : "listings"
+                  })`}
             </button>
           </div>
         </div>

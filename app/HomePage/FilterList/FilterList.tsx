@@ -27,6 +27,7 @@ import { FilterOptions } from "@/types/filter-options.type";
 import { FilterType } from "@/types/filter.type";
 import NewFilterItem from "./NewFilterItem/NewFilterItem";
 import SizeFilterItem from "./SizeFilterItem/SizeFilterıtem";
+import { Hotel } from "@/types/hotel.type";
 const iconClassName = "text-xl";
 const iconColor = "rgba(0,0,0,0.6)";
 
@@ -74,6 +75,9 @@ export default function FilterList({
   selectedFaceFeatures,
   setSelectedFaceFeatures,
   allQuickFilters,
+  hotels,
+  selectedCurrency,
+  searchRadius,
 }: {
   onChangeCurrentView: () => void;
   currentView: "map" | "list";
@@ -118,6 +122,9 @@ export default function FilterList({
   selectedFaceFeatures: any[];
   setSelectedFaceFeatures: React.Dispatch<React.SetStateAction<any[]>>;
   allQuickFilters: Feature[];
+  hotels: Hotel[];
+  selectedCurrency: string;
+  searchRadius: number;
 }) {
   const t = useTranslations("filterList");
   const locale = useLocale();
@@ -212,6 +219,9 @@ export default function FilterList({
         setFaceFeatures={setFaceFeatures}
         selectedFaceFeatures={selectedFaceFeatures}
         setSelectedFaceFeatures={setSelectedFaceFeatures}
+        hotels={hotels}
+        selectedCurrency={selectedCurrency}
+        searchRadius={searchRadius}
       />
       <div
         className={`bg-white flex flex-row ${

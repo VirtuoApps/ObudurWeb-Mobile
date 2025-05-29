@@ -416,6 +416,9 @@ export default function HomePage({
         interiorFeatures={interiorFeatures}
         setInteriorFeatures={setInteriorFeatures}
         allQuickFilters={allQuickFilters}
+        hotels={hotels}
+        selectedCurrency={selectedCurrency}
+        searchRadius={searchRadius}
       />
 
       {/* View Container with Transitions */}
