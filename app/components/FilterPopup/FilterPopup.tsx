@@ -302,7 +302,7 @@ export default function FilterPopup({
     setSelectedFaceFeatures((prev: any[]) =>
       prev.some((f: any) => f._id === feature._id)
         ? prev.filter((f: any) => f._id !== feature._id)
-        : [feature]
+        : [...prev, feature]
     );
   };
 
@@ -1150,7 +1150,7 @@ export default function FilterPopup({
           {/* Face Features Section */}
           {filterOptions.faceFeatures &&
             filterOptions.faceFeatures.length > 0 && (
-              <div className="mt-6 border-b border-t border-[#F0F0F0] pb-8 pt-10 mt-4">
+              <div className="mt-6 border-b border-t border-[#F0F0F0] pb-8 pt-10">
                 <div
                   className="flex items-center justify-between cursor-pointer"
                   onClick={() =>
