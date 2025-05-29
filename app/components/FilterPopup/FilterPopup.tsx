@@ -519,6 +519,31 @@ export default function FilterPopup({
 
   const resultsCount = getFilteredResultsCount();
 
+  // Check if any filters are selected
+  const hasActiveFilters = () => {
+    return (
+      minPrice !== "" ||
+      maxPrice !== "" ||
+      minArea !== "" ||
+      maxArea !== "" ||
+      roomCount !== "" ||
+      bathroomCount !== "" ||
+      interiorFeatures.length > 0 ||
+      selectedExteriorFeatures.length > 0 ||
+      selectedAccessibilityFeatures.length > 0 ||
+      selectedFaceFeatures.length > 0 ||
+      selectedLocation ||
+      selectedPropertyType ||
+      selectedCategory ||
+      selectedFeatures.length > 0 ||
+      (filters &&
+        (filters.isOnePlusOneSelected ||
+          filters.isTwoPlusOneSelected ||
+          filters.isThreePlusOneSelected ||
+          filters.isNewSelected))
+    );
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -1599,7 +1624,8 @@ export default function FilterPopup({
               (filters &&
                 (filters.isOnePlusOneSelected ||
                   filters.isTwoPlusOneSelected ||
-                  filters.isThreePlusOneSelected))) && (
+                  filters.isThreePlusOneSelected ||
+                  filters.isNewSelected))) && (
               <button
                 className="w-full h-[56px] text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50"
                 onClick={() => {
@@ -1655,9 +1681,9 @@ export default function FilterPopup({
                 });
                 onClose && onClose();
               }}
-              disabled={resultsCount === 0}
+              disabled={hasActiveFilters() && resultsCount === 0}
               className={`w-full h-[56px] text-sm font-medium text-white rounded-lg cursor-pointer ${
-                resultsCount === 0
+                hasActiveFilters() && resultsCount === 0
                   ? "bg-gray-300 cursor-not-allowed"
                   : "bg-[#5E5691] hover:bg-[#4a4574]"
               } ${
@@ -1678,16 +1704,18 @@ export default function FilterPopup({
                 (filters &&
                   (filters.isOnePlusOneSelected ||
                     filters.isTwoPlusOneSelected ||
-                    filters.isThreePlusOneSelected))
+                    filters.isThreePlusOneSelected ||
+                    filters.isNewSelected))
                   ? "col-span-1"
                   : "col-span-2"
               }`}
             >
-              {resultsCount === 0
+              {hasActiveFilters() && resultsCount === 0
                 ? locale === "tr"
                   ? "Uygun İlan Yok"
                   : "No Matching Listings"
-                : `${t("apply")} (${resultsCount} ${
+                : hasActiveFilters()
+                ? `${t("apply")} (${resultsCount} ${
                     resultsCount === 1
                       ? locale === "tr"
                         ? "ilan"
@@ -1695,7 +1723,8 @@ export default function FilterPopup({
                       : locale === "tr"
                       ? "ilan"
                       : "listings"
-                  })`}
+                  })`
+                : t("apply")}
             </button>
           </div>
         </div>
