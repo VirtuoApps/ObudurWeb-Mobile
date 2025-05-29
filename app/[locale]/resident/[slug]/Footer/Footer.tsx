@@ -122,12 +122,18 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
+                <a
+                  href="/sozlesmeler?id=sozlesmeler&itemId=bireysel"
+                  className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                >
                   Kullanıcı Sözleşmeleri
                 </a>
               </li>
               <li>
-                <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
+                <a
+                  href="/sozlesmeler?id=cerezler&itemId=tercihler"
+                  className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                >
                   Çerez Politikası
                 </a>
               </li>

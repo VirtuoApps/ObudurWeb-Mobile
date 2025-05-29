@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 interface AccordionItem {
@@ -96,6 +97,30 @@ export default function Boxes({
     "cerezler",
   ]);
 
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+  const itemId = searchParams.get("itemId");
+
+  useEffect(() => {
+    if (id && itemId) {
+      const section = accordionData.find((section) => section.id === id);
+
+      const item = section?.items?.find((item) => item.id === itemId);
+
+      if (item) {
+        handleItemClick({
+          title: item.title,
+          mdText: item.mdText || "",
+        });
+      }
+    } else {
+      handleItemClick({
+        title: "Çerez Aydınlatma Metni",
+        mdText: mdText,
+      });
+    }
+  }, [id, itemId]);
+
   const accordionData: AccordionItem[] = [
     {
       id: "sozlesmeler",
@@ -128,15 +153,6 @@ export default function Boxes({
       ],
     },
   ];
-
-  useEffect(() => {
-    if (!selectedItem) {
-      handleItemClick({
-        title: "Çerez Aydınlatma Metni",
-        mdText: mdText,
-      });
-    }
-  }, [selectedItem]);
 
   const toggleSection = (sectionId: string) => {
     setOpenSections((prev) =>
