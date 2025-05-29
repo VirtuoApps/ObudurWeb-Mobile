@@ -1158,7 +1158,12 @@ export default function FilterPopup({
                   }
                 >
                   <h3 className="text-base font-semibold text-gray-700">
-                    {t("faceFeatures") || "Cephe"}
+                    {t("faceFeatures") || "Cephe"}{" "}
+                    {selectedFaceFeatures.length > 0 ? (
+                      <span className="text-sm font-normal text-[#595959]">
+                        ({selectedFaceFeatures.length})
+                      </span>
+                    ) : null}
                   </h3>
                   <button className="text-sm text-[#8c8c8c] hover:underline cursor-pointer">
                     <img
@@ -1212,7 +1217,12 @@ export default function FilterPopup({
               }
             >
               <h3 className="text-base font-semibold text-gray-700">
-                {t("interiorFeatures")}
+                {t("interiorFeatures")}{" "}
+                {interiorFeatures.length > 0 ? (
+                  <span className="text-sm font-normal text-[#595959]">
+                    ({interiorFeatures.length})
+                  </span>
+                ) : null}
               </h3>
               <button className="text-sm text-[#8c8c8c] hover:underline cursor-pointer">
                 <img
@@ -1263,7 +1273,12 @@ export default function FilterPopup({
               }
             >
               <h3 className="text-base font-semibold text-gray-700">
-                {t("exteriorFeatures") || "Dış Özellikler"}
+                {t("exteriorFeatures") || "Dış Özellikler"}{" "}
+                {selectedExteriorFeatures.length > 0 ? (
+                  <span className="text-sm font-normal text-[#595959]">
+                    ({selectedExteriorFeatures.length})
+                  </span>
+                ) : null}
               </h3>
               <button className="text-sm text-[#8c8c8c] hover:underline cursor-pointer">
                 <img
@@ -1319,7 +1334,12 @@ export default function FilterPopup({
                 >
                   <h3 className="text-base font-semibold text-gray-700">
                     {t("accessibilityFeatures") ||
-                      "Engelliye ve Yaşlıya Yönelik Özellikler"}
+                      "Engelliye ve Yaşlıya Yönelik Özellikler"}{" "}
+                    {selectedAccessibilityFeatures.length > 0 ? (
+                      <span className="text-sm font-normal text-[#595959]">
+                        ({selectedAccessibilityFeatures.length})
+                      </span>
+                    ) : null}
                   </h3>
                   <button className="text-sm text-[#8c8c8c] hover:underline cursor-pointer">
                     <img
