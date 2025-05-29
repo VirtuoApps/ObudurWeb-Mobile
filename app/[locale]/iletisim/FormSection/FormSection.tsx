@@ -15,6 +15,7 @@ export default function FormSection() {
   const [message, setMessage] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleCitySelect = (city: any) => {
     setSelectedCity(city);
@@ -26,7 +27,21 @@ export default function FormSection() {
     if (name === "lastName") setLastName(value);
     if (name === "phone") setPhone(value);
     if (name === "email") setEmail(value);
-    if (name === "message") setMessage(value);
+  };
+
+  const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+
+    // Auto-resize textarea
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      const scrollHeight = textareaRef.current.scrollHeight;
+      const lineHeight = 24; // Approximate line height in pixels
+      const maxHeight = lineHeight * 4; // 4 rows max
+
+      textareaRef.current.style.height =
+        Math.min(scrollHeight, maxHeight) + "px";
+    }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -144,17 +159,18 @@ export default function FormSection() {
 
           <div className="w-full">
             <div>
-              <label htmlFor="email" className="sr-only">
+              <label htmlFor="message" className="sr-only">
                 Mesajınız
               </label>
-              <input
-                type="text"
+              <textarea
                 name="message"
                 id="message"
                 placeholder="Mesajınız"
                 value={message}
-                onChange={handleInputChange}
-                className="block w-full px-4 py-4 border border-[#F0F0F0] rounded-2xl focus:none  focus:ring-0 focus:outline-none sm:text-sm bg-[#fff] placeholder:text-[#8C8C8C] text-gray-800"
+                onChange={handleMessageChange}
+                rows={1}
+                className="block w-full px-4 py-4 border border-[#F0F0F0] rounded-2xl focus:none  focus:ring-0 focus:outline-none sm:text-sm bg-[#fff] placeholder:text-[#8C8C8C] text-gray-800 overflow-hidden"
+                ref={textareaRef}
               />
             </div>
           </div>
