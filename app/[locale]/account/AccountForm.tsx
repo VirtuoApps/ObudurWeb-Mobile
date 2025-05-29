@@ -244,31 +244,17 @@ export default function AccountForm({ user }: AccountFormProps) {
           />
         </div>
         <button
-          className="h-20 px-4 rounded-lg text-white font-medium flex items-center gap-2"
-          style={{ backgroundColor: "#5546A8" }}
+          className="h-[36px] px-5 rounded-lg text-[#FCFCFC] text-sm font-medium flex items-center gap-2"
+          style={{ backgroundColor: "#5E5691" }}
         >
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M11 4H4C2.89543 4 2 4.89543 2 6V18C2 19.1046 2.89543 20 4 20H16C17.1046 20 18 19.1046 18 18V11M18.5 2.5C19.3284 1.67157 20.6716 1.67157 21.5 2.5C22.3284 3.32843 22.3284 4.67157 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
           Yükle
+          <img src="/image-add.png" alt="upload-icon" className="w-[20px]" />
         </button>
         <div>
-          <h3 className="font-semibold" style={{ color: "#1E1E1E" }}>
+          <h3 className="font-semibold" style={{ color: "#262626" }}>
             Profil fotoğrafı Yükle
           </h3>
-          <p className="text-xs mt-1" style={{ color: "#6E6E6E" }}>
+          <p className="text-xs mt-1" style={{ color: "#595959" }}>
             JPG, GIF veya PNG. Maksimum boyut 5MB
           </p>
         </div>
@@ -278,66 +264,62 @@ export default function AccountForm({ user }: AccountFormProps) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Profile Information Form */}
         <div className="bg-white rounded-xl p-6">
-          <h2
-            className="text-lg font-semibold mb-6"
-            style={{ color: "#1E1E1E" }}
-          >
+          <h2 className="text-2xl  mb-6 text-[#262626] font-bold">
             Profil Bilgileriniz
           </h2>
           <form
             onSubmit={handleSubmitPersonalInfo(onSubmitPersonalInfo)}
             className="space-y-4"
           >
-            <div>
-              <label
-                className="block text-sm font-semibold mb-2"
-                style={{ color: "#1E1E1E" }}
-              >
-                İsim
-              </label>
-              <input
-                type="text"
-                placeholder="Alfred"
-                {...registerPersonalInfo("firstName")}
-                className="w-full h-10 px-3 rounded-lg border text-sm outline-none focus:border-[#5546A8] transition-colors"
-                style={{
-                  backgroundColor: "#F9F9F9",
-                  borderColor: personalInfoErrors.firstName
-                    ? "#EA394B"
-                    : "#E3E3E3",
-                }}
-              />
-              {personalInfoErrors.firstName && (
-                <p className="text-xs mt-1" style={{ color: "#EA394B" }}>
-                  {personalInfoErrors.firstName.message}
-                </p>
-              )}
-            </div>
+            <div className="flex gap-4 flex-row justify-between">
+              <div className="w-1/2">
+                <label className="block text-sm font-semibold mb-2 text-[#262626]">
+                  İsim
+                </label>
+                <input
+                  type="text"
+                  placeholder="Alfred"
+                  {...registerPersonalInfo("firstName")}
+                  className="w-full h-[56px] px-3 rounded-2xl border border-[#D9D9D9] text-sm outline-none  transition-colors text-[#262626]"
+                  style={{
+                    backgroundColor: "#FCFCFC",
+                    borderColor: personalInfoErrors.firstName
+                      ? "#EA394B"
+                      : "#D9D9D9",
+                  }}
+                />
+                {personalInfoErrors.firstName && (
+                  <p className="text-xs mt-1" style={{ color: "#EA394B" }}>
+                    {personalInfoErrors.firstName.message}
+                  </p>
+                )}
+              </div>
 
-            <div>
-              <label
-                className="block text-sm font-semibold mb-2"
-                style={{ color: "#1E1E1E" }}
-              >
-                Soyisim
-              </label>
-              <input
-                type="text"
-                placeholder="Pennyworth"
-                {...registerPersonalInfo("lastName")}
-                className="w-full h-10 px-3 rounded-lg border text-sm outline-none focus:border-[#5546A8] transition-colors"
-                style={{
-                  backgroundColor: "#F9F9F9",
-                  borderColor: personalInfoErrors.lastName
-                    ? "#EA394B"
-                    : "#E3E3E3",
-                }}
-              />
-              {personalInfoErrors.lastName && (
-                <p className="text-xs mt-1" style={{ color: "#EA394B" }}>
-                  {personalInfoErrors.lastName.message}
-                </p>
-              )}
+              <div className="w-1/2">
+                <label
+                  className="block text-sm font-semibold mb-2"
+                  style={{ color: "#1E1E1E" }}
+                >
+                  Soyisim
+                </label>
+                <input
+                  type="text"
+                  placeholder="Pennyworth"
+                  {...registerPersonalInfo("lastName")}
+                  className="w-full h-[56px] px-3 rounded-2xl border border-[#D9D9D9] text-sm outline-none  transition-colors text-[#262626]"
+                  style={{
+                    backgroundColor: "#F9F9F9",
+                    borderColor: personalInfoErrors.lastName
+                      ? "#EA394B"
+                      : "#E3E3E3",
+                  }}
+                />
+                {personalInfoErrors.lastName && (
+                  <p className="text-xs mt-1" style={{ color: "#EA394B" }}>
+                    {personalInfoErrors.lastName.message}
+                  </p>
+                )}
+              </div>
             </div>
 
             <div>
@@ -348,12 +330,6 @@ export default function AccountForm({ user }: AccountFormProps) {
                 Telefon
               </label>
               <div className="flex gap-2">
-                <select
-                  className="w-20 h-10 px-2 rounded-lg border text-sm outline-none"
-                  style={{ backgroundColor: "#F9F9F9", borderColor: "#E3E3E3" }}
-                >
-                  <option value="+90">+90</option>
-                </select>
                 <PhoneInput
                   placeholder="Telefon numaranızı girin"
                   value={phoneNumber}
@@ -366,7 +342,7 @@ export default function AccountForm({ user }: AccountFormProps) {
                   defaultCountry="TR"
                   className="flex-1"
                   style={{
-                    height: "40px",
+                    height: "52px",
                     borderRadius: "8px",
                     backgroundColor: "#F9F9F9",
                     border: "1px solid #E3E3E3",
@@ -391,7 +367,7 @@ export default function AccountForm({ user }: AccountFormProps) {
                 type="email"
                 placeholder="alfred.pennyworth@gmail.com"
                 {...registerPersonalInfo("email")}
-                className="w-full h-10 px-3 rounded-lg border text-sm outline-none focus:border-[#5546A8] transition-colors"
+                className="w-full h-[56px] px-3 rounded-2xl border border-[#D9D9D9] text-sm outline-none  transition-colors text-[#262626]"
                 style={{
                   backgroundColor: "#F9F9F9",
                   borderColor: personalInfoErrors.email ? "#EA394B" : "#E3E3E3",
@@ -404,14 +380,14 @@ export default function AccountForm({ user }: AccountFormProps) {
               )}
             </div>
 
-            <div className="pt-4">
+            <div className="pt-4 flex justify-end">
               <button
                 type="submit"
                 disabled={profileUpdateLoading || !hasChanges}
-                className="w-full h-9 rounded-lg text-sm font-medium transition-colors disabled:cursor-not-allowed"
+                className="px-6 h-[56px] rounded-lg text-sm font-medium transition-colors disabled:cursor-not-allowed"
                 style={{
                   backgroundColor:
-                    profileUpdateLoading || !hasChanges ? "#D9D9D9" : "#5546A8",
+                    profileUpdateLoading || !hasChanges ? "#F0F0F0" : "#5E5691",
                   color:
                     profileUpdateLoading || !hasChanges ? "#6E6E6E" : "#FFFFFF",
                 }}
@@ -447,7 +423,7 @@ export default function AccountForm({ user }: AccountFormProps) {
                 type="password"
                 placeholder="Buraya yazın"
                 {...registerPassword("currentPassword")}
-                className="w-full h-10 px-3 rounded-lg border text-sm outline-none focus:border-[#5546A8] transition-colors"
+                className="w-full h-[56px] px-3 rounded-2xl border border-[#D9D9D9] text-sm outline-none  transition-colors text-[#262626]"
                 style={{
                   backgroundColor: "#F9F9F9",
                   borderColor: passwordErrors.currentPassword
@@ -473,7 +449,7 @@ export default function AccountForm({ user }: AccountFormProps) {
                 type="password"
                 placeholder="Buraya yazın"
                 {...registerPassword("password")}
-                className="w-full h-10 px-3 rounded-lg border text-sm outline-none focus:border-[#5546A8] transition-colors"
+                className="w-full h-[56px] px-3 rounded-2xl border border-[#D9D9D9] text-sm outline-none  transition-colors text-[#262626]"
                 style={{
                   backgroundColor: "#F9F9F9",
                   borderColor: passwordErrors.password ? "#EA394B" : "#E3E3E3",
@@ -497,7 +473,7 @@ export default function AccountForm({ user }: AccountFormProps) {
                 type="password"
                 placeholder="Buraya yazın"
                 {...registerPassword("confirmPassword")}
-                className="w-full h-10 px-3 rounded-lg border text-sm outline-none focus:border-[#5546A8] transition-colors"
+                className="w-full h-[56px] px-3 rounded-2xl border border-[#D9D9D9] text-sm outline-none  transition-colors text-[#262626]"
                 style={{
                   backgroundColor: "#F9F9F9",
                   borderColor: passwordErrors.confirmPassword
@@ -512,16 +488,16 @@ export default function AccountForm({ user }: AccountFormProps) {
               )}
             </div>
 
-            <div className="pt-4">
+            <div className="pt-4 flex flex-row justify-end">
               <button
                 type="submit"
                 disabled={passwordUpdateLoading || !passwordIsDirty}
-                className="w-full h-9 rounded-lg text-sm font-medium transition-colors disabled:cursor-not-allowed"
+                className="px-6 h-[56px] rounded-lg text-sm font-medium transition-colors disabled:cursor-not-allowed"
                 style={{
                   backgroundColor:
                     passwordUpdateLoading || !passwordIsDirty
-                      ? "#D9D9D9"
-                      : "#5546A8",
+                      ? "#F0F0F0"
+                      : "#5E5691",
                   color:
                     passwordUpdateLoading || !passwordIsDirty
                       ? "#6E6E6E"
