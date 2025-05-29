@@ -73,7 +73,7 @@ export default function Header({
         </div>
 
         {/* Right Side Items for Desktop */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-2">
           <AuthBox />
           <LanguageSwitcher />
         </div>

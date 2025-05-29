@@ -116,7 +116,7 @@ export default function AuthBox({
     return (
       <div className="relative" ref={dropdownRef}>
         <div
-          className="flex items-center gap-4 cursor-pointer max-w-[200px]"
+          className="flex items-center gap-2 cursor-pointer max-w-[200px]"
           onClick={() => setDropdownOpen(!dropdownOpen)}
         >
           {user.role !== "admin" && user.role !== "super-admin" && (
@@ -135,7 +135,7 @@ export default function AuthBox({
                   e.stopPropagation();
                   router.push("/admin/ilan-olustur");
                 }}
-                className="border border-[#D9D9D9] rounded-lg px-4 py-2 transition-all duration-300 hover:bg-[#362C75] hover:text-white text-[#5E5691] cursor-pointer"
+                className=" rounded-lg px-2 py-3 transition-all duration-300 hover:bg-gray-50 text-[#5E5691] cursor-pointer"
               >
                 <p className="">{t("postListing")}</p>
               </button>
