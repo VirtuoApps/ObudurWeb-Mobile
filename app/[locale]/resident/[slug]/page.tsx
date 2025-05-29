@@ -121,9 +121,9 @@ export type {
 export default async function ResidentPage({
   params,
 }: {
-  params: { slug: string; locale: string };
+  params: Promise<{ slug: string; locale: string }>;
 }) {
-  const { slug, locale } = params;
+  const { slug, locale } = await params;
   const currentLocale = locale || "en";
 
   const hotelDataResponse = await axiosInstance.get(`hotels/${slug}`);
