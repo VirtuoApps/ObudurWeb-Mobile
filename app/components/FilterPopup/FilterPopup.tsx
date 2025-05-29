@@ -1150,7 +1150,7 @@ export default function FilterPopup({
           {/* Face Features Section */}
           {filterOptions.faceFeatures &&
             filterOptions.faceFeatures.length > 0 && (
-              <div className="mt-6">
+              <div className="mt-6 border-b border-t border-[#F0F0F0] pb-8 pt-10 mt-4">
                 <div
                   className="flex items-center justify-between cursor-pointer"
                   onClick={() =>
@@ -1204,7 +1204,7 @@ export default function FilterPopup({
             )}
 
           {/* Interior Features Section */}
-          <div className="mt-6">
+          <div className="mt-6 border-b border-[#F0F0F0] pb-8">
             <div
               className="flex items-center justify-between cursor-pointer"
               onClick={() =>
@@ -1255,7 +1255,7 @@ export default function FilterPopup({
           </div>
 
           {/* Exterior Features Section */}
-          <div className="mt-6">
+          <div className="mt-6 border-b border-[#F0F0F0] pb-8">
             <div
               className="flex items-center justify-between cursor-pointer"
               onClick={() =>
@@ -1308,7 +1308,7 @@ export default function FilterPopup({
           {/* Accessibility Features Section */}
           {filterOptions.accessibilityFeatures &&
             filterOptions.accessibilityFeatures.length > 0 && (
-              <div className="mt-6">
+              <div className="mt-6 border-b border-[#F0F0F0] pb-8">
                 <div
                   className="flex items-center justify-between cursor-pointer"
                   onClick={() =>
@@ -1391,7 +1391,7 @@ export default function FilterPopup({
               selectedPropertyType ||
               selectedCategory) && (
               <button
-                className="w-full py-3 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50"
+                className="w-full h-[56px] text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50"
                 onClick={() => {
                   setMinPrice("");
                   setMaxPrice("");
@@ -1441,7 +1441,7 @@ export default function FilterPopup({
                 });
                 onClose && onClose();
               }}
-              className={`w-full py-3 text-sm font-medium text-white bg-[#5E5691] rounded-lg cursor-pointer ${
+              className={`w-full h-[56px] text-sm font-medium text-white bg-[#5E5691] rounded-lg cursor-pointer ${
                 minPrice !== "" ||
                 maxPrice !== "" ||
                 minArea !== "" ||
