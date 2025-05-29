@@ -4,6 +4,7 @@ import React from "react";
 import Header from "./Header/Header";
 import ContactTextList from "./ContactTextList/ContactTextList";
 import FormSection from "./FormSection/FormSection";
+import OfficesSection from "./OfficesSection/OfficesSection";
 
 export default function contact() {
   return (
@@ -35,6 +36,14 @@ export default function contact() {
 
       <ContactTextList />
       <FormSection />
+
+      <p className="text-[#262626] font-extrabold text-4xl mt-8">
+        Gayrimenkül Ofislerimiz
+      </p>
+      <p className="text-[#595959] text-base font-medium">
+        Obudur ile birlikte çalışan markalarımızın ofisleri.
+      </p>
+      <OfficesSection />
     </div>
   );
 }
