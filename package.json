@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^5.0.1",
     "@react-google-maps/api": "^2.20.6",
     "@reduxjs/toolkit": "^2.8.1",
+    "@tailwindcss/typography": "^0.5.16",
     "axios": "^1.9.0",
     "leaflet": "^1.9.4",
     "next": "15.3.0",
@@ -26,8 +27,10 @@
     "react-hot-toast": "^2.5.2",
     "react-icons": "^5.5.0",
     "react-leaflet": "^5.0.0",
+    "react-markdown": "^8.0.6",
     "react-phone-number-input": "^3.4.12",
     "react-redux": "^9.2.0",
+    "remark-gfm": "^4.0.1",
     "zod": "^3.24.3"
   },
   "devDependencies": {
