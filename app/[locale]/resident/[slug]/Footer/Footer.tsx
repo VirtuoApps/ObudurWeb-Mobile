@@ -49,17 +49,26 @@ export default function Footer() {
           <nav className="col-span-1">
             <ul className="space-y-2">
               <li>
-                <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
+                <a
+                  href="/admin/ilan-olustur"
+                  className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                >
                   İlan Verin
                 </a>
               </li>
               <li>
-                <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
+                <a
+                  href="/satilik"
+                  className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                >
                   Satılık İlanlar
                 </a>
               </li>
               <li>
-                <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
+                <a
+                  href="/kiralik"
+                  className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                >
                   Kiralık İlanlar
                 </a>
               </li>
@@ -86,12 +95,18 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
+                <a
+                  href="/iletisim#offices-section"
+                  className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                >
                   Satış Ofizlerimiz
                 </a>
               </li>
               <li>
-                <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
+                <a
+                  href="/iletisim"
+                  className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                >
                   İletişim
                 </a>
               </li>
@@ -128,17 +143,29 @@ export default function Footer() {
           <nav className="col-span-1">
             <ul className="space-y-2">
               <li>
-                <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
+                <a
+                  href="https://www.instagram.com/obudurcom/"
+                  target="_blank"
+                  className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                >
                   Instagram
                 </a>
               </li>
               <li>
-                <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
+                <a
+                  href="https://www.facebook.com/Obudurcom"
+                  target="_blank"
+                  className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                >
                   Facebook
                 </a>
               </li>
               <li>
-                <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
+                <a
+                  href="https://www.linkedin.com/company/obudurcom"
+                  target="_blank"
+                  className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                >
                   LinkedIn
                 </a>
               </li>

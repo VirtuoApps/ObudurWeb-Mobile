@@ -1,11 +1,11 @@
-import HomePage from "../HomePage/HomePage";
-import axiosInstance from "../../axios";
 import { unstable_noStore as noStore } from "next/cache";
 import { Feature } from "@/types/feature.type";
 import { Hotel } from "@/types/hotel.type";
 import { FilterOptions } from "@/types/filter-options.type";
+import HomePage from "@/app/HomePage/HomePage";
+import axiosInstance from "@/axios";
 
-export default async function Home() {
+export default async function kiralik() {
   // Disable caching at the page level
   noStore();
 
@@ -34,7 +34,7 @@ export default async function Home() {
         hotels={hotels}
         filterOptions={filterOptions}
         allQuickFilters={allQuickFiltersResponse.data as Feature[]}
-        isDefaultSale={false}
+        isDefaultRent={true}
       />
     </>
   );

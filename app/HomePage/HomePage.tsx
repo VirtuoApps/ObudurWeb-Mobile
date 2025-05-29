@@ -36,11 +36,15 @@ export default function HomePage({
   hotels: hotelsFromParam,
   filterOptions,
   allQuickFilters,
+  isDefaultSale,
+  isDefaultRent,
 }: {
   features: Feature[];
   hotels: Hotel[];
   filterOptions: FilterOptions;
   allQuickFilters: Feature[];
+  isDefaultSale?: boolean;
+  isDefaultRent?: boolean;
 }) {
   let hotels = hotelsFromParam;
 
@@ -88,6 +92,20 @@ export default function HomePage({
   console.log({
     filters,
   });
+
+  useEffect(() => {
+    if (isDefaultSale) {
+      setListingType("For Sale");
+      setCurrentView("list");
+    }
+  }, [isDefaultSale]);
+
+  useEffect(() => {
+    if (isDefaultRent) {
+      setListingType("For Rent");
+      setCurrentView("list");
+    }
+  }, [isDefaultRent]);
 
   useEffect(() => {
     // Get selected currency from localStorage
