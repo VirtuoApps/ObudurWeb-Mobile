@@ -15,6 +15,8 @@ interface User {
   email: string;
   firstName?: string;
   lastName?: string;
+  phoneNumber?: string;
+  profilePicture?: string;
   role: string;
   verified: boolean;
   createdAt: string;
@@ -26,6 +28,8 @@ interface UpdateUserPayload {
   password?: string;
   firstName?: string;
   lastName?: string;
+  phoneNumber?: string;
+  profilePicture?: string;
 }
 
 const initialState: UserState = {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -21,6 +21,7 @@ interface User {
   verified: boolean;
   createdAt: string;
   updatedAt: string;
+  profilePicture?: string;
 }
 
 interface AccountFormProps {
@@ -37,6 +38,13 @@ export default function AccountForm({ user }: AccountFormProps) {
   // Create separate states for each form's loading status
   const [profileUpdateLoading, setProfileUpdateLoading] = useState(false);
   const [passwordUpdateLoading, setPasswordUpdateLoading] = useState(false);
+  const [imageUploadLoading, setImageUploadLoading] = useState(false);
+  const [currentProfilePicture, setCurrentProfilePicture] = useState(
+    user?.profilePicture || ""
+  );
+
+  // File input ref
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const personalInfoSchema = z.object({
     email: z.string().email(t("emailError")),
@@ -107,6 +115,7 @@ export default function AccountForm({ user }: AccountFormProps) {
       // Reset loading states
       setProfileUpdateLoading(false);
       setPasswordUpdateLoading(false);
+      setImageUploadLoading(false);
 
       // Clear the success state after 3 seconds
       const timer = setTimeout(() => {
@@ -116,6 +125,80 @@ export default function AccountForm({ user }: AccountFormProps) {
       return () => clearTimeout(timer);
     }
   }, [updateSuccess, resetPassword, dispatch]);
+
+  // Handle image upload
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      alert("Lütfen geçerli bir resim dosyası seçin (JPG, PNG, GIF)");
+      return;
+    }
+
+    // Validate file size (5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Dosya boyutu 5MB'den büyük olamaz");
+      return;
+    }
+
+    setImageUploadLoading(true);
+
+    try {
+      // Create FormData for file upload
+      const formData = new FormData();
+      formData.append("image", file);
+
+      // Upload image to file-system/image endpoint
+      const uploadResponse = await axiosInstance.post(
+        "/file-system/image",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (uploadResponse.data && uploadResponse.data.location) {
+        const imageUrl = uploadResponse.data.location;
+
+        // Update user profile with new image URL
+        const updateResponse = await axiosInstance.patch("/auth/mine", {
+          profilePicture: imageUrl,
+        });
+
+        // If the API returns a new token, update it in localStorage and axios
+        if (updateResponse.data.accessToken) {
+          localStorage.setItem("accessToken", updateResponse.data.accessToken);
+          axiosInstance.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${updateResponse.data.accessToken}`;
+        }
+
+        // Update local state and Redux store
+        setCurrentProfilePicture(imageUrl);
+        dispatch(updateUserData({ profilePicture: imageUrl }));
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      alert("Resim yüklenirken bir hata oluştu. Lütfen tekrar deneyin.");
+    } finally {
+      setImageUploadLoading(false);
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
 
   const onSubmitPersonalInfo = async (data: PersonalInfoData) => {
     const updateData: any = {};
@@ -238,16 +321,25 @@ export default function AccountForm({ user }: AccountFormProps) {
       <div className="bg-white rounded-xl p-4 flex items-center gap-4">
         <div className="w-20 h-20 rounded-lg bg-gray-200 overflow-hidden">
           <img
-            src="/api/placeholder/80/80"
+            src={currentProfilePicture || "/placeholder_picture.png"}
             alt="Profil fotoğrafı"
             className="w-full h-full object-cover"
           />
         </div>
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleImageUpload}
+          accept="image/*"
+          className="hidden"
+        />
         <button
-          className="h-[36px] px-5 rounded-lg text-[#FCFCFC] text-sm font-medium flex items-center gap-2"
+          onClick={handleUploadClick}
+          disabled={imageUploadLoading}
+          className="h-[36px] px-5 rounded-lg text-[#FCFCFC] text-sm font-medium flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           style={{ backgroundColor: "#5E5691" }}
         >
-          Yükle
+          {imageUploadLoading ? "Yükleniyor..." : "Yükle"}
           <img src="/image-add.png" alt="upload-icon" className="w-[20px]" />
         </button>
         <div>

@@ -151,9 +151,18 @@ export default function AuthBox({
             />
           )}
 
-          <div className="bg-gray-100 rounded-lg flex items-center justify-center py-3 px-3">
-            <img src="/user-profile-03.png" className="w-6" />
-          </div>
+          {!user.profilePicture && (
+            <div className="bg-gray-100 rounded-lg flex items-center justify-center py-3 px-3">
+              <img src={"/user-profile-03.png"} className="w-6" />
+            </div>
+          )}
+
+          {user.profilePicture && (
+            <img
+              src={user.profilePicture}
+              className="w-[36px] h-[36px] rounded-md"
+            />
+          )}
         </div>
 
         {/* Dropdown Menu */}
