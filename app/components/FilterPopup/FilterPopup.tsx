@@ -65,6 +65,7 @@ type FilterPopupProps = {
   setSelectedPropertyType?: (propertyType: any) => void;
   selectedCategory?: any | null;
   setSelectedCategory?: (category: any) => void;
+  filters?: any;
   setFilters: (filters: any) => void;
   minPrice: number | "";
   setMinPrice: React.Dispatch<React.SetStateAction<number | "">>;
@@ -108,6 +109,7 @@ export default function FilterPopup({
   setSelectedPropertyType,
   selectedCategory,
   setSelectedCategory,
+  filters,
   setFilters,
   minPrice,
   setMinPrice,
@@ -725,7 +727,7 @@ export default function FilterPopup({
                         <PopoverPanel className="absolute z-20 mt-2 w-full py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
                           <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
                             <div className="p-4">
-                              {categories.map((category) => (
+                              {categories.map((category: any) => (
                                 <div
                                   key={category.name}
                                   className="group relative flex items-center gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
@@ -1409,7 +1411,12 @@ export default function FilterPopup({
               selectedFaceFeatures.length > 0 ||
               selectedLocation ||
               selectedPropertyType ||
-              selectedCategory) && (
+              selectedCategory ||
+              selectedFeatures.length > 0 ||
+              (filters &&
+                (filters.isOnePlusOneSelected ||
+                  filters.isTwoPlusOneSelected ||
+                  filters.isThreePlusOneSelected))) && (
               <button
                 className="w-full h-[56px] text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50"
                 onClick={() => {
@@ -1426,12 +1433,16 @@ export default function FilterPopup({
                   setSelectedLocation(null);
                   setSelectedPropertyType && setSelectedPropertyType(null);
                   setSelectedCategory && setSelectedCategory(null);
+                  setSelectedFeatures([]);
 
                   setFilters({
                     listingType: null,
                     state: null,
                     propertyType: null,
                     roomAsText: null,
+                    isOnePlusOneSelected: false,
+                    isTwoPlusOneSelected: false,
+                    isThreePlusOneSelected: false,
                   });
 
                   onClose && onClose();
@@ -1474,7 +1485,12 @@ export default function FilterPopup({
                 selectedFaceFeatures.length > 0 ||
                 selectedLocation ||
                 selectedPropertyType ||
-                selectedCategory
+                selectedCategory ||
+                selectedFeatures.length > 0 ||
+                (filters &&
+                  (filters.isOnePlusOneSelected ||
+                    filters.isTwoPlusOneSelected ||
+                    filters.isThreePlusOneSelected))
                   ? "col-span-1"
                   : "col-span-2"
               }`}

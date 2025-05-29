@@ -182,6 +182,7 @@ export default function FilterList({
         setSelectedPropertyType={setSelectedPropertyType}
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
+        filters={filters}
         setFilters={setFilters}
         minPrice={minPrice}
         setMinPrice={setMinPrice}
