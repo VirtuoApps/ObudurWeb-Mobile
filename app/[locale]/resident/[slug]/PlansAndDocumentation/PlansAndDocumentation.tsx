@@ -39,12 +39,16 @@ export default function FloorDocs() {
             href={href}
             target="_blank"
             rel="noopener"
-            className="group flex items-center justify-between w-full rounded-xl border border-gray-200 px-6 py-5 md:px-8 md:py-6 bg-white shadow-sm/0 hover:shadow-sm transition-shadow focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#31286A]"
+            className="group flex items-center justify-between w-full rounded-xl border border-[#BFBFBF] px-6 md:px-8 md:py-3 bg-white shadow-sm/0 hover:shadow-sm transition-shadow focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#31286A]"
           >
-            <span className="text-gray-900 font-medium text-base lg:text-lg">
+            <span className="text-[#262626] font-medium text-base lg:text-lg">
               {label}
             </span>
-            <FiArrowUpRight className="w-4 h-4 md:w-5 md:h-5 text-[#31286A] transition group-hover:translate-x-1 group-hover:-translate-y-1" />
+            <img
+              src="/arrow-up-right.png"
+              alt="arrow-right"
+              className="w-[24px]"
+            />
           </a>
         ))}
       </div>

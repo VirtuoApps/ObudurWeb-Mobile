@@ -148,7 +148,7 @@ export default async function ResidentPage({
             <FeaturesEquipment />
             {video && <PanoramicView video={video} />}
             <Location />
-            {/* <PlansAndDocumentation /> */}
+            <PlansAndDocumentation />
           </div>
 
           <div className="md:w-[30%] w-full p-4 pt-2">
