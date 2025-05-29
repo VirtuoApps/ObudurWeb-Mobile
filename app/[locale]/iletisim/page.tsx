@@ -8,7 +8,7 @@ import OfficesSection from "./OfficesSection/OfficesSection";
 
 export default function contact() {
   return (
-    <div className="bg-[#ebeaf1] w-full min-h-screen pt-20 px-2 pb-24">
+    <div className="bg-[#ebeaf1] w-full min-h-screen pt-20 px-2 pb-24 max-w-[1440px] mx-auto">
       <Header />
       <div className="flex flex-col items-center justify-center text-center py-10">
         <h1 className=" sm:text-[56px] text-[32px] md:text-[56px] font-bold text-[#362C75] mb-3">
