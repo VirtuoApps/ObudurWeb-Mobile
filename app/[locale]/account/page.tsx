@@ -30,16 +30,11 @@ export default function AccountPage() {
   }, [dispatch, router, hasCheckedAuth]);
 
   return (
-    <>
-      <Header customRedirectUrl="/" />
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-2xl mx-auto">
-          <h1 className="text-3xl font-bold text-gray-800 mb-8">
-            {t("title")}
-          </h1>
-          {user && <AccountForm user={user} />}
-        </div>
+    <div className="min-h-screen" style={{ backgroundColor: "#E9E8F3" }}>
+      <Header />
+      <div className="max-w-[1140px] mx-auto px-[60px] py-12">
+        {user && <AccountForm user={user} />}
       </div>
-    </>
+    </div>
   );
 }
