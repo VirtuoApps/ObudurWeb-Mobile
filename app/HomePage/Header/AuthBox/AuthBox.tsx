@@ -186,21 +186,21 @@ export default function AuthBox({
               Profil Detayları
             </Link>
 
-            <Link
+            {/* <Link
               href="/bildirimler"
               className=" px-4 py-2 text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center"
             >
               <img src="/bell-01.png" className="w-[20px] h-[20px] mr-2" />
               Bildirimler (3)
-            </Link>
+            </Link> */}
 
-            <Link
+            {/* <Link
               href="/Mesajlar"
               className=" px-4 py-2 text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center"
             >
               <img src="/mail-01.png" className="w-[20px] h-[20px] mr-2" />
               Mesajlar (2)
-            </Link>
+            </Link> */}
 
             <div className="border-b border-gray-100 my-2"></div>
 
@@ -222,25 +222,25 @@ export default function AuthBox({
               Favori ilanlar
             </Link>
 
-            <Link
+            {/* <Link
               href="/favori-aramalar"
               className=" px-4 py-2 text-[14px] text-[#262626]  hover:bg-gray-100 flex flex-row items-center"
             >
               <img src="/search-02.png" className="w-[20px] h-[20px] mr-2" />
               Favori aramalar
-            </Link>
+            </Link> */}
 
             <div className="border-b border-gray-100 my-2"></div>
 
             <Link
-              href="/iletisim-kanallari"
+              href="/iletisim"
               className=" px-4 py-2 text-[14px] text-[#595959]  hover:bg-gray-100 flex flex-row items-center"
             >
               İletişim Kanalları
             </Link>
 
             <Link
-              href="/gayrimenkul-ofisleri"
+              href="/iletisim#offices-section"
               className=" px-4 py-2 text-[14px] text-[#595959]  hover:bg-gray-100 flex flex-row items-center"
             >
               Gayrimenkul Ofislerimiz
@@ -261,14 +261,14 @@ export default function AuthBox({
             <div className="border-b border-gray-100 my-2"></div>
 
             <Link
-              href="/geri-bildirim"
+              href="/iletisim"
               className=" px-4 py-2 text-[12px] font-[500] text-[#595959]  hover:bg-gray-100 flex flex-row items-center"
             >
               Geri Bildirim
             </Link>
 
             <Link
-              href="/kullanici-sozlesmeleri"
+              href="/sozlesmeler?id=sozlesmeler&itemId=bireysel"
               className=" px-4 py-2 text-[12px] font-[500] text-[#595959]  hover:bg-gray-100 flex flex-row items-center"
             >
               Kullanıcı Sözleşmeleri
