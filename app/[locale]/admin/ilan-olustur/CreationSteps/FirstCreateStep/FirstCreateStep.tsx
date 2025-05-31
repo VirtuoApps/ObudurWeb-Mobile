@@ -382,16 +382,6 @@ export default function FirstCreateStep() {
             <div className="mt-6">
               <h2 className="font-semibold mb-2 text-[#262626] text-2xl">
                 Kategori Seçin
-                {entranceType && (
-                  <span className="text-sm font-normal text-gray-500 ml-2">
-                    ({entranceType.tr} kategorileri)
-                  </span>
-                )}
-                {!entranceType && (
-                  <span className="text-sm font-normal text-gray-500 ml-2">
-                    (Tüm kategoriler)
-                  </span>
-                )}
               </h2>
               <div className="flex flex-wrap gap-2">
                 {getFilteredCategories().map((cat) => (
