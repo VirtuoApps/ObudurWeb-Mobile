@@ -117,7 +117,7 @@ export default function ResidentBox({
   return (
     <>
       <div
-        className="w-full overflow-hidden bg-white rounded-xl  transition-shadow duration-300 cursor-pointer"
+        className="w-full overflow-hidden bg-white rounded-2xl  transition-shadow duration-300 cursor-pointer border-[9px] border-white"
         onClick={() => router.push(`/resident/${slug}`)}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -222,10 +222,7 @@ export default function ResidentBox({
 
           {/* Location */}
           <div className="flex items-start space-x-1 text-[14px] text-[#8C8C8C]">
-            <img
-              src="/marker-02_(3).png"
-              className="w-[16px] h-[16px] mr-1 translate-y-1"
-            />
+            <img src="/marker-02_(3).png" className="w-[16px] h-[16px] mr-1" />
             <span>{locationText}</span>
           </div>
         </div>
