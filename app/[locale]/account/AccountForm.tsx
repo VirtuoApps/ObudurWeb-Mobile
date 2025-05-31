@@ -476,7 +476,7 @@ export default function AccountForm({ user }: AccountFormProps) {
               <button
                 type="submit"
                 disabled={profileUpdateLoading || !hasChanges}
-                className="px-6 h-[56px] rounded-lg text-sm font-medium transition-colors disabled:cursor-not-allowed"
+                className="px-6 h-[56px] rounded-2xl text-sm font-medium transition-colors disabled:cursor-not-allowed"
                 style={{
                   backgroundColor:
                     profileUpdateLoading || !hasChanges ? "#F0F0F0" : "#5E5691",
@@ -584,7 +584,7 @@ export default function AccountForm({ user }: AccountFormProps) {
               <button
                 type="submit"
                 disabled={passwordUpdateLoading || !passwordIsDirty}
-                className="px-6 h-[56px] rounded-lg text-sm font-medium transition-colors disabled:cursor-not-allowed"
+                className="px-6 h-[56px] rounded-2xl text-sm font-medium transition-colors disabled:cursor-not-allowed"
                 style={{
                   backgroundColor:
                     passwordUpdateLoading || !passwordIsDirty
