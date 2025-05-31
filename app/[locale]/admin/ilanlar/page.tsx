@@ -644,7 +644,7 @@ export default function AdminListings() {
           </div>
 
           {/* Table/card section */}
-          <div className="bg-white  rounded-2xl shadow-md p-6 px-0 overflow-auto">
+          <div className="bg-white  rounded-2xl shadow-md p-6 px-0 overflow-auto pt-0">
             {loading ? (
               <div className="flex justify-center items-center h-screen">
                 <span className="text-gray-500 ">Yükleniyor...</span>
@@ -722,7 +722,7 @@ export default function AdminListings() {
                         Durum
                       </th>
 
-                      <th className="py-4 px-4 text-right text-sm font-bold  tracking-wide text-[#595959]">
+                      <th className="py-4 px-4 text-left text-sm font-bold  tracking-wide text-[#595959]">
                         İşlemler
                       </th>
                     </tr>
