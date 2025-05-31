@@ -673,7 +673,7 @@ export default function FilterPopup({
                     <>
                       <PopoverButton
                         ref={buttonRef}
-                        className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-700"
+                        className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 h-[56px] text-sm text-gray-700"
                       >
                         <div className="flex items-center flex-1">
                           {isOpen && showSearch ? (
@@ -829,7 +829,7 @@ export default function FilterPopup({
                       <>
                         <PopoverButton
                           ref={buttonRef}
-                          className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-700"
+                          className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 h-[56px] text-sm text-gray-700"
                         >
                           <div className="flex items-center">
                             <span className="truncate">
@@ -917,7 +917,7 @@ export default function FilterPopup({
                       <>
                         <PopoverButton
                           ref={buttonRef}
-                          className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-700"
+                          className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 h-[56px] text-sm text-gray-700"
                         >
                           <div className="flex items-center">
                             <span className="truncate">
@@ -1009,7 +1009,7 @@ export default function FilterPopup({
                     }
                   }}
                   placeholder={t("minValue")}
-                  className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 h-[56px] text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
                 {/* <div className="absolute right-2 flex flex-col">
                   <button
@@ -1059,7 +1059,7 @@ export default function FilterPopup({
                     }
                   }}
                   placeholder={t("maxValue")}
-                  className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 h-[56px] text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
                 {/* <div className="absolute right-2 flex flex-col">
                   <button
@@ -1114,7 +1114,7 @@ export default function FilterPopup({
                       <>
                         <PopoverButton
                           ref={buttonRef}
-                          className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-700"
+                          className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 h-[56px] text-sm text-gray-700"
                         >
                           <div className="flex items-center">
                             <span className="truncate">
@@ -1194,7 +1194,7 @@ export default function FilterPopup({
                       <>
                         <PopoverButton
                           ref={buttonRef}
-                          className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-700"
+                          className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 h-[56px] text-sm text-gray-700"
                         >
                           <div className="flex items-center">
                             <span className="truncate">
@@ -1287,7 +1287,7 @@ export default function FilterPopup({
                     }
                   }}
                   placeholder={t("minValue")}
-                  className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 h-[56px] text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
                 {/* <div className="absolute right-2 flex flex-col">
                   <button
@@ -1337,7 +1337,7 @@ export default function FilterPopup({
                     }
                   }}
                   placeholder={t("maxValue")}
-                  className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 h-[56px] text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
                 {/* <div className="absolute right-2 flex flex-col">
                   <button
