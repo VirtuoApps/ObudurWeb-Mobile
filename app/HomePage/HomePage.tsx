@@ -13,6 +13,7 @@ import { FilterType } from "@/types/filter.type";
 import { FilterOptions } from "@/types/filter-options.type";
 import { currencyOptions } from "@/app/components/LanguageSwitcher";
 import { filterHotelsByProximity } from "@/app/utils/geoUtils";
+import Footer from "../[locale]/resident/[slug]/Footer/Footer";
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
   loading: () => {
@@ -471,6 +472,7 @@ export default function HomePage({
                   sortOption={sortOption}
                   setSortOption={setSortOption}
                 />
+                <Footer />
               </div>
             )}
           </div>

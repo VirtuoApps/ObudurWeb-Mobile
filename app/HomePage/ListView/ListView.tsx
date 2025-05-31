@@ -4,6 +4,7 @@ import { Hotel } from "@/types/hotel.type";
 import { formatAddress } from "@/app/utils/addressFormatter";
 import SortAndSaveFiltering from "./SortAndSaveFiltering/SortAndSaveFiltering";
 import { useLocale } from "next-intl";
+import PaginationBox from "./PaginationBox/PaginationBox";
 
 // Currency symbols mapping
 const currencySymbols: Record<string, string> = {
@@ -32,7 +33,11 @@ export default function ListView({
   >;
 }) {
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const selectedLanguage = useLocale();
+
+  // Pagination settings
+  const itemsPerPage = 25;
 
   // Get selected currency from localStorage
   useEffect(() => {
@@ -54,6 +59,11 @@ export default function ListView({
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
   }, [selectedCurrency]);
+
+  // Reset to first page when hotels array changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [hotels, sortOption]);
 
   // Helper function to get display price in the selected currency
   const getDisplayPrice = (hotel: Hotel) => {
@@ -102,15 +112,36 @@ export default function ListView({
     return sortOption === "ascending" ? priceA - priceB : priceB - priceA;
   });
 
+  // Calculate pagination
+  const totalPages = Math.ceil(sortedHotels.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentHotels = sortedHotels.slice(startIndex, endIndex);
+
+  // Handle page change
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+
+    // Scroll to top with smooth animation
+    // Using setTimeout to ensure DOM update completes first
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }, 50);
+  };
+
   return (
     <>
       <SortAndSaveFiltering
         sortOption={sortOption}
         setSortOption={setSortOption}
+        totalHotelsCount={hotels.length}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-5 gap-4 bg-white  px-2 pb-28">
-        {sortedHotels.map((hotel) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-5 gap-4 bg-white  px-2 ">
+        {currentHotels.map((hotel) => (
           <ResidentBox
             key={hotel._id}
             hotelId={hotel._id}
@@ -134,6 +165,17 @@ export default function ListView({
           />
         ))}
       </div>
+
+      {/* Show pagination only if there are more than 25 items */}
+      {totalPages > 1 && (
+        <div className="w-full flex justify-center items-center mt-8 -mb-14">
+          <PaginationBox
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
+      )}
     </>
   );
 }

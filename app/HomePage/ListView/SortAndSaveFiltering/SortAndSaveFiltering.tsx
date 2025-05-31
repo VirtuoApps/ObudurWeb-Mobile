@@ -5,11 +5,13 @@ interface SortAndSaveFilteringProps {
   setSortOption: React.Dispatch<
     React.SetStateAction<"ascending" | "descending" | null>
   >;
+  totalHotelsCount: number;
 }
 
 export default function SortAndSaveFiltering({
   sortOption,
   setSortOption,
+  totalHotelsCount,
 }: SortAndSaveFilteringProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -21,7 +23,7 @@ export default function SortAndSaveFiltering({
   return (
     <div className="flex justify-between items-center mb-8 px-5">
       <p className="text-sm text-gray-800">
-        Arama kriterlerinize uygun <b>420</b> adet ilan bulundu.
+        Arama kriterlerinize uygun <b>{totalHotelsCount}</b> adet ilan bulundu.
       </p>
 
       <div className="flex flex-row items-center gap-2">

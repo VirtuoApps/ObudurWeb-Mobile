@@ -25,13 +25,9 @@ export const formatAddress = (
     return textObj && textObj[language] ? textObj[language] : textObj?.en || "";
   };
 
-  if (hotel.street) parts.push(getLocalizedText(hotel.street));
-  if (hotel.buildingNo) parts.push(hotel.buildingNo);
-  if (hotel.apartmentNo) parts.push(`No:${hotel.apartmentNo}`);
   if (hotel.city) parts.push(getLocalizedText(hotel.city));
   if (hotel.state) parts.push(getLocalizedText(hotel.state));
-  if (hotel.postalCode) parts.push(hotel.postalCode);
-  if (hotel.country) parts.push(getLocalizedText(hotel.country));
+  if (hotel.street) parts.push(getLocalizedText(hotel.street));
 
   return parts.filter(Boolean).join(", ");
 };
