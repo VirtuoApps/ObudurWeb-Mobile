@@ -54,6 +54,7 @@ import { TagIcon } from "@heroicons/react/24/outline";
 import axiosInstance from "@/axios";
 import { Hotel } from "@/types/hotel.type";
 import { filterHotelsByProximity } from "@/app/utils/geoUtils";
+import GeneralSelect from "../GeneralSelect/GeneralSelect";
 
 type FilterPopupProps = {
   isOpen: boolean;
@@ -673,7 +674,7 @@ export default function FilterPopup({
                     <>
                       <PopoverButton
                         ref={buttonRef}
-                        className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 h-[56px] text-sm text-gray-700"
+                        className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-[16px] px-4 py-3 h-[56px] text-sm text-gray-700"
                       >
                         <div className="flex items-center flex-1">
                           {isOpen && showSearch ? (
@@ -762,7 +763,7 @@ export default function FilterPopup({
                                       location.place_id ||
                                       `${location.name}-${index}`
                                     }
-                                    className="group relative flex gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
+                                    className="group relative flex gap-x-6 rounded-[16px] p-3 hover:bg-gray-50 cursor-pointer"
                                     onClick={() =>
                                       handleLocationSelect(location)
                                     }
@@ -797,98 +798,40 @@ export default function FilterPopup({
             {/* Property Type Section */}
             <div className="w-1/2">
               <div className="mt-3">
-                <Popover className="relative w-full">
-                  {({ open }) => {
-                    const [isOpen, setIsOpen] = useState(false);
-                    const buttonRef = useRef<HTMLButtonElement>(null);
-
-                    useEffect(() => {
-                      if (open !== isOpen) {
-                        setIsOpen(open);
-                      }
-                    }, [open, isOpen]);
-
-                    const propertyTypes = hotelTypes.map((hotelType) => ({
-                      _id: hotelType._id,
-                      name:
-                        (hotelType.name as any)[locale] || hotelType.name.tr,
-                      href: "#",
-                      originalData: hotelType, // Keep reference to original data for category filtering
-                    }));
-
-                    const handlePropertyTypeSelect = (propertyType: any) => {
-                      setSelectedPropertyType &&
-                        setSelectedPropertyType(propertyType);
-                      // Reset category when property type changes
-                      setSelectedCategory && setSelectedCategory(null);
-                      setIsOpen(false);
-                      buttonRef.current?.click();
-                    };
-
-                    return (
-                      <>
-                        <PopoverButton
-                          ref={buttonRef}
-                          className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 h-[56px] text-sm text-gray-700"
-                        >
-                          <div className="flex items-center">
-                            <span className="truncate">
-                              {selectedPropertyType
-                                ? selectedPropertyType.name
-                                : t("selectEstateType") ||
-                                  "Select Property Type"}
-                            </span>
-                          </div>
-                          <ChevronDownSolidIcon
-                            className="h-5 w-5 text-gray-400 ml-2"
-                            aria-hidden="true"
-                          />
-                        </PopoverButton>
-
-                        <PopoverPanel className="absolute z-20 mt-2 w-full py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
-                          <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
-                            <div className="p-4">
-                              {propertyTypes.map((propertyType) => (
-                                <div
-                                  key={propertyType._id}
-                                  className="group relative flex items-center gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
-                                  onClick={() =>
-                                    handlePropertyTypeSelect(propertyType)
-                                  }
-                                >
-                                  <div>
-                                    <div className="font-semibold text-gray-900">
-                                      {propertyType.name}
-                                    </div>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </PopoverPanel>
-                      </>
-                    );
+                <GeneralSelect
+                  selectedItem={selectedPropertyType}
+                  onSelect={(propertyType) => {
+                    setSelectedPropertyType &&
+                      setSelectedPropertyType(propertyType);
+                    // Reset category when property type changes
+                    setSelectedCategory && setSelectedCategory(null);
                   }}
-                </Popover>
+                  options={hotelTypes.map((hotelType) => ({
+                    _id: hotelType._id,
+                    name: (hotelType.name as any)[locale] || hotelType.name.tr,
+                    href: "#",
+                    originalData: hotelType, // Keep reference to original data for category filtering
+                  }))}
+                  defaultText={t("selectEstateType") || "Select Property Type"}
+                  extraClassName="w-full bg-white border border-gray-200 h-[56px] text-sm text-gray-700"
+                  popoverMaxWidth="300"
+                />
               </div>
             </div>
 
             {/* Category Section */}
             <div className="w-1/2">
               <div className="mt-3">
-                <Popover className="relative w-full">
-                  {({ open }) => {
-                    const [isOpen, setIsOpen] = useState(false);
-                    const buttonRef = useRef<HTMLButtonElement>(null);
-
-                    useEffect(() => {
-                      if (open !== isOpen) {
-                        setIsOpen(open);
-                      }
-                    }, [open, isOpen]);
-
-                    const categories = selectedPropertyType?.originalData
-                      ?.categories
+                <GeneralSelect
+                  selectedItem={selectedCategory}
+                  onSelect={(category) => {
+                    // Only allow selection if property type is selected and has categories
+                    if (selectedPropertyType?.originalData?.categories) {
+                      setSelectedCategory && setSelectedCategory(category);
+                    }
+                  }}
+                  options={
+                    selectedPropertyType?.originalData?.categories
                       ? selectedPropertyType.originalData.categories.map(
                           (category: HotelCategory) => ({
                             _id: category._id,
@@ -902,59 +845,12 @@ export default function FilterPopup({
                       : filterOptions.roomAsText.map((category: string) => ({
                           name: category,
                           href: "#",
-                        }));
-
-                    const handleCategorySelect = (category: any) => {
-                      // Only allow selection if property type is selected and has categories
-                      if (selectedPropertyType?.originalData?.categories) {
-                        setSelectedCategory && setSelectedCategory(category);
-                        setIsOpen(false);
-                        buttonRef.current?.click();
-                      }
-                    };
-
-                    return (
-                      <>
-                        <PopoverButton
-                          ref={buttonRef}
-                          className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 h-[56px] text-sm text-gray-700"
-                        >
-                          <div className="flex items-center">
-                            <span className="truncate">
-                              {selectedCategory
-                                ? selectedCategory.name
-                                : t("selectCategory") || "Select Category"}
-                            </span>
-                          </div>
-                          <ChevronDownSolidIcon
-                            className="h-5 w-5 text-gray-400 ml-2"
-                            aria-hidden="true"
-                          />
-                        </PopoverButton>
-
-                        <PopoverPanel className="absolute z-20 mt-2 w-full py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
-                          <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
-                            <div className="p-4">
-                              {categories.map((category: any) => (
-                                <div
-                                  key={category.name}
-                                  className="group relative flex items-center gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
-                                  onClick={() => handleCategorySelect(category)}
-                                >
-                                  <div>
-                                    <div className="font-semibold text-gray-900">
-                                      {category.name}
-                                    </div>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </PopoverPanel>
-                      </>
-                    );
-                  }}
-                </Popover>
+                        }))
+                  }
+                  defaultText={t("selectCategory") || "Select Category"}
+                  extraClassName="w-full bg-white border border-gray-200 h-[56px] text-sm text-gray-700"
+                  popoverMaxWidth="300"
+                />
               </div>
             </div>
           </div>
@@ -1009,7 +905,7 @@ export default function FilterPopup({
                     }
                   }}
                   placeholder={t("minValue")}
-                  className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 h-[56px] text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full bg-white border border-gray-200 rounded-[16px] px-4 py-2 h-[56px] text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
                 {/* <div className="absolute right-2 flex flex-col">
                   <button
@@ -1059,7 +955,7 @@ export default function FilterPopup({
                     }
                   }}
                   placeholder={t("maxValue")}
-                  className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 h-[56px] text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full bg-white border border-gray-200  px-4 py-2 h-[56px] rounded-[16px] text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
                 {/* <div className="absolute right-2 flex flex-col">
                   <button
@@ -1088,70 +984,19 @@ export default function FilterPopup({
                 </h3>
               </div>
               <div className="mt-3">
-                <Popover className="relative w-full">
-                  {({ open }) => {
-                    const [isOpen, setIsOpen] = useState(false);
-                    const buttonRef = useRef<HTMLButtonElement>(null);
-
-                    useEffect(() => {
-                      if (open !== isOpen) {
-                        setIsOpen(open);
-                      }
-                    }, [open, isOpen]);
-
-                    const roomOptions = filterOptions.roomCount.map((room) => ({
-                      name: room,
-                      href: "#",
-                    }));
-
-                    const handleRoomSelect = (room: any) => {
-                      setRoomCount(room.name);
-                      setIsOpen(false);
-                      buttonRef.current?.click();
-                    };
-
-                    return (
-                      <>
-                        <PopoverButton
-                          ref={buttonRef}
-                          className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 h-[56px] text-sm text-gray-700"
-                        >
-                          <div className="flex items-center">
-                            <span className="truncate">
-                              {roomCount
-                                ? roomCount
-                                : t("roomsSelect") || "Select Room Count"}
-                            </span>
-                          </div>
-                          <ChevronDownSolidIcon
-                            className="h-5 w-5 text-gray-400 ml-2"
-                            aria-hidden="true"
-                          />
-                        </PopoverButton>
-
-                        <PopoverPanel className="absolute z-20 mt-2 w-full py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
-                          <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
-                            <div className="p-4">
-                              {roomOptions.map((room) => (
-                                <div
-                                  key={room.name}
-                                  className="group relative flex items-center gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
-                                  onClick={() => handleRoomSelect(room)}
-                                >
-                                  <div>
-                                    <div className="font-semibold text-gray-900">
-                                      {room.name}
-                                    </div>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </PopoverPanel>
-                      </>
-                    );
+                <GeneralSelect
+                  selectedItem={roomCount ? { name: roomCount } : null}
+                  onSelect={(room) => {
+                    setRoomCount(room.name);
                   }}
-                </Popover>
+                  options={filterOptions.roomCount.map((room) => ({
+                    name: room,
+                    href: "#",
+                  }))}
+                  defaultText={t("roomsSelect") || "Select Room Count"}
+                  extraClassName="w-full bg-white border border-gray-200 h-[56px] text-sm text-gray-700"
+                  popoverMaxWidth="300"
+                />
               </div>
             </div>
 
@@ -1163,76 +1008,21 @@ export default function FilterPopup({
                 </h3>
               </div>
               <div className="mt-3">
-                <Popover className="relative w-full">
-                  {({ open }) => {
-                    const [isOpen, setIsOpen] = useState(false);
-                    const buttonRef = useRef<HTMLButtonElement>(null);
-
-                    useEffect(() => {
-                      if (open !== isOpen) {
-                        setIsOpen(open);
-                      }
-                    }, [open, isOpen]);
-
-                    const bathroomOptions = filterOptions.bathroomCount.map(
-                      (bathroom: number) => ({
-                        name: bathroom.toString(),
-                        href: "#",
-                      })
-                    );
-
-                    const handleBathroomSelect = (bathroom: {
-                      name: string;
-                      href: string;
-                    }) => {
-                      setBathroomCount(bathroom.name);
-                      setIsOpen(false);
-                      buttonRef.current?.click();
-                    };
-
-                    return (
-                      <>
-                        <PopoverButton
-                          ref={buttonRef}
-                          className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg px-4 py-3 h-[56px] text-sm text-gray-700"
-                        >
-                          <div className="flex items-center">
-                            <span className="truncate">
-                              {bathroomCount
-                                ? bathroomCount
-                                : t("bathroomsSelect") ||
-                                  "Select Bathroom Count"}
-                            </span>
-                          </div>
-                          <ChevronDownSolidIcon
-                            className="h-5 w-5 text-gray-400 ml-2"
-                            aria-hidden="true"
-                          />
-                        </PopoverButton>
-
-                        <PopoverPanel className="absolute z-20 mt-2 w-full py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
-                          <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
-                            <div className="p-4">
-                              {bathroomOptions.map((bathroom) => (
-                                <div
-                                  key={bathroom.name}
-                                  className="group relative flex items-center gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
-                                  onClick={() => handleBathroomSelect(bathroom)}
-                                >
-                                  <div>
-                                    <div className="font-semibold text-gray-900">
-                                      {bathroom.name}
-                                    </div>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </PopoverPanel>
-                      </>
-                    );
+                <GeneralSelect
+                  selectedItem={bathroomCount ? { name: bathroomCount } : null}
+                  onSelect={(bathroom) => {
+                    setBathroomCount(bathroom.name);
                   }}
-                </Popover>
+                  options={filterOptions.bathroomCount.map(
+                    (bathroom: number) => ({
+                      name: bathroom.toString(),
+                      href: "#",
+                    })
+                  )}
+                  defaultText={t("bathroomsSelect") || "Select Bathroom Count"}
+                  extraClassName="w-full bg-white border border-gray-200 h-[56px] text-sm text-gray-700"
+                  popoverMaxWidth="300"
+                />
               </div>
             </div>
           </div>
@@ -1287,7 +1077,7 @@ export default function FilterPopup({
                     }
                   }}
                   placeholder={t("minValue")}
-                  className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 h-[56px] text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full bg-white border border-gray-200 rounded-[16px] px-4 py-2 h-[56px] text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
                 {/* <div className="absolute right-2 flex flex-col">
                   <button
@@ -1337,7 +1127,7 @@ export default function FilterPopup({
                     }
                   }}
                   placeholder={t("maxValue")}
-                  className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2 h-[56px] text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full bg-white border border-gray-200 rounded-[16px] px-4 py-2 h-[56px] text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
                 {/* <div className="absolute right-2 flex flex-col">
                   <button
@@ -1627,7 +1417,7 @@ export default function FilterPopup({
                   filters.isThreePlusOneSelected ||
                   filters.isNewSelected))) && (
               <button
-                className="w-full h-[56px] text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50"
+                className="w-full h-[56px] text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-[16px] hover:bg-gray-50"
                 onClick={() => {
                   setMinPrice("");
                   setMaxPrice("");
@@ -1682,7 +1472,7 @@ export default function FilterPopup({
                 onClose && onClose();
               }}
               disabled={hasActiveFilters() && resultsCount === 0}
-              className={`w-full h-[56px] text-sm font-medium text-white rounded-lg cursor-pointer ${
+              className={`w-full h-[56px] text-sm font-medium text-white rounded-[16px] cursor-pointer ${
                 hasActiveFilters() && resultsCount === 0
                   ? "bg-gray-300 cursor-not-allowed"
                   : "bg-[#5E5691] hover:bg-[#4a4574]"

@@ -60,19 +60,19 @@ export default function GeneralSelect({
                 maxWidth: popoverMaxWidth ? `${popoverMaxWidth}px` : "200px",
               }}
             >
-              <div className="w-full  flex-auto overflow-hidden rounded-[16px] bg-white text-sm/6 shadow-2xl ring-1 ring-gray-900/5 ">
-                <div className="p-2">
+              <div className="w-full  flex-auto overflow-hidden rounded-[16px] bg-white text-sm/6 shadow-2xl border border-[#D9D9D9] ring-1 ring-gray-900/5 ">
+                <div className="">
                   {options.map((option) => (
                     <div
                       key={option.name}
-                      className="group relative flex items-center gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
+                      className="group relative flex items-center gap-x-6 rounded-lg p-4 py-3 hover:bg-gray-50 cursor-pointer"
                       onClick={() => {
                         buttonRef.current?.click();
                         onSelect(option);
                       }}
                     >
                       <div>
-                        <div className="font-semibold text-[#595959]">
+                        <div className="font-normal text-[#595959]">
                           {option.name}
                         </div>
                       </div>

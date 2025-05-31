@@ -256,8 +256,8 @@ export default function LocationSelect({
                 isMobileMenu ? "left-0" : "-left-5"
               }`}
             >
-              <div className="w-full max-w-[450px] flex-auto overflow-hidden rounded-[16px] bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
-                <div className="p-4">
+              <div className="w-full max-w-[450px] flex-auto overflow-hidden rounded-[16px] border border-[#D9D9D9] bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
+                <div className="">
                   {(isSearching || isFetchingCoordinates) && (
                     <div className="p-3 text-center text-gray-500">
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900 mx-auto"></div>
@@ -297,7 +297,7 @@ export default function LocationSelect({
                     ? searchResults.map((location, index) => (
                         <div
                           key={location.place_id || `${location.name}-${index}`}
-                          className="group relative flex gap-x-6 rounded-lg p-3 hover:bg-gray-50 cursor-pointer"
+                          className="group relative flex gap-x-6 rounded-lg p-4 py-3 hover:bg-gray-50 cursor-pointer"
                           onClick={() => handleLocationSelect(location)}
                         >
                           <div className="flex-1">
