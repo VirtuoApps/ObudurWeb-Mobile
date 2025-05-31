@@ -75,7 +75,7 @@ export default function MiddleSearchBox({
 
         {/* Buttons */}
         <button
-          className={`relative z-10 py-1.5 text-sm font-medium transition-colors duration-300 cursor-pointer rounded-lg flex-1 min-w-[100px] flex items-center justify-center ${
+          className={`relative z-10 py-1.5 text-sm font-medium transition-colors duration-300 cursor-pointer rounded-lg flex-1 min-w-[100px] flex items-center justify-center h-[36px] w-[132px] ${
             listingType === "For Sale" ? "text-white" : "text-gray-700"
           }`}
           onClick={() => setListingType("For Sale")}
@@ -83,7 +83,7 @@ export default function MiddleSearchBox({
           {t("forSale")}
         </button>
         <button
-          className={`relative z-10 py-1.5 text-sm font-medium transition-colors duration-300 cursor-pointer rounded-lg flex-1 min-w-[100px] flex items-center justify-center ${
+          className={`relative z-10 py-1.5 text-sm font-medium transition-colors duration-300 cursor-pointer rounded-lg flex-1 min-w-[100px] flex items-center justify-center h-[36px] w-[132px] ${
             listingType === "For Rent" ? "text-white" : "text-gray-700"
           }`}
           onClick={() => setListingType("For Rent")}
@@ -102,7 +102,7 @@ export default function MiddleSearchBox({
         setSearchRadius={setSearchRadius}
       />
 
-      <div className="bg-[#F5F5F5] w-[1px] h-[24px]"></div>
+      <div className="bg-[#D9D9D9] w-[1px] h-[24px]"></div>
 
       {/* Emlak Tipi */}
       <PropertyType
@@ -112,7 +112,7 @@ export default function MiddleSearchBox({
         setSelectedCategory={setSelectedCategory}
       />
 
-      <div className="bg-[#F5F5F5] w-[1px] h-[24px]"></div>
+      <div className="bg-[#D9D9D9] w-[1px] h-[24px]"></div>
 
       {/* Kategori */}
       <CategorySelect
@@ -125,7 +125,7 @@ export default function MiddleSearchBox({
 
       {/* Search Button */}
       <button
-        className={`bg-[#5E5691] text-white px-6 py-1.5 rounded-md text-sm font-medium cursor-pointer ${
+        className={`bg-[#5E5691] text-white px-6 py-1.5 rounded-md text-sm font-medium cursor-pointer h-[36px] w-[80px] ${
           isMobileMenu ? "w-full" : ""
         }`}
         onClick={onApplyFilters}

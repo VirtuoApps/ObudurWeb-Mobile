@@ -11,6 +11,7 @@ type GeneralSelectProps = {
   extraClassName?: string;
   popoverMaxWidth?: string;
   maxHeight?: string;
+  customTextColor?: boolean;
 };
 
 export default function GeneralSelect({
@@ -21,6 +22,7 @@ export default function GeneralSelect({
   extraClassName,
   popoverMaxWidth,
   maxHeight,
+  customTextColor,
 }: GeneralSelectProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -43,7 +45,9 @@ export default function GeneralSelect({
               ref={buttonRef}
               className={`${
                 isOpen ? "bg-[#F5F5F5]" : ""
-              } flex items-center justify-between text-gray-700 px-3 py-3 text-sm ${extraClassName} cursor-pointer rounded-[16px] outline-none `}
+              } flex items-center justify-between  px-3 py-3 text-sm ${extraClassName} ${
+                !customTextColor ? "text-gray-700" : ""
+              } cursor-pointer rounded-[16px] outline-none `}
             >
               <div className="flex items-center">
                 <span className="truncate">

@@ -186,7 +186,7 @@ export default function LocationSelect({
           <>
             <PopoverButton
               ref={buttonRef}
-              className={`flex items-center text-gray-700 px-3 py-1.5 text-sm cursor-pointer outline-none ${
+              className={`flex items-center text-[#8c8c8c] hover:text-[#595959] transition-all duration-200 px-3 py-1.5 text-sm cursor-pointer outline-none ${
                 isMobileMenu
                   ? "w-full border rounded-md border-gray-200 justify-between"
                   : "w-[150px]"
