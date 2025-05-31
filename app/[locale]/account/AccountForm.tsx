@@ -8,8 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { updateUserData, resetUpdateStatus } from "../../store/userSlice";
 import { useTranslations } from "next-intl";
 import axiosInstance from "../../../axios";
-import PhoneInput from "react-phone-number-input";
-import "react-phone-number-input/style.css";
+import GeneralSelect from "../../components/GeneralSelect/GeneralSelect";
 
 interface User {
   _id: string;
@@ -35,6 +34,35 @@ export default function AccountForm({ user }: AccountFormProps) {
     (state) => state.user
   );
 
+  // Country codes for phone number
+  const countryCodes = [
+    { name: "+90", code: "+90" }, // Turkey
+    { name: "+1", code: "+1" }, // USA/Canada
+    { name: "+44", code: "+44" }, // UK
+    { name: "+49", code: "+49" }, // Germany
+    { name: "+33", code: "+33" }, // France
+    { name: "+34", code: "+34" }, // Spain
+    { name: "+39", code: "+39" }, // Italy
+    { name: "+31", code: "+31" }, // Netherlands
+    { name: "+46", code: "+46" }, // Sweden
+    { name: "+47", code: "+47" }, // Norway
+    { name: "+45", code: "+45" }, // Denmark
+    { name: "+41", code: "+41" }, // Switzerland
+    { name: "+43", code: "+43" }, // Austria
+    { name: "+32", code: "+32" }, // Belgium
+    { name: "+48", code: "+48" }, // Poland
+    { name: "+7", code: "+7" }, // Russia
+    { name: "+86", code: "+86" }, // China
+    { name: "+81", code: "+81" }, // Japan
+    { name: "+82", code: "+82" }, // South Korea
+    { name: "+91", code: "+91" }, // India
+    { name: "+61", code: "+61" }, // Australia
+    { name: "+64", code: "+64" }, // New Zealand
+    { name: "+55", code: "+55" }, // Brazil
+    { name: "+52", code: "+52" }, // Mexico
+    { name: "+54", code: "+54" }, // Argentina
+  ];
+
   // Create separate states for each form's loading status
   const [profileUpdateLoading, setProfileUpdateLoading] = useState(false);
   const [passwordUpdateLoading, setPasswordUpdateLoading] = useState(false);
@@ -42,6 +70,12 @@ export default function AccountForm({ user }: AccountFormProps) {
   const [currentProfilePicture, setCurrentProfilePicture] = useState(
     user?.profilePicture || ""
   );
+
+  // Phone number states
+  const [selectedCountryCode, setSelectedCountryCode] = useState(
+    countryCodes.find((c) => c.code === "+90") || countryCodes[0]
+  );
+  const [phoneNumberOnly, setPhoneNumberOnly] = useState("");
 
   // File input ref
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -97,11 +131,30 @@ export default function AccountForm({ user }: AccountFormProps) {
     },
   });
 
+  // Initialize phone number from user data
+  useEffect(() => {
+    if (user?.phoneNumber) {
+      // Extract country code and number
+      const countryCode = countryCodes.find((c) =>
+        user.phoneNumber?.startsWith(c.code)
+      );
+      if (countryCode) {
+        setSelectedCountryCode(countryCode);
+        setPhoneNumberOnly(user.phoneNumber.substring(countryCode.code.length));
+      } else {
+        // Default to +90 if no matching country code
+        setSelectedCountryCode(countryCodes[0]);
+        setPhoneNumberOnly(user.phoneNumber);
+      }
+    }
+  }, [user?.phoneNumber]);
+
   // Watch phone number to track changes
   const phoneNumber = watchPersonalInfo("phoneNumber");
 
   // Check if phone number has changed
-  const phoneNumberChanged = phoneNumber !== (user?.phoneNumber || "");
+  const fullPhoneNumber = selectedCountryCode.code + phoneNumberOnly;
+  const phoneNumberChanged = fullPhoneNumber !== (user?.phoneNumber || "");
 
   // Check if any field has changed (including phone number)
   const hasChanges = personalInfoIsDirty || phoneNumberChanged;
@@ -208,8 +261,12 @@ export default function AccountForm({ user }: AccountFormProps) {
     if (data.firstName !== user.firstName)
       updateData.firstName = data.firstName;
     if (data.lastName !== user.lastName) updateData.lastName = data.lastName;
-    if (data.phoneNumber !== user.phoneNumber)
-      updateData.phoneNumber = data.phoneNumber;
+
+    // Handle phone number with country code
+    const completePhoneNumber = selectedCountryCode.code + phoneNumberOnly;
+    if (completePhoneNumber !== user.phoneNumber && phoneNumberOnly) {
+      updateData.phoneNumber = completePhoneNumber;
+    }
 
     if (Object.keys(updateData).length > 0) {
       setProfileUpdateLoading(true);
@@ -422,22 +479,38 @@ export default function AccountForm({ user }: AccountFormProps) {
                 Telefon
               </label>
               <div className="flex gap-2">
-                <PhoneInput
-                  placeholder="Telefon numaranızı girin"
-                  value={phoneNumber}
-                  onChange={(value) =>
-                    setPersonalInfoValue("phoneNumber", value, {
-                      shouldDirty: true,
-                      shouldValidate: true,
-                    })
-                  }
-                  defaultCountry="TR"
-                  className="flex-1"
+                <GeneralSelect
+                  selectedItem={selectedCountryCode}
+                  onSelect={setSelectedCountryCode}
+                  options={countryCodes}
+                  defaultText="+90"
+                  extraClassName="w-[100px] h-[56px] border border-[#E3E3E3] bg-[#F9F9F9]"
+                  popoverMaxWidth="120"
+                  maxHeight="300"
+                />
+                <input
+                  type="tel"
+                  placeholder="123 456 78 90"
+                  value={phoneNumberOnly}
+                  onChange={(e) => {
+                    // Only allow numbers and spaces
+                    const value = e.target.value.replace(/[^\d\s]/g, "");
+                    setPhoneNumberOnly(value);
+                    setPersonalInfoValue(
+                      "phoneNumber",
+                      selectedCountryCode.code + value,
+                      {
+                        shouldDirty: true,
+                        shouldValidate: true,
+                      }
+                    );
+                  }}
+                  className="flex-1 h-[56px] px-3 rounded-2xl border border-[#D9D9D9] text-sm outline-none transition-colors text-[#262626]"
                   style={{
-                    height: "52px",
-                    borderRadius: "8px",
                     backgroundColor: "#F9F9F9",
-                    border: "1px solid #E3E3E3",
+                    borderColor: personalInfoErrors.phoneNumber
+                      ? "#EA394B"
+                      : "#E3E3E3",
                   }}
                 />
               </div>

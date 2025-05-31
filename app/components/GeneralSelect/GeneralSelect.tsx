@@ -10,6 +10,7 @@ type GeneralSelectProps = {
   defaultText: string;
   extraClassName?: string;
   popoverMaxWidth?: string;
+  maxHeight?: string;
 };
 
 export default function GeneralSelect({
@@ -19,6 +20,7 @@ export default function GeneralSelect({
   defaultText,
   extraClassName,
   popoverMaxWidth,
+  maxHeight,
 }: GeneralSelectProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -61,7 +63,12 @@ export default function GeneralSelect({
               }}
             >
               <div className="w-full  flex-auto overflow-hidden rounded-[16px] bg-white text-sm/6 shadow-2xl border border-[#D9D9D9] ring-1 ring-gray-900/5 ">
-                <div className="">
+                <div
+                  className="overflow-y-auto"
+                  style={{
+                    maxHeight: maxHeight ? `${maxHeight}px` : "auto",
+                  }}
+                >
                   {options.map((option) => (
                     <div
                       key={option.name}
