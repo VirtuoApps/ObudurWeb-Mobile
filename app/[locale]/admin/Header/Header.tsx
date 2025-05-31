@@ -22,7 +22,7 @@ export default function Header({ customRedirectUrl }: HeaderProps) {
         {/* Logo */}
         <div
           className="flex items-center cursor-pointer"
-          onClick={() => router.push(customRedirectUrl || "/admin/ilanlar")}
+          onClick={() => router.push("/")}
         >
           <Image
             src="/obudur-logo.png"
