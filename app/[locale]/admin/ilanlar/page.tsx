@@ -3,7 +3,6 @@
 import Header from "../Header/Header";
 import { useEffect, useState, useRef } from "react";
 import {
-  ArrowsUpDownIcon,
   EyeIcon,
   HeartIcon,
   EnvelopeIcon,
@@ -292,38 +291,75 @@ export default function AdminListings() {
   // Get sort icon
   const getSortIcon = (field: string) => {
     if (sortField !== field) {
-      return <ArrowsUpDownIcon className="h-4 w-4 text-gray-400" />;
+      return (
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M5.6001 5.59995L8.0001 3.19995L10.4001 5.59995"
+            stroke="#8C8C8C"
+            strokeWidth="2"
+            strokeLinecap="square"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M10.4001 10.3984L8.0001 12.7984L5.6001 10.3984"
+            stroke="#8C8C8C"
+            strokeWidth="2"
+            strokeLinecap="square"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
     }
     return sortDirection === "asc" ? (
       <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        className="w-4 h-4 text-gray-600"
       >
         <path
-          fillRule="evenodd"
-          d="M10 3a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-1.5 0V3.75A.75.75 0 0 1 10 3Z"
+          d="M5.6001 5.59995L8.0001 3.19995L10.4001 5.59995"
+          stroke="#595959"
+          strokeWidth="2"
+          strokeLinecap="square"
+          strokeLinejoin="round"
         />
         <path
-          fillRule="evenodd"
-          d="M9.22 4.97a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 1 1-1.06 1.06L10 6.81l-3.47 3.47a.75.75 0 0 1-1.06-1.06l4.25-4.25Z"
+          d="M10.4001 10.3984L8.0001 12.7984L5.6001 10.3984"
+          stroke="#BFBFBF"
+          strokeWidth="2"
+          strokeLinecap="square"
+          strokeLinejoin="round"
         />
       </svg>
     ) : (
       <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        className="w-4 h-4 text-gray-600"
       >
         <path
-          fillRule="evenodd"
-          d="M10 17a.75.75 0 0 1-.75-.75V5.75a.75.75 0 0 1 1.5 0v10.5A.75.75 0 0 1 10 17Z"
+          d="M5.6001 5.59995L8.0001 3.19995L10.4001 5.59995"
+          stroke="#BFBFBF"
+          strokeWidth="2"
+          strokeLinecap="square"
+          strokeLinejoin="round"
         />
         <path
-          fillRule="evenodd"
-          d="M10.78 15.03a.75.75 0 0 1-1.06 0l-4.25-4.25a.75.75 0 1 1 1.06-1.06L10 13.19l3.47-3.47a.75.75 0 1 1 1.06 1.06l-4.25 4.25Z"
+          d="M10.4001 10.3984L8.0001 12.7984L5.6001 10.3984"
+          stroke="#595959"
+          strokeWidth="2"
+          strokeLinecap="square"
+          strokeLinejoin="round"
         />
       </svg>
     );
@@ -369,6 +405,12 @@ export default function AdminListings() {
         case "date":
           comparison =
             new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+          break;
+        case "views":
+          comparison = (a.viewCount || 0) - (b.viewCount || 0);
+          break;
+        case "favorites":
+          comparison = (a.favoriteCount || 0) - (b.favoriteCount || 0);
           break;
         case "messages":
           comparison = (a.totalMessageCount || 0) - (b.totalMessageCount || 0);
@@ -701,22 +743,36 @@ export default function AdminListings() {
                         İlan Özeti
                       </th>
                       <th
-                        className="py-4 px-4 text-left text-sm font-bold  tracking-wide text-[#595959] cursor-pointer flex items-center gap-1 border-r border-[#F0F0F0]"
+                        className="py-4 px-4 text-left text-sm font-bold  tracking-wide text-[#595959] cursor-pointer border-r border-[#F0F0F0]"
                         onClick={() => handleSort("price")}
                       >
-                        Fiyat {getSortIcon("price")}
-                      </th>
-                      <th className="py-4 px-4 text-left text-sm font-bold  tracking-wide text-[#595959] border-r border-[#F0F0F0]">
-                        Görüldü
-                      </th>
-                      <th className="py-4 px-4 text-left text-sm font-bold  tracking-wide text-[#595959] border-r border-[#F0F0F0]">
-                        Favori
+                        <div className="flex items-center gap-1">
+                          Fiyat {getSortIcon("price")}
+                        </div>
                       </th>
                       <th
-                        className="py-4 px-4 text-left text-sm font-bold  tracking-wide text-[#595959] cursor-pointer flex items-center gap-1 border-r border-[#F0F0F0]"
+                        className="py-4 px-4 text-left text-sm font-bold  tracking-wide text-[#595959] cursor-pointer border-r border-[#F0F0F0]"
+                        onClick={() => handleSort("views")}
+                      >
+                        <div className="flex items-center gap-1">
+                          Görüldü {getSortIcon("views")}
+                        </div>
+                      </th>
+                      <th
+                        className="py-4 px-4 text-left text-sm font-bold  tracking-wide text-[#595959] cursor-pointer border-r border-[#F0F0F0]"
+                        onClick={() => handleSort("favorites")}
+                      >
+                        <div className="flex items-center gap-1">
+                          Favori {getSortIcon("favorites")}
+                        </div>
+                      </th>
+                      <th
+                        className="py-4 px-4 text-left text-sm font-bold  tracking-wide text-[#595959] cursor-pointer border-r border-[#F0F0F0]"
                         onClick={() => handleSort("messages")}
                       >
-                        Mesaj {getSortIcon("messages")}
+                        <div className="flex items-center gap-1">
+                          Mesaj {getSortIcon("messages")}
+                        </div>
                       </th>
                       <th className="py-4 px-4 text-left text-sm font-bold  tracking-wide text-[#595959] border-r border-[#F0F0F0]">
                         Durum
