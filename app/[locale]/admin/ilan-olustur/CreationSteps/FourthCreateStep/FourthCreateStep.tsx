@@ -391,11 +391,15 @@ export default function FourthCreateStep() {
             <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
               İlan özelliklerini belirleyin.
             </h1>
-            <div className="mt-4 space-y-2 text-gray-500">
-              <p>Bu bölümde ilanınızın özelliklerini seçerek</p>
-              <p>alıcıların ilan detaylarını daha kolay</p>
-              <p>görmesini sağlayabilirsiniz. Doğru özellik</p>
-              <p>seçimi ilanınızın değerini artıracaktır.</p>
+            <div className="mt-4 text-base  text-[#595959] font-medium">
+              <p className="leading-[140%]">
+                İlan vereceğiniz mülkün kategorilerini belirtin.
+                <br />
+                <br />
+                İlan Başlığı ve İlan Açıklaması için farklı dillerde yapacağınız
+                girişler ilanın anlaşılırlığını artıracaktır gibi bir açıklama
+                metni.
+              </p>
             </div>
 
             <GoBackButton handleBack={handleBack} step={4} totalSteps={5} />

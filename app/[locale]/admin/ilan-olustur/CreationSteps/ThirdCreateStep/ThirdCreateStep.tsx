@@ -449,10 +449,14 @@ export default function ThirdCreateStep() {
             <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
               Adres bilgilerini girin.
             </h1>
-            <div className="mt-4 space-y-2 text-gray-500">
-              <p>
-                Bu bölümde ilanınızın adres detaylarını belirleyeceksiniz.
-                Haritadan tam konumu işaretlemeyi unutmayın.
+            <div className="mt-4 text-base  text-[#595959] font-medium">
+              <p className="leading-[140%]">
+                İlan vereceğiniz mülkün kategorilerini belirtin.
+                <br />
+                <br />
+                İlan Başlığı ve İlan Açıklaması için farklı dillerde yapacağınız
+                girişler ilanın anlaşılırlığını artıracaktır gibi bir açıklama
+                metni.
               </p>
             </div>
             <div className="mt-6">

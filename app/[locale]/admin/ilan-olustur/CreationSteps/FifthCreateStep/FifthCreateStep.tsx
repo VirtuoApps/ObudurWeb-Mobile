@@ -450,11 +450,16 @@ export default function FifthCreateStep() {
                 ? "İlan görsellerini düzenleyin."
                 : "İlan görsellerini yükleyin."}
             </h1>
-            <p className="mt-4 text-gray-500">
-              Magna amet sit ac lorem lacus volutpat quis. Faucibus amet quis
-              pellentesque quam augue commodo vitae. Pretium placerat
-              ullamcorper proin massa.
-            </p>
+            <div className="mt-4 text-base  text-[#595959] font-medium">
+              <p className="leading-[140%]">
+                İlan vereceğiniz mülkün kategorilerini belirtin.
+                <br />
+                <br />
+                İlan Başlığı ve İlan Açıklaması için farklı dillerde yapacağınız
+                girişler ilanın anlaşılırlığını artıracaktır gibi bir açıklama
+                metni.
+              </p>
+            </div>
             <GoBackButton
               handleBack={() => {
                 setCurrentStep(4);

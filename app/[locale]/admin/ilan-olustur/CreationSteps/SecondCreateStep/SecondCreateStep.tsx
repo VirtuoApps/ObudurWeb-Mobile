@@ -282,11 +282,14 @@ export default function SecondCreateStep() {
             <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
               İlan detaylarını girin.
             </h1>
-            <div className="mt-4 space-y-2 text-gray-500">
-              <p>
-                Bu bölümde ilanınızın detaylarını belirleyerek alıcıların
-                ilanınıza daha fazla ilgi göstermesini sağlayabilirsiniz. Doğru
-                bilgiler ilanınızın görünürlüğünü ve ilgi düzeyini artıracaktır.
+            <div className="mt-4 text-base  text-[#595959] font-medium">
+              <p className="leading-[140%]">
+                İlan vereceğiniz mülkün kategorilerini belirtin.
+                <br />
+                <br />
+                İlan Başlığı ve İlan Açıklaması için farklı dillerde yapacağınız
+                girişler ilanın anlaşılırlığını artıracaktır gibi bir açıklama
+                metni.
               </p>
             </div>
             <GoBackButton handleBack={handleBack} step={2} totalSteps={5} />

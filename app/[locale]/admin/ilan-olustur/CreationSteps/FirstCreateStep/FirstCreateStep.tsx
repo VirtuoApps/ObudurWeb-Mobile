@@ -276,11 +276,15 @@ export default function FirstCreateStep() {
             <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
               İlan kategorilerini belirleyin.
             </h1>
-            <div className="mt-4 space-y-2 text-gray-500">
-              <p>Bu bölümde ilan kategorilerinizi belirleyerek</p>
-              <p>alıcıların ilanınızı daha kolay bulmasını</p>
-              <p>sağlayabilirsiniz. Doğru kategori seçimi</p>
-              <p>ilanınızın görünürlüğünü artıracaktır.</p>
+            <div className="mt-4 text-base  text-[#595959] font-medium">
+              <p className="leading-[140%]">
+                İlan vereceğiniz mülkün kategorilerini belirtin.
+                <br />
+                <br />
+                İlan Başlığı ve İlan Açıklaması için farklı dillerde yapacağınız
+                girişler ilanın anlaşılırlığını artıracaktır gibi bir açıklama
+                metni.
+              </p>
             </div>
 
             <span className="text-sm text-gray-600 mb-4 sm:mb-0 mt-auto">
