@@ -43,7 +43,7 @@ export default function Footer() {
       {/* Primary top divider */}
       <div className="border-t border-slate-200"></div>
 
-      <div className="max-w-7xl mx-auto px-4 lg:px-0">
+      <div className="max-w-[1440px] mx-auto px-4 lg:px-0 py-24">
         <div className="flex flex-row justify-between pt-8 pb-10">
           {/* Column 1 */}
           <nav className="col-span-1">
@@ -224,10 +224,10 @@ export default function Footer() {
       </div>
 
       {/* Primary bottom divider */}
-      <div className="border-t border-slate-200"></div>
+      <div className="border-t border-[#C1BED4] max-w-[1440px] mx-auto"></div>
 
       {/* Bottom bar */}
-      <div className="max-w-7xl mx-auto px-4 lg:px-0">
+      <div className="max-w-[1440px] mx-auto px-4 lg:px-0">
         <div className="flex justify-between items-center py-6 text-xs text-slate-500">
           <div className="flex items-center">
             <Image
@@ -241,6 +241,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
+      <div className="w-full h-[16px] bg-[#C1BED4]"></div>
     </footer>
   );
 }
