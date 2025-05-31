@@ -135,7 +135,7 @@ export default function AuthBox({
                   e.stopPropagation();
                   router.push("/admin/ilan-olustur");
                 }}
-                className=" rounded-lg px-2 py-3 transition-all duration-300 hover:bg-gray-50 text-[#5E5691] cursor-pointer font-medium text-[14px]"
+                className=" rounded-lg px-2 py-3 transition-all duration-300 hover:bg-gray-50 text-[#5E5691] cursor-pointer font-medium text-[14px] w-[82px] h-[48px]"
               >
                 <p className="">{t("postListing")}</p>
               </button>
