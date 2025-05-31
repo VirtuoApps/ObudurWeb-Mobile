@@ -135,7 +135,7 @@ export default function AuthBox({
                   e.stopPropagation();
                   router.push("/admin/ilan-olustur");
                 }}
-                className=" rounded-lg px-2 py-3 transition-all duration-300 hover:bg-gray-50 text-[#5E5691] cursor-pointer"
+                className=" rounded-lg px-2 py-3 transition-all duration-300 hover:bg-gray-50 text-[#5E5691] cursor-pointer font-medium text-[14px]"
               >
                 <p className="">{t("postListing")}</p>
               </button>
@@ -152,7 +152,7 @@ export default function AuthBox({
           )}
 
           {!user.profilePicture && (
-            <div className="bg-gray-100 rounded-lg flex items-center justify-center py-3 px-3">
+            <div className="bg-gray-100 rounded-lg flex items-center justify-center py-3 px-3 h-[48px] w-[48px]">
               <img src={"/user-profile-03.png"} className="w-6" />
             </div>
           )}
@@ -160,7 +160,7 @@ export default function AuthBox({
           {user.profilePicture && (
             <img
               src={user.profilePicture}
-              className="w-[36px] h-[36px] rounded-md"
+              className="w-[48px] h-[48px] rounded-md"
             />
           )}
         </div>
