@@ -227,13 +227,13 @@ export default function FilterList({
         className={`bg-white flex flex-row ${
           currentView === "map"
             ? "fixed top-24 left-0 right-0 w-[60%] shadow-lg"
-            : "mt-5 mb-7 relative w-full"
+            : "mt-0 mb-7 relative w-full border-b border-[#F0F0F0]"
         } z-10  mx-auto  rounded-2xl`}
       >
         {showRightArrow && (
           <button
             onClick={scrollRight}
-            className="absolute right-23 top-1/2 -translate-y-1/2 z-10 bg-white p-1 rounded-lg border border-gray-200 shadow-md cursor-pointer"
+            className="absolute right-27 top-1/2 -translate-y-1/2 z-10 bg-white p-1 rounded-lg border border-gray-200 shadow-md cursor-pointer"
           >
             <FiChevronRight className="text-gray-600 text-sm" />
           </button>
@@ -250,15 +250,12 @@ export default function FilterList({
 
         <div
           onClick={onChangeCurrentView}
-          className="flex items-center justify-center border-r px-4 py-4 border-gray-200 cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#F5F5F5] hover:scale-105 active:scale-95 group btn-view-switch"
+          className="flex items-center justify-center border-r px-2 py-2 border-gray-200 cursor-pointer  "
         >
-          <div className="transition-transform duration-300 ease-in-out group-hover:rotate-12">
+          <div className="ease-in-out  hover:bg-[#F5F5F5] transition-all duration-300 p-2 rounded-lg">
             {currentView === "map" && <ListViewIcon />}
             {currentView !== "map" && (
-              <img
-                src="/map-icon.png"
-                className="w-4 h-4 transition-all duration-300"
-              />
+              <img src="/map-icon.png" className="w-4 h-4  " />
             )}
           </div>
         </div>
@@ -334,10 +331,10 @@ export default function FilterList({
           </div>
         </div>
         <div
-          className="flex justify-center items-center w-full md:w-auto px-3 border-l border-gray-200 cursor-pointer"
+          className="flex justify-center items-center w-full md:w-auto px-1  border-l border-gray-200 cursor-pointer"
           onClick={() => setIsFilterPopupOpen(true)}
         >
-          <p className="text-xs font-bold ml-1 md:ml-2 text-gray-600 whitespace-nowrap">
+          <p className="text-xs font-bold   text-gray-600 whitespace-nowrap hover:bg-[#F5F5F5] transition-all duration-300 p-2 rounded-lg ml-3 mr-3">
             {t("allFilters")}
           </p>
         </div>
