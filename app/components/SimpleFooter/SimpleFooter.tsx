@@ -3,7 +3,7 @@ import React from "react";
 export default function SimpleFooter() {
   return (
     <>
-      <div className="w-full max-w-[1440px] mx-auto flex justify-between items-center bg-white py-10">
+      <div className="w-full max-w-[1440px] mx-auto flex justify-between items-center bg-white py-10 border-t border-[#EBEAF1] mt-8">
         <div className="flex flex-row items-center">
           <img src="/obudur-icon-v2.png" className="w-[28px] h-[32px]" />
           <p className="text-[#8C8C8C] text-[14px] font-medium ml-5">

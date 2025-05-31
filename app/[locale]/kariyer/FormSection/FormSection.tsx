@@ -87,7 +87,7 @@ export default function FormSection() {
                 placeholder="İsim Soyisim"
                 value={name}
                 onChange={handleInputChange}
-                className="block w-full px-4 py-4 border border-[#F0F0F0] rounded-2xl focus:none  focus:ring-0 focus:outline-none sm:text-sm bg-[#fff] placeholder:text-[#8C8C8C] text-gray-800"
+                className="block w-full px-4 py-4 border border-[#F0F0F0] rounded-2xl focus:none focus:ring-0 focus:outline-none sm:text-sm bg-[#fff] placeholder:text-[#8C8C8C] text-gray-800 hover:border-[#BFBFBF] transition-all duration-300"
               />
             </div>
             <div>
@@ -101,7 +101,7 @@ export default function FormSection() {
                 placeholder="Telefon"
                 value={phone}
                 onChange={handleInputChange}
-                className="block w-full px-4 py-4 border border-[#F0F0F0] rounded-2xl focus:none  focus:ring-0 focus:outline-none sm:text-sm bg-[#fff] placeholder:text-[#8C8C8C] text-gray-800"
+                className="block w-full px-4 py-4 border border-[#F0F0F0] rounded-2xl focus:none focus:ring-0 focus:outline-none sm:text-sm bg-[#fff] placeholder:text-[#8C8C8C] text-gray-800 hover:border-[#BFBFBF] transition-all duration-300"
               />
             </div>
             <div>
@@ -115,7 +115,7 @@ export default function FormSection() {
                 placeholder="E-Posta"
                 value={email}
                 onChange={handleInputChange}
-                className="block w-full px-4 py-4 border border-[#F0F0F0] rounded-2xl focus:none  focus:ring-0 focus:outline-none sm:text-sm bg-[#fff] placeholder:text-[#8C8C8C] text-gray-800"
+                className="block w-full px-4 py-4 border border-[#F0F0F0] rounded-2xl focus:none focus:ring-0 focus:outline-none sm:text-sm bg-[#fff] placeholder:text-[#8C8C8C] text-gray-800 hover:border-[#BFBFBF] transition-all duration-300"
               />
             </div>
           </div>
@@ -129,12 +129,12 @@ export default function FormSection() {
                 selectedCity={selectedCity}
                 setSelectedCity={handleCitySelect}
                 defaultText="Şehir"
-                extraClassName="w-full px-4 py-4 border border-[#F0F0F0] rounded-2xl focus:border-indigo-500 sm:text-sm bg-[#fff] text-gray-500 focus:none focus:ring-0"
+                extraClassName="w-full px-4 py-4 border border-[#F0F0F0] rounded-2xl focus:border-indigo-500 sm:text-sm bg-[#fff] text-gray-500 focus:none focus:ring-0 hover:border-[#BFBFBF] transition-all duration-300"
               />
             </div>
 
             <div
-              className="relative border border-[#F0F0F0] rounded-2xl bg-[#fff] flex items-center justify-between px-4 py-4 cursor-pointer"
+              className="relative border border-[#F0F0F0] rounded-2xl bg-[#fff] flex items-center justify-between px-4 py-4 cursor-pointer hover:border-[#BFBFBF] transition-all duration-300"
               onClick={handleDocumentClick}
             >
               <label
