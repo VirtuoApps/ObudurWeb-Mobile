@@ -11,19 +11,12 @@ import { useRouter } from "@/app/utils/router";
 import { Hotel } from "@/types/hotel.type";
 import ResidentBox from "../ListView/ResidentBox/ResidentBox";
 import { formatAddress } from "@/app/utils/addressFormatter";
+import { getDisplayPrice } from "@/app/utils/priceFormatter";
 import { getLocalizedText } from "../ListView/ListView";
 
 const containerStyle = {
   width: "100%",
   height: "calc(100vh - 80px)",
-};
-
-// Currency symbols mapping
-const currencySymbols: Record<string, string> = {
-  USD: "$",
-  EUR: "€",
-  TRY: "₺",
-  RUB: "₽",
 };
 
 export default function GoogleMapView({
@@ -216,27 +209,6 @@ export default function GoogleMapView({
 
   if (!isLoaded) return <div>Loading...</div>;
 
-  // Helper function to get display price in the selected currency
-  const getDisplayPrice = (hotel: Hotel) => {
-    if (!hotel.price || hotel.price.length === 0) return "";
-
-    // Find price in selected currency
-    const selectedPrice = hotel.price.find(
-      (p) => p.currency === selectedCurrency
-    );
-
-    // If selected currency is not available, use USD or the first available price
-    const usdPrice = hotel.price.find((p) => p.currency === "USD");
-    const price = selectedPrice || usdPrice || hotel.price[0];
-
-    const symbol = currencySymbols[price.currency] || price.currency;
-
-    // Format the price with the appropriate currency symbol
-    return price.currency === "USD" || price.currency === "RUB"
-      ? `${symbol}${price.amount}`
-      : `${price.amount}${symbol}`;
-  };
-
   return (
     <GoogleMap
       mapContainerStyle={containerStyle}
@@ -285,7 +257,7 @@ export default function GoogleMapView({
             key={hotel._id || index}
             position={position}
             label={{
-              text: getDisplayPrice(hotel),
+              text: getDisplayPrice(hotel.price, selectedCurrency),
               color: "white",
               fontSize: "12px",
               fontWeight: "bold",
@@ -387,7 +359,7 @@ export default function GoogleMapView({
                 "en"
               )}
               title={getLocalizedText(selectedHotel.title, "en")}
-              price={getDisplayPrice(selectedHotel)}
+              price={getDisplayPrice(selectedHotel.price, selectedCurrency)}
               bedCount={selectedHotel.bedRoomCount.toString()}
               floorCount={"2"}
               area={`${selectedHotel.projectArea}m2`}

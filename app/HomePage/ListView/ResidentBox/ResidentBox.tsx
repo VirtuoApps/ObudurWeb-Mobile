@@ -39,6 +39,7 @@ interface ResidentBoxProps {
   image?: string;
   images?: string[];
   hotelId: string; // Add hotelId for API calls
+  isListView?: boolean;
 }
 
 export default function ResidentBox({
@@ -57,6 +58,7 @@ export default function ResidentBox({
   image = "/example-house.png",
   images = ["/example-house.png"],
   hotelId,
+  isListView = false,
 }: ResidentBoxProps) {
   const t = useTranslations("residentBox");
   const [isAuthPopupOpen, setIsAuthPopupOpen] = useState(false);
@@ -222,7 +224,12 @@ export default function ResidentBox({
 
           {/* Location */}
           <div className="flex items-start space-x-1 text-[14px] text-[#8C8C8C]">
-            <img src="/marker-02_(3).png" className="w-[16px] h-[16px] mr-1" />
+            <img
+              src="/marker-02_(3).png"
+              className={`w-[16px] h-[16px] mr-1 ${
+                isListView ? "translate-y-1" : ""
+              }`}
+            />
             <span>{locationText}</span>
           </div>
         </div>
