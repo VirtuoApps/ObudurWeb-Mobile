@@ -1,11 +1,5 @@
 import React, { useState, useMemo, useEffect, useCallback } from "react";
-import {
-  GoogleMap,
-  Marker,
-  InfoWindow,
-  Circle,
-  useJsApiLoader,
-} from "@react-google-maps/api";
+import { GoogleMap, Marker, InfoWindow, Circle } from "@react-google-maps/api";
 import HomeDetailsPopup from "./HomeDetailsPopup/HomeDetailsPopup";
 import { useRouter } from "@/app/utils/router";
 import { Hotel } from "@/types/hotel.type";
@@ -13,6 +7,7 @@ import ResidentBox from "../ListView/ResidentBox/ResidentBox";
 import { formatAddress } from "@/app/utils/addressFormatter";
 import { getDisplayPrice } from "@/app/utils/priceFormatter";
 import { getLocalizedText } from "../ListView/ListView";
+import { useGoogleMaps } from "../../contexts/GoogleMapsContext";
 
 const containerStyle = {
   width: "100%",
@@ -30,9 +25,7 @@ export default function GoogleMapView({
   selectedLocation?: any;
   searchRadius?: number;
 }) {
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyA64Bc3Y55vRFuugh8jxMon9ySYur4SvXY",
-  });
+  const { isLoaded } = useGoogleMaps();
 
   const [selectedHotel, setSelectedHotel] = useState<Hotel | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");

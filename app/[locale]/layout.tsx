@@ -7,6 +7,7 @@ import { ReduxProvider } from "../providers/ReduxProvider";
 import FavoritesProvider from "../providers/FavoritesProvider";
 import "../components/nprogress/nprogress.css";
 import { NProgressProvider } from "../components/nprogress";
+import { GoogleMapsProvider } from "../contexts/GoogleMapsContext";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -62,8 +63,10 @@ export default async function LocaleLayout({ children, params }: Props) {
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ReduxProvider>
             <FavoritesProvider>
-              {children}
-              <NProgressProvider />
+              <GoogleMapsProvider>
+                {children}
+                <NProgressProvider />
+              </GoogleMapsProvider>
             </FavoritesProvider>
           </ReduxProvider>
         </NextIntlClientProvider>

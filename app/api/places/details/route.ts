@@ -2,12 +2,12 @@ import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const placeId = url.searchParams.get("placeId");
+  const placeId = url.searchParams.get("place_id");
   const language = url.searchParams.get("language") || "tr";
 
   if (!placeId) {
     return NextResponse.json(
-      { error: "placeId parameter is required" },
+      { error: "place_id parameter is required" },
       { status: 400 }
     );
   }
@@ -15,7 +15,7 @@ export async function GET(request: Request) {
   try {
     const apiUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${encodeURIComponent(
       placeId
-    )}&fields=geometry,formatted_address,name&key=${
+    )}&fields=geometry,formatted_address,name,address_components&key=${
       process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
       "AIzaSyCuWfmRQouyhfUcovYc33TeAvn5kZFeRTs"
     }&language=${language}`;

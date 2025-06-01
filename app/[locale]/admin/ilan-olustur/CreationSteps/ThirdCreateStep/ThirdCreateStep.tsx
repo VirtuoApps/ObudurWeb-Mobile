@@ -6,8 +6,9 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/solid";
 import { useListingForm } from "../CreationSteps";
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 import GoBackButton from "../../GoBackButton/GoBackButton";
+import { useGoogleMaps } from "../../../../../contexts/GoogleMapsContext";
 
 interface Language {
   _id: string;
@@ -75,9 +76,7 @@ export default function ThirdCreateStep() {
     lng: coordinates[0],
   };
 
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyCuWfmRQouyhfUcovYc33TeAvn5kZFeRTs",
-  });
+  const { isLoaded } = useGoogleMaps();
 
   const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
   const [searchInput, setSearchInput] = useState<string>("");
@@ -94,6 +93,17 @@ export default function ThirdCreateStep() {
   const onUnmount = useCallback(function callback() {
     setMapInstance(null);
   }, []);
+
+  // Update map center when coordinates change
+  useEffect(() => {
+    if (mapInstance && coordinates && coordinates.length === 2) {
+      console.log("Updating map center to:", {
+        lat: coordinates[1],
+        lng: coordinates[0],
+      });
+      mapInstance.setCenter({ lat: coordinates[1], lng: coordinates[0] });
+    }
+  }, [coordinates, mapInstance]);
 
   // Fetch suggestions as user types
   useEffect(() => {
@@ -165,6 +175,7 @@ export default function ThirdCreateStep() {
 
   // Function to handle suggestion selection
   const handleSelectSuggestion = async (placeId: string) => {
+    console.log("Selected placeId:", placeId);
     setIsSearching(true);
     setShowSuggestions(false);
 
@@ -172,13 +183,17 @@ export default function ThirdCreateStep() {
       // Get place details
       const response = await fetch(`/api/places/details?place_id=${placeId}`);
 
+      console.log("API Response status:", response.status);
       const data = await response.json();
+      console.log("API Response data:", data);
 
       if (data.status === "OK" && data.result) {
         const result = data.result;
+        console.log("Place result:", result);
 
         if (result.geometry && result.geometry.location) {
           const { lat, lng } = result.geometry.location;
+          console.log("Coordinates:", { lat, lng });
 
           // Update coordinates
           setCoordinates([lng, lat]);
@@ -193,12 +208,22 @@ export default function ThirdCreateStep() {
 
           // Center the map on the found location
           if (mapInstance) {
+            console.log("Map instance exists, centering map");
             mapInstance.setCenter({ lat, lng });
             mapInstance.setZoom(16);
+          } else {
+            console.log("Map instance is null!");
           }
 
           // Process address components
+          if (result.address_components) {
+            updateAddressFromComponents(result.address_components);
+          }
+        } else {
+          console.error("No geometry/location in result:", result);
         }
+      } else {
+        console.error("API response not OK or no result:", data);
       }
     } catch (error) {
       console.error("Error fetching place details:", error);
@@ -708,7 +733,7 @@ export default function ThirdCreateStep() {
                   <GoogleMap
                     mapContainerStyle={containerStyle}
                     center={center}
-                    zoom={14}
+                    zoom={12}
                     onClick={handleMapClick}
                     onLoad={onLoad}
                     onUnmount={onUnmount}
@@ -718,7 +743,7 @@ export default function ThirdCreateStep() {
                     }}
                   >
                     <Marker
-                      position={center}
+                      position={{ lat: coordinates[1], lng: coordinates[0] }}
                       draggable={true}
                       onDragEnd={(e) => {
                         if (e.latLng) {

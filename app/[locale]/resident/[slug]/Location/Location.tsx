@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 import { IconType } from "react-icons";
 import { useTranslations } from "next-intl";
 import {
@@ -25,6 +25,7 @@ import {
 } from "react-icons/fi";
 import { useHotelData } from "../hotelContext";
 import { LocalizedText } from "../page";
+import { useGoogleMaps } from "../../../../contexts/GoogleMapsContext";
 interface DistanceItem {
   icon: IconType;
   label: string;
@@ -53,9 +54,7 @@ export default function Location() {
     height: "500px",
   };
 
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyA64Bc3Y55vRFuugh8jxMon9ySYur4SvXY",
-  });
+  const { isLoaded } = useGoogleMaps();
 
   return (
     <section id="location-section" className="max-w-5xl mx-auto p-4 mt-12">
