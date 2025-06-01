@@ -215,7 +215,7 @@ export default function AuthBox({
             )}
 
             <Link
-              href="/favorilerim"
+              href="/favori-aramalar"
               className=" px-4 py-2 text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center"
             >
               <img src="/heart.png" className="w-[20px] h-[20px] mr-2" />
