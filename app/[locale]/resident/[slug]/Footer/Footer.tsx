@@ -117,7 +117,10 @@ export default function Footer() {
           <nav className="col-span-1">
             <ul className="space-y-2">
               <li>
-                <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
+                <a
+                  href="/iletisim"
+                  className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                >
                   Geri Bildirim
                 </a>
               </li>
