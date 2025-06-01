@@ -3,7 +3,7 @@ import React from "react";
 export default function HeaderSection() {
   return (
     <div className="w-full py-10">
-      <div className="container mx-auto px-6 flex items-center justify-between">
+      <div className="max-w-[1440px] mx-auto  flex items-center justify-between">
         {/* Left side - Title and subtitle */}
         <div>
           <h1 className="text-2xl font-bold text-[#262626] mb-2">
