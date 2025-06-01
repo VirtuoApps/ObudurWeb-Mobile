@@ -14,6 +14,7 @@ import { FilterOptions } from "@/types/filter-options.type";
 import { currencyOptions } from "@/app/components/LanguageSwitcher";
 import { filterHotelsByProximity } from "@/app/utils/geoUtils";
 import Footer from "../[locale]/resident/[slug]/Footer/Footer";
+import SaveFilterPopup from "./SaveFilterPopup/SaveFilterPopup";
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
   loading: () => {
@@ -89,6 +90,8 @@ export default function HomePage({
     "For Sale"
   );
   const [searchRadius, setSearchRadius] = useState<number>(5); // Default 50km radius
+
+  const [isSaveFilterPopupOpen, setIsSaveFilterPopupOpen] = useState(false);
 
   console.log({
     filters,
@@ -356,130 +359,145 @@ export default function HomePage({
   }
 
   return (
-    <div className="bg-white">
-      <Header
-        setFilters={setFilters}
-        filterOptions={filterOptions}
-        selectedLocation={selectedLocation}
-        selectedPropertyType={selectedPropertyType}
-        selectedCategory={selectedCategory}
-        listingType={listingType}
-        setListingType={setListingType}
-        setSelectedPropertyType={setSelectedPropertyType}
-        setSelectedCategory={setSelectedCategory}
-        setSelectedLocation={setSelectedLocation}
-        searchRadius={searchRadius}
-        setSearchRadius={setSearchRadius}
+    <>
+      <SaveFilterPopup
+        isOpen={isSaveFilterPopupOpen}
+        onClose={() => setIsSaveFilterPopupOpen(false)}
+        onSave={() => {}}
       />
-      <FilterList
-        features={features}
-        selectedFeatures={selectedFeatures}
-        setSelectedFeatures={setSelectedFeatures}
-        currentView={currentView}
-        listingType={listingType}
-        setListingType={setListingType}
-        onChangeCurrentView={() =>
-          handleViewChange(currentView === "map" ? "list" : "map")
-        }
-        filterOptions={filterOptions}
-        selectedLocation={selectedLocation}
-        setSelectedLocation={setSelectedLocation}
-        selectedPropertyType={selectedPropertyType}
-        setSelectedPropertyType={setSelectedPropertyType}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-        filters={filters || null}
-        setFilters={setFilters}
-        minPrice={minPrice}
-        setMinPrice={setMinPrice}
-        maxPrice={maxPrice}
-        setMaxPrice={setMaxPrice}
-        minArea={minArea}
-        setMinArea={setMinArea}
-        maxArea={maxArea}
-        setMaxArea={setMaxArea}
-        roomCount={roomCount}
-        setRoomCount={setRoomCount}
-        bathroomCount={bathroomCount}
-        setBathroomCount={setBathroomCount}
-        selectedExteriorFeatures={selectedExteriorFeatures}
-        setSelectedExteriorFeatures={setSelectedExteriorFeatures}
-        selectedAccessibilityFeatures={selectedAccessibilityFeatures}
-        setSelectedAccessibilityFeatures={setSelectedAccessibilityFeatures}
-        accessibilityFeatures={accessibilityFeatures}
-        setAccessibilityFeatures={setAccessibilityFeatures}
-        selectedFaceFeatures={selectedFaceFeatures}
-        setSelectedFaceFeatures={setSelectedFaceFeatures}
-        faceFeatures={faceFeatures}
-        setFaceFeatures={setFaceFeatures}
-        currencyCode={currencyCode}
-        setCurrencyCode={setCurrencyCode}
-        interiorFeatures={interiorFeatures}
-        setInteriorFeatures={setInteriorFeatures}
-        allQuickFilters={allQuickFilters}
-        hotels={hotels}
-        selectedCurrency={selectedCurrency}
-        searchRadius={searchRadius}
-      />
+      <div className="bg-white">
+        <Header
+          setFilters={setFilters}
+          filterOptions={filterOptions}
+          selectedLocation={selectedLocation}
+          selectedPropertyType={selectedPropertyType}
+          selectedCategory={selectedCategory}
+          listingType={listingType}
+          setListingType={setListingType}
+          setSelectedPropertyType={setSelectedPropertyType}
+          setSelectedCategory={setSelectedCategory}
+          setSelectedLocation={setSelectedLocation}
+          searchRadius={searchRadius}
+          setSearchRadius={setSearchRadius}
+        />
+        <FilterList
+          features={features}
+          selectedFeatures={selectedFeatures}
+          setSelectedFeatures={setSelectedFeatures}
+          currentView={currentView}
+          listingType={listingType}
+          setListingType={setListingType}
+          onChangeCurrentView={() =>
+            handleViewChange(currentView === "map" ? "list" : "map")
+          }
+          filterOptions={filterOptions}
+          selectedLocation={selectedLocation}
+          setSelectedLocation={setSelectedLocation}
+          selectedPropertyType={selectedPropertyType}
+          setSelectedPropertyType={setSelectedPropertyType}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          filters={filters || null}
+          setFilters={setFilters}
+          minPrice={minPrice}
+          setMinPrice={setMinPrice}
+          maxPrice={maxPrice}
+          setMaxPrice={setMaxPrice}
+          minArea={minArea}
+          setMinArea={setMinArea}
+          maxArea={maxArea}
+          setMaxArea={setMaxArea}
+          roomCount={roomCount}
+          setRoomCount={setRoomCount}
+          bathroomCount={bathroomCount}
+          setBathroomCount={setBathroomCount}
+          selectedExteriorFeatures={selectedExteriorFeatures}
+          setSelectedExteriorFeatures={setSelectedExteriorFeatures}
+          selectedAccessibilityFeatures={selectedAccessibilityFeatures}
+          setSelectedAccessibilityFeatures={setSelectedAccessibilityFeatures}
+          accessibilityFeatures={accessibilityFeatures}
+          setAccessibilityFeatures={setAccessibilityFeatures}
+          selectedFaceFeatures={selectedFaceFeatures}
+          setSelectedFaceFeatures={setSelectedFaceFeatures}
+          faceFeatures={faceFeatures}
+          setFaceFeatures={setFaceFeatures}
+          currencyCode={currencyCode}
+          setCurrencyCode={setCurrencyCode}
+          interiorFeatures={interiorFeatures}
+          setInteriorFeatures={setInteriorFeatures}
+          allQuickFilters={allQuickFilters}
+          hotels={hotels}
+          selectedCurrency={selectedCurrency}
+          searchRadius={searchRadius}
+        />
 
-      {/* View Container with Transitions */}
-      <div className="relative overflow-hidden">
-        {/* Loading overlay during transitions */}
-        {isTransitioning && (
-          <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-10 flex items-center justify-center">
-            <div className="loading-pulse">
-              <div className="w-8 h-8 border-2 border-[#5E5691] border-t-transparent rounded-full animate-spin"></div>
+        {/* View Container with Transitions */}
+        <div className="relative overflow-hidden">
+          {/* Loading overlay during transitions */}
+          {isTransitioning && (
+            <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-10 flex items-center justify-center">
+              <div className="loading-pulse">
+                <div className="w-8 h-8 border-2 border-[#5E5691] border-t-transparent rounded-full animate-spin"></div>
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {(filters || selectedLocation) && filteredHotels.length === 0 ? (
-          <div
-            className={`transition-all duration-400 ease-out ${
-              isTransitioning
-                ? "opacity-0 transform translate-y-6 scale-95"
-                : "opacity-100 transform translate-y-0 scale-100 animate-fade-in-up"
-            }`}
-          >
-            <NoResultsFound />
-          </div>
-        ) : (
-          <div
-            className={`transition-all duration-400 ease-out ${
-              isTransitioning
-                ? "opacity-0 transform translate-y-6 scale-95"
-                : "opacity-100 transform translate-y-0 scale-100"
-            } ${
-              currentView === "map"
-                ? "map-to-list-transition"
-                : "list-to-map-transition"
-            }`}
-          >
-            {currentView === "map" ? (
-              <div className={!isTransitioning ? "animate-slide-in-left" : ""}>
-                <MapView
-                  key={selectedFeatures.length}
-                  hotels={filteredHotels}
-                  totalHotelsCount={hotels.length}
-                  selectedLocation={selectedLocation}
-                  searchRadius={searchRadius}
-                />
-              </div>
-            ) : (
-              <div className={!isTransitioning ? "animate-slide-in-right" : ""}>
-                <ListView
-                  hotels={filteredHotels}
-                  sortOption={sortOption}
-                  setSortOption={setSortOption}
-                />
-                <Footer />
-              </div>
-            )}
-          </div>
-        )}
+          {(filters || selectedLocation) && filteredHotels.length === 0 ? (
+            <div
+              className={`transition-all duration-400 ease-out ${
+                isTransitioning
+                  ? "opacity-0 transform translate-y-6 scale-95"
+                  : "opacity-100 transform translate-y-0 scale-100 animate-fade-in-up"
+              }`}
+            >
+              <NoResultsFound />
+            </div>
+          ) : (
+            <div
+              className={`transition-all duration-400 ease-out ${
+                isTransitioning
+                  ? "opacity-0 transform translate-y-6 scale-95"
+                  : "opacity-100 transform translate-y-0 scale-100"
+              } ${
+                currentView === "map"
+                  ? "map-to-list-transition"
+                  : "list-to-map-transition"
+              }`}
+            >
+              {currentView === "map" ? (
+                <div
+                  className={!isTransitioning ? "animate-slide-in-left" : ""}
+                >
+                  <MapView
+                    key={selectedFeatures.length}
+                    hotels={filteredHotels}
+                    totalHotelsCount={hotels.length}
+                    selectedLocation={selectedLocation}
+                    searchRadius={searchRadius}
+                  />
+                </div>
+              ) : (
+                <div
+                  className={!isTransitioning ? "animate-slide-in-right" : ""}
+                >
+                  <ListView
+                    hotels={filteredHotels}
+                    sortOption={sortOption}
+                    setSortOption={setSortOption}
+                    setIsSaveFilterPopupOpen={setIsSaveFilterPopupOpen}
+                    isCurrentFilterExist={
+                      hotels.length !== filteredHotels.length
+                    }
+                  />
+                  <Footer />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* <ViewSwitcher currentView={currentView} setCurrentView={setCurrentView} /> */}
       </div>
-
-      {/* <ViewSwitcher currentView={currentView} setCurrentView={setCurrentView} /> */}
-    </div>
+    </>
   );
 }

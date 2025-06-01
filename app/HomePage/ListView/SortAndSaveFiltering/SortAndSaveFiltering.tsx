@@ -6,12 +6,16 @@ interface SortAndSaveFilteringProps {
     React.SetStateAction<"ascending" | "descending" | null>
   >;
   totalHotelsCount: number;
+  setIsSaveFilterPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isCurrentFilterExist: boolean;
 }
 
 export default function SortAndSaveFiltering({
   sortOption,
   setSortOption,
   totalHotelsCount,
+  setIsSaveFilterPopupOpen,
+  isCurrentFilterExist,
 }: SortAndSaveFilteringProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -27,9 +31,16 @@ export default function SortAndSaveFiltering({
       </p>
 
       <div className="flex flex-row items-center gap-2">
-        <button className="border bg-transparent rounded-xl px-5 py-3 cursor-pointer">
-          <p className="text-sm text-[#5E5691] font-semibold">Aramayı Kaydet</p>
-        </button>
+        {isCurrentFilterExist && (
+          <button
+            onClick={() => setIsSaveFilterPopupOpen(true)}
+            className="border bg-transparent rounded-xl px-5 py-3 cursor-pointer"
+          >
+            <p className="text-sm text-[#5E5691] font-semibold">
+              Aramayı Kaydet
+            </p>
+          </button>
+        )}
 
         <div className="relative">
           <button

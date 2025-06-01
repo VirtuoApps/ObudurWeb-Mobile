@@ -18,12 +18,16 @@ export default function ListView({
   hotels,
   sortOption,
   setSortOption,
+  setIsSaveFilterPopupOpen,
+  isCurrentFilterExist,
 }: {
   hotels: Hotel[];
   sortOption: "ascending" | "descending" | null;
   setSortOption: React.Dispatch<
     React.SetStateAction<"ascending" | "descending" | null>
   >;
+  setIsSaveFilterPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isCurrentFilterExist: boolean;
 }) {
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -94,6 +98,8 @@ export default function ListView({
         sortOption={sortOption}
         setSortOption={setSortOption}
         totalHotelsCount={hotels.length}
+        setIsSaveFilterPopupOpen={setIsSaveFilterPopupOpen}
+        isCurrentFilterExist={isCurrentFilterExist}
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-5 gap-4 bg-white  px-2 ">
