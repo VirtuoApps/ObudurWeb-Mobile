@@ -364,6 +364,22 @@ export default function HomePage({
         isOpen={isSaveFilterPopupOpen}
         onClose={() => setIsSaveFilterPopupOpen(false)}
         onSave={() => {}}
+        filters={filters}
+        listingType={listingType}
+        selectedLocation={selectedLocation}
+        selectedPropertyType={selectedPropertyType}
+        selectedCategory={selectedCategory}
+        minPrice={minPrice}
+        maxPrice={maxPrice}
+        minArea={minArea}
+        maxArea={maxArea}
+        roomCount={roomCount}
+        bathroomCount={bathroomCount}
+        selectedFeatures={selectedFeatures}
+        interiorFeatures={interiorFeatures}
+        selectedExteriorFeatures={selectedExteriorFeatures}
+        selectedAccessibilityFeatures={selectedAccessibilityFeatures}
+        selectedFaceFeatures={selectedFaceFeatures}
       />
       <div className="bg-white">
         <Header
