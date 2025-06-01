@@ -76,7 +76,7 @@ export default function GoogleMapView({
       selectedHotel.location.coordinates.length === 2
     ) {
       return {
-        lat: selectedHotel.location.coordinates[1] + 0.01,
+        lat: selectedHotel.location.coordinates[1] + 0.003, // Balanced offset for centering
         lng: selectedHotel.location.coordinates[0],
       };
     }
@@ -191,6 +191,28 @@ export default function GoogleMapView({
       }
     }
   }, [mapInstance, hotels, center, totalHotelsCount, selectedLocation]);
+
+  useEffect(() => {
+    if (
+      mapInstance &&
+      selectedHotel &&
+      selectedHotel.location &&
+      !hideSelectedHotel
+    ) {
+      // When a hotel is selected, pan to it with an offset to avoid top bar overlap
+      const position = {
+        lat: selectedHotel.location.coordinates[1] + 0.004, // Balanced offset to avoid top bar but stay close to marker
+        lng: selectedHotel.location.coordinates[0],
+      };
+      mapInstance.panTo(position);
+
+      // Optionally adjust zoom if needed
+      const currentZoom = mapInstance.getZoom();
+      if (currentZoom !== undefined && currentZoom < 15) {
+        mapInstance.setZoom(15);
+      }
+    }
+  }, [selectedHotel, mapInstance, hideSelectedHotel]);
 
   if (!isLoaded) return <div>Loading...</div>;
 
@@ -333,13 +355,14 @@ export default function GoogleMapView({
       {selectedHotel && selectedHotel.location && !hideSelectedHotel && (
         <InfoWindow
           position={{
-            lat: selectedHotel.location.coordinates[1],
+            lat: selectedHotel.location.coordinates[1] + 0.001, // Minimal offset to keep InfoWindow close to marker
             lng: selectedHotel.location.coordinates[0],
           }}
           onCloseClick={() => setSelectedHotel(null)}
           options={{
             disableAutoPan: false,
-            pixelOffset: new window.google.maps.Size(0, -8), // 8px spacing above the marker
+            pixelOffset: new window.google.maps.Size(0, 4), // Balanced offset - not too far from marker
+            maxWidth: 356,
           }}
         >
           <div
