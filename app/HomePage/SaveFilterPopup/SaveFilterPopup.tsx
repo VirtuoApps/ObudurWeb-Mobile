@@ -28,6 +28,7 @@ interface SaveFilterPopupProps {
   selectedExteriorFeatures: any[];
   selectedAccessibilityFeatures: any[];
   selectedFaceFeatures: any[];
+  resultCount: number;
 }
 
 export default function SaveFilterPopup({
@@ -50,6 +51,7 @@ export default function SaveFilterPopup({
   selectedExteriorFeatures,
   selectedAccessibilityFeatures,
   selectedFaceFeatures,
+  resultCount,
 }: SaveFilterPopupProps) {
   const [searchName, setSearchName] = useState("");
   const [inAppNotifications, setInAppNotifications] = useState(false);
@@ -125,6 +127,7 @@ export default function SaveFilterPopup({
               }))
             : undefined,
         selectedLocation,
+        resultCount,
       };
 
       // Remove null values to send only set filters

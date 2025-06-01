@@ -374,6 +374,7 @@ export default function HomePage({
         selectedExteriorFeatures={selectedExteriorFeatures}
         selectedAccessibilityFeatures={selectedAccessibilityFeatures}
         selectedFaceFeatures={selectedFaceFeatures}
+        resultCount={filteredHotels.length}
       />
       <div className="bg-white">
         <Header
