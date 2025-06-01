@@ -126,7 +126,7 @@ export default function CategorySelect({
       onSelect={handleCategorySelect}
       options={categories}
       defaultText={t("category")}
-      extraClassName="min-w-[150px] text-[#8c8c8c] hover:text-[#595959] transition-all duration-300"
+      extraClassName="min-w-[180px] text-[#8c8c8c] hover:text-[#595959] transition-all duration-300"
       customTextColor={true}
     />
   );
