@@ -63,6 +63,7 @@ export default function SixthCreateStep() {
   const [uploadingDocs, setUploadingDocs] = useState<{
     [key: string]: boolean;
   }>({});
+  const [dragActive, setDragActive] = useState<{ [key: string]: boolean }>({});
   const fileInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
 
   // Initialize document links from existing documents
@@ -191,6 +192,34 @@ export default function SixthCreateStep() {
     const docKey = `${docType.tr}_${docType.en}`;
     const link = documentLinks[docKey];
     return link && (link.startsWith("http://") || link.startsWith("https://"));
+  };
+
+  // Handle drag events
+  const handleDrag = (e: React.DragEvent, docKey: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive((prev) => ({ ...prev, [docKey]: true }));
+    } else if (e.type === "dragleave") {
+      setDragActive((prev) => ({ ...prev, [docKey]: false }));
+    }
+  };
+
+  // Handle drop event
+  const handleDrop = async (
+    e: React.DragEvent,
+    docType: (typeof DOCUMENT_TYPES)[0]
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const docKey = `${docType.tr}_${docType.en}`;
+    setDragActive((prev) => ({ ...prev, [docKey]: false }));
+
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      const file = e.dataTransfer.files[0];
+      await uploadDocument(file, docType);
+    }
   };
 
   // Submit hotel creation or update
@@ -402,12 +431,18 @@ export default function SixthCreateStep() {
                     <div
                       className={`border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center ${
                         hasDocument ? "bg-green-50" : "bg-white"
-                      } ${!hasDocument ? "cursor-pointer" : ""}`}
+                      } ${!hasDocument ? "cursor-pointer" : ""} ${
+                        dragActive[docKey] ? "border-blue-500 bg-blue-50" : ""
+                      } transition-colors`}
                       onClick={() => {
                         if (!hasDocument && fileInputRefs.current[docKey]) {
                           fileInputRefs.current[docKey]?.click();
                         }
                       }}
+                      onDragEnter={(e) => handleDrag(e, docKey)}
+                      onDragLeave={(e) => handleDrag(e, docKey)}
+                      onDragOver={(e) => handleDrag(e, docKey)}
+                      onDrop={(e) => handleDrop(e, docType)}
                     >
                       <input
                         type="file"
@@ -497,7 +532,11 @@ export default function SixthCreateStep() {
                             viewBox="0 0 24 24"
                             strokeWidth={1.5}
                             stroke="currentColor"
-                            className="w-8 h-8 text-gray-400"
+                            className={`w-8 h-8 ${
+                              dragActive[docKey]
+                                ? "text-blue-500"
+                                : "text-gray-400"
+                            } transition-colors`}
                           >
                             <path
                               strokeLinecap="round"
@@ -505,9 +544,22 @@ export default function SixthCreateStep() {
                               d="M12 4.5v15m7.5-7.5h-15"
                             />
                           </svg>
-                          <p className="mt-2 text-sm text-gray-600">
-                            Bilgisayardan yükle veya sürükle bırak
+                          <p
+                            className={`mt-2 text-sm ${
+                              dragActive[docKey]
+                                ? "text-blue-600"
+                                : "text-gray-600"
+                            } transition-colors`}
+                          >
+                            {dragActive[docKey]
+                              ? "Dosyayı bırakın"
+                              : "Bilgisayardan yükle veya sürükle bırak"}
                           </p>
+                          {dragActive[docKey] && (
+                            <p className="mt-1 text-xs text-blue-500">
+                              PDF, DOC, DOCX, JPG, JPEG, PNG
+                            </p>
+                          )}
                         </>
                       )}
                     </div>
