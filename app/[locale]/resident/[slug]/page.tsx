@@ -77,7 +77,10 @@ interface HotelDetails {
   featureIds: string[];
   distances: { typeId: string; value: number }[];
   location: LocationPoint;
-  documents: string[];
+  documents: {
+    name: LocalizedText;
+    file: string;
+  }[];
   createdAt: string;
   updatedAt: string;
   __v: number;
@@ -148,7 +151,9 @@ export default async function ResidentPage({
             <FeaturesEquipment />
             {video && <PanoramicView video={video} />}
             <Location />
-            <PlansAndDocumentation />
+            <PlansAndDocumentation
+              documents={hotelData.hotelDetails.documents}
+            />
           </div>
 
           <div className="md:w-[30%] w-full p-4 pt-2">
