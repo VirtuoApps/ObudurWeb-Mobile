@@ -104,7 +104,7 @@ export default function SaveFilterPopup({
           selectedFaceFeatures.map((f) => f._id).length > 0
             ? selectedFaceFeatures.map((f) => f._id)
             : filters?.faceFeatureIds || null,
-        locationFeatureIds: selectedLocation ? [selectedLocation._id] : null,
+        locationFeatureIds: null,
         isNewSelected: filters?.isNewSelected || null,
         isOnePlusOneSelected: filters?.isOnePlusOneSelected || null,
         isTwoPlusOneSelected: filters?.isTwoPlusOneSelected || null,
@@ -124,6 +124,7 @@ export default function SaveFilterPopup({
                 __v: feature.__v || 0,
               }))
             : undefined,
+        selectedLocation,
       };
 
       // Remove null values to send only set filters

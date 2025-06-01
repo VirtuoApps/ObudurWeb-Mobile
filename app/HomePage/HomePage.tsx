@@ -158,12 +158,6 @@ export default function HomePage({
   }
 
   if (filters) {
-    if (filters.state) {
-      filteredHotels = filteredHotels.filter((hotel) =>
-        Object.values(hotel.state).some((value) => value === filters.state)
-      );
-    }
-
     if (filters.propertyType) {
       filteredHotels = filteredHotels.filter((hotel) =>
         Object.values(hotel.housingType).some(

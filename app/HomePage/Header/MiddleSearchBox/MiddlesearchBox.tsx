@@ -125,9 +125,10 @@ export default function MiddleSearchBox({
 
       {/* Search Button */}
       <button
-        className={`bg-[#5E5691] text-white px-6 py-1.5 rounded-md text-sm font-medium cursor-pointer h-[36px] w-[80px] ${
-          isMobileMenu ? "w-full" : ""
-        }`}
+        className={`bg-[#5E5691] text-white flex items-center justify-center
+          text-center px-6 py-1.5 rounded-md text-sm font-medium cursor-pointer h-[36px] w-[80px] ${
+            isMobileMenu ? "w-full" : ""
+          }`}
         onClick={onApplyFilters}
       >
         {filterT("search")}

@@ -32,6 +32,10 @@ export default function GoogleMapView({
   const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
   const [hideSelectedHotel, setHideSelectedHotel] = useState(false);
 
+  console.log({
+    selectedLocation: JSON.stringify(selectedLocation),
+  });
+
   const router = useRouter();
 
   // Get selected currency from localStorage

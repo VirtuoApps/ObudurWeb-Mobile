@@ -119,18 +119,26 @@ export default function LocationSelect({
     try {
       setIsFetchingCoordinates(true);
       const response = await fetch(
-        `/api/places/details?placeId=${encodeURIComponent(
+        `/api/places/details?place_id=${encodeURIComponent(
           placeId
         )}&language=${locale}`
       );
 
       const data = await response.json();
 
+      console.log("Place details API response:", data); // Debug log
+
       if (data.status === "OK" && data.result?.geometry?.location) {
         const { lat, lng } = data.result.geometry.location;
+        console.log("Coordinates found:", { lat, lng }); // Debug log
         return [lng, lat]; // Return as [longitude, latitude] to match GeoJSON format
       }
 
+      console.error(
+        "Failed to get coordinates:",
+        data.status,
+        data.error_message
+      ); // Better error logging
       return null;
     } catch (error) {
       console.error("Error fetching location coordinates:", error);
