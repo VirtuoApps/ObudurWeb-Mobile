@@ -1,20 +1,124 @@
 "use client";
 
 import React from "react";
+import { SavedFilter } from "../../api/savedFilters";
 
-export default function FilterBox() {
-  const [siteNotifications, setSiteNotifications] = React.useState(true);
-  const [emailNotifications, setEmailNotifications] = React.useState(false);
+interface FilterBoxProps {
+  filter: SavedFilter;
+  onUpdate?: () => void;
+  onDelete?: () => void;
+}
+
+export default function FilterBox({
+  filter,
+  onUpdate,
+  onDelete,
+}: FilterBoxProps) {
+  const [siteNotifications, setSiteNotifications] = React.useState(
+    filter.enableNotifications
+  );
+  const [emailNotifications, setEmailNotifications] = React.useState(
+    filter.enableMailNotifications
+  );
+
+  // Format the date
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    const options: Intl.DateTimeFormatOptions = {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    };
+    return date.toLocaleDateString("tr-TR", options) + "'te kaydedildi";
+  };
+
+  // Build category text
+  const getCategoryText = () => {
+    const parts = [];
+    if (filter.listingType) parts.push(filter.listingType);
+    if (filter.state) parts.push(filter.state);
+    if (filter.propertyType) parts.push(filter.propertyType);
+    return parts.join(", ") || "-";
+  };
+
+  // Build location text
+  const getLocationText = () => {
+    if (filter.selectedLocation) {
+      return filter.selectedLocation.name;
+    }
+    return "-";
+  };
+
+  // Build filters text
+  const getFiltersText = () => {
+    const filters = [];
+
+    // Room selection
+    if (filter.roomAsText) filters.push(filter.roomAsText);
+
+    // Area
+    if (filter.minProjectArea || filter.maxProjectArea) {
+      if (filter.minProjectArea && filter.maxProjectArea) {
+        filters.push(`${filter.minProjectArea}-${filter.maxProjectArea} m²`);
+      } else if (filter.minProjectArea) {
+        filters.push(`Min ${filter.minProjectArea} m²`);
+      } else if (filter.maxProjectArea) {
+        filters.push(`Max ${filter.maxProjectArea} m²`);
+      }
+    }
+
+    // Price
+    if (filter.minPrice || filter.maxPrice) {
+      if (filter.minPrice && filter.maxPrice) {
+        filters.push(
+          `${filter.minPrice.toLocaleString(
+            "tr-TR"
+          )}-${filter.maxPrice.toLocaleString("tr-TR")} TL`
+        );
+      } else if (filter.minPrice) {
+        filters.push(`Min ${filter.minPrice.toLocaleString("tr-TR")} TL`);
+      } else if (filter.maxPrice) {
+        filters.push(`Max ${filter.maxPrice.toLocaleString("tr-TR")} TL`);
+      }
+    }
+
+    // Features
+    if (filter.selectedFeatures && filter.selectedFeatures.length > 0) {
+      const featureNames = filter.selectedFeatures
+        .slice(0, 3)
+        .map((f) => f.name);
+      filters.push(...featureNames);
+
+      if (filter.selectedFeatures.length > 3) {
+        filters.push(`+${filter.selectedFeatures.length - 3} Filtre daha`);
+      }
+    }
+
+    // Feature IDs count
+    const featureCount =
+      (filter.interiorFeatureIds?.length || 0) +
+      (filter.exteriorFeatureIds?.length || 0) +
+      (filter.accessibilityFeatureIds?.length || 0) +
+      (filter.faceFeatureIds?.length || 0) +
+      (filter.locationFeatureIds?.length || 0);
+
+    if (featureCount > 0 && filter.selectedFeatures.length === 0) {
+      filters.push(`${featureCount} özellik seçili`);
+    }
+
+    return filters.join(", ") || "-";
+  };
 
   return (
-    <div className="bg-white rounded-4xl   shadow-sm w-1/2">
+    <div className="bg-white rounded-4xl shadow-sm w-full">
       {/* Header Section */}
       <div className="flex flex-row items-center justify-between w-full pb-6 border-b border-[#F0F0F0] mb-6 p-6">
         <h2 className="text-[#262626] font-bold text-base leading-[140%] tracking-normal align-middle">
-          Antalya Merkez Villa
+          {filter.filterName}
         </h2>
         <p className="text-[#8C8C8C] font-normal text-base leading-[140%] tracking-normal align-middle mt-1">
-          23 Nisan 2025'te kaydedildi
+          {formatDate(filter.createdAt)}
         </p>
       </div>
 
@@ -25,7 +129,7 @@ export default function FilterBox() {
             Kategori:
           </span>
           <span className="text-gray-700 font-normal text-sm leading-[140%] tracking-normal align-middle">
-            Satılık, Konut, Villa,
+            {getCategoryText()}
           </span>
         </div>
 
@@ -34,7 +138,7 @@ export default function FilterBox() {
             Konum:
           </span>
           <span className="text-gray-700 font-normal text-sm leading-[140%] tracking-normal align-middle">
-            Muratpaşa, Lara, Konyaaltı
+            {getLocationText()}
           </span>
         </div>
 
@@ -43,8 +147,7 @@ export default function FilterBox() {
             Filtreler:
           </span>
           <span className="text-gray-700 font-normal text-sm leading-[140%] tracking-normal align-middle">
-            3+1, Müstakil Giriş, Min 120 m², Bahçe, Açık Havuz, Otopark,
-            Güvenlik, +3 Filtre daha
+            {getFiltersText()}
           </span>
         </div>
       </div>
@@ -192,11 +295,12 @@ export default function FilterBox() {
           className="flex-1 bg-[#5E5691] text-white font-medium text-base leading-[140%] tracking-normal align-middle rounded-2xl px-6 py-4 flex items-center justify-center gap-2 hover:bg-[#504682] transition-colors max-w-[263px]"
           style={{ height: "56px" }}
         >
-          Sonuçları Görüntüle (42)
+          Sonuçları Görüntüle ({filter.resultCount || 0})
           <img src="/chevron-right.png" className="w-6 h-6" />
         </button>
 
         <button
+          onClick={onUpdate}
           className="px-6 py-4 text-gray-700 font-medium text-base leading-[140%] tracking-normal align-middle border border-[#BFBFBF] rounded-2xl hover:bg-gray-50 transition-colors ml-auto"
           style={{ width: "110px", height: "56px" }}
         >
@@ -204,6 +308,7 @@ export default function FilterBox() {
         </button>
 
         <button
+          onClick={onDelete}
           className="px-6 py-4 bg-[#F24853] text-white font-medium text-base leading-[140%] tracking-normal align-middle rounded-2xl hover:bg-[#E03843] transition-colors"
           style={{ width: "66px", height: "56px" }}
         >
