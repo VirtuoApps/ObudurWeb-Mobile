@@ -6,6 +6,7 @@ import SecondCreateStep from "./SecondCreateStep/SecondCreateStep";
 import ThirdCreateStep from "./ThirdCreateStep/ThirdCreateStep";
 import FourthCreateStep from "./FourthCreateStep/FourthCreateStep";
 import FifthCreateStep from "./FifthCreateStep/FifthCreateStep";
+import SixthCreateStep from "./SixthCreateStep/SixthCreateStep";
 
 // Define the multilingual text interface
 export interface MultilangText {
@@ -48,7 +49,7 @@ export interface HotelData {
     type: string;
     coordinates: [number, number];
   };
-  documents: string[];
+  documents: { name: MultilangText; file: string }[];
   video: string;
 }
 
@@ -126,6 +127,11 @@ type ListingFormContextType = {
   setImages: React.Dispatch<React.SetStateAction<string[]>>;
   video: string;
   setVideo: React.Dispatch<React.SetStateAction<string>>;
+  // Documents
+  documents: { name: MultilangText; file: string }[];
+  setDocuments: React.Dispatch<
+    React.SetStateAction<{ name: MultilangText; file: string }[]>
+  >;
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   // Update mode
@@ -203,6 +209,9 @@ export const ListingFormContext = createContext<ListingFormContextType>({
   setImages: () => {},
   video: "",
   setVideo: () => {},
+  // Documents default
+  documents: [],
+  setDocuments: () => {},
   currentStep: 1,
   setCurrentStep: () => {},
   // Update mode defaults
@@ -288,6 +297,11 @@ export default function CreationSteps({
   const [images, setImages] = useState<string[]>([]);
   const [video, setVideo] = useState<string>("");
 
+  // Documents state
+  const [documents, setDocuments] = useState<
+    { name: MultilangText; file: string }[]
+  >([]);
+
   // Set hotelId from hotelData if in update mode
   const hotelId = isUpdate && hotelData ? hotelData._id : null;
 
@@ -336,6 +350,11 @@ export default function CreationSteps({
       // Fifth step data
       setImages(hotelData.images);
       setVideo(hotelData.video);
+
+      // Documents data
+      if (hotelData.documents && Array.isArray(hotelData.documents)) {
+        setDocuments(hotelData.documents);
+      }
     }
   }, [isUpdate, hotelData]);
 
@@ -409,6 +428,9 @@ export default function CreationSteps({
     setImages,
     video,
     setVideo,
+    // Documents
+    documents,
+    setDocuments,
     currentStep,
     setCurrentStep,
     // Update mode
@@ -423,6 +445,7 @@ export default function CreationSteps({
       {currentStep === 3 && <ThirdCreateStep />}
       {currentStep === 4 && <FourthCreateStep />}
       {currentStep === 5 && <FifthCreateStep />}
+      {currentStep === 6 && <SixthCreateStep />}
     </ListingFormContext.Provider>
   );
 }

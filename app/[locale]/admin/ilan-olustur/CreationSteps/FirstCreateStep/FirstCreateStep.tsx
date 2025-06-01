@@ -288,7 +288,7 @@ export default function FirstCreateStep() {
             </div>
 
             <span className="text-sm text-gray-600 mb-4 sm:mb-0 mt-auto">
-              Adım 1 / 5
+              Adım 1 / 6
             </span>
           </div>
 

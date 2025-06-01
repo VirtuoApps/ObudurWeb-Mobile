@@ -25,9 +25,7 @@ export default function GoBackButton({
       >
         <ChevronLeftIcon className="h-5 w-5" />
       </button>
-      <span className="text-sm text-gray-600 ">
-        Adım {step} / {totalSteps}
-      </span>
+      <span className="text-sm text-gray-600 ">Adım {step} / 6</span>
     </div>
   );
 }

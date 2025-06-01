@@ -248,17 +248,6 @@ export default function SecondCreateStep() {
 
     if (isValid) {
       // Log current form data
-      console.log({
-        price,
-        projectArea,
-        totalSize,
-        roomCount,
-        bathroomCount,
-        bedRoomCount,
-        floorCount,
-        buildYear,
-        kitchenType,
-      });
 
       // Move to the next step
       setCurrentStep(3);

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { ChevronLeftIcon } from "@heroicons/react/24/solid";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useListingForm } from "../CreationSteps";
 import axiosInstance from "@/axios";
 import { useRouter } from "@/app/utils/router";
@@ -190,86 +190,6 @@ export default function FifthCreateStep() {
     }
   };
 
-  // Submit hotel creation or update
-  const submitHotelCreation = async () => {
-    try {
-      setIsSubmitting(true);
-      setSubmitError(null);
-
-      // Map data from context to DTO format
-      const hotelData = {
-        title,
-        description,
-        listingType,
-        entranceType,
-        housingType,
-        price: price.map((p) => ({
-          amount: p.amount,
-          currency: p.currency,
-        })),
-        projectArea,
-        totalSize,
-        roomCount,
-        bathroomCount,
-        bedRoomCount,
-        floorCount,
-        buildYear,
-        kitchenType,
-        face: orientation, // Map orientation to face field
-        country,
-        city,
-        state,
-        street,
-        buildingNo,
-        apartmentNo,
-        postalCode,
-        location: {
-          type: "Point",
-          coordinates: coordinates,
-        },
-        featureIds,
-        distances: distances.map((d) => ({
-          typeId: d.typeId,
-          value: d.value,
-        })),
-        images,
-        // Add video if available
-        ...(video && { video }),
-      };
-
-      console.log("hotelData", hotelData);
-
-      let response;
-
-      // If in update mode, use PATCH instead of POST
-      if (isUpdate && hotelId) {
-        // Send PATCH request to update hotel
-        response = await axiosInstance.patch(
-          `/admin/hotels/${hotelId}`,
-          hotelData
-        );
-        console.log("Hotel updated successfully:", response.data);
-      } else {
-        // Send POST request to create hotel
-        response = await axiosInstance.post("/admin/hotels", hotelData);
-        console.log("Hotel created successfully:", response.data);
-      }
-
-      // Redirect to admin dashboard or hotel list
-      router.push("/admin/ilanlar");
-    } catch (error: any) {
-      console.error(`Hotel ${isUpdate ? "update" : "creation"} error:`, error);
-      setSubmitError(
-        error.response?.data?.message ||
-          `İlan ${
-            isUpdate ? "güncellenirken" : "oluşturulurken"
-          } bir hata oluştu. Lütfen tekrar deneyin.`
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   // Handle image selection
   const handleImageSelect = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -399,8 +319,12 @@ export default function FifthCreateStep() {
     setVideo("");
   };
 
-  // Validate before proceeding
-  const handleComplete = () => {
+  const handleContinue = () => {
+    // Clear previous errors
+    setErrors([]);
+
+    // Validate all fields
+
     const newErrors = [];
 
     // Check if there are no images at all (neither in selectedImages nor in context)
@@ -424,19 +348,15 @@ export default function FifthCreateStep() {
       newErrors.push("Video yükleniyor, lütfen bekleyin.");
     }
 
-    if (selectedVideo?.error) {
-      newErrors.push(
-        "Video yüklenemedi. Lütfen tekrar deneyin veya videoyu kaldırın."
-      );
-    }
+    if (newErrors.length === 0) {
+      // Log current form data
 
-    if (newErrors.length > 0) {
-      setErrors(newErrors);
-      return;
+      // Move to the next step
+      setCurrentStep(6);
+    } else {
+      // Scroll to top to see errors
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-
-    // Submit the hotel creation or update
-    submitHotelCreation();
   };
 
   return (
@@ -465,7 +385,7 @@ export default function FifthCreateStep() {
                 setCurrentStep(4);
               }}
               step={5}
-              totalSteps={5}
+              totalSteps={6}
             />
           </div>
 
@@ -749,45 +669,14 @@ export default function FifthCreateStep() {
             </div>
 
             {/* Navigation buttons */}
-            <div className="mt-10 flex justify-end items-center">
+            <div className="mt-10 flex flex-col sm:flex-row justify-end items-center">
               <button
                 type="button"
-                onClick={handleComplete}
-                disabled={
-                  isUploading ||
-                  selectedImages.some((img) => img.uploading) ||
-                  selectedVideo?.uploading ||
-                  isSubmitting
-                }
-                className="bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl transition disabled:opacity-70 disabled:cursor-not-allowed"
+                onClick={handleContinue}
+                className="w-full sm:w-auto bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
               >
-                {isSubmitting ? (
-                  <div className="flex items-center">
-                    <svg
-                      className="animate-spin mr-2 h-4 w-4 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                    <span>İşleniyor...</span>
-                  </div>
-                ) : (
-                  <span>{isUpdate ? "Güncelle" : "Oluştur"}</span>
-                )}
+                Devam Et
+                <ChevronRightIcon className="h-5 w-5" />
               </button>
             </div>
           </div>
