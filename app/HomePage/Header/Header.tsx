@@ -9,6 +9,8 @@ import { useTranslations } from "next-intl";
 import { FaBars } from "react-icons/fa";
 import { FilterType } from "@/types/filter.type";
 import { FilterOptions } from "@/types/filter-options.type";
+import { useAppSelector } from "@/app/store/hooks";
+import MobileSearchBox from "./MobileSearchBox/MobileSearchBox";
 
 export default function Header({
   setFilters,
@@ -40,16 +42,28 @@ export default function Header({
   const t = useTranslations("header");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const { user } = useAppSelector((state) => state.user);
+
   return (
     <header className="relative border-b border-[#F0F0F0] py-4 bg-white h-[80px] w-full px-0 md:px-0">
-      <div className=" mx-auto flex flex-wrap items-center justify-between px-12">
+      <div className=" mx-auto flex flex-wrap items-center justify-between px-4 sm:px-12">
         {/* Logo */}
-        <div className="flex items-center">
+        <div className="md:flex hidden items-center">
           <Image
             src="/obudur-logo.png"
             alt="oBudur Logo"
             width={120}
             height={40}
+            priority
+          />
+        </div>
+
+        <div className="md:hidden flex items-center">
+          <Image
+            src="/obudur-icon.png"
+            alt="oBudur Logo"
+            width={28}
+            height={28}
             priority
           />
         </div>
@@ -72,6 +86,13 @@ export default function Header({
           />
         </div>
 
+        <div className="md:hidden flex items-center">
+          <MobileSearchBox
+            selectedLocation={selectedLocation}
+            setSelectedLocation={setSelectedLocation}
+          />
+        </div>
+
         {/* Right Side Items for Desktop */}
         <div className="hidden md:flex items-center gap-3">
           <AuthBox />
@@ -80,13 +101,18 @@ export default function Header({
 
         {/* Hamburger Menu Button for Mobile */}
         <div className="md:hidden flex items-center">
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="text-gray-600 hover:text-gray-800 focus:outline-none"
-            aria-label="Toggle menu"
-          >
-            <FaBars className="h-6 w-6" />
-          </button>
+          {!user?.profilePicture && (
+            <div className="bg-gray-100 rounded-lg flex items-center justify-center py-3 px-3 h-[48px] w-[48px]">
+              <img src={"/user-profile-03.png"} className="w-6" />
+            </div>
+          )}
+
+          {user?.profilePicture && (
+            <img
+              src={user.profilePicture}
+              className="w-[48px] h-[48px] rounded-md"
+            />
+          )}
         </div>
       </div>
 
