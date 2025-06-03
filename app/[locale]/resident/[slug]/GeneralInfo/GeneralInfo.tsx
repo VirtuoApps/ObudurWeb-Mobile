@@ -266,18 +266,34 @@ export default function GeneralInfo() {
     <div className="max-w-5xl mx-auto p-3 sm:p-6 font-sans">
       {/* Title and Price Section */}
       <div className="mb-4 sm:mb-6">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-0">
-          <h1 className="text-4xl   font-medium text-[#262626] order-2 sm:order-1 sm:max-w-2xl">
+        <div className="flex flex-row-reverse sm:flex-row  justify-between sm:items-start gap-3 sm:gap-0">
+          <h1 className="md:text-4xl text-base   md:font-medium font-bold text-[#262626] order-2 sm:order-1 sm:max-w-2xl">
             {title[currentLocale]}
           </h1>
+
           <div className="text-left sm:text-right order-1 sm:order-2 flex justify-between sm:block items-center">
-            <div className="text-gray-500 text-xs sm:text-sm">
+            <div className="text-gray-500 text-xs sm:text-sm hidden md:block">
               {t("listingNumber", { id: no.toString() })}
             </div>
-            <div className="text-[#362C75] text-2xl sm:text-3xl font-bold">
+            <div className="text-[#362C75] md:text-2xl sm:text-3xl font-bold">
               {formattedPrice}
             </div>
           </div>
+        </div>
+
+        <div className=" items-center gap-2 text-[#8C8C8C] text-sm sm:text-base flex md:hidden mt-4">
+          <img src="/location-icon-v4.png" alt="location" className="w-4 h-4" />
+          <span className="truncate">
+            {formatAddress({
+              street: hotelData.hotelDetails.address,
+              buildingNo: hotelData.hotelDetails.buildingNo,
+              apartmentNo: hotelData.hotelDetails.apartmentNo,
+              city: hotelData.hotelDetails.city,
+              state: hotelData.hotelDetails.state,
+              postalCode: hotelData.hotelDetails.postalCode,
+              country: hotelData.hotelDetails.country,
+            })}
+          </span>
         </div>
       </div>
 
@@ -308,12 +324,12 @@ export default function GeneralInfo() {
 
       {/* Details Section */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 py-2">
-        <div className="flex gap-4 sm:gap-8 overflow-x-auto no-scrollbar">
+        <div className="flex gap-4 sm:gap-8 overflow-x-auto no-scrollbar justify-between sm:justify-start">
           <div className="flex items-center gap-2 text-[#262626] whitespace-nowrap">
             <BedIcon />
             <span>{roomAsText}</span>
           </div>
-          <div className="flex items-center gap-2 text-[#262626] border-r border-gray-200 pr-4 border-l border-gray-200 pl-4 whitespace-nowrap">
+          <div className="flex items-center gap-2 text-[#262626] border-r  pr-4 border-l border-[#D9D9D9] pl-4 whitespace-nowrap w-[33%] sm:w-auto flex items-center justify-center">
             <BathIcon />
             <span>{bathroomCount}</span>
           </div>
@@ -322,7 +338,7 @@ export default function GeneralInfo() {
             <span>{totalSize}m²</span>
           </div>
         </div>
-        <div className="flex items-center gap-2 text-[#262626] text-sm sm:text-base">
+        <div className=" items-center gap-2 text-[#262626] text-sm sm:text-base hidden md:flex">
           <LocationIcon />
           <span className="truncate">
             {formatAddress({

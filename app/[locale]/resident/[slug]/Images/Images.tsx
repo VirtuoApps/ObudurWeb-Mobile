@@ -67,7 +67,7 @@ export default function Images() {
         </div>
 
         {/* 2x2 grid on the right */}
-        <div className="md:col-span-2 grid grid-cols-2 gap-2 h-full">
+        <div className="md:col-span-2 grid-cols-2 gap-2 h-full hidden md:grid">
           {/* Top row */}
           <div
             className="relative aspect-square overflow-hidden shadow-md cursor-pointer"
@@ -120,7 +120,7 @@ export default function Images() {
         {/* View all photos button */}
         <button
           onClick={() => openModal(0)}
-          className="absolute bottom-4 right-4 px-4 py-2 bg-white text-black rounded shadow hover:bg-gray-100 transition flex flex-row items-center cursor-pointer"
+          className="absolute bottom-4 right-4 px-4 py-2 bg-white text-black rounded shadow hover:bg-gray-100 transition flex flex-row items-center cursor-pointer hidden md:block"
         >
           <span className=" text-[#5E5691]">{t("viewAll")}</span>
         </button>

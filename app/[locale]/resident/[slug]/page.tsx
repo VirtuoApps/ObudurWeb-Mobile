@@ -12,6 +12,8 @@ import PanoramicView from "./PanoramicView/PanoramicView";
 import PlansAndDocumentation from "./PlansAndDocumentation/PlansAndDocumentation";
 import ClientWrapper from "./ClientWrapper";
 import NotFound from "../../not-found";
+import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
+import MenuItems from "./Header/MenuItems/MenuItems";
 
 // Types for API response
 interface LocalizedText {
@@ -141,7 +143,9 @@ export default async function ResidentPage({
   return (
     <ClientWrapper hotelData={hotelData} locale={currentLocale}>
       <Header />
-      <div className="pt-[80px]">
+      <SimpleHeader showBackButton />
+      <MenuItems />
+      <div className="md:pt-[80px]">
         <Images />
         <div className="flex md:flex-row flex-col items-start mt-12">
           <div className="md:w-[70%] w-full">

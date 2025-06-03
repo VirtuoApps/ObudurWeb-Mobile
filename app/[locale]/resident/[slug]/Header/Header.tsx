@@ -40,7 +40,7 @@ export default function Header() {
   }, [hotelId]);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50  py-4 bg-white h-[80px] w-full px-4 md:px-0 border-b border-[#F0F0F0]">
+    <header className="fixed top-0 left-0 right-0 z-50  py-4 bg-white h-[80px] w-full px-4 md:px-0 border-b border-[#F0F0F0] hidden md:block">
       <div className="w-full px-4 mx-auto flex flex-wrap items-center">
         {/* Logo */}
         <div
