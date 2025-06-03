@@ -78,8 +78,10 @@ export default function FavoritesPage() {
   }
 
   return (
-    <div className="container mx-auto p-8">
-      <h1 className="text-2xl font-bold mb-8 text-gray-700">Favorilerim</h1>
+    <div className="container mx-auto p-8 px-2">
+      <h1 className="text-2xl font-bold mb-8 text-gray-700 pl-4">
+        Favorilerim
+      </h1>
 
       {favorites.length === 0 ? (
         <div className="bg-gray-100 p-8 rounded-lg text-center">
@@ -127,6 +129,8 @@ export default function FavoritesPage() {
                     ? hotel.images[0]
                     : "/example-house.png"
                 }
+                images={hotel.images || []}
+                roomAsText={hotel.roomAsText?.tr || ""}
               />
             );
           })}
