@@ -93,12 +93,12 @@ export default function LanguageSwitcher() {
           >
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1 rounded-full hover:bg-gray-100 absolute top-2 right-2 cursor-pointer"
+              className="p-1 rounded-full  absolute top-4 right-4 cursor-pointer"
             >
-              <XMarkIcon className="w-6 h-6 text-gray-600" />
+              <img src="/close-button-ani.png" className="w-[24px] h-[24px]" />
             </button>
-            <div className="flex justify-between items-center mb-6 mt-8">
-              <h2 className="text-xl font-bold text-[#262626]">
+            <div className="flex justify-between items-center mb-6 mt-12">
+              <h2 className="text-2xl font-bold text-[#262626]">
                 {ls("chooseLanguage")}
               </h2>
               <div className="text-gray-400">{ls("language")}</div>
@@ -130,10 +130,10 @@ export default function LanguageSwitcher() {
             </div>
 
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold text-[#262626]">
+              <h2 className="text-2xl font-bold text-[#262626]">
                 {ls("chooseCurrency")}
               </h2>
-              <div className="text-gray-400">{ls("currency")}</div>
+              <div className="text-[#8C8C8C] text-base">{ls("currency")}</div>
             </div>
 
             <div className="grid grid-cols-3 gap-4 mb-8">
