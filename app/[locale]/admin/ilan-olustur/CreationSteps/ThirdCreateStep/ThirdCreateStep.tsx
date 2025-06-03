@@ -9,6 +9,8 @@ import { useListingForm } from "../CreationSteps";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import GoBackButton from "../../GoBackButton/GoBackButton";
 import { useGoogleMaps } from "../../../../../contexts/GoogleMapsContext";
+import { GetCountries, GetState, GetCity } from "react-country-state-city";
+import GeneralSelect from "../../../../../components/GeneralSelect/GeneralSelect";
 
 interface Language {
   _id: string;
@@ -64,6 +66,21 @@ export default function ThirdCreateStep() {
     setCurrentStep,
   } = useListingForm();
 
+  // Country-State-City states
+  const [selectedCountryId, setSelectedCountryId] = useState<number | null>(
+    null
+  );
+  const [selectedStateId, setSelectedStateId] = useState<number | null>(null);
+  const [selectedCityId, setSelectedCityId] = useState<number | null>(null);
+  const [countriesList, setCountriesList] = useState<any[]>([]);
+  const [statesList, setStatesList] = useState<any[]>([]);
+  const [citiesList, setCitiesList] = useState<any[]>([]);
+
+  // State for pending auto-selection from Google Places
+  const [pendingCountryName, setPendingCountryName] = useState<string>("");
+  const [pendingStateName, setPendingStateName] = useState<string>("");
+  const [pendingCityName, setPendingCityName] = useState<string>("");
+
   // Google Maps settings
   const containerStyle = {
     width: "100%",
@@ -93,6 +110,221 @@ export default function ThirdCreateStep() {
   const onUnmount = useCallback(function callback() {
     setMapInstance(null);
   }, []);
+
+  // Handle street input change - auto-fill both languages
+  const handleStreetChange = useCallback(
+    (value: string) => {
+      setStreet({
+        tr: value,
+        en: value,
+      });
+    },
+    [setStreet]
+  );
+
+  // Auto-selection functions (don't clear dependent values)
+  const autoSelectCountry = useCallback(
+    (selectedCountry: any) => {
+      setSelectedCountryId(selectedCountry.id);
+      setCountry({
+        tr: selectedCountry.name,
+        en: selectedCountry.name,
+      });
+      // Don't clear dependent selections for auto-selection
+    },
+    [setCountry]
+  );
+
+  const autoSelectState = useCallback(
+    (selectedState: any) => {
+      setSelectedStateId(selectedState.id);
+      setState({
+        tr: selectedState.name,
+        en: selectedState.name,
+      });
+      // Don't clear dependent selections for auto-selection
+    },
+    [setState]
+  );
+
+  const autoSelectCity = useCallback(
+    (selectedCity: any) => {
+      setSelectedCityId(selectedCity.id);
+      setCity({
+        tr: selectedCity.name,
+        en: selectedCity.name,
+      });
+    },
+    [setCity]
+  );
+
+  // Handle functions for user interactions (clear dependent selections)
+  const handleCountrySelect = useCallback(
+    (selectedCountry: any) => {
+      setSelectedCountryId(selectedCountry.id);
+      setCountry({
+        tr: selectedCountry.name,
+        en: selectedCountry.name,
+      });
+      // Clear dependent selections
+      setSelectedStateId(null);
+      setSelectedCityId(null);
+      setState({ tr: "", en: "" });
+      setCity({ tr: "", en: "" });
+    },
+    [setCountry, setState, setCity]
+  );
+
+  const handleStateSelect = useCallback(
+    (selectedState: any) => {
+      setSelectedStateId(selectedState.id);
+      setState({
+        tr: selectedState.name,
+        en: selectedState.name,
+      });
+      // Clear dependent selections
+      setSelectedCityId(null);
+      setCity({ tr: "", en: "" });
+    },
+    [setState, setCity]
+  );
+
+  const handleCitySelect = useCallback(
+    (selectedCity: any) => {
+      setSelectedCityId(selectedCity.id);
+      setCity({
+        tr: selectedCity.name,
+        en: selectedCity.name,
+      });
+    },
+    [setCity]
+  );
+
+  // Load countries on component mount
+  useEffect(() => {
+    GetCountries().then((result) => {
+      setCountriesList(result);
+    });
+  }, []);
+
+  // Load states when country changes
+  useEffect(() => {
+    if (selectedCountryId) {
+      GetState(selectedCountryId).then((result) => {
+        setStatesList(result);
+        setCitiesList([]); // Clear cities when country changes
+        // Don't clear selectedStateId and selectedCityId here - it interferes with auto-selection
+        // These are cleared by user interactions in handleCountrySelect when needed
+      });
+    } else {
+      setStatesList([]);
+      setCitiesList([]);
+    }
+  }, [selectedCountryId]);
+
+  // Load cities when state changes
+  useEffect(() => {
+    if (selectedCountryId && selectedStateId) {
+      GetCity(selectedCountryId, selectedStateId).then((result) => {
+        setCitiesList(result);
+        // Don't clear selectedCityId here - it interferes with auto-selection
+        // This is cleared by user interactions in handleStateSelect when needed
+      });
+    } else {
+      setCitiesList([]);
+    }
+  }, [selectedStateId]);
+
+  // Auto-select country when countries list is loaded and we have a pending country
+  useEffect(() => {
+    if (countriesList.length > 0 && pendingCountryName) {
+      const matchingCountry = countriesList.find(
+        (c) => c.name.toLowerCase() === pendingCountryName.toLowerCase()
+      );
+      if (matchingCountry) {
+        autoSelectCountry(matchingCountry);
+        setPendingCountryName("");
+      }
+    }
+  }, [countriesList, pendingCountryName, autoSelectCountry]);
+
+  // Auto-select state when states list is loaded and we have a pending state
+  useEffect(() => {
+    if (statesList.length > 0 && pendingStateName) {
+      const matchingState = statesList.find(
+        (s) => s.name.toLowerCase() === pendingStateName.toLowerCase()
+      );
+      if (matchingState) {
+        autoSelectState(matchingState);
+        setPendingStateName("");
+      }
+    }
+  }, [statesList, pendingStateName, autoSelectState]);
+
+  // Auto-select city when cities list is loaded and we have a pending city
+  useEffect(() => {
+    if (citiesList.length > 0 && pendingCityName) {
+      const matchingCity = citiesList.find(
+        (c) => c.name.toLowerCase() === pendingCityName.toLowerCase()
+      );
+      if (matchingCity) {
+        autoSelectCity(matchingCity);
+        setPendingCityName("");
+      }
+    }
+  }, [citiesList, pendingCityName, autoSelectCity]);
+
+  // Auto-select existing country on mount/update
+  useEffect(() => {
+    if (countriesList.length > 0 && country?.tr && !selectedCountryId) {
+      const matchingCountry = countriesList.find(
+        (c) =>
+          c.name.toLowerCase() === country.tr.toLowerCase() ||
+          c.name.toLowerCase() === country.en.toLowerCase()
+      );
+      if (matchingCountry) {
+        autoSelectCountry(matchingCountry);
+      }
+    }
+  }, [countriesList, country, selectedCountryId, autoSelectCountry]);
+
+  // Auto-select existing state on mount/update
+  useEffect(() => {
+    if (
+      statesList.length > 0 &&
+      state?.tr &&
+      !selectedStateId &&
+      selectedCountryId
+    ) {
+      const matchingState = statesList.find(
+        (s) =>
+          s.name.toLowerCase() === state.tr.toLowerCase() ||
+          s.name.toLowerCase() === state.en.toLowerCase()
+      );
+      if (matchingState) {
+        autoSelectState(matchingState);
+      }
+    }
+  }, [statesList, state, selectedStateId, selectedCountryId, autoSelectState]);
+
+  // Auto-select existing city on mount/update
+  useEffect(() => {
+    if (
+      citiesList.length > 0 &&
+      city?.tr &&
+      !selectedCityId &&
+      selectedStateId
+    ) {
+      const matchingCity = citiesList.find(
+        (c) =>
+          c.name.toLowerCase() === city.tr.toLowerCase() ||
+          c.name.toLowerCase() === city.en.toLowerCase()
+      );
+      if (matchingCity) {
+        autoSelectCity(matchingCity);
+      }
+    }
+  }, [citiesList, city, selectedCityId, selectedStateId, autoSelectCity]);
 
   // Update map center when coordinates change
   useEffect(() => {
@@ -232,7 +464,7 @@ export default function ThirdCreateStep() {
     }
   };
 
-  // Function to update address fields from address components
+  // Update the updateAddressFromComponents function
   const updateAddressFromComponents = (addressComponents: any[]) => {
     // Extract country
     const countryComponent = addressComponents.find(
@@ -240,37 +472,48 @@ export default function ThirdCreateStep() {
         component.types.includes("country")
     );
     if (countryComponent) {
-      setCountry((prev) => ({
-        ...prev,
-        tr: countryComponent.long_name,
-        en: countryComponent.long_name,
-      }));
-    }
-
-    // Extract city
-    const cityComponent = addressComponents.find(
-      (component: { types: string[]; long_name: string }) =>
-        component.types.includes("locality")
-    );
-    if (cityComponent) {
-      setCity((prev) => ({
-        ...prev,
-        tr: cityComponent.long_name,
-        en: cityComponent.long_name,
-      }));
+      // Find matching country in the list
+      const matchingCountry = countriesList.find(
+        (c) => c.name.toLowerCase() === countryComponent.long_name.toLowerCase()
+      );
+      if (matchingCountry) {
+        autoSelectCountry(matchingCountry);
+      } else {
+        // Set pending country for auto-selection when list loads
+        setPendingCountryName(countryComponent.long_name);
+        setCountry({
+          tr: countryComponent.long_name,
+          en: countryComponent.long_name,
+        });
+      }
     }
 
     // Extract state/district
     const districtComponent = addressComponents.find(
       (component: { types: string[]; long_name: string }) =>
+        component.types.includes("administrative_area_level_1") ||
         component.types.includes("administrative_area_level_2")
     );
     if (districtComponent) {
-      setState((prev) => ({
-        ...prev,
+      setPendingStateName(districtComponent.long_name);
+      setState({
         tr: districtComponent.long_name,
         en: districtComponent.long_name,
-      }));
+      });
+    }
+
+    // Extract city
+    const cityComponent = addressComponents.find(
+      (component: { types: string[]; long_name: string }) =>
+        component.types.includes("locality") ||
+        component.types.includes("administrative_area_level_3")
+    );
+    if (cityComponent) {
+      setPendingCityName(cityComponent.long_name);
+      setCity({
+        tr: cityComponent.long_name,
+        en: cityComponent.long_name,
+      });
     }
 
     // Extract street
@@ -279,11 +522,10 @@ export default function ThirdCreateStep() {
         component.types.includes("route")
     );
     if (streetComponent) {
-      setStreet((prev) => ({
-        ...prev,
+      setStreet({
         tr: streetComponent.long_name,
         en: streetComponent.long_name,
-      }));
+      });
     }
 
     // Extract postal code
@@ -353,46 +595,6 @@ export default function ThirdCreateStep() {
       const lng = e.latLng.lng();
       setCoordinates([lng, lat]);
     }
-  };
-
-  // Handle language-specific input changes for text fields
-  const handleLanguageSpecificChange = (field: string, value: string) => {
-    switch (field) {
-      case "country":
-        setCountry((prev) => ({
-          ...prev,
-          [selectedLanguage]: value,
-        }));
-        break;
-      case "city":
-        setCity((prev) => ({
-          ...prev,
-          [selectedLanguage]: value,
-        }));
-        break;
-      case "state":
-        setState((prev) => ({
-          ...prev,
-          [selectedLanguage]: value,
-        }));
-        break;
-      case "street":
-        setStreet((prev) => ({
-          ...prev,
-          [selectedLanguage]: value,
-        }));
-        break;
-      default:
-        break;
-    }
-  };
-
-  // Get current language value for a field
-  const getLanguageValue = (
-    field: { [key: string]: string } | undefined
-  ): string => {
-    if (!field) return "";
-    return field[selectedLanguage] || "";
   };
 
   // Validate all required fields
@@ -465,6 +667,24 @@ export default function ThirdCreateStep() {
     setCurrentStep(2);
   };
 
+  // Get current selected country object
+  const getSelectedCountry = () => {
+    if (!selectedCountryId) return null;
+    return countriesList.find((c) => c.id === selectedCountryId) || null;
+  };
+
+  // Get current selected state object
+  const getSelectedState = () => {
+    if (!selectedStateId) return null;
+    return statesList.find((s) => s.id === selectedStateId) || null;
+  };
+
+  // Get current selected city object
+  const getSelectedCity = () => {
+    if (!selectedCityId) return null;
+    return citiesList.find((c) => c.id === selectedCityId) || null;
+  };
+
   return (
     <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start p-4">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">
@@ -484,7 +704,7 @@ export default function ThirdCreateStep() {
                 metni.
               </p>
             </div>
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <div className="flex gap-2 flex-wrap">
                 {languages.map((language) => (
                   <button
@@ -501,7 +721,7 @@ export default function ThirdCreateStep() {
                   </button>
                 ))}
               </div>
-            </div>
+            </div> */}
             <GoBackButton handleBack={handleBack} step={3} totalSteps={5} />
           </div>
 
@@ -540,35 +760,38 @@ export default function ThirdCreateStep() {
                   htmlFor="country"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Ülke {selectedLanguage === "en" ? "(English)" : "(Türkçe)"}
+                  Ülke
                 </label>
-                <input
-                  type="text"
-                  id="country"
-                  value={getLanguageValue(country)}
-                  onChange={(e) =>
-                    handleLanguageSpecificChange("country", e.target.value)
+                <GeneralSelect
+                  selectedItem={getSelectedCountry()}
+                  onSelect={handleCountrySelect}
+                  options={countriesList}
+                  defaultText={
+                    selectedLanguage === "en" ? "Select Country" : "Ülke Seçin"
                   }
-                  className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                  placeholder={selectedLanguage === "en" ? "Country" : "Ülke"}
+                  extraClassName="w-full h-12 border border-gray-300"
+                  popoverMaxWidth="400"
+                  maxHeight="200"
                 />
               </div>
+
               <div className="w-full sm:w-1/2">
                 <label
-                  htmlFor="city"
+                  htmlFor="state"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Şehir {selectedLanguage === "en" ? "(English)" : "(Türkçe)"}
+                  Şehir
                 </label>
-                <input
-                  type="text"
-                  id="city"
-                  value={getLanguageValue(city)}
-                  onChange={(e) =>
-                    handleLanguageSpecificChange("city", e.target.value)
+                <GeneralSelect
+                  selectedItem={getSelectedState()}
+                  onSelect={handleStateSelect}
+                  options={statesList}
+                  defaultText={
+                    selectedLanguage === "en" ? "Select District" : "İlçe Seçin"
                   }
-                  className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                  placeholder={selectedLanguage === "en" ? "City" : "Şehir"}
+                  extraClassName="w-full h-12 border border-gray-300"
+                  popoverMaxWidth="400"
+                  maxHeight="200"
                 />
               </div>
             </div>
@@ -577,20 +800,21 @@ export default function ThirdCreateStep() {
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="w-full sm:w-1/2">
                 <label
-                  htmlFor="state"
+                  htmlFor="city"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  İlçe {selectedLanguage === "en" ? "(English)" : "(Türkçe)"}
+                  İlçe
                 </label>
-                <input
-                  type="text"
-                  id="state"
-                  value={getLanguageValue(state)}
-                  onChange={(e) =>
-                    handleLanguageSpecificChange("state", e.target.value)
+                <GeneralSelect
+                  selectedItem={getSelectedCity()}
+                  onSelect={handleCitySelect}
+                  options={citiesList}
+                  defaultText={
+                    selectedLanguage === "en" ? "Select City" : "Şehir Seçin"
                   }
-                  className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                  placeholder={selectedLanguage === "en" ? "District" : "İlçe"}
+                  extraClassName="w-full h-12 border border-gray-300"
+                  popoverMaxWidth="400"
+                  maxHeight="200"
                 />
               </div>
               <div className="w-full sm:w-1/2">
@@ -598,15 +822,13 @@ export default function ThirdCreateStep() {
                   htmlFor="street"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Sokak {selectedLanguage === "en" ? "(English)" : "(Türkçe)"}
+                  Sokak
                 </label>
                 <input
                   type="text"
                   id="street"
-                  value={getLanguageValue(street)}
-                  onChange={(e) =>
-                    handleLanguageSpecificChange("street", e.target.value)
-                  }
+                  value={street?.tr || ""}
+                  onChange={(e) => handleStreetChange(e.target.value)}
                   className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
                   placeholder={selectedLanguage === "en" ? "Street" : "Sokak"}
                 />
