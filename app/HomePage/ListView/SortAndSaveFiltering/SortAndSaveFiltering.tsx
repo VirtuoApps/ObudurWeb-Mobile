@@ -25,7 +25,7 @@ export default function SortAndSaveFiltering({
   };
 
   return (
-    <div className="flex justify-between items-center mb-8 px-5">
+    <div className=" justify-between items-center mb-8 px-5 hidden lg:flex">
       <p className="text-sm text-gray-800">
         Arama kriterlerinize uygun <b>{totalHotelsCount}</b> adet ilan bulundu.
       </p>

@@ -354,6 +354,18 @@ export default function HomePage({
 
   return (
     <>
+      <div
+        className="fixed bottom-4 left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-10 px-3 h-[40px] rounded-lg shadow-lg"
+        onClick={() => handleViewChange(currentView === "map" ? "list" : "map")}
+      >
+        <img
+          src={currentView === "map" ? "/list.png" : "/map-03.png"}
+          className="w-5 h-5"
+        />
+        <p className="text-base text-[#262626] font-medium ml-2">
+          {currentView === "map" ? "Liste" : "Harita"}
+        </p>
+      </div>
       <SaveFilterPopup
         isOpen={isSaveFilterPopupOpen}
         onClose={() => setIsSaveFilterPopupOpen(false)}
