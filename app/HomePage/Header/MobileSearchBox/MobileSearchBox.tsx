@@ -175,7 +175,7 @@ export default function MobileSearchBox({
   }, []);
 
   return (
-    <div ref={containerRef} className="relative">
+    <div ref={containerRef} className="relative w-full">
       <div className="flex flex-row items-center bg-[#F5F5F5] rounded-2xl pr-3 pl-4 h-[56px]">
         <p className="text-sm text-[#5E5691] font-bold">Satılık</p>
 
