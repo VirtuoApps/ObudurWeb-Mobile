@@ -9,7 +9,6 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 const languageOptions = [
   { code: "tr", name: "Türkçe", translation: "Turkish" },
   { code: "en", name: "English", translation: "English" },
-  { code: "de", name: "Deutsch", translation: "German" },
   { code: "ru", name: "Russian", translation: "Russian" },
 ];
 
@@ -17,7 +16,6 @@ export const currencyOptions = [
   { code: "TRY", symbol: "₺", name: "Turkish Lira" },
   { code: "EUR", symbol: "€", name: "Euro" },
   { code: "USD", symbol: "$", name: "US Dollar" },
-  { code: "RUB", symbol: "", name: "Ruble" },
 ];
 
 export default function LanguageSwitcher() {
@@ -106,14 +104,14 @@ export default function LanguageSwitcher() {
               <div className="text-gray-400">{ls("language")}</div>
             </div>
 
-            <div className="grid grid-cols-4 gap-4 mb-8">
+            <div className="grid grid-cols-3 gap-4 mb-8">
               {languageOptions.map((lang) => (
                 <div
                   key={lang.code}
-                  className={` rounded-lg p-4 cursor-pointer border-2 ${
+                  className={` rounded-lg p-4 cursor-pointer ${
                     selectedLanguage === lang.code
-                      ? "border-2"
-                      : "border-gray-100"
+                      ? "border border-[#362C75]"
+                      : "border border-[#D9D9D9] transition-all duration-200 hover:border-[#8C8C8C]"
                   }`}
                   onClick={() => setSelectedLanguage(lang.code)}
                   style={{
@@ -121,8 +119,10 @@ export default function LanguageSwitcher() {
                       selectedLanguage === lang.code ? "#5E5691" : "",
                   }}
                 >
-                  <div className="font-medium text-gray-500">{lang.name}</div>
-                  <div className="text-gray-400 text-sm">
+                  <div className="font-medium text-[#262626] text-base">
+                    {lang.name}
+                  </div>
+                  <div className="text-[#595959] text-base">
                     {lang.translation}
                   </div>
                 </div>
@@ -136,14 +136,14 @@ export default function LanguageSwitcher() {
               <div className="text-gray-400">{ls("currency")}</div>
             </div>
 
-            <div className="grid grid-cols-4 gap-4 mb-8">
+            <div className="grid grid-cols-3 gap-4 mb-8">
               {currencyOptions.map((currency) => (
                 <div
                   key={currency.code}
-                  className={`border-2 rounded-lg p-4 cursor-pointer ${
+                  className={` rounded-lg p-4 cursor-pointer ${
                     selectedCurrency === currency.code
-                      ? "border-2"
-                      : "border-gray-100"
+                      ? "border border-[#362C75]"
+                      : "border border-[#D9D9D9] transition-all duration-200 hover:border-[#8C8C8C]"
                   }`}
                   onClick={() => handleCurrencyChange(currency.code)}
                   style={{
@@ -151,17 +151,19 @@ export default function LanguageSwitcher() {
                       selectedCurrency === currency.code ? "#5E5691" : "",
                   }}
                 >
-                  <div className="font-medium text-gray-500">
+                  <div className="font-medium text-[#262626] text-base">
                     {currency.code} {currency.symbol}
                   </div>
-                  <div className="text-gray-400 text-sm">{currency.name}</div>
+                  <div className="text-[#595959] text-base">
+                    {currency.name}
+                  </div>
                 </div>
               ))}
             </div>
 
             <button
               onClick={handleUpdate}
-              className="w-full text-white py-3 rounded-xl font-medium hover:opacity-90"
+              className="w-full text-white py-3 rounded-xl font-medium hover:opacity-90 h-[56px]"
               style={{ backgroundColor: "#5E5691" }}
             >
               {ls("update")}
