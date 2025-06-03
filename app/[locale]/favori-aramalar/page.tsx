@@ -48,9 +48,9 @@ export default function FavoriAramalarPage() {
     <div className="w-full">
       <SimpleHeader showBackButton backUrl="/" />
 
-      <div className="w-full bg-[#ebeaf1] min-h-screen px-4 sm:px-6 lg:px-0">
+      <div className="w-full bg-[#ebeaf1] min-h-screen  sm:px-6 lg:px-0">
         <HeaderSection />
-        <div className="w-full max-w-[1440px] mx-auto pb-8">
+        <div className="w-full max-w-[1440px] mx-auto pb-8 px-4">
           {loading ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               <FilterBoxSkeleton />
