@@ -116,7 +116,7 @@ export default function AuthBox({
     return (
       <div className="relative" ref={dropdownRef}>
         <div
-          className="flex items-center gap-2 cursor-pointer max-w-[200px]"
+          className="flex items-center gap-2 cursor-pointer lg:max-w-[200px] max-w-[50px]"
           onClick={() => setDropdownOpen(!dropdownOpen)}
         >
           {user.role !== "admin" && user.role !== "super-admin" && (
@@ -135,7 +135,7 @@ export default function AuthBox({
                   e.stopPropagation();
                   router.push("/admin/ilan-olustur");
                 }}
-                className=" rounded-lg px-2 py-3 transition-all duration-300 hover:bg-gray-50 text-[#5E5691] cursor-pointer font-medium text-[14px] w-[82px] h-[48px]"
+                className="hidden lg:block rounded-lg px-2 py-3 transition-all duration-300 hover:bg-gray-50 text-[#5E5691] cursor-pointer font-medium text-[14px] w-[82px] h-[48px]"
               >
                 <p className="">{t("postListing")}</p>
               </button>
@@ -167,7 +167,7 @@ export default function AuthBox({
 
         {/* Dropdown Menu */}
         {dropdownOpen && (
-          <div className="absolute -right-4 mt-2 min-w-[320px]   bg-white rounded-[16px] shadow-lg z-50 py-1">
+          <div className="absolute lg:-right-4 right-0 mt-2 min-w-[320px]   bg-white rounded-[16px] shadow-lg z-50 py-1">
             <div className="px-4  border-b border-gray-100 pb-3">
               <p className="text-[#362C75] text-[16px] font-bold">
                 {user.firstName} {user.lastName}
@@ -292,15 +292,21 @@ export default function AuthBox({
     <>
       <AuthPopup isOpen={isOpen} onClose={() => setIsOpen(false)} />
       <div
-        className="flex items-center gap-4 cursor-pointer"
+        className="flex items-center gap-4 cursor-pointer lg:w-auto w-[50px]"
         onClick={() => setIsOpen(true)}
       >
-        <div className="text-right">
-          <div className="text-sm text-black font-bold">{t("welcome")}</div>
+        <div className="text-right hidden lg:block">
+          <div className="text-sm text-black font-bold hidden lg:block">
+            {t("welcome")}
+          </div>
           <div className="text-sm text-gray-600">{t("login")}</div>
         </div>
 
-        <div className="bg-gray-100 rounded-lg flex items-center justify-center py-3 px-3">
+        <div className="bg-gray-100 rounded-lg flex items-center justify-center py-3 px-3 h-[48px] w-[48px]">
+          <img src={"/user-profile-03.png"} className="w-6" />
+        </div>
+
+        <div className="bg-gray-100 hidden lg:flex items-center justify-center py-3 px-3">
           <img src="/user-profile-03.png" className="w-6" />
         </div>
       </div>

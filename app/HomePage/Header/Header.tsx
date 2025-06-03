@@ -101,18 +101,7 @@ export default function Header({
 
         {/* Hamburger Menu Button for Mobile */}
         <div className="xl:hidden flex items-center">
-          {!user?.profilePicture && (
-            <div className="bg-gray-100 rounded-lg flex items-center justify-center py-3 px-3 h-[48px] w-[48px]">
-              <img src={"/user-profile-03.png"} className="w-6" />
-            </div>
-          )}
-
-          {user?.profilePicture && (
-            <img
-              src={user.profilePicture}
-              className="w-[48px] h-[48px] rounded-md"
-            />
-          )}
+          <AuthBox />
         </div>
       </div>
 
