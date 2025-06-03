@@ -9,9 +9,15 @@ import { useRouter } from "@/app/utils/router";
 
 interface HeaderProps {
   customRedirectUrl?: string;
+  showBackButton?: boolean;
+  backUrl?: string;
 }
 
-export default function SimpleHeader({ customRedirectUrl }: HeaderProps) {
+export default function SimpleHeader({
+  customRedirectUrl,
+  showBackButton,
+  backUrl,
+}: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const router = useRouter();
@@ -19,6 +25,19 @@ export default function SimpleHeader({ customRedirectUrl }: HeaderProps) {
   return (
     <header className="relative border-b border-[#f0f0f0] py-4 bg-white h-[80px] w-full px-4 md:px-0">
       <div className="container mx-auto flex flex-wrap items-center justify-between">
+        {showBackButton && (
+          <div
+            onClick={() => router.push(backUrl || "/")}
+            className="block md:hidden"
+          >
+            <img
+              src="/left-icon.png"
+              alt="oBudur Logo"
+              className="w-[32px] h-[32px]"
+            />
+          </div>
+        )}
+
         {/* Logo */}
         <div
           className="flex items-center cursor-pointer"
@@ -43,13 +62,7 @@ export default function SimpleHeader({ customRedirectUrl }: HeaderProps) {
 
         {/* Hamburger Menu Button for Mobile */}
         <div className="md:hidden flex items-center">
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="text-gray-600 hover:text-gray-800 focus:outline-none"
-            aria-label="Toggle menu"
-          >
-            <FaBars className="h-6 w-6" />
-          </button>
+          <AuthBox />
         </div>
       </div>
 
