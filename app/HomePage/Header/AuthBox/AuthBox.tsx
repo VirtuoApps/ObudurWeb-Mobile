@@ -212,6 +212,7 @@ export default function AuthBox({
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                className="lg:hidden"
               >
                 <path
                   d="M9 18L15 12L9 6"
@@ -259,6 +260,7 @@ export default function AuthBox({
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  className="lg:hidden"
                 >
                   <path
                     d="M9 18L15 12L9 6"
@@ -288,6 +290,7 @@ export default function AuthBox({
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                className="lg:hidden"
               >
                 <path
                   d="M9 18L15 12L9 6"
@@ -299,13 +302,34 @@ export default function AuthBox({
               </svg>
             </Link>
 
-            {/* <Link
+            <Link
               href="/favori-aramalar"
-              className=" px-4 py-2 text-[14px] text-[#262626]  hover:bg-gray-100 flex flex-row items-center"
+              className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
             >
-              <img src="/search-02.png" className="w-[20px] h-[20px] mr-2" />
-              Favori aramalar
-            </Link> */}
+              <div className="flex flex-row items-center font-medium lg:font-normal">
+                <img
+                  src="/search-02.png"
+                  className="w-[24px] h-[24px] lg:w-[20px] lg:h-[20px] mr-3 lg:mr-2"
+                />
+                Favori aramalar
+              </div>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="lg:hidden"
+              >
+                <path
+                  d="M9 18L15 12L9 6"
+                  stroke="#595959"
+                  strokeWidth="2"
+                  strokeLinecap="square"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Link>
 
             <div className="hidden lg:block border-b border-gray-100 my-3 lg:my-2"></div>
 
@@ -320,7 +344,7 @@ export default function AuthBox({
                   viewBox="0 0 24 25"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-[24px] h-[24px] lg:w-[20px] lg:h-[20px] mr-3 lg:mr-2"
+                  className="w-[24px] h-[24px] lg:w-[20px] lg:h-[20px] mr-3 lg:mr-2 "
                 >
                   <path
                     d="M4.99983 11.5C4.99983 7.08172 8.58125 3.5 12.9992 3.5C17.4171 3.5 20.9985 7.08172 20.9985 11.5C20.9985 12.65 20.7558 13.7434 20.319 14.7316L21 19.4992L16.9146 18.4778C15.7572 19.1287 14.4215 19.5 12.9992 19.5M3.00095 16.5C3.00095 17.2188 3.15258 17.9021 3.4256 18.5198L3 21.4995L5.55315 20.8611C6.27643 21.268 7.11115 21.5 8.00005 21.5C10.761 21.5 12.9992 19.2614 12.9992 16.5C12.9992 13.7386 10.761 11.5 8.00005 11.5C5.23912 11.5 3.00095 13.7386 3.00095 16.5Z"
@@ -338,6 +362,7 @@ export default function AuthBox({
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                className="lg:hidden"
               >
                 <path
                   d="M9 18L15 12L9 6"
@@ -378,6 +403,7 @@ export default function AuthBox({
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                className="lg:hidden"
               >
                 <path
                   d="M9 18L15 12L9 6"
@@ -404,6 +430,7 @@ export default function AuthBox({
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  className="lg:hidden"
                 >
                   <path
                     d="M9 18L15 12L9 6"

@@ -111,50 +111,50 @@ export default function FilterBox({
   };
 
   return (
-    <div className="bg-white rounded-4xl shadow-sm w-full">
+    <div className="bg-white rounded-xl sm:rounded-2xl lg:rounded-4xl shadow-sm w-full">
       {/* Header Section */}
-      <div className="flex flex-row items-center justify-between w-full pb-6 border-b border-[#F0F0F0] mb-6 p-6">
-        <h2 className="text-[#262626] font-bold text-base leading-[140%] tracking-normal align-middle">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full pb-4 sm:pb-6 border-b border-[#F0F0F0] mb-4 sm:mb-6 p-4 sm:p-6 gap-2 sm:gap-0">
+        <h2 className="text-[#262626] font-bold text-sm sm:text-base leading-[140%] tracking-normal">
           {filter.filterName}
         </h2>
-        <p className="text-[#8C8C8C] font-normal text-base leading-[140%] tracking-normal align-middle mt-1">
+        <p className="text-[#8C8C8C] font-normal text-xs sm:text-sm lg:text-base leading-[140%] tracking-normal">
           {formatDate(filter.createdAt)}
         </p>
       </div>
 
       {/* Details Section */}
-      <div className="space-y-2 pb-6 py-0 p-6 border-b border-[#F0F0F0]">
-        <div className="flex">
-          <span className="text-[#262626] font-bold text-sm leading-[140%] tracking-normal align-middle min-w-[80px]">
+      <div className="space-y-3 sm:space-y-2 pb-4 sm:pb-6 py-0 p-4 sm:p-6 border-b border-[#F0F0F0]">
+        <div className="flex flex-col sm:flex-row gap-1 sm:gap-0">
+          <span className="text-[#262626] font-bold text-xs sm:text-sm leading-[140%] tracking-normal sm:min-w-[80px]">
             Kategori:
           </span>
-          <span className="text-gray-700 font-normal text-sm leading-[140%] tracking-normal align-middle">
+          <span className="text-gray-700 font-normal text-xs sm:text-sm leading-[140%] tracking-normal">
             {getCategoryText()}
           </span>
         </div>
 
-        <div className="flex">
-          <span className="text-[#262626] font-bold text-sm leading-[140%] tracking-normal align-middle min-w-[80px]">
+        <div className="flex flex-col sm:flex-row gap-1 sm:gap-0">
+          <span className="text-[#262626] font-bold text-xs sm:text-sm leading-[140%] tracking-normal sm:min-w-[80px]">
             Konum:
           </span>
-          <span className="text-gray-700 font-normal text-sm leading-[140%] tracking-normal align-middle">
+          <span className="text-gray-700 font-normal text-xs sm:text-sm leading-[140%] tracking-normal">
             {getLocationText()}
           </span>
         </div>
 
-        <div className="flex">
-          <span className="text-[#262626] font-bold text-sm leading-[140%] tracking-normal align-middle min-w-[80px]">
+        <div className="flex flex-col sm:flex-row gap-1 sm:gap-0">
+          <span className="text-[#262626] font-bold text-xs sm:text-sm leading-[140%] tracking-normal sm:min-w-[80px]">
             Filtreler:
           </span>
-          <span className="text-gray-700 font-normal text-sm leading-[140%] tracking-normal align-middle">
+          <span className="text-gray-700 font-normal text-xs sm:text-sm leading-[140%] tracking-normal">
             {getFiltersText()}
           </span>
         </div>
       </div>
 
       {/* Notification Preferences */}
-      <div className="space-y-4 mb-8 p-6 border-b border-[#F0F0F0]">
-        <div className="flex items-center ">
+      <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8 p-4 sm:p-6 border-b border-[#F0F0F0]">
+        <div className="flex items-center">
           <label className="relative inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
@@ -164,11 +164,12 @@ export default function FilterBox({
             />
             {siteNotifications ? (
               <svg
-                width="42"
-                height="24"
+                width="38"
+                height="22"
                 viewBox="0 0 42 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                className="sm:w-[42px] sm:h-[24px]"
               >
                 <rect
                   x="0.5"
@@ -190,11 +191,12 @@ export default function FilterBox({
               </svg>
             ) : (
               <svg
-                width="42"
-                height="24"
+                width="38"
+                height="22"
                 viewBox="0 0 42 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                className="sm:w-[42px] sm:h-[24px]"
               >
                 <rect
                   x="0.5"
@@ -216,12 +218,12 @@ export default function FilterBox({
               </svg>
             )}
           </label>
-          <span className="text-[#262626] font-medium text-base leading-[140%] tracking-normal align-middle ml-4">
+          <span className="text-[#262626] font-medium text-xs sm:text-sm lg:text-base leading-[140%] tracking-normal ml-3 sm:ml-4">
             Site içi bildirimler almak istiyorum
           </span>
         </div>
 
-        <div className="flex items-center ">
+        <div className="flex items-center">
           <label className="relative inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
@@ -231,11 +233,12 @@ export default function FilterBox({
             />
             {emailNotifications ? (
               <svg
-                width="42"
-                height="24"
+                width="38"
+                height="22"
                 viewBox="0 0 42 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                className="sm:w-[42px] sm:h-[24px]"
               >
                 <rect
                   x="0.5"
@@ -257,11 +260,12 @@ export default function FilterBox({
               </svg>
             ) : (
               <svg
-                width="42"
-                height="24"
+                width="38"
+                height="22"
                 viewBox="0 0 42 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                className="sm:w-[42px] sm:h-[24px]"
               >
                 <rect
                   x="0.5"
@@ -283,37 +287,34 @@ export default function FilterBox({
               </svg>
             )}
           </label>
-          <span className="text-[#262626] font-medium text-base leading-[140%] tracking-normal align-middle ml-4">
+          <span className="text-[#262626] font-medium text-xs sm:text-sm lg:text-base leading-[140%] tracking-normal ml-3 sm:ml-4">
             E-Posta bildirimleri almak istiyorum
           </span>
         </div>
       </div>
 
       {/* Action Buttons */}
-      <div className="flex gap-4 p-6 pt-0">
-        <button
-          className="flex-1 bg-[#5E5691] text-white font-medium text-base leading-[140%] tracking-normal align-middle rounded-2xl px-6 py-4 flex items-center justify-center gap-2 hover:bg-[#504682] transition-colors max-w-[263px]"
-          style={{ height: "56px" }}
-        >
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 p-4 sm:p-6 pt-0">
+        <button className="flex-1 bg-[#5E5691] text-white font-medium text-sm sm:text-base leading-[140%] tracking-normal rounded-xl sm:rounded-2xl px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-center gap-2 hover:bg-[#504682] transition-colors sm:max-w-[263px] order-1 h-12 sm:h-14">
           Sonuçları Görüntüle ({filter.resultCount || 0})
-          <img src="/chevron-right.png" className="w-6 h-6" />
+          <img src="/chevron-right.png" className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
 
-        <button
-          onClick={onUpdate}
-          className="px-6 py-4 text-gray-700 font-medium text-base leading-[140%] tracking-normal align-middle border border-[#BFBFBF] rounded-2xl hover:bg-gray-50 transition-colors ml-auto"
-          style={{ width: "110px", height: "56px" }}
-        >
-          Düzenle
-        </button>
+        <div className="flex gap-3 sm:gap-4 order-2 sm:order-2">
+          <button
+            onClick={onUpdate}
+            className="flex-1 sm:flex-none px-4 sm:px-6 py-3 sm:py-4 text-gray-700 font-medium text-sm sm:text-base leading-[140%] tracking-normal border border-[#BFBFBF] rounded-xl sm:rounded-2xl hover:bg-gray-50 transition-colors sm:ml-auto h-12 sm:h-14 sm:w-[110px]"
+          >
+            Düzenle
+          </button>
 
-        <button
-          onClick={onDelete}
-          className="px-6 py-4 bg-[#F24853] text-white font-medium text-base leading-[140%] tracking-normal align-middle rounded-2xl hover:bg-[#E03843] transition-colors"
-          style={{ width: "66px", height: "56px" }}
-        >
-          Sil
-        </button>
+          <button
+            onClick={onDelete}
+            className="flex-1 sm:flex-none px-4 sm:px-6 py-3 sm:py-4 bg-[#F24853] text-white font-medium text-sm sm:text-base leading-[140%] tracking-normal rounded-xl sm:rounded-2xl hover:bg-[#E03843] transition-colors h-12 sm:h-14 sm:w-[66px]"
+          >
+            Sil
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -46,28 +46,28 @@ export default function FavoriAramalarPage() {
 
   return (
     <div className="w-full">
-      <SimpleHeader />
+      <SimpleHeader showBackButton backUrl="/" />
 
-      <div className="w-full bg-[#ebeaf1] min-h-screen">
+      <div className="w-full bg-[#ebeaf1] min-h-screen px-4 sm:px-6 lg:px-0">
         <HeaderSection />
-        <div className="w-full max-w-[1440px] mx-auto  pb-8">
+        <div className="w-full max-w-[1440px] mx-auto pb-8">
           {loading ? (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               <FilterBoxSkeleton />
               <FilterBoxSkeleton />
             </div>
           ) : error ? (
             <div className="flex justify-center items-center py-20">
-              <div className="text-red-600">{error}</div>
+              <div className="text-red-600 text-sm sm:text-base">{error}</div>
             </div>
           ) : savedFilters.length === 0 ? (
             <div className="flex justify-center items-center py-20">
-              <div className="text-gray-600">
+              <div className="text-gray-600 text-sm sm:text-base">
                 Henüz favori aramanız bulunmuyor.
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               {savedFilters.map((filter) => (
                 <FilterBox
                   key={filter._id}
