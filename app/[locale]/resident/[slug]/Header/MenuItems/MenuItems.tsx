@@ -87,7 +87,7 @@ export default function MenuItems() {
           display: none; /* Safari and Chrome */
         }
       `}</style>
-      <div className="flex flex-row w-full items-center gap-4 md:gap-10 mb-5 md:mb-0 overflow-x-auto flex-nowrap px-4 md:px-0 hide-scrollbar pt-4">
+      <div className="flex flex-row w-full items-center gap-4 md:gap-10 mb-5 md:mb-0 overflow-x-auto flex-nowrap px-4 md:px-0 hide-scrollbar pt-4 sm:pt-0">
         {menuItems.map((item) => (
           <div
             key={item.key}

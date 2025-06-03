@@ -143,8 +143,12 @@ export default async function ResidentPage({
   return (
     <ClientWrapper hotelData={hotelData} locale={currentLocale}>
       <Header />
-      <SimpleHeader showBackButton />
-      <MenuItems />
+      <div className="w-full block md:hidden">
+        <SimpleHeader showBackButton />
+      </div>
+      <div className="block md:hidden w-full">
+        <MenuItems />
+      </div>
       <div className="md:pt-[80px]">
         <Images />
         <div className="flex md:flex-row flex-col items-start mt-12">
