@@ -332,23 +332,23 @@ export default function AccountForm({ user }: AccountFormProps) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <header className="flex justify-between items-start">
+      <header className="flex lg:flex-row flex-col justify-between items-start">
         <div>
           <h1 className="text-2xl font-bold" style={{ color: "#262626" }}>
             Profil Detayları
           </h1>
         </div>
-        <div className="flex gap-3">
+        <div className="flex gap-3 mt-4 lg:mt-0">
           <button
             onClick={handleDeleteAccount}
-            className="h-[56px] px-4 rounded-2xl bg-white  text-base font-medium hover:border-gray-400 transition-colors cursor-pointer"
+            className="h-[56px] px-4 rounded-2xl bg-white  text-sm lg:text-base font-medium hover:border-gray-400 transition-colors cursor-pointer"
             style={{ color: "#262626" }}
           >
             Hesabı Sil
           </button>
           <button
             onClick={handleLogout}
-            className="px-4 rounded-2xl bg-white   gap-2 text-base font-medium  transition-colors h-[56px] w-[148px] flex items-center justify-center cursor-pointer"
+            className="px-4 rounded-2xl bg-white   gap-2 text-sm lg:text-base font-medium  transition-colors h-[56px] w-[148px] flex items-center justify-center cursor-pointer"
             style={{ color: "#F24853" }}
           >
             <img
@@ -375,7 +375,7 @@ export default function AccountForm({ user }: AccountFormProps) {
       )}
 
       {/* Profile Photo Card */}
-      <div className="bg-white rounded-xl p-4 flex items-center gap-4">
+      <div className="bg-white rounded-xl p-4 flex flex-col lg:flex-row items-center gap-4">
         <div className="w-20 h-20 rounded-lg bg-gray-200 overflow-hidden">
           <img
             src={currentProfilePicture || "/placeholder_picture.png"}
@@ -400,10 +400,16 @@ export default function AccountForm({ user }: AccountFormProps) {
           <img src="/image-add.png" alt="upload-icon" className="w-[20px]" />
         </button>
         <div>
-          <h3 className="font-semibold" style={{ color: "#262626" }}>
+          <h3
+            className="font-semibold text-center lg:text-left "
+            style={{ color: "#262626" }}
+          >
             Profil fotoğrafı Yükle
           </h3>
-          <p className="text-xs mt-1" style={{ color: "#595959" }}>
+          <p
+            className="text-xs mt-1 text-center lg:text-left"
+            style={{ color: "#595959" }}
+          >
             JPG, GIF veya PNG. Maksimum boyut 5MB
           </p>
         </div>

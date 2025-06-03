@@ -272,7 +272,7 @@ export default function AuthBox({
             )}
 
             <Link
-              href="/favori-aramalar"
+              href="/favorilerim"
               className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
             >
               <div className="flex flex-row items-center font-medium lg:font-normal">

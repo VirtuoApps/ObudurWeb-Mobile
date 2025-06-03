@@ -34,7 +34,7 @@ export default function AccountPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#E9E8F3" }}>
       <SimpleHeader />
-      <div className="max-w-[1440px] mx-auto px-[60px] py-12">
+      <div className="max-w-[1440px] mx-auto px-4 lg:px-[60px] py-12">
         {user && <AccountForm user={user} />}
       </div>
       <Footer />
