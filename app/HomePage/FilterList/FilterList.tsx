@@ -175,6 +175,69 @@ export default function FilterList({
     scrollContainerRef.current?.scrollBy({ left: 200, behavior: "smooth" });
   };
 
+  // Check if any filters are active
+  const hasActiveFilters = () => {
+    const hasSelectedFeatures = selectedFeatures.length > 0;
+    const hasSelectedLocation = selectedLocation !== null;
+    const hasSelectedPropertyType = selectedPropertyType !== null;
+    const hasSelectedCategory = selectedCategory !== null;
+    const hasPriceRange = minPrice !== "" || maxPrice !== "";
+    const hasAreaRange = minArea !== "" || maxArea !== "";
+    const hasRoomCount = roomCount !== "";
+    const hasBathroomCount = bathroomCount !== "";
+    const hasExteriorFeatures = selectedExteriorFeatures.length > 0;
+    const hasInteriorFeatures = interiorFeatures.length > 0;
+    const hasAccessibilityFeatures = selectedAccessibilityFeatures.length > 0;
+    const hasFaceFeatures = selectedFaceFeatures.length > 0;
+    const hasSizeFilters =
+      filters?.isOnePlusOneSelected ||
+      filters?.isTwoPlusOneSelected ||
+      filters?.isThreePlusOneSelected;
+    const isNewSelected = filters?.isNewSelected;
+
+    return (
+      hasSelectedFeatures ||
+      hasSelectedLocation ||
+      hasSelectedPropertyType ||
+      hasSelectedCategory ||
+      hasPriceRange ||
+      hasAreaRange ||
+      hasRoomCount ||
+      hasBathroomCount ||
+      hasExteriorFeatures ||
+      hasInteriorFeatures ||
+      hasAccessibilityFeatures ||
+      hasFaceFeatures ||
+      hasSizeFilters ||
+      isNewSelected
+    );
+  };
+
+  // Clear all filters
+  const clearAllFilters = () => {
+    setSelectedFeatures([]);
+    setSelectedLocation(null);
+    setSelectedPropertyType(null);
+    setSelectedCategory(null);
+    setMinPrice("");
+    setMaxPrice("");
+    setMinArea("");
+    setMaxArea("");
+    setRoomCount("");
+    setBathroomCount("");
+    setSelectedExteriorFeatures([]);
+    setInteriorFeatures([]);
+    setSelectedAccessibilityFeatures([]);
+    setSelectedFaceFeatures([]);
+    setFilters({
+      ...filters,
+      isOnePlusOneSelected: false,
+      isTwoPlusOneSelected: false,
+      isThreePlusOneSelected: false,
+      isNewSelected: false,
+    });
+  };
+
   return (
     <>
       <FilterPopup
@@ -226,14 +289,14 @@ export default function FilterList({
       <div
         className={`bg-white flex flex-row ${
           currentView === "map"
-            ? "fixed top-24 left-0 right-0 w-[60%] shadow-lg"
+            ? "fixed lg:top-24 top-[80px] left-0 right-0 w-full lg:w-[60%] lg:shadow-lg"
             : "mt-0 mb-7 relative w-full border-b border-[#F0F0F0]"
-        } z-10  mx-auto  rounded-2xl`}
+        } z-10  mx-auto  lg:rounded-2xl lg:border-none border-b border-[#F0F0F0] `}
       >
         {showRightArrow && (
           <button
             onClick={scrollRight}
-            className="absolute right-27 top-1/2 -translate-y-1/2 z-10 bg-white p-1 rounded-lg border border-gray-200 shadow-md cursor-pointer"
+            className="absolute right-27 top-1/2 -translate-y-1/2 z-10 bg-white p-1 rounded-lg border border-gray-200 shadow-md cursor-pointer hidden lg:block"
           >
             <FiChevronRight className="text-gray-600 text-sm" />
           </button>
@@ -242,7 +305,7 @@ export default function FilterList({
         {showLeftArrow && (
           <button
             onClick={scrollLeft}
-            className="absolute left-10 top-1/2 -translate-y-1/2 z-10 bg-white p-1 rounded-lg border border-gray-200 shadow-md cursor-pointer"
+            className="absolute left-10 top-1/2 -translate-y-1/2 z-10 bg-white p-1 rounded-lg border border-gray-200 shadow-md cursor-pointer hidden lg:block"
           >
             <FiChevronLeft className="text-gray-600 text-sm" />
           </button>
@@ -250,7 +313,7 @@ export default function FilterList({
 
         <div
           onClick={onChangeCurrentView}
-          className="flex items-center justify-center border-r px-2 py-2 border-gray-200 cursor-pointer  "
+          className="hidden lg:flex items-center justify-center border-r px-2 py-2 border-gray-200 cursor-pointer  "
         >
           <div className="ease-in-out  hover:bg-[#F5F5F5] transition-all duration-300 p-2 rounded-lg">
             {currentView === "map" && <ListViewIcon />}
@@ -259,6 +322,18 @@ export default function FilterList({
             )}
           </div>
         </div>
+
+        {hasActiveFilters() && (
+          <div
+            onClick={clearAllFilters}
+            className="lg:hidden flex items-center justify-center cursor-pointer bg-[#262626] w-[40px] h-[40px] rounded-2xl mt-2 translate-x-3 mr-2 z-10"
+          >
+            <div className="ease-in-out hover:bg-[#F5F5F5] transition-all duration-300 p-2 rounded-lg">
+              <img src="/trash-02.png" className="w-5 h-5" />
+            </div>
+          </div>
+        )}
+
         <div className="flex-1 flex items-center relative overflow-hidden">
           <div
             ref={scrollContainerRef}
@@ -331,7 +406,7 @@ export default function FilterList({
           </div>
         </div>
         <div
-          className="flex justify-center items-center w-full md:w-auto px-1  border-l border-gray-200 cursor-pointer"
+          className="hidden lg:flex justify-center items-center w-full md:w-auto px-1  border-l border-gray-200 cursor-pointer"
           onClick={() => setIsFilterPopupOpen(true)}
         >
           <p className="text-xs font-bold   text-gray-600 whitespace-nowrap hover:bg-[#F5F5F5] transition-all duration-300 p-2 rounded-lg ml-3 mr-3">
