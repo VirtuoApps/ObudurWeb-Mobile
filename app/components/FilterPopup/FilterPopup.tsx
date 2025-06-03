@@ -813,8 +813,8 @@ export default function FilterPopup({
                     originalData: hotelType, // Keep reference to original data for category filtering
                   }))}
                   defaultText={t("selectEstateType") || "Select Property Type"}
-                  extraClassName="w-full bg-white border border-gray-200 h-[56px] text-sm text-gray-700"
-                  popoverMaxWidth="300"
+                  extraClassName="w-full bg-white border border-gray-200 h-[56px] text-sm text-gray-700 "
+                  popoverExtraClassName=" md:max-w-[300px] max-w-[190px]"
                 />
               </div>
             </div>
@@ -849,7 +849,7 @@ export default function FilterPopup({
                   }
                   defaultText={t("selectCategory") || "Select Category"}
                   extraClassName="w-full bg-white border border-gray-200 h-[56px] text-sm text-gray-700"
-                  popoverMaxWidth="300"
+                  popoverExtraClassName=" md:max-w-[300px] max-w-[190px]"
                 />
               </div>
             </div>
@@ -995,7 +995,7 @@ export default function FilterPopup({
                   }))}
                   defaultText={t("roomsSelect") || "Select Room Count"}
                   extraClassName="w-full bg-white border border-gray-200 h-[56px] text-sm text-gray-700"
-                  popoverMaxWidth="300"
+                  popoverExtraClassName=" md:max-w-[300px] max-w-[190px]"
                 />
               </div>
             </div>
@@ -1021,7 +1021,7 @@ export default function FilterPopup({
                   )}
                   defaultText={t("bathroomsSelect") || "Select Bathroom Count"}
                   extraClassName="w-full bg-white border border-gray-200 h-[56px] text-sm text-gray-700"
-                  popoverMaxWidth="300"
+                  popoverExtraClassName=" md:max-w-[300px] max-w-[190px]"
                 />
               </div>
             </div>

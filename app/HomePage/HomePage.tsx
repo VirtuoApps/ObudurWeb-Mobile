@@ -93,6 +93,8 @@ export default function HomePage({
 
   const [isSaveFilterPopupOpen, setIsSaveFilterPopupOpen] = useState(false);
 
+  const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
+
   console.log({
     filters,
   });
@@ -402,6 +404,7 @@ export default function HomePage({
           setSelectedLocation={setSelectedLocation}
           searchRadius={searchRadius}
           setSearchRadius={setSearchRadius}
+          setIsFilterPopupOpen={setIsFilterPopupOpen}
         />
         <FilterList
           features={features}
@@ -452,6 +455,8 @@ export default function HomePage({
           hotels={hotels}
           selectedCurrency={selectedCurrency}
           searchRadius={searchRadius}
+          isFilterPopupOpen={isFilterPopupOpen}
+          setIsFilterPopupOpen={setIsFilterPopupOpen}
         />
 
         {/* View Container with Transitions */}

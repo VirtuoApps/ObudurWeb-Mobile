@@ -25,6 +25,7 @@ export default function Header({
   setSelectedLocation,
   searchRadius,
   setSearchRadius,
+  setIsFilterPopupOpen,
 }: {
   setFilters: (filters: FilterType) => void;
   filterOptions: FilterOptions;
@@ -38,6 +39,7 @@ export default function Header({
   setSelectedLocation: (location: any) => void;
   searchRadius?: number;
   setSearchRadius?: (radius: number) => void;
+  setIsFilterPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const t = useTranslations("header");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -92,6 +94,7 @@ export default function Header({
             setSelectedLocation={setSelectedLocation}
             listingType={listingType}
             setListingType={setListingType}
+            setIsFilterPopupOpen={setIsFilterPopupOpen}
           />
         </div>
 

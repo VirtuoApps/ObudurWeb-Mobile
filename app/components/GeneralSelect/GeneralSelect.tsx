@@ -10,8 +10,10 @@ type GeneralSelectProps = {
   defaultText: string;
   extraClassName?: string;
   popoverMaxWidth?: string;
+  popoverMaxWidthMobile?: string;
   maxHeight?: string;
   customTextColor?: boolean;
+  popoverExtraClassName?: string;
 };
 
 export default function GeneralSelect({
@@ -21,8 +23,10 @@ export default function GeneralSelect({
   defaultText,
   extraClassName,
   popoverMaxWidth,
+  popoverMaxWidthMobile,
   maxHeight,
   customTextColor,
+  popoverExtraClassName,
 }: GeneralSelectProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -61,10 +65,7 @@ export default function GeneralSelect({
             </PopoverButton>
 
             <PopoverPanel
-              className={`absolute left-1/2 z-50 mt-2 flex w-screen  -translate-x-1/2 px-4 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in `}
-              style={{
-                maxWidth: popoverMaxWidth ? `${popoverMaxWidth}px` : "200px",
-              }}
+              className={`absolute md:left-1/2 -left-4 z-50 mt-2 flex w-screen  md:-translate-x-1/2 px-4 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in ${popoverExtraClassName}`}
             >
               <div className="w-full  flex-auto overflow-hidden rounded-[16px] bg-white text-sm/6 shadow-2xl border border-[#D9D9D9] ring-1 ring-gray-900/5 ">
                 <div

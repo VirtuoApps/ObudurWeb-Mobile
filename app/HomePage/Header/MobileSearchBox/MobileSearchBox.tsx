@@ -19,6 +19,7 @@ type MobileSearchBoxProps = {
   setSelectedLocation?: (location: LocationWithCoordinates) => void;
   listingType: "For Sale" | "For Rent";
   setListingType: (listingType: "For Sale" | "For Rent") => void;
+  setIsFilterPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function MobileSearchBox({
@@ -26,6 +27,7 @@ export default function MobileSearchBox({
   setSelectedLocation,
   listingType,
   setListingType,
+  setIsFilterPopupOpen,
 }: MobileSearchBoxProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState<PlaceSuggestion[]>([]);
@@ -180,7 +182,12 @@ export default function MobileSearchBox({
 
   return (
     <div ref={containerRef} className="relative w-full">
-      <div className="flex flex-row items-center bg-[#F5F5F5] rounded-2xl pr-3 pl-4 h-[56px]">
+      <div
+        className="flex flex-row items-center bg-[#F5F5F5] rounded-2xl pr-3 pl-4 h-[56px]"
+        onClick={() => {
+          setIsFilterPopupOpen(true);
+        }}
+      >
         <p
           className="text-sm text-[#5E5691] font-bold"
           onClick={() =>
@@ -193,19 +200,22 @@ export default function MobileSearchBox({
         <input
           className="flex-1 bg-transparent outline-none placeholder:text-[#8C8C8C] text-gray-700 text-sm pl-4 pr-3"
           placeholder="Konum, Kategori, Fiyat..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onFocus={() => setIsFocused(true)}
-          onBlur={(e) => {
-            // Don't close immediately if clicking on a suggestion
-            setTimeout(() => {
-              if (!containerRef.current?.contains(document.activeElement)) {
-                setIsFocused(false);
-                setShowSuggestions(false);
-                setSuggestions([]);
-              }
-            }, 150);
+          onClick={() => {
+            setIsFilterPopupOpen(true);
           }}
+          // value=""
+          // onChange={(e) => setSearchQuery(e.target.value)}
+          // onFocus={() => setIsFocused(true)}
+          // onBlur={(e) => {
+          //   // Don't close immediately if clicking on a suggestion
+          //   setTimeout(() => {
+          //     if (!containerRef.current?.contains(document.activeElement)) {
+          //       setIsFocused(false);
+          //       setShowSuggestions(false);
+          //       setSuggestions([]);
+          //     }
+          //   }, 150);
+          // }}
         />
 
         <img

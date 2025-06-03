@@ -78,6 +78,8 @@ export default function FilterList({
   hotels,
   selectedCurrency,
   searchRadius,
+  isFilterPopupOpen,
+  setIsFilterPopupOpen,
 }: {
   onChangeCurrentView: () => void;
   currentView: "map" | "list";
@@ -125,10 +127,11 @@ export default function FilterList({
   hotels: Hotel[];
   selectedCurrency: string;
   searchRadius: number;
+  isFilterPopupOpen: boolean;
+  setIsFilterPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const t = useTranslations("filterList");
   const locale = useLocale();
-  const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(false);
