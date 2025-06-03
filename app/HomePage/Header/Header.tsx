@@ -90,6 +90,8 @@ export default function Header({
           <MobileSearchBox
             selectedLocation={selectedLocation}
             setSelectedLocation={setSelectedLocation}
+            listingType={listingType}
+            setListingType={setListingType}
           />
         </div>
 

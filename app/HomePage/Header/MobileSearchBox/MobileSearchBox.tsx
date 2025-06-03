@@ -17,11 +17,15 @@ interface LocationWithCoordinates {
 type MobileSearchBoxProps = {
   selectedLocation?: LocationWithCoordinates | null;
   setSelectedLocation?: (location: LocationWithCoordinates) => void;
+  listingType: "For Sale" | "For Rent";
+  setListingType: (listingType: "For Sale" | "For Rent") => void;
 };
 
 export default function MobileSearchBox({
   selectedLocation,
   setSelectedLocation,
+  listingType,
+  setListingType,
 }: MobileSearchBoxProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState<PlaceSuggestion[]>([]);
@@ -177,7 +181,14 @@ export default function MobileSearchBox({
   return (
     <div ref={containerRef} className="relative w-full">
       <div className="flex flex-row items-center bg-[#F5F5F5] rounded-2xl pr-3 pl-4 h-[56px]">
-        <p className="text-sm text-[#5E5691] font-bold">Satılık</p>
+        <p
+          className="text-sm text-[#5E5691] font-bold"
+          onClick={() =>
+            setListingType(listingType === "For Sale" ? "For Rent" : "For Sale")
+          }
+        >
+          {listingType === "For Sale" ? "Satılık" : "Kiralık"}
+        </p>
 
         <input
           className="flex-1 bg-transparent outline-none placeholder:text-[#8C8C8C] text-gray-700 text-sm pl-4 pr-3"
