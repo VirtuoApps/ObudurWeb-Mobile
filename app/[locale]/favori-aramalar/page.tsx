@@ -7,6 +7,7 @@ import FilterBox from "./FilterBox/FilterBox";
 import FilterBoxSkeleton from "./FilterBoxSkeleton";
 import HeaderSection from "./HeaderSection/HeaderSection";
 import { savedFiltersApi, SavedFilter } from "../api/savedFilters";
+import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
 
 export default function FavoriAramalarPage() {
   const [savedFilters, setSavedFilters] = useState<SavedFilter[]>([]);
@@ -45,7 +46,7 @@ export default function FavoriAramalarPage() {
 
   return (
     <div className="w-full">
-      <Header />
+      <SimpleHeader />
 
       <div className="w-full bg-[#ebeaf1] min-h-screen">
         <HeaderSection />

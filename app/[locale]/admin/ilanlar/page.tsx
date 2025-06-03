@@ -21,6 +21,7 @@ import { useAppSelector } from "@/app/store/hooks";
 import { toast, Toaster } from "react-hot-toast";
 import Pagination from "./Pagination/Pagination";
 import SimpleFooter from "@/app/components/SimpleFooter/SimpleFooter";
+import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
 
 interface Price {
   amount: number;
@@ -547,7 +548,7 @@ export default function AdminListings() {
   return (
     <>
       <div className="bg-[#ebeaf1] w-full h-full min-h-screen pb-6">
-        <Header customRedirectUrl="/" />
+        <SimpleHeader customRedirectUrl="/" />
         <Toaster position="top-center" />
         <main className="max-w-[1440px] mx-auto py-8">
           {/* Header section with filters */}

@@ -6,12 +6,13 @@ import ContactTextList from "./ContactTextList/ContactTextList";
 import FormSection from "./FormSection/FormSection";
 import OfficesSection from "./OfficesSection/OfficesSection";
 import Footer from "../resident/[slug]/Footer/Footer";
+import HeaderWithoutButton from "@/app/components/HeaderWithoutButton/HeaderWithoutButton";
 
 export default function contact() {
   return (
     <div className="w-full h-full bg-[#ebeaf1]">
       <div className="bg-[#ebeaf1] w-full min-h-screen pt-20 px-8  max-w-[1440px] mx-auto">
-        <Header />
+        <HeaderWithoutButton />
         <div className="flex flex-col items-center justify-center text-center py-10">
           <h1 className=" sm:text-[56px] text-[32px] md:text-[56px] font-bold text-[#362C75] mb-3">
             Obudur’a ulaşmak çok kolay!
