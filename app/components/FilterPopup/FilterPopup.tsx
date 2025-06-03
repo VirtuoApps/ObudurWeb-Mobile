@@ -249,7 +249,7 @@ export default function FilterPopup({
     try {
       setIsFetchingCoordinates(true);
       const response = await fetch(
-        `/api/places/details?placeId=${encodeURIComponent(
+        `/api/places/details?place_id=${encodeURIComponent(
           placeId
         )}&language=${locale}`
       );
