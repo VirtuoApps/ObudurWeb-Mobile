@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useRouter } from "@/app/utils/router";
 import { toast } from "react-hot-toast";
+import MobileActionsPopup from "./MobileActionsPopup/MobileActionsPopup";
 
 interface Price {
   amount: number;
@@ -140,98 +141,101 @@ export default function AdminPropertyCard({
   };
 
   return (
-    <div className="w-full overflow-hidden bg-white rounded-2xl transition-shadow duration-300 ">
-      {/* Image container with badges */}
-      <div className="relative">
-        <img
-          src={property.images[0] || "https://placehold.co/400x200"}
-          alt={property.title.tr}
-          className="w-full h-48 object-cover"
-        />
+    <>
+      <MobileActionsPopup />
+      <div className="w-full overflow-hidden bg-white rounded-2xl transition-shadow duration-300 ">
+        {/* Image container with badges */}
+        <div className="relative">
+          <img
+            src={property.images[0] || "https://placehold.co/400x200"}
+            alt={property.title.tr}
+            className="w-full h-48 object-cover"
+          />
 
-        {/* Property number badge */}
-        <div className="absolute top-3 left-3">
-          <div className="bg-white border border-[#D9D9D9] text-[#5E5691] text-xs font-semibold px-3 py-1 rounded-lg">
-            {property.listingType.tr}
+          {/* Property number badge */}
+          <div className="absolute top-3 left-3">
+            <div className="bg-white border border-[#D9D9D9] text-[#5E5691] text-xs font-semibold px-3 py-1 rounded-lg">
+              {property.listingType.tr}
+            </div>
           </div>
+
+          {/* Status badge */}
+          <div className="absolute top-3 right-3">{renderStatusBadge()}</div>
         </div>
 
-        {/* Status badge */}
-        <div className="absolute top-3 right-3">{renderStatusBadge()}</div>
-      </div>
-
-      {/* Content */}
-      <div className="p-4">
-        {/* Property type */}
-        <p className="text-base text-[#8C8C8C] font-medium">
-          İlan No: {property.no}
-        </p>
-
-        <div className="flex flex-row items-start justify-between">
-          {/* Title */}
-          <h3
-            className="text-base font-bold text-[#262626] cursor-pointer hover:text-[#362C75] transition-colors flex-1 mr-2"
-            onClick={() => {
-              window.open(`/resident/${property.slug}`, "_blank");
-            }}
-          >
-            {property.title.tr}
-          </h3>
-
-          {/* Price */}
-          <p className="text-base font-bold text-[#362C75] flex-shrink-0">
-            {formatPrice(property.price)}
+        {/* Content */}
+        <div className="p-4">
+          {/* Property type */}
+          <p className="text-base text-[#8C8C8C] font-medium">
+            İlan No: {property.no}
           </p>
-        </div>
 
-        <div className="flex items-start space-x-1 text-[14px] text-[#8C8C8C] mb-4">
-          <span
-            className="flex-1 overflow-hidden"
-            style={{
-              display: "-webkit-box",
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: "vertical",
-              overflow: "hidden",
-            }}
-          >
-            {property?.city?.tr}, {property?.state?.tr},{" "}
-            {property.housingType.tr}, {property?.roomAsText},{" "}
-            {property.floorCount} Kat {property.totalSize}m2
-          </span>
-        </div>
+          <div className="flex flex-row items-start justify-between">
+            {/* Title */}
+            <h3
+              className="text-base font-bold text-[#262626] cursor-pointer hover:text-[#362C75] transition-colors flex-1 mr-2"
+              onClick={() => {
+                window.open(`/resident/${property.slug}`, "_blank");
+              }}
+            >
+              {property.title.tr}
+            </h3>
 
-        {/* Stats */}
-        <div className="flex justify-between items-center">
-          <div className="flex flex-row items-center gap-3">
-            <div className="flex flex-row items-center gap-2">
-              <img src="/eye-open.png" className="w-6 h-6" />
-              <p className="text-[#262626] text-sm font-medium">
-                {property.viewCount}
-              </p>
+            {/* Price */}
+            <p className="text-base font-bold text-[#362C75] flex-shrink-0">
+              {formatPrice(property.price)}
+            </p>
+          </div>
+
+          <div className="flex items-start space-x-1 text-[14px] text-[#8C8C8C] mb-4">
+            <span
+              className="flex-1 overflow-hidden"
+              style={{
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }}
+            >
+              {property?.city?.tr}, {property?.state?.tr},{" "}
+              {property.housingType.tr}, {property?.roomAsText},{" "}
+              {property.floorCount} Kat {property.totalSize}m2
+            </span>
+          </div>
+
+          {/* Stats */}
+          <div className="flex justify-between items-center">
+            <div className="flex flex-row items-center gap-3">
+              <div className="flex flex-row items-center gap-2">
+                <img src="/eye-open.png" className="w-6 h-6" />
+                <p className="text-[#262626] text-sm font-medium">
+                  {property.viewCount}
+                </p>
+              </div>
+
+              <div className="flex flex-row items-center gap-2">
+                <img src="/heart_resident.png" className="w-6 h-6" />
+                <p className="text-[#262626] text-sm font-medium">
+                  {property.favoriteCount}
+                </p>
+              </div>
+
+              <div className="flex flex-row items-center gap-2">
+                <img src="/mail_resident.png" className="w-6 h-6" />
+                <p className="text-[#262626] text-sm font-medium">
+                  {property.totalMessageCount}
+                </p>
+              </div>
             </div>
 
-            <div className="flex flex-row items-center gap-2">
-              <img src="/heart_resident.png" className="w-6 h-6" />
-              <p className="text-[#262626] text-sm font-medium">
-                {property.favoriteCount}
-              </p>
-            </div>
-
-            <div className="flex flex-row items-center gap-2">
-              <img src="/mail_resident.png" className="w-6 h-6" />
-              <p className="text-[#262626] text-sm font-medium">
-                {property.totalMessageCount}
-              </p>
+            <div>
+              <img src="/dot-horizontal-2.png" className="w-6 h-6" />
             </div>
           </div>
 
-          <div>
-            <img src="/dot-horizontal-2.png" className="w-6 h-6" />
-          </div>
+          {/* Location */}
         </div>
-
-        {/* Location */}
       </div>
-    </div>
+    </>
   );
 }
