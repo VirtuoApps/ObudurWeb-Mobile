@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import { SavedFilter } from "../../api/savedFilters";
 
 interface FilterBoxProps {
@@ -14,6 +15,7 @@ export default function FilterBox({
   onUpdate,
   onDelete,
 }: FilterBoxProps) {
+  const router = useRouter();
   const [siteNotifications, setSiteNotifications] = React.useState(
     filter.enableNotifications
   );
@@ -108,6 +110,10 @@ export default function FilterBox({
     }
 
     return filters.join(", ") || "-";
+  };
+
+  const handleViewResults = () => {
+    router.push(`/?filterId=${filter._id}`);
   };
 
   return (
@@ -294,13 +300,19 @@ export default function FilterBox({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-row gap-3 sm:gap-4 p-4 sm:p-6 pt-0">
-        <button className="hidden sm:flex flex-1 bg-[#5E5691] text-white font-medium text-sm sm:text-base leading-[140%] tracking-normal rounded-xl sm:rounded-2xl px-4 sm:px-6 py-3 sm:py-4 items-center justify-center gap-2 hover:bg-[#504682] transition-colors sm:max-w-[263px] order-1 h-12 sm:h-14">
+      <div className="flex flex-row gap-3 sm:gap-4 p-4 sm:p-6 pt-0 sm:justify-between">
+        <button
+          onClick={handleViewResults}
+          className="hidden sm:flex flex-1 bg-[#5E5691] text-white font-medium text-sm sm:text-base leading-[140%] tracking-normal rounded-xl sm:rounded-2xl px-4 sm:px-6 py-3 sm:py-4 items-center justify-center gap-2 hover:bg-[#504682] transition-colors sm:max-w-[263px] order-1 h-12 sm:h-14"
+        >
           Sonuçları Görüntüle ({filter.resultCount || 0})
           <img src="/chevron-right.png" className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
 
-        <button className="flex sm:hidden flex-1 bg-[#5E5691] text-white font-medium text-sm sm:text-base leading-[140%] tracking-normal rounded-xl sm:rounded-2xl px-4 sm:px-6 py-3 sm:py-4 items-center justify-center gap-2 hover:bg-[#504682] transition-colors sm:max-w-[263px] order-1 h-12 sm:h-14">
+        <button
+          onClick={handleViewResults}
+          className="flex sm:hidden flex-1 bg-[#5E5691] text-white font-medium text-sm sm:text-base leading-[140%] tracking-normal rounded-xl sm:rounded-2xl px-4 sm:px-6 py-3 sm:py-4 items-center justify-center gap-2 hover:bg-[#504682] transition-colors sm:max-w-[263px] order-1 h-12 sm:h-14"
+        >
           Sonuçlar({filter.resultCount || 0})
           <img src="/chevron-right.png" className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>

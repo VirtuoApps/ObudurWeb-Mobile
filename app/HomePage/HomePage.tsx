@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import { useSearchParams, useRouter } from "next/navigation";
+import axiosInstance from "@/axios";
 import Header from "./Header/Header";
 import FilterList from "./FilterList/FilterList";
 import { useTranslations } from "next-intl";
@@ -51,6 +53,8 @@ export default function HomePage({
   let hotels = hotelsFromParam;
 
   const t = useTranslations("common");
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [currentView, setCurrentView] = useState<"map" | "list">("map");
   const [filters, setFilters] = useState<FilterType | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
@@ -95,9 +99,140 @@ export default function HomePage({
 
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
 
-  console.log({
-    filters,
-  });
+  // Function to apply saved filter
+  const applySavedFilter = async (filterId: string) => {
+    try {
+      const response = await axiosInstance.get(
+        `/saved-filters/mine/${filterId}`
+      );
+      const savedFilter = response.data;
+
+      if (savedFilter) {
+        // Apply filter data to states
+        if (savedFilter.listingType) {
+          setListingType(savedFilter.listingType);
+        }
+
+        if (savedFilter.selectedLocation) {
+          setSelectedLocation(savedFilter.selectedLocation);
+        }
+
+        if (savedFilter.propertyTypeId && savedFilter.propertyType) {
+          setSelectedPropertyType({
+            _id: savedFilter.propertyTypeId,
+            name: savedFilter.propertyType,
+          });
+        }
+
+        if (savedFilter.categoryId) {
+          setSelectedCategory({ _id: savedFilter.categoryId });
+        }
+
+        // Apply filters object
+        const filterData: FilterType = {
+          listingType: savedFilter.listingType || null,
+          state: savedFilter.state || null,
+          propertyType: savedFilter.propertyType || null,
+          roomAsText: savedFilter.roomAsText || null,
+          minPrice: savedFilter.minPrice || null,
+          maxPrice: savedFilter.maxPrice || null,
+          roomCount: savedFilter.roomCount || null,
+          bathroomCount: savedFilter.bathroomCount || null,
+          minProjectArea: savedFilter.minProjectArea || null,
+          maxProjectArea: savedFilter.maxProjectArea || null,
+          interiorFeatureIds: savedFilter.interiorFeatureIds || null,
+          exteriorFeatureIds: savedFilter.exteriorFeatureIds || null,
+          accessibilityFeatureIds: savedFilter.accessibilityFeatureIds || null,
+          faceFeatureIds: savedFilter.faceFeatureIds || null,
+          isNewSelected: savedFilter.isNewSelected || null,
+          isOnePlusOneSelected: savedFilter.isOnePlusOneSelected || null,
+          isTwoPlusOneSelected: savedFilter.isTwoPlusOneSelected || null,
+          isThreePlusOneSelected: savedFilter.isThreePlusOneSelected || null,
+        };
+
+        setFilters(filterData);
+
+        // Apply individual filter states
+        setMinPrice(savedFilter.minPrice || "");
+        setMaxPrice(savedFilter.maxPrice || "");
+        setMinArea(savedFilter.minProjectArea || "");
+        setMaxArea(savedFilter.maxProjectArea || "");
+        setRoomCount(
+          savedFilter.roomCount ? savedFilter.roomCount.toString() : ""
+        );
+        setBathroomCount(
+          savedFilter.bathroomCount ? savedFilter.bathroomCount.toString() : ""
+        );
+
+        // Apply selected features
+        if (
+          savedFilter.selectedFeatures &&
+          savedFilter.selectedFeatures.length > 0
+        ) {
+          setSelectedFeatures(savedFilter.selectedFeatures);
+        }
+
+        // Apply feature arrays
+        if (
+          savedFilter.interiorFeatureIds &&
+          savedFilter.interiorFeatureIds.length > 0
+        ) {
+          // You might need to fetch feature details if needed
+          const interiorFeatureData = savedFilter.interiorFeatureIds.map(
+            (id: string) => ({ _id: id })
+          );
+          setInteriorFeatures(interiorFeatureData);
+        }
+
+        if (
+          savedFilter.exteriorFeatureIds &&
+          savedFilter.exteriorFeatureIds.length > 0
+        ) {
+          const exteriorFeatureData = savedFilter.exteriorFeatureIds.map(
+            (id: string) => ({ _id: id })
+          );
+          setSelectedExteriorFeatures(exteriorFeatureData);
+        }
+
+        if (
+          savedFilter.accessibilityFeatureIds &&
+          savedFilter.accessibilityFeatureIds.length > 0
+        ) {
+          const accessibilityFeatureData =
+            savedFilter.accessibilityFeatureIds.map((id: string) => ({
+              _id: id,
+            }));
+          setSelectedAccessibilityFeatures(accessibilityFeatureData);
+        }
+
+        if (
+          savedFilter.faceFeatureIds &&
+          savedFilter.faceFeatureIds.length > 0
+        ) {
+          const faceFeatureData = savedFilter.faceFeatureIds.map(
+            (id: string) => ({ _id: id })
+          );
+          setSelectedFaceFeatures(faceFeatureData);
+        }
+
+        // Switch to list view to show results
+        setCurrentView("list");
+
+        // Clear the filterId from URL after applying the filter
+        router.replace("/", { scroll: false });
+      }
+    } catch (error) {
+      console.error("Error fetching saved filter:", error);
+    }
+  };
+
+  // Check for filterId in URL params
+  useEffect(() => {
+    const filterId = searchParams.get("filterId");
+    if (filterId) {
+      applySavedFilter(filterId);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (isDefaultSale) {

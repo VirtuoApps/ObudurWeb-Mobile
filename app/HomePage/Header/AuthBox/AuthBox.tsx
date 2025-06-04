@@ -487,11 +487,11 @@ export default function AuthBox({
           <div className="text-sm text-gray-600">{t("login")}</div>
         </div>
 
-        <div className="bg-gray-100 rounded-lg flex items-center justify-center py-3 px-3 h-[48px] w-[48px]">
+        <div className="bg-gray-100 rounded-lg items-center justify-center py-3 px-3 h-[48px] w-[48px] flex lg:hidden">
           <img src={"/user-profile-03.png"} className="w-6" />
         </div>
 
-        <div className="bg-gray-100 hidden lg:flex items-center justify-center py-3 px-3">
+        <div className="bg-gray-100 hidden rounded-lg lg:flex items-center justify-center py-3 px-3">
           <img src="/user-profile-03.png" className="w-6" />
         </div>
       </div>

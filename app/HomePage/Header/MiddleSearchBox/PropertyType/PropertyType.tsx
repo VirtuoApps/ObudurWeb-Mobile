@@ -70,7 +70,7 @@ export default function PropertyType({
       options={propertyTypes}
       defaultText={t("propertyType")}
       extraClassName="min-w-[150px] text-[#8c8c8c] hover:text-[#595959] transition-all duration-300"
-      popoverMaxWidth="250"
+      popoverExtraClassName="max-w-[250px]"
       customTextColor={true}
     />
   );

@@ -105,7 +105,7 @@ export default function Header({
         </div>
 
         {/* Hamburger Menu Button for Mobile */}
-        <div className="xl:hidden flex items-center">
+        <div className="sm:hidden flex items-center">
           <AuthBox />
         </div>
       </div>
