@@ -22,6 +22,7 @@ import { toast, Toaster } from "react-hot-toast";
 import Pagination from "./Pagination/Pagination";
 import SimpleFooter from "@/app/components/SimpleFooter/SimpleFooter";
 import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
+import AdminPropertyCard from "@/app/components/AdminPropertyCard/AdminPropertyCard";
 
 interface Price {
   amount: number;
@@ -545,14 +546,58 @@ export default function AdminListings() {
     return null;
   };
 
+  // Handler functions for AdminPropertyCard
+  const handleCardEdit = (propertyId: string) => {
+    router.push(`/admin/ilani-duzenle/${propertyId}`);
+  };
+
+  const handleCardDelete = (propertyId: string) => {
+    setSelectedPropertyId(propertyId);
+    setDeleteModalOpen(true);
+  };
+
+  const handleCardPublish = (propertyId: string) => {
+    setSelectedPropertyId(propertyId);
+    setPublishModalOpen(true);
+  };
+
+  const handleCardUnpublish = (propertyId: string) => {
+    setSelectedPropertyId(propertyId);
+    setUnpublishModalOpen(true);
+  };
+
+  const handleCardViewMessages = (propertyId: string) => {
+    const property = properties.find((p) => p._id === propertyId);
+    if (property) {
+      setSelectedProperty(property);
+      setSelectedPropertyId(propertyId);
+      fetchPropertyMessages(propertyId);
+      setMessageModalOpen(true);
+    }
+  };
+
   return (
     <>
-      <div className="bg-[#ebeaf1] w-full h-full min-h-screen pb-6">
+      <div className="sm:bg-[#ebeaf1] bg-white w-full h-full min-h-screen pb-6">
         <SimpleHeader customRedirectUrl="/" />
         <Toaster position="top-center" />
-        <main className="max-w-[1440px] mx-auto py-8">
-          {/* Header section with filters */}
-          <div className="  rounded-xl p-4 mb-6">
+        <main className="max-w-[1440px] mx-auto py-8 px-4">
+          {/* Header section with filters Mobile */}
+
+          <div className="flex flex-row items-center justify-between lg:hidden mb-6">
+            <div>
+              <p className="text-[#262626] text-base font-bold">İlanlarım</p>
+              <p className="text-[#595959] text-sm">5 Adet İlanınız Var</p>
+            </div>
+            <button className="bg-[#5E5691] h-[36px] w-[100px] rounded-lg flex items-center justify-center gap-2">
+              <img src="/plus-01.png" className="w-[20px] h-[20px]" />
+              <span className="text-white text-sm font-medium">İlan Ver</span>
+            </button>
+          </div>
+
+          {/* Header section with filters Web */}
+
+          <div className="  rounded-xl p-4 mb-6 hidden lg:block">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <h1 className="text-2xl  text-gray-800 font-bold">
@@ -686,8 +731,8 @@ export default function AdminListings() {
             </div>
           </div>
 
-          {/* Table/card section */}
-          <div className="bg-white  rounded-2xl shadow-md p-6 px-0 overflow-auto pt-0">
+          {/* Desktop Table view */}
+          <div className="hidden lg:block bg-white  rounded-2xl shadow-md p-6 px-0 overflow-auto pt-0">
             {loading ? (
               <div className="flex justify-center items-center h-screen">
                 <span className="text-gray-500 ">Yükleniyor...</span>
@@ -893,7 +938,7 @@ export default function AdminListings() {
                             <img
                               src="/edit-icon.png"
                               alt="edit"
-                              className="w-8 h-8 text-gray-500 hover:scale-110  cursor-pointer transition"
+                              className="w-10 h-10 text-gray-500 hover:scale-110  cursor-pointer transition"
                               onClick={() => {
                                 router.push(
                                   `/admin/ilani-duzenle/${property._id}`
@@ -983,6 +1028,66 @@ export default function AdminListings() {
                   </tbody>
                 </table>
               </>
+            )}
+          </div>
+
+          {/* Mobile Card view */}
+          <div className="lg:hidden">
+            {loading ? (
+              <div className="flex justify-center items-center h-40">
+                <span className="text-gray-500">Yükleniyor...</span>
+              </div>
+            ) : filteredProperties.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-16 bg-white rounded-2xl">
+                <h3 className="text-lg font-medium text-gray-700 mb-2">
+                  Hiç ilanınız yok
+                </h3>
+                <p className="text-sm text-gray-500 mb-6">
+                  İlk ilanınızı oluşturarak başlayın
+                </p>
+                <button
+                  onClick={() => router.push("/admin/ilan-olustur")}
+                  className="flex items-center justify-center gap-2 bg-[#1EB173] rounded-lg py-2 px-4 text-sm font-medium text-white hover:bg-[#19935f] transition"
+                >
+                  <span>İlk İlanını Oluştur</span>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M10 4.16667V15.8333"
+                      stroke="white"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M4.16669 10H15.8334"
+                      stroke="white"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {currentItems.map((property) => (
+                  <AdminPropertyCard
+                    key={property._id}
+                    property={property}
+                    onEdit={handleCardEdit}
+                    onDelete={handleCardDelete}
+                    onPublish={handleCardPublish}
+                    onUnpublish={handleCardUnpublish}
+                    onViewMessages={handleCardViewMessages}
+                  />
+                ))}
+              </div>
             )}
           </div>
         </main>
