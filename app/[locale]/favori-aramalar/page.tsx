@@ -81,7 +81,7 @@ export default function FavoriAramalarPage() {
       <SimpleHeader showBackButton backUrl="/" />
 
       <div className="w-full bg-[#ebeaf1] min-h-screen  sm:px-6 lg:px-0">
-        <HeaderSection />
+        <HeaderSection totalFilters={savedFilters.length} />
         <div className="w-full max-w-[1440px] mx-auto pb-8 px-4">
           {loading || dataLoading ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
