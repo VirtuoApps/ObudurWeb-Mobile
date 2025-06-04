@@ -7,6 +7,7 @@ import FilterEditPopup from "../FilterEditPopup/FilterEditPopup";
 import { FilterOptions } from "@/types/filter-options.type";
 import { Hotel } from "@/types/hotel.type";
 import { Feature } from "@/types/feature.type";
+import axiosInstance from "@/axios";
 
 interface FilterBoxProps {
   filter: SavedFilter;
@@ -37,6 +38,8 @@ export default function FilterBox({
     filter.enableMailNotifications
   );
   const [isEditPopupOpen, setIsEditPopupOpen] = React.useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
+  const [deleteLoading, setDeleteLoading] = React.useState(false);
 
   // Format the date
   const formatDate = (dateString?: string) => {
@@ -139,6 +142,32 @@ export default function FilterBox({
     setIsEditPopupOpen(false);
     if (onUpdate) {
       onUpdate();
+    }
+  };
+
+  const handleDeleteClick = () => {
+    setDeleteModalOpen(true);
+  };
+
+  const handleDeleteFilter = async () => {
+    setDeleteLoading(true);
+    try {
+      const response = await axiosInstance.delete(
+        `/saved-filters/mine/${filter._id}`
+      );
+
+      if (response.status === 200) {
+        setDeleteModalOpen(false);
+        if (onDelete) {
+          onDelete();
+        }
+      } else {
+        console.error("Filter silme hatası");
+      }
+    } catch (error) {
+      console.error("Filter silme hatası:", error);
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -353,7 +382,7 @@ export default function FilterBox({
             </button>
 
             <button
-              onClick={onDelete}
+              onClick={handleDeleteClick}
               className="flex-1 sm:flex-none px-4 sm:px-6 py-3 sm:py-4 bg-[#F24853] text-white font-medium text-sm sm:text-base leading-[140%] tracking-normal rounded-xl sm:rounded-2xl hover:bg-[#E03843] transition-colors h-12 sm:h-14 sm:w-[66px]"
             >
               Sil
@@ -361,6 +390,52 @@ export default function FilterBox({
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteModalOpen && (
+        <div
+          className="fixed inset-0 flex items-center justify-center z-50"
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          }}
+        >
+          <div className="bg-[#FCFCFC] p-6 max-w-md w-full rounded-3xl relative">
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-2xl font-bold  text-[#262626]">
+                Arama Kaydını Sil
+              </h3>
+
+              <button
+                className="cursor-pointer"
+                onClick={() => setDeleteModalOpen(false)}
+              >
+                <img src="/close-button-ani.png" className="w-6 h-6" />
+              </button>
+            </div>
+            <p className="mb-16 text-[#595959] font-bold text-base ">
+              Arama kaydınızı silmek istediğinize emin misiniz?
+            </p>
+            <div className="flex justify-center gap-3">
+              <button
+                className="px-4 py-2 border border-[#BFBFBF] text-[#262626] hover:bg-gray-100 transition w-1/2 rounded-2xl h-[54px]"
+                onClick={() => {
+                  setDeleteModalOpen(false);
+                }}
+                disabled={deleteLoading}
+              >
+                İptal
+              </button>
+              <button
+                className="px-4 py-2 bg-[#F24853] text-white rounded-2xl hover:bg-red-700 transition w-1/2 h-[54px]"
+                onClick={handleDeleteFilter}
+                disabled={deleteLoading}
+              >
+                {deleteLoading ? "Yükleniyor..." : "Sil"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Filter Edit Popup */}
       <FilterEditPopup
