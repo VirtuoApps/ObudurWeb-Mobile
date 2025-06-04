@@ -46,6 +46,7 @@ interface Property {
     type: string;
     coordinates: number[];
   };
+  totalSize: number;
 }
 
 interface AdminPropertyCardProps {
@@ -162,7 +163,7 @@ export default function AdminPropertyCard({
       {/* Content */}
       <div className="p-4">
         {/* Property type */}
-        <p className="text-sm text-[#8C8C8C] font-medium">
+        <p className="text-base text-[#8C8C8C] font-medium">
           İlan No: {property.no}
         </p>
 
@@ -193,99 +194,43 @@ export default function AdminPropertyCard({
               overflow: "hidden",
             }}
           >
-            {property?.city?.tr}, {property?.state?.tr}
+            {property?.city?.tr}, {property?.state?.tr},{" "}
+            {property.housingType.tr}, {property?.roomAsText},{" "}
+            {property.floorCount} Kat {property.totalSize}m2
           </span>
         </div>
 
         {/* Stats */}
-        <div className="flex justify-between items-center mb-4 text-sm text-[#595959] font-medium">
-          <div className="flex items-center space-x-1">
-            <EyeIcon className="h-4 w-4 text-gray-500" />
-            <span>{property.viewCount || 0}</span>
+        <div className="flex justify-between items-center">
+          <div className="flex flex-row items-center gap-3">
+            <div className="flex flex-row items-center gap-2">
+              <img src="/eye-open.png" className="w-6 h-6" />
+              <p className="text-[#262626] text-sm font-medium">
+                {property.viewCount}
+              </p>
+            </div>
+
+            <div className="flex flex-row items-center gap-2">
+              <img src="/heart_resident.png" className="w-6 h-6" />
+              <p className="text-[#262626] text-sm font-medium">
+                {property.favoriteCount}
+              </p>
+            </div>
+
+            <div className="flex flex-row items-center gap-2">
+              <img src="/mail_resident.png" className="w-6 h-6" />
+              <p className="text-[#262626] text-sm font-medium">
+                {property.totalMessageCount}
+              </p>
+            </div>
           </div>
 
-          <div className="w-[1px] h-[16px] bg-[#D9D9D9]"></div>
-
-          <div className="flex items-center space-x-1">
-            <HeartIcon className="h-4 w-4 text-gray-500" />
-            <span>{property.favoriteCount || 0}</span>
-          </div>
-
-          <div className="w-[1px] h-[16px] bg-[#D9D9D9]"></div>
-
-          <div
-            className="flex items-center space-x-1 cursor-pointer hover:text-[#362C75] transition-colors"
-            onClick={() => onViewMessages(property._id)}
-          >
-            <EnvelopeIcon className="h-4 w-4 text-gray-500" />
-            <span>{property.totalMessageCount || 0}</span>
+          <div>
+            <img src="/dot-horizontal-2.png" className="w-6 h-6" />
           </div>
         </div>
 
         {/* Location */}
-
-        {/* Action buttons */}
-        <div className="flex items-center justify-between gap-2 pt-3 border-t border-gray-100">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => onEdit(property._id)}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              title="Düzenle"
-            >
-              <img src="/edit-icon.png" alt="edit" className="w-5 h-5" />
-            </button>
-            <button
-              onClick={handleLocationClick}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              title="Konumu Gör"
-            >
-              <img
-                src="/location-icon.png"
-                alt="location"
-                className="w-4 h-4"
-              />
-            </button>
-            <button
-              onClick={handleShare}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              title="Paylaş"
-            >
-              <img src="/share-icon.png" alt="share" className="w-3 h-3" />
-            </button>
-            <button
-              onClick={() => onDelete(property._id)}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              title="Sil"
-            >
-              <TrashIcon className="w-4 h-4 text-[#EF1A28]" />
-            </button>
-          </div>
-
-          {/* Publish/Unpublish button */}
-          <div>
-            {property.isPublished ? (
-              <button
-                className="flex items-center justify-center gap-1 px-3 py-1.5 border border-[#D9D9D9] rounded-lg text-xs font-medium text-[#FA9441] transition hover:bg-gray-50"
-                onClick={() => onUnpublish(property._id)}
-              >
-                <img src="/pause-icon.png" alt="pause" className="w-3 h-3" />
-                Duraklat
-              </button>
-            ) : (
-              <button
-                className="flex items-center justify-center gap-1 px-3 py-1.5 border border-[#D9D9D9] rounded-lg text-xs font-medium text-[#1EB173] transition hover:bg-gray-50"
-                onClick={() => onPublish(property._id)}
-              >
-                <img
-                  src="/publish-icon.png"
-                  alt="publish"
-                  className="w-3 h-3"
-                />
-                Yayınla
-              </button>
-            )}
-          </div>
-        </div>
       </div>
     </div>
   );
