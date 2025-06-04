@@ -62,4 +62,29 @@ export const savedFiltersApi = {
       throw error;
     }
   },
+
+  updateSavedFilter: async (
+    filterId: string,
+    updateData: any
+  ): Promise<SavedFilter> => {
+    try {
+      const response = await axiosInstance.patch<SavedFilter>(
+        `/saved-filters/mine/${filterId}`,
+        updateData
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error updating saved filter:", error);
+      throw error;
+    }
+  },
+
+  deleteSavedFilter: async (filterId: string): Promise<void> => {
+    try {
+      await axiosInstance.delete(`/saved-filters/mine/${filterId}`);
+    } catch (error) {
+      console.error("Error deleting saved filter:", error);
+      throw error;
+    }
+  },
 };
