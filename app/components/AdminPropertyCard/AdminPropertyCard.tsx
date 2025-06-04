@@ -68,6 +68,7 @@ export default function AdminPropertyCard({
   onViewMessages,
 }: AdminPropertyCardProps) {
   const router = useRouter();
+  const [showMobileActionsPopup, setShowMobileActionsPopup] = useState(false);
 
   // Format price for display
   const formatPrice = (price: Price[]) => {
@@ -140,9 +141,25 @@ export default function AdminPropertyCard({
     }
   };
 
+  const handlePopupClose = () => {
+    setShowMobileActionsPopup(false);
+  };
+
   return (
     <>
-      <MobileActionsPopup />
+      {showMobileActionsPopup && (
+        <MobileActionsPopup
+          property={property}
+          onEdit={onEdit}
+          onDelete={onDelete}
+          onPublish={onPublish}
+          onUnpublish={onUnpublish}
+          onViewMessages={onViewMessages}
+          onShare={handleShare}
+          onLocationClick={handleLocationClick}
+          onClose={handlePopupClose}
+        />
+      )}
       <div className="w-full overflow-hidden bg-white rounded-2xl transition-shadow duration-300 ">
         {/* Image container with badges */}
         <div className="relative">
@@ -228,8 +245,11 @@ export default function AdminPropertyCard({
               </div>
             </div>
 
-            <div>
-              <img src="/dot-horizontal-2.png" className="w-6 h-6" />
+            <div onClick={() => setShowMobileActionsPopup(true)}>
+              <img
+                src="/dot-horizontal-2.png"
+                className="w-6 h-6 cursor-pointer"
+              />
             </div>
           </div>
 

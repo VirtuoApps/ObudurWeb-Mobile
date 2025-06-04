@@ -57,6 +57,7 @@ interface Property {
   totalMessageCount: number;
   viewCount: number;
   favoriteCount: number;
+  totalSize: number;
   location: {
     type: string;
     coordinates: number[];
@@ -176,14 +177,20 @@ export default function AdminListings() {
   };
 
   // Handle property publish/unpublish
-  const handleUpdatePublishStatus = async (isPublished: boolean) => {
-    if (!selectedPropertyId) return;
+  const handleUpdatePublishStatus = async (
+    isPublished: boolean,
+    propIdFromParam?: string
+  ) => {
+    if (!selectedPropertyId && !propIdFromParam) return;
 
     try {
       setUpdateLoading(true);
-      await axiosInstance.patch(`/admin/hotels/${selectedPropertyId}`, {
-        isPublished,
-      });
+      await axiosInstance.patch(
+        `/admin/hotels/${selectedPropertyId || propIdFromParam}`,
+        {
+          isPublished,
+        }
+      );
 
       // Close modals
       setPublishModalOpen(false);
@@ -200,12 +207,14 @@ export default function AdminListings() {
   };
 
   // Handle property delete
-  const handleDeleteProperty = async () => {
-    if (!selectedPropertyId) return;
+  const handleDeleteProperty = async (propIdFromParam?: string) => {
+    if (!selectedPropertyId && !propIdFromParam) return;
 
     try {
       setUpdateLoading(true);
-      await axiosInstance.delete(`/admin/hotels/${selectedPropertyId}`);
+      await axiosInstance.delete(
+        `/admin/hotels/${selectedPropertyId || propIdFromParam}`
+      );
 
       // Close modal
       setDeleteModalOpen(false);
@@ -1081,9 +1090,15 @@ export default function AdminListings() {
                     key={property._id}
                     property={property}
                     onEdit={handleCardEdit}
-                    onDelete={handleCardDelete}
-                    onPublish={handleCardPublish}
-                    onUnpublish={handleCardUnpublish}
+                    onDelete={() => {
+                      handleDeleteProperty(property._id);
+                    }}
+                    onPublish={() => {
+                      handleUpdatePublishStatus(true, property._id);
+                    }}
+                    onUnpublish={() => {
+                      handleUpdatePublishStatus(false, property._id);
+                    }}
                     onViewMessages={handleCardViewMessages}
                   />
                 ))}
@@ -1203,7 +1218,9 @@ export default function AdminListings() {
                 </button>
                 <button
                   className="px-4 py-2 bg-[#EF1A28] text-white rounded-lg hover:bg-red-700 transition"
-                  onClick={handleDeleteProperty}
+                  onClick={() => {
+                    handleDeleteProperty();
+                  }}
                   disabled={updateLoading}
                 >
                   {updateLoading ? "Yükleniyor..." : "Sil"}
