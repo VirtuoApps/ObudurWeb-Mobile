@@ -14,7 +14,7 @@ export default function NewFilterItem({
 
   return (
     <div
-      className={`flex flex-row items-center cursor-pointer rounded-2xl px-3 py-2 whitespace-nowrap transition-colors duration-200 ${
+      className={`flex flex-row items-center cursor-pointer rounded-2xl px-3 py-2 whitespace-nowrap transition-colors duration-200 flex-shrink-0 ${
         isSelected
           ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75] "
           : "bg-white hover:bg-[#F5F5F5] border-[0.5px] border-transparent"
