@@ -234,6 +234,17 @@ export default function HomePage({
     }
   }, [searchParams]);
 
+  // Disable body scroll when component mounts
+  useEffect(() => {
+    // Disable scroll on body
+    document.body.style.overflow = "hidden";
+
+    // Cleanup function to re-enable scroll when component unmounts
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, []);
+
   useEffect(() => {
     if (isDefaultSale) {
       setListingType("For Sale");
@@ -525,7 +536,7 @@ export default function HomePage({
         selectedFaceFeatures={selectedFaceFeatures}
         resultCount={filteredHotels.length}
       />
-      <div className="bg-white">
+      <div className="bg-white overflow-hidden h-screen">
         <Header
           setFilters={setFilters}
           filterOptions={filterOptions}
