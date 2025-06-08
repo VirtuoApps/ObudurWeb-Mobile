@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+
 import Image from "next/image";
 import axiosInstance from "../../../../../axios";
 import { useTranslations } from "next-intl";
@@ -43,10 +44,10 @@ export default function Footer() {
       {/* Primary top divider */}
       <div className="border-t border-slate-200"></div>
 
-      <div className="max-w-[1440px] mx-auto px-4 lg:px-0 py-12 lg:py-24">
+      <div className="max-w-[1440px] mx-auto px-4 lg:px-0 py-12 lg:py-20">
         <div className="flex flex-col lg:flex-row lg:justify-between pt-8 pb-10 gap-8 lg:gap-0">
           {/* Newsletter Column - Move to top on mobile */}
-          <div className="w-full lg:w-[400px] order-first lg:order-last">
+          <div className="w-full lg:w-[342px] order-first lg:order-last">
             <form onSubmit={handleSubscribe}>
               <div className="flex flex-col border-b border-gray-300 pb-4">
                 {isSubscribed ? (
@@ -89,7 +90,7 @@ export default function Footer() {
           </div>
 
           {/* Navigation Columns Container */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 w-full lg:w-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-28 w-full lg:w-auto">
             {/* Column 1 */}
             <nav className="col-span-1">
               <ul className="space-y-2">
@@ -144,7 +145,7 @@ export default function Footer() {
                     href="/iletisim#offices-section"
                     className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
                   >
-                    Satış Ofizlerimiz
+                    Satış Ofislerimiz
                   </a>
                 </li>
                 <li>
@@ -234,16 +235,17 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="max-w-[1440px] mx-auto px-4 lg:px-0">
-        <div className="flex justify-center lg:justify-between items-center py-4 lg:py-6 text-xs text-slate-500">
+        <div className="flex justify-center lg:justify-between items-center py-4 lg:py-12 text-xs text-slate-500">
           <div className="flex items-center">
             <Image
               src="/obudur-icon.png"
               alt="Obudur Logo"
-              width={20}
-              height={20}
-              className="h-5 w-auto mr-2"
+              width={32}
+              height={32}
+              className="mr-4"
             />
-            <span>© 2025 Obudur</span>
+            <span className="text-[14px] font-medium mr-4">© 2025 Obudur</span>
+            <span className="text-[14px] font-medium">Şirket Bilgileri</span>
           </div>
         </div>
       </div>

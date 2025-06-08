@@ -1,12 +1,12 @@
 "use client";
 
-import React from "react";
-import BedIcon from "@/app/svgIcons/BedIcon";
 import AreaIcon from "@/app/svgIcons/AreaIcon";
-import { useTranslations } from "next-intl";
-import { useHotelData } from "../hotelContext";
+import BedIcon from "@/app/svgIcons/BedIcon";
 import { LocalizedText } from "../page";
+import React from "react";
 import { formatAddress } from "@/app/utils/addressFormatter";
+import { useHotelData } from "../hotelContext";
+import { useTranslations } from "next-intl";
 
 interface FeatureIconProps {
   icon: React.ReactNode;
@@ -302,7 +302,7 @@ export default function GeneralInfo() {
 
       {/* Features Icons Row - Scrollable on mobile */}
       <div className="flex overflow-x-auto py-3 sm:py-4 justify-between no-scrollbar">
-        <div className="flex gap-4 justify-between min-w-full">
+        <div className="flex gap-4 min-w-full">
           {quickFilters.slice(0, 6).map((feature) => (
             <FeatureIcon
               key={feature._id}
