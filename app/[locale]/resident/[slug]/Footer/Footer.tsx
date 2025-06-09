@@ -245,7 +245,6 @@ export default function Footer() {
               className="mr-4"
             />
             <span className="text-[14px] font-medium mr-4">© 2025 Obudur</span>
-            <span className="text-[14px] font-medium">Şirket Bilgileri</span>
           </div>
         </div>
       </div>
