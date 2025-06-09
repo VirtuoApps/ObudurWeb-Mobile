@@ -329,7 +329,7 @@ export default function FirstCreateStep() {
               <div className="flex gap-2">
                 <button
                   type="button"
-                  className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full transition font-medium cursor-pointer text-[14px] font-medium ${
+                  className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full transition font-medium cursor-pointer text-[14px] ${
                     listingType && listingType.tr === "Satılık"
                       ? "bg-[#EBEAF180] border-[0.5px]  border-[#362C75] text-[#362C75]"
                       : "bg-transparent border-[0.5px] border-[#BFBFBF] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
