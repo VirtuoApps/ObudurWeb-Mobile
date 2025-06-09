@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+
+import CategorySelect from "./CategorySelect/CategorySelect";
+import { FilterOptions } from "@/types/filter-options.type";
+import { FilterType } from "@/types/filter.type";
 import LocationSelect from "./LocationSelect/LocationSelect";
 import PropertyType from "./PropertyType/PropertyType";
-import CategorySelect from "./CategorySelect/CategorySelect";
 import { useTranslations } from "next-intl";
-import { FilterType } from "@/types/filter.type";
-import { FilterOptions } from "@/types/filter-options.type";
+
 interface MiddleSearchBoxProps {
   isMobileMenu?: boolean;
   setFilters: (filters: FilterType) => void;
@@ -56,24 +58,21 @@ export default function MiddleSearchBox({
         ${
           isMobileMenu
             ? "flex flex-col w-full gap-3"
-            : "flex items-center gap-2 border border-gray-100 px-4  rounded-lg"
+            : "flex items-center gap-2 border border-gray-100 px-[10px]  rounded-lg"
         }
       `}
     >
-      {/* Satılık / Kiralık - Animated Switch */}
-      <div
+      {/* <div
         className={`relative flex rounded-md bg-gray-50 p-1 ${
           isMobileMenu ? "w-full" : "mr-2"
         }`}
       >
-        {/* Moving background */}
         <div
           className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-[#362C75] rounded transition-transform duration-300 ease-in-out ${
             listingType === "For Sale" ? "translate-x-0" : "translate-x-full"
           }`}
         />
 
-        {/* Buttons */}
         <button
           className={`relative z-10 py-1.5 text-sm font-medium transition-colors duration-300 cursor-pointer rounded-lg flex-1 min-w-[100px] flex items-center justify-center h-[36px] w-[132px] ${
             listingType === "For Sale" ? "text-white" : "text-gray-700"
@@ -90,7 +89,52 @@ export default function MiddleSearchBox({
         >
           {t("forRent")}
         </button>
-      </div>
+      </div> */}
+      
+<div
+  className={`relative flex rounded-md bg-gray-100 p-1 h-[36px] items-center ${
+    isMobileMenu ? "w-full" : ""
+  }`}
+>
+  {/* Sliding Background */}
+  <div
+    className={`absolute w-[calc(50%-4px)] bg-[#362C75] rounded-md transition-all duration-500 ease-in-out shadow-md h-[32px] ${
+      listingType === "For Sale" ? "translate-x-0" : "translate-x-full"
+    }`}
+  />
+
+  {/* For Sale Toggle Button */}
+  <button
+    className={`relative z-10 py-2 px-4 text-sm font-medium transition-all duration-500 ease-in-out cursor-pointer rounded-md flex-1 min-w-[60px] flex items-center justify-center ${
+      listingType === "For Sale" 
+        ? "text-white" 
+        : "text-gray-600 hover:text-gray-800"
+    }`}
+    onClick={() => setListingType("For Sale")}
+    aria-pressed={listingType === "For Sale"}
+    role="switch"
+  >
+    <span className="transition-all duration-200 ease-in-out relative z-10">
+      {t("forSale")}
+    </span>
+  </button>
+  
+  {/* For Rent Toggle Button */}
+  <button
+    className={`relative z-10 py-2 px-4 text-sm font-medium transition-all duration-500 ease-in-out cursor-pointer rounded-md flex-1 min-w-[60px] flex items-center justify-center ${
+      listingType === "For Rent" 
+        ? "text-white" 
+        : "text-gray-600 hover:text-gray-800"
+    }`}
+    onClick={() => setListingType("For Rent")}
+    aria-pressed={listingType === "For Rent"}
+    role="switch"
+  >
+    <span className="transition-all duration-200 ease-in-out relative z-10">
+      {t("forRent")}
+    </span>
+  </button>
+</div>
 
       {/* Konum */}
       <LocationSelect

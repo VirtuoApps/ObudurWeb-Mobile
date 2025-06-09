@@ -1,10 +1,11 @@
 "use client";
 
-import LanguageSwitcher from "@/app/components/LanguageSwitcher";
-import AuthBox from "@/app/HomePage/Header/AuthBox/AuthBox";
-import Image from "next/image";
 import React, { useState } from "react";
+
+import AuthBox from "@/app/HomePage/Header/AuthBox/AuthBox";
 import { FaBars } from "react-icons/fa";
+import Image from "next/image";
+import LanguageSwitcher from "@/app/components/LanguageSwitcher";
 import { useRouter } from "@/app/utils/router";
 
 interface HeaderProps {
@@ -23,8 +24,8 @@ export default function SimpleHeader({
   const router = useRouter();
 
   return (
-    <header className="relative border-b border-[#f0f0f0] py-4 bg-white h-[80px] w-full px-4 md:px-0">
-      <div className="container mx-auto flex flex-wrap items-center justify-between">
+        <header className="relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex">
+      <div className="w-full flex flex-wrap items-center justify-between px-4 sm:px-6">
         {showBackButton && (
           <div
             onClick={() => router.push(backUrl || "/")}
@@ -33,7 +34,8 @@ export default function SimpleHeader({
             <img
               src="/left-icon.png"
               alt="oBudur Logo"
-              className="w-[32px] h-[32px]"
+              width={28}
+              height={28}
             />
           </div>
         )}
@@ -46,8 +48,8 @@ export default function SimpleHeader({
           <Image
             src="/obudur-logo.png"
             alt="oBudur Logo"
-            width={120}
-            height={40}
+            width={144}
+            height={32}
             priority
           />
         </div>
