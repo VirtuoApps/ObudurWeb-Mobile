@@ -2,7 +2,6 @@
 
 import FormSection from "./FormSection/FormSection";
 import FormTexts from "./FormTexts/FormTexts";
-import Header from "./Header/Header";
 import React from "react";
 import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
 

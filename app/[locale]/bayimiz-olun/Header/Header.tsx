@@ -37,17 +37,6 @@ export default function Header() {
           <AuthBox showLikeButton={false} hideCreateListingButton={true} />
           <LanguageSwitcher />
         </div>
-
-        {/* Hamburger Menu Button for Mobile */}
-        <div className="md:hidden flex items-center">
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="text-gray-600 hover:text-gray-800 focus:outline-none"
-            aria-label="Toggle menu"
-          >
-            <FaBars className="h-6 w-6" />
-          </button>
-        </div>
       </div>
 
       {/* Mobile Menu */}
