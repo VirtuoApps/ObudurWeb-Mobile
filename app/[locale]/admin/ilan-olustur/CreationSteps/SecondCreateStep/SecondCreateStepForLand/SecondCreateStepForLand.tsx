@@ -11,7 +11,7 @@ import GoBackButton from "../../../GoBackButton/GoBackButton";
 
 // Custom Select component that matches the design
 interface SelectOption {
-  value: string | number;
+  value: string | number | boolean | null;
   label: string;
 }
 
@@ -33,8 +33,12 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  console.log({
+    value,
+  });
+
   const selectedOption = options.find(
-    (option) => option.value.toString() === value.toString()
+    (option) => option.value?.toString() === value?.toString()
   );
 
   useEffect(() => {
@@ -87,10 +91,10 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
           <div className="py-1 max-h-60 overflow-auto">
             {options.map((option) => (
               <div
-                key={option.value}
+                key={option.value?.toString() || ""}
                 className="px-4 py-3 hover:bg-[#F5F5F5] cursor-pointer text-[#262626] transition-colors"
                 onClick={() => {
-                  onChange(option.value.toString());
+                  onChange(option.value?.toString() || "");
                   setIsOpen(false);
                 }}
               >
@@ -180,9 +184,9 @@ export default function SecondCreateStepForLand() {
   ];
 
   const creditEligibleOptions = [
-    { value: "true", label: "Evet" },
-    { value: "false", label: "Hayır" },
-    { value: "unknown", label: "Bilinmiyor" },
+    { value: true, label: "Evet" },
+    { value: false, label: "Hayır" },
+    { value: null, label: "Bilinmiyor" },
   ];
 
   const sourceOptions = [
@@ -294,7 +298,7 @@ export default function SecondCreateStepForLand() {
       newErrors.push("Lütfen genel özellikleri seçin");
     }
 
-    if (!creditEligible) {
+    if (typeof creditEligible === "undefined") {
       newErrors.push("Lütfen krediye uygunluk durumunu seçin");
     }
 
@@ -467,7 +471,7 @@ export default function SecondCreateStepForLand() {
                 </label>
                 <CustomSelect
                   options={creditEligibleOptions}
-                  value={creditEligible || ""}
+                  value={creditEligible}
                   onChange={(value) => setCreditEligible(value)}
                   placeholder="Seçiniz"
                 />

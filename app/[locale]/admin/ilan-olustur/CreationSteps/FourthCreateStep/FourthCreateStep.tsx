@@ -13,6 +13,7 @@ import {
 import Image from "next/image";
 import GoBackButton from "../../GoBackButton/GoBackButton";
 import { CustomSelect } from "../SecondCreateStep/SecondCreateStep";
+import { infrastructureFeatures } from "../../../../../utils/infrastructureFeatures";
 
 interface Feature {
   _id: string;
@@ -93,6 +94,8 @@ export default function FourthCreateStep() {
     orientation,
     setOrientation,
     setCurrentStep,
+    infrastructureFeatureIds,
+    setInfrastructureFeatureIds,
   } = useListingForm();
 
   // Fetch available languages
@@ -195,6 +198,16 @@ export default function FourthCreateStep() {
       setFeatureIds(featureIds.filter((id: string) => id !== featureId));
     } else {
       setFeatureIds([...featureIds, featureId]);
+    }
+  };
+
+  const toggleInfrastructureFeature = (featureId: string) => {
+    if (infrastructureFeatureIds.includes(featureId)) {
+      setInfrastructureFeatureIds(
+        infrastructureFeatureIds.filter((id: string) => id !== featureId)
+      );
+    } else {
+      setInfrastructureFeatureIds([...infrastructureFeatureIds, featureId]);
     }
   };
 
@@ -488,6 +501,47 @@ export default function FourthCreateStep() {
               title="Engelliye ve Yaşlıya Yönelik Özellikler"
               features={elderlyDisabledFeatures}
             />
+
+            {/* Infrastructure Features */}
+            <div className="mt-6">
+              <h2 className="font-semibold mb-2 text-[#262626]">
+                Altyapı Özellikleri
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {Object.entries(infrastructureFeatures).map(
+                  ([key, feature]) => {
+                    const isSelected = infrastructureFeatureIds.includes(key);
+                    const displayName =
+                      selectedLanguage === "en" ? feature.en : feature.tr;
+                    return (
+                      <button
+                        key={key}
+                        type="button"
+                        className={`inline-flex items-center gap-2 px-4 py-2 rounded-full transition border  cursor-pointer ${
+                          isSelected
+                            ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                            : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
+                        }`}
+                        onClick={() => toggleInfrastructureFeature(key)}
+                      >
+                        {feature.image && (
+                          <div className="w-5 h-5 relative">
+                            <Image
+                              src={feature.image}
+                              alt={displayName}
+                              width={20}
+                              height={20}
+                              className="object-contain"
+                            />
+                          </div>
+                        )}
+                        {displayName}
+                      </button>
+                    );
+                  }
+                )}
+              </div>
+            </div>
 
             {/* Distances Section */}
             <div className="mt-8 bg-white px-0 rounded-lg">

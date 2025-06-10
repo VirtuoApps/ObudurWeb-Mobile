@@ -59,6 +59,7 @@ export interface HotelData {
   generalFeatures?: MultilangText;
   zoningStatus?: MultilangText;
   featureIds: string[];
+  infrastructureFeatureIds?: string[];
   distances: { typeId: string; value: number }[];
   location: {
     type: string;
@@ -128,6 +129,9 @@ type ListingFormContextType = {
   // Orientation (facade)
   orientation: string;
   setOrientation: React.Dispatch<React.SetStateAction<string>>;
+  // Infrastructure Feature IDs
+  infrastructureFeatureIds: string[];
+  setInfrastructureFeatureIds: React.Dispatch<React.SetStateAction<string[]>>;
   // Address fields
   country: MultilangText;
   setCountry: React.Dispatch<React.SetStateAction<MultilangText>>;
@@ -235,6 +239,9 @@ export const ListingFormContext = createContext<ListingFormContextType>({
   // Orientation
   orientation: "",
   setOrientation: () => {},
+  // Infrastructure Feature IDs
+  infrastructureFeatureIds: [],
+  setInfrastructureFeatureIds: () => {},
   // Address fields defaults
   country: { tr: "", en: "" },
   setCountry: () => {},
@@ -325,7 +332,7 @@ export default function CreationSteps({
 
   // New fields state
   const [exchangeable, setExchangeable] = useState<boolean>(false);
-  const [creditEligible, setCreditEligible] = useState<string>("");
+  const [creditEligible, setCreditEligible] = useState<any>("");
   const [buildingAge, setBuildingAge] = useState<number>(0);
   const [isFurnished, setIsFurnished] = useState<boolean>(false);
   const [dues, setDues] = useState<{ amount: number; currency: string }[]>([]);
@@ -359,6 +366,15 @@ export default function CreationSteps({
 
   // New state for FourthCreateStep - Features
   const [featureIds, setFeatureIds] = useState<string[]>([]);
+
+  console.log({
+    creditEligible,
+  });
+
+  // New state for FourthCreateStep - Infrastructure Features
+  const [infrastructureFeatureIds, setInfrastructureFeatureIds] = useState<
+    string[]
+  >([]);
 
   // New state for FourthCreateStep - Distances
   const [distances, setDistances] = useState<
@@ -416,9 +432,7 @@ export default function CreationSteps({
         setExchangeable(hotelData.exchangeable);
       }
       if (hotelData.creditEligible !== undefined) {
-        setCreditEligible(
-          hotelData.creditEligible ? hotelData.creditEligible.toString() : ""
-        );
+        setCreditEligible(hotelData.creditEligible);
       }
       if (hotelData.buildingAge !== undefined) {
         setBuildingAge(hotelData.buildingAge);
@@ -446,6 +460,11 @@ export default function CreationSteps({
       }
       if (hotelData.zoningStatus) {
         setZoningStatus(new Map(Object.entries(hotelData.zoningStatus)));
+      }
+
+      // Set infrastructure feature IDs
+      if (hotelData.infrastructureFeatureIds) {
+        setInfrastructureFeatureIds(hotelData.infrastructureFeatureIds);
       }
 
       // Set orientation (face)
@@ -536,6 +555,9 @@ export default function CreationSteps({
     // Orientation
     orientation,
     setOrientation,
+    // Infrastructure Feature IDs
+    infrastructureFeatureIds,
+    setInfrastructureFeatureIds,
     // Address fields
     country,
     setCountry,
