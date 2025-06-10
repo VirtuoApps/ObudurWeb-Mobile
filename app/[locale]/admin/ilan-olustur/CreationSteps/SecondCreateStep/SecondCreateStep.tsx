@@ -611,7 +611,7 @@ export default function SecondCreateStep() {
                   htmlFor="bedRoomCount"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Yatak Odası Sayısı
+                  Balkon Sayısı
                 </label>
                 <CustomSelect
                   options={generateNumberOptions(0, 5)}
