@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useTranslations, useLocale } from "next-intl";
+import ListingTypePopup from "@/app/components/ListingTypePopup/ListingTypePopup";
 
 interface PlaceSuggestion {
   description: string;
@@ -38,6 +39,7 @@ export default function MobileSearchBox({
   const locale = useLocale();
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isListingTypePopupOpen, setIsListingTypePopupOpen] = useState(false);
 
   const t = useTranslations("locations");
 
@@ -190,14 +192,19 @@ export default function MobileSearchBox({
       >
         <p
           className="text-sm text-[#5E5691] font-bold"
-          onClick={() =>
-            setListingType(listingType === "For Sale" ? "For Rent" : "For Sale")
-          }
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsListingTypePopupOpen(true);
+          }}
         >
           {listingType === "For Sale" ? "Satılık" : "Kiralık"}
         </p>
 
-        <input
+        <div className="flex-1 bg-transparent outline-none text-[#8C8C8C]  text-sm pl-4 pr-3">
+          <p>Konum, Kategori, Fiyat...</p>
+        </div>
+
+        {/* <input
           className="flex-1 bg-transparent outline-none placeholder:text-[#8C8C8C] text-gray-700 text-sm pl-4 pr-3"
           placeholder="Konum, Kategori, Fiyat..."
           onClick={() => {
@@ -216,7 +223,7 @@ export default function MobileSearchBox({
           //     }
           //   }, 150);
           // }}
-        />
+        /> */}
 
         <img
           src="/header-search-icon.png"
@@ -287,6 +294,14 @@ export default function MobileSearchBox({
           </div>
         </div>
       )}
+
+      {/* Render listing type popup */}
+      <ListingTypePopup
+        isOpen={isListingTypePopupOpen}
+        onClose={() => setIsListingTypePopupOpen(false)}
+        listingType={listingType}
+        setListingType={setListingType}
+      />
     </div>
   );
 }

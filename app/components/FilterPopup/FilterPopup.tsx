@@ -548,7 +548,7 @@ export default function FilterPopup({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 overflow-y-auto">
+    <div className="fixed inset-0 z-[99999] flex items-end md:items-center justify-center lg:p-4 overflow-y-auto">
       <div
         className="fixed inset-0"
         onClick={onClose}
@@ -557,16 +557,20 @@ export default function FilterPopup({
 
       <div className="relative bg-white rounded-2xl shadow-xl max-w-[600px] w-full mx-auto max-h-[90vh] flex flex-col">
         {/* Header - Fixed at top */}
-        <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-2xl">
+        <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-2xl relative">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-gray-700">{t("title")}</h2>
+            <h2 className="md:text-lg text-2xl font-bold text-gray-700">
+              {t("title")}
+            </h2>
             <button
               className="text-gray-400 hover:text-gray-600 cursor-pointer"
               onClick={onClose}
             >
-              <XMarkIcon className="w-6 h-6 text-gray-700" />
+              <XMarkIcon className="w-8 h-8 md:w-6 md:h-6 text-gray-700" />
             </button>
           </div>
+          {/* Drag handle visible only on mobile */}
+          <span className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1.5 bg-gray-300 rounded-full md:hidden"></span>
         </div>
 
         {/* Scrollable content area */}
