@@ -102,7 +102,7 @@ export default function MiddleSearchBox({
         setSearchRadius={setSearchRadius}
       />
 
-      <div className="bg-[#D9D9D9] w-[1px] h-[24px]"></div>
+      <div className="bg-[#D9D9D9] w-[1px] h-[24px] flex-shrink-0"></div>
 
       {/* Emlak Tipi */}
       <PropertyType
@@ -112,7 +112,7 @@ export default function MiddleSearchBox({
         setSelectedCategory={setSelectedCategory}
       />
 
-      <div className="bg-[#D9D9D9] w-[1px] h-[24px]"></div>
+      <div className="bg-[#D9D9D9] w-[1px] h-[24px] flex-shrink-0"></div>
 
       {/* Kategori */}
       <CategorySelect
