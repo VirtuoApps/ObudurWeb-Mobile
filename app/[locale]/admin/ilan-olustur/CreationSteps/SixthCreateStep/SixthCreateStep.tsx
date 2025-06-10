@@ -65,6 +65,8 @@ export default function SixthCreateStep() {
     hotelId,
     infrastructureFeatureIds,
     viewIds,
+    parselNo,
+    adaNo,
   } = useListingForm();
 
   const [errors, setErrors] = useState<string[]>([]);
@@ -300,6 +302,8 @@ export default function SixthCreateStep() {
         ...(video && { video }),
         // Add documents
         documents,
+        adaNo,
+        parselNo,
       };
 
       console.log("hotelData", hotelData);

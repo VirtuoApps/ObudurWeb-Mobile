@@ -47,6 +47,7 @@ export default function ThirdCreateStep() {
 
   // Use context for form state and navigation
   const {
+    entranceType,
     country,
     setCountry,
     city,
@@ -55,6 +56,10 @@ export default function ThirdCreateStep() {
     setState,
     street,
     setStreet,
+    adaNo,
+    setAdaNo,
+    parselNo,
+    setParselNo,
     buildingNo,
     setBuildingNo,
     apartmentNo,
@@ -617,12 +622,24 @@ export default function ThirdCreateStep() {
       newErrors.push("Lütfen sokak bilgisini Türkçe ve İngilizce olarak girin");
     }
 
-    if (!buildingNo) {
-      newErrors.push("Lütfen bina numarasını girin");
-    }
+    // Conditional validation based on entrance type
+    if (entranceType?.tr === "Arsa") {
+      // For land, require adaNo and parselNo
+      if (!adaNo) {
+        newErrors.push("Lütfen ada numarasını girin");
+      }
+      if (!parselNo) {
+        newErrors.push("Lütfen parsel numarasını girin");
+      }
+    } else {
+      // For other types, require buildingNo and postalCode
+      if (!buildingNo) {
+        newErrors.push("Lütfen bina numarasını girin");
+      }
 
-    if (!postalCode) {
-      newErrors.push("Lütfen posta kodunu girin");
+      if (!postalCode) {
+        newErrors.push("Lütfen posta kodunu girin");
+      }
     }
 
     if (!coordinates || coordinates.length !== 2) {
@@ -648,6 +665,8 @@ export default function ThirdCreateStep() {
         city,
         state,
         street,
+        adaNo,
+        parselNo,
         buildingNo,
         apartmentNo,
         postalCode,
@@ -838,57 +857,94 @@ export default function ThirdCreateStep() {
               </div>
             </div>
 
-            {/* Building No, Apartment No, and Postal Code */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <div className="w-full sm:w-1/3">
-                <label
-                  htmlFor="buildingNo"
-                  className="font-semibold block mb-2 text-[#262626]"
-                >
-                  Bina No
-                </label>
-                <input
-                  type="text"
-                  id="buildingNo"
-                  value={buildingNo}
-                  onChange={(e) => setBuildingNo(e.target.value)}
-                  className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                  placeholder="Bina No"
-                />
+            {/* Building / Parcel information conditional */}
+            {entranceType?.tr === "Arsa" ? (
+              <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                <div className="w-full sm:w-1/2">
+                  <label
+                    htmlFor="adaNo"
+                    className="font-semibold block mb-2 text-[#262626]"
+                  >
+                    Ada No
+                  </label>
+                  <input
+                    type="text"
+                    id="adaNo"
+                    value={adaNo}
+                    onChange={(e) => setAdaNo(e.target.value)}
+                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                    placeholder="Ada No"
+                  />
+                </div>
+                <div className="w-full sm:w-1/2">
+                  <label
+                    htmlFor="parselNo"
+                    className="font-semibold block mb-2 text-[#262626]"
+                  >
+                    Parsel No
+                  </label>
+                  <input
+                    type="text"
+                    id="parselNo"
+                    value={parselNo}
+                    onChange={(e) => setParselNo(e.target.value)}
+                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                    placeholder="Parsel No"
+                  />
+                </div>
               </div>
-              <div className="w-full sm:w-1/3">
-                <label
-                  htmlFor="apartmentNo"
-                  className="font-semibold block mb-2 text-[#262626]"
-                >
-                  Daire No
-                </label>
-                <input
-                  type="text"
-                  id="apartmentNo"
-                  value={apartmentNo}
-                  onChange={(e) => setApartmentNo(e.target.value)}
-                  className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                  placeholder="Daire No (opsiyonel)"
-                />
+            ) : (
+              <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                <div className="w-full sm:w-1/3">
+                  <label
+                    htmlFor="buildingNo"
+                    className="font-semibold block mb-2 text-[#262626]"
+                  >
+                    Bina No
+                  </label>
+                  <input
+                    type="text"
+                    id="buildingNo"
+                    value={buildingNo}
+                    onChange={(e) => setBuildingNo(e.target.value)}
+                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                    placeholder="Bina No"
+                  />
+                </div>
+                <div className="w-full sm:w-1/3">
+                  <label
+                    htmlFor="apartmentNo"
+                    className="font-semibold block mb-2 text-[#262626]"
+                  >
+                    Daire No
+                  </label>
+                  <input
+                    type="text"
+                    id="apartmentNo"
+                    value={apartmentNo}
+                    onChange={(e) => setApartmentNo(e.target.value)}
+                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                    placeholder="Daire No (opsiyonel)"
+                  />
+                </div>
+                <div className="w-full sm:w-1/3">
+                  <label
+                    htmlFor="postalCode"
+                    className="font-semibold block mb-2 text-[#262626]"
+                  >
+                    Posta Kodu
+                  </label>
+                  <input
+                    type="text"
+                    id="postalCode"
+                    value={postalCode}
+                    onChange={(e) => setPostalCode(e.target.value)}
+                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                    placeholder="Posta Kodu"
+                  />
+                </div>
               </div>
-              <div className="w-full sm:w-1/3">
-                <label
-                  htmlFor="postalCode"
-                  className="font-semibold block mb-2 text-[#262626]"
-                >
-                  Posta Kodu
-                </label>
-                <input
-                  type="text"
-                  id="postalCode"
-                  value={postalCode}
-                  onChange={(e) => setPostalCode(e.target.value)}
-                  className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                  placeholder="Posta Kodu"
-                />
-              </div>
-            </div>
+            )}
 
             {/* Google Maps Section */}
             <div className="mb-6">

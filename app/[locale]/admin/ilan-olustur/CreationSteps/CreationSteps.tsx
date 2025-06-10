@@ -68,6 +68,9 @@ export interface HotelData {
   };
   documents: { name: MultilangText; file: string }[];
   video: string;
+  // Land specific fields
+  adaNo?: string;
+  parselNo?: string;
 }
 
 // Define the context type
@@ -180,6 +183,11 @@ type ListingFormContextType = {
   setDocuments: React.Dispatch<
     React.SetStateAction<{ name: MultilangText; file: string }[]>
   >;
+  // Land specific fields (Arsa)
+  adaNo: string;
+  setAdaNo: React.Dispatch<React.SetStateAction<string>>;
+  parselNo: string;
+  setParselNo: React.Dispatch<React.SetStateAction<string>>;
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   // Update mode
@@ -289,6 +297,11 @@ export const ListingFormContext = createContext<ListingFormContextType>({
   // Documents default
   documents: [],
   setDocuments: () => {},
+  // Land specific fields (Arsa)
+  adaNo: "",
+  setAdaNo: () => {},
+  parselNo: "",
+  setParselNo: () => {},
   currentStep: 1,
   setCurrentStep: () => {},
   // Update mode defaults
@@ -413,6 +426,10 @@ export default function CreationSteps({
     { name: MultilangText; file: string }[]
   >([]);
 
+  // Land specific fields (Arsa)
+  const [adaNo, setAdaNo] = useState<string>("");
+  const [parselNo, setParselNo] = useState<string>("");
+
   // Set hotelId from hotelData if in update mode
   const hotelId = isUpdate && hotelData ? hotelData._id : null;
 
@@ -497,6 +514,14 @@ export default function CreationSteps({
       // Set coordinates if available
       if (hotelData.location && hotelData.location.coordinates) {
         setCoordinates(hotelData.location.coordinates as [number, number]);
+      }
+
+      // Land specific fields
+      if (hotelData.adaNo) {
+        setAdaNo(hotelData.adaNo);
+      }
+      if (hotelData.parselNo) {
+        setParselNo(hotelData.parselNo);
       }
 
       // Fourth step data
@@ -616,6 +641,11 @@ export default function CreationSteps({
     // Documents
     documents,
     setDocuments,
+    // Land specific fields (Arsa)
+    adaNo,
+    setAdaNo,
+    parselNo,
+    setParselNo,
     currentStep,
     setCurrentStep,
     // Update mode
