@@ -23,7 +23,7 @@ export default function PaginationBox({
       onClick={() => handlePageChange(pageNumber)}
       className={`w-9 h-9 rounded-lg text-sm font-medium flex items-center justify-center transition-all duration-200 cursor-pointer text-[#262626] ${
         isActive
-          ? " bg-white border border-[#D9D9D9]"
+          ? " bg-white border border-[#5E5691]"
           : "bg-[#fff] border border-transparent   hover:bg-gray-50"
       }`}
     >
