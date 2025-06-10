@@ -17,11 +17,13 @@ export const getLocalizedText = (textObj: any, selectedLanguage: string) => {
 type NoResultFoundProps = {
   resetFilters: () => void;
   allHotels?: Hotel[];
+  currentView: "map" | "list";
 };
 
 export default function NoResultFound({
   resetFilters,
   allHotels = [],
+  currentView,
 }: NoResultFoundProps) {
   const t = useTranslations("homePage");
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
@@ -54,7 +56,11 @@ export default function NoResultFound({
   return (
     <div className="w-full">
       {/* No Result Found Section */}
-      <div className="w-full mt-[200px] flex flex-col items-center justify-center text-gray-500">
+      <div
+        className={`w-full ${
+          currentView === "map" ? "mt-[200px]" : "mt-[100px]"
+        } flex flex-col items-center justify-center text-gray-500`}
+      >
         <p className="text-center text-[#362C75] font-bold text-[24px]">
           Sonuç Bulunamadı!
         </p>

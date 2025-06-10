@@ -627,6 +627,7 @@ export default function HomePage({
                   setBathroomCount("");
                 }}
                 allHotels={hotels}
+                currentView={currentView}
               />
             </div>
           ) : (
@@ -666,7 +667,9 @@ export default function HomePage({
                       hotels.length !== filteredHotels.length
                     }
                   />
-                  <Footer />
+                  <div className="w-full max-w-full px-6">
+                    <Footer customClassName="w-full max-w-full px-6" />
+                  </div>
                 </div>
               )}
             </div>
