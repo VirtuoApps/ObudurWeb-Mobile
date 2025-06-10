@@ -64,6 +64,7 @@ export default function SixthCreateStep() {
     isUpdate,
     hotelId,
     infrastructureFeatureIds,
+    viewIds,
   } = useListingForm();
 
   const [errors, setErrors] = useState<string[]>([]);
@@ -289,6 +290,7 @@ export default function SixthCreateStep() {
         },
         featureIds,
         infrastructureFeatureIds,
+        viewIds,
         distances: distances.map((d: any) => ({
           typeId: d.typeId,
           value: d.value,

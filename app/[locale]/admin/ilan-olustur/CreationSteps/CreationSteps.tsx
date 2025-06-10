@@ -60,6 +60,7 @@ export interface HotelData {
   zoningStatus?: MultilangText;
   featureIds: string[];
   infrastructureFeatureIds?: string[];
+  viewIds?: string[];
   distances: { typeId: string; value: number }[];
   location: {
     type: string;
@@ -132,6 +133,9 @@ type ListingFormContextType = {
   // Infrastructure Feature IDs
   infrastructureFeatureIds: string[];
   setInfrastructureFeatureIds: React.Dispatch<React.SetStateAction<string[]>>;
+  // View IDs
+  viewIds: string[];
+  setViewIds: React.Dispatch<React.SetStateAction<string[]>>;
   // Address fields
   country: MultilangText;
   setCountry: React.Dispatch<React.SetStateAction<MultilangText>>;
@@ -242,6 +246,9 @@ export const ListingFormContext = createContext<ListingFormContextType>({
   // Infrastructure Feature IDs
   infrastructureFeatureIds: [],
   setInfrastructureFeatureIds: () => {},
+  // View IDs
+  viewIds: [],
+  setViewIds: () => {},
   // Address fields defaults
   country: { tr: "", en: "" },
   setCountry: () => {},
@@ -376,6 +383,9 @@ export default function CreationSteps({
     string[]
   >([]);
 
+  // New state for FourthCreateStep - Views
+  const [viewIds, setViewIds] = useState<string[]>([]);
+
   // New state for FourthCreateStep - Distances
   const [distances, setDistances] = useState<
     { typeId: string; value: number }[]
@@ -465,6 +475,11 @@ export default function CreationSteps({
       // Set infrastructure feature IDs
       if (hotelData.infrastructureFeatureIds) {
         setInfrastructureFeatureIds(hotelData.infrastructureFeatureIds);
+      }
+
+      // Set view IDs
+      if (hotelData.viewIds) {
+        setViewIds(hotelData.viewIds);
       }
 
       // Set orientation (face)
@@ -558,6 +573,9 @@ export default function CreationSteps({
     // Infrastructure Feature IDs
     infrastructureFeatureIds,
     setInfrastructureFeatureIds,
+    // View IDs
+    viewIds,
+    setViewIds,
     // Address fields
     country,
     setCountry,

@@ -14,6 +14,7 @@ import Image from "next/image";
 import GoBackButton from "../../GoBackButton/GoBackButton";
 import { CustomSelect } from "../SecondCreateStep/SecondCreateStep";
 import { infrastructureFeatures } from "../../../../../utils/infrastructureFeatures";
+import { views } from "../../../../../utils/views";
 
 interface Feature {
   _id: string;
@@ -96,6 +97,8 @@ export default function FourthCreateStep() {
     setCurrentStep,
     infrastructureFeatureIds,
     setInfrastructureFeatureIds,
+    viewIds,
+    setViewIds,
   } = useListingForm();
 
   // Fetch available languages
@@ -208,6 +211,14 @@ export default function FourthCreateStep() {
       );
     } else {
       setInfrastructureFeatureIds([...infrastructureFeatureIds, featureId]);
+    }
+  };
+
+  const toggleView = (viewId: string) => {
+    if (viewIds.includes(viewId)) {
+      setViewIds(viewIds.filter((id: string) => id !== viewId));
+    } else {
+      setViewIds([...viewIds, viewId]);
     }
   };
 
@@ -540,6 +551,39 @@ export default function FourthCreateStep() {
                     );
                   }
                 )}
+              </div>
+            </div>
+
+            {/* View (Manzara) Section */}
+            <div className="mt-8">
+              <h2 className="font-semibold mb-2 text-[#262626]">Manzara</h2>
+              <div className="flex flex-wrap gap-4">
+                {Object.entries(views).map(([key, view]) => {
+                  const isSelected = viewIds.includes(key);
+                  const displayName =
+                    selectedLanguage === "en" ? view.en : view.tr;
+                  return (
+                    <button
+                      key={key}
+                      type="button"
+                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-full transition border  cursor-pointer ${
+                        isSelected
+                          ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                          : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
+                      }`}
+                      onClick={() => toggleView(key)}
+                    >
+                      <Image
+                        src={view.image}
+                        alt={displayName}
+                        width={20}
+                        height={20}
+                        className="object-contain"
+                      />
+                      <span className="font-medium ml-2">{displayName}</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
