@@ -160,7 +160,7 @@ export default function OfficesSection() {
                   onClick={() => toggleOffice(office.id)}
                 >
                   <div className="flex items-center gap-3">
-                    <h3 className="font-bold text-[#262626] text-base">
+                    <h3 className="font-bold text-[#262626] text-base w-[200px] break-words md:w-auto">
                       {office.name}
                     </h3>
                     <span className="text-base text-[#8C8C8C]  py-1 rounded-full">
@@ -200,7 +200,7 @@ export default function OfficesSection() {
                             : ""
                         }`}
                       >
-                        <p className="text-[#262626] font-bold text-base mb-4">
+                        <p className="text-[#262626] font-bold text-base mb-4 w-[200px] break-words md:w-auto">
                           {contact.baseTitle}
                         </p>
                         <div className="space-y-2">
@@ -286,7 +286,7 @@ export default function OfficesSection() {
                   onClick={() => toggleOffice(office.id)}
                 >
                   <div className="flex items-center gap-3">
-                    <h3 className="font-bold text-[#262626] text-base">
+                    <h3 className="font-bold text-[#262626] text-base w-[200px] break-words md:w-auto">
                       {office.name}
                     </h3>
                     <span className="text-base text-[#8C8C8C]  py-1 rounded-full">

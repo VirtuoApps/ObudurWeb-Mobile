@@ -175,7 +175,7 @@ export default function FormSection() {
             </div>
           </div>
 
-          <div className="w-full flex flex-row justify-between">
+          <div className="w-full flex md:flex-row flex-col justify-between">
             <div className="flex flex-row items-center">
               <div
                 className="w-[24px] h-[24px] flex items-center justify-center rounded-md border border-[#D9D9D9] bg-white mr-3 cursor-pointer"
@@ -199,7 +199,7 @@ export default function FormSection() {
             <button
               type="submit"
               disabled={!isFormValid}
-              className={`w-[300px] flex justify-center py-4 px-4 border border-transparent rounded-2xl text-base font-medium  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+              className={`w-[300px] flex justify-center py-4 px-4 border border-transparent rounded-2xl text-base font-medium  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 md:mt-0 mt-5 ${
                 isFormValid
                   ? "bg-[#5E5691] hover:bg-[#4c4677] text-white"
                   : "bg-[#F0F0F0] text-[#8C8C8C] cursor-not-allowed"

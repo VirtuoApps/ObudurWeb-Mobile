@@ -23,8 +23,8 @@ export default function SimpleHeader({
   const router = useRouter();
 
   return (
-    <header className="relative border-b border-[#f0f0f0] py-4 bg-white h-[80px] w-full px-4 md:px-0">
-      <div className="container mx-auto flex flex-wrap items-center justify-between">
+    <header className="relative border-b border-[#f0f0f0] py-4 bg-white h-[80px] w-full md:px-0 px-8">
+      <div className="max-w-[1440px] mx-auto flex flex-wrap items-center justify-between">
         {showBackButton && (
           <div
             onClick={() => router.push(backUrl || "/")}
