@@ -5,8 +5,10 @@ import BedIcon from "@/app/svgIcons/BedIcon";
 import AreaIcon from "@/app/svgIcons/AreaIcon";
 import { useTranslations } from "next-intl";
 import { useHotelData } from "../hotelContext";
-import { LocalizedText } from "../page";
+import { LocalizedText, Feature } from "../page";
 import { formatAddress } from "@/app/utils/addressFormatter";
+import { infrastructureFeatures } from "@/app/utils/infrastructureFeatures";
+import { views } from "@/app/utils/views";
 
 interface FeatureIconProps {
   icon: React.ReactNode;
@@ -254,6 +256,38 @@ export default function GeneralInfo() {
 
   const quickFilters = hotelData.populatedData.quickFilters;
 
+  // Prepare feature data for icon row
+  const infrastructureData: Feature[] =
+    (hotelData as any).infrastructureFeatureIds
+      ?.map((id: string) => {
+        const feature = (infrastructureFeatures as any)[id];
+        if (!feature) return null;
+        return {
+          _id: id,
+          name: { tr: feature.tr, en: feature.en },
+          iconUrl: feature.image,
+        } as Feature;
+      })
+      .filter((f: Feature | null): f is Feature => f !== null) || [];
+
+  const viewData: Feature[] =
+    (hotelData as any).viewIds
+      ?.map((id: string) => {
+        const view = (views as any)[id];
+        if (!view) return null;
+        return {
+          _id: id,
+          name: { tr: view.tr, en: view.en },
+          iconUrl: view.image,
+        } as Feature;
+      })
+      .filter((v: Feature | null): v is Feature => v !== null) || [];
+
+  const iconsToDisplay: Feature[] =
+    entranceType.tr === "Arsa"
+      ? [...infrastructureData, ...viewData].slice(0, 6)
+      : quickFilters.slice(0, 6);
+
   // Format price with currency
   const mainPrice = price[0]?.amount || 0;
   const currency = price[0]?.currency || "USD";
@@ -304,8 +338,12 @@ export default function GeneralInfo() {
 
       {/* Features Icons Row - Scrollable on mobile */}
       <div className="flex overflow-x-auto py-3 sm:py-4 justify-between no-scrollbar">
-        <div className="flex gap-4 justify-between min-w-full">
-          {quickFilters.slice(0, 6).map((feature) => (
+        <div
+          className={`flex ${
+            entranceType.tr === "Arsa" ? "gap-12" : "justify-between gap-4"
+          }  min-w-full`}
+        >
+          {iconsToDisplay.map((feature) => (
             <FeatureIcon
               key={feature._id}
               icon={
