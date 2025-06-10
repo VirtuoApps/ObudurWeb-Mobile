@@ -92,13 +92,20 @@ export default function FormSection() {
 
   return (
     <>
-      <div className="bg-white p-8 rounded-2xl">
-        <p className="text-[#262626] text-2xl font-semibold ">İletişim Formu</p>
-        <p className="text-[#595959] text-base mb-6 font-normal">
-          Bize yazın! En kısa zamanda Obudur ekibi sizinle iletişime geçsin.
-        </p>
-        <form className="space-y-6" onSubmit={onSubmitHandler}>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="bg-white p-8 rounded-2xl flex md:flex-row flex-col">
+        <div className="w-full md:w-1/2">
+          <p className="text-[#262626] text-4xl font-extrabold mb-4 ">
+            İletişim Formu
+          </p>
+          <p className="text-[#595959] text-base mb-6 font-normal">
+            Purus metus integer luctus sed. Ultricies eget ut egestas curabitur
+            nullam posuere vitae. Tristique adipiscing sit sollicitudin eget
+            pellentesque eget massa amet. Sed suspendisse curabitur et eu quis
+            ultricies nulla. Sodales adipiscing enim at augue scelerisque.
+          </p>
+        </div>
+        <form className="space-y-6 w-full md:w-1/2" onSubmit={onSubmitHandler}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label htmlFor="name" className="sr-only">
                 İsim
@@ -168,7 +175,7 @@ export default function FormSection() {
                 placeholder="Mesajınız"
                 value={message}
                 onChange={handleMessageChange}
-                rows={1}
+                rows={4}
                 className="block w-full px-4 py-4 border border-[#F0F0F0] rounded-2xl focus:none  focus:ring-0 focus:outline-none sm:text-sm bg-[#fff] placeholder:text-[#8C8C8C] text-gray-800 overflow-hidden"
                 ref={textareaRef}
               />
