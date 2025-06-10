@@ -5,9 +5,9 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
 } from "@heroicons/react/24/solid";
-import { useListingForm } from "../CreationSteps";
+import { useListingForm } from "../../CreationSteps";
 import { XCircleIcon } from "@heroicons/react/24/solid";
-import GoBackButton from "../../GoBackButton/GoBackButton";
+import GoBackButton from "../../../GoBackButton/GoBackButton";
 
 // Custom Select component that matches the design
 interface SelectOption {
@@ -96,7 +96,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
   );
 };
 
-export default function SecondCreateStep() {
+export default function SecondCreateStepForHouse() {
   const [errors, setErrors] = useState<string[]>([]);
 
   // Use context for form state and navigation

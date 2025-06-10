@@ -7,6 +7,7 @@ import ThirdCreateStep from "./ThirdCreateStep/ThirdCreateStep";
 import FourthCreateStep from "./FourthCreateStep/FourthCreateStep";
 import FifthCreateStep from "./FifthCreateStep/FifthCreateStep";
 import SixthCreateStep from "./SixthCreateStep/SixthCreateStep";
+import SecondCreateStepForHouse from "./SecondCreateStep/SecondCreateStepForHouse/SecondCreateStepForHouse";
 
 // Define the multilingual text interface
 export interface MultilangText {
@@ -43,6 +44,16 @@ export interface HotelData {
   housingType: MultilangText;
   entranceType: MultilangText;
   listingType: MultilangText;
+  // New fields
+  exchangeable?: boolean;
+  creditEligible?: boolean;
+  buildingAge?: number;
+  isFurnished?: boolean;
+  dues?: { amount: number; currency: string }[];
+  usageStatus?: MultilangText;
+  deedStatus?: MultilangText;
+  heatingType?: MultilangText;
+  source?: MultilangText;
   featureIds: string[];
   distances: { typeId: string; value: number }[];
   location: {
@@ -85,6 +96,27 @@ type ListingFormContextType = {
   setBuildYear: React.Dispatch<React.SetStateAction<number>>;
   kitchenType: MultilangText;
   setKitchenType: React.Dispatch<React.SetStateAction<MultilangText>>;
+  // New fields
+  exchangeable: boolean;
+  setExchangeable: React.Dispatch<React.SetStateAction<boolean>>;
+  creditEligible: boolean;
+  setCreditEligible: React.Dispatch<React.SetStateAction<boolean>>;
+  buildingAge: number;
+  setBuildingAge: React.Dispatch<React.SetStateAction<number>>;
+  isFurnished: boolean;
+  setIsFurnished: React.Dispatch<React.SetStateAction<boolean>>;
+  dues: { amount: number; currency: string }[];
+  setDues: React.Dispatch<
+    React.SetStateAction<{ amount: number; currency: string }[]>
+  >;
+  usageStatus: MultilangText;
+  setUsageStatus: React.Dispatch<React.SetStateAction<MultilangText>>;
+  deedStatus: MultilangText;
+  setDeedStatus: React.Dispatch<React.SetStateAction<MultilangText>>;
+  heatingType: MultilangText;
+  setHeatingType: React.Dispatch<React.SetStateAction<MultilangText>>;
+  source: MultilangText;
+  setSource: React.Dispatch<React.SetStateAction<MultilangText>>;
   // Orientation (facade)
   orientation: string;
   setOrientation: React.Dispatch<React.SetStateAction<string>>;
@@ -169,6 +201,25 @@ export const ListingFormContext = createContext<ListingFormContextType>({
   setBuildYear: () => {},
   kitchenType: { tr: "", en: "" },
   setKitchenType: () => {},
+  // New fields defaults
+  exchangeable: false,
+  setExchangeable: () => {},
+  creditEligible: false,
+  setCreditEligible: () => {},
+  buildingAge: 0,
+  setBuildingAge: () => {},
+  isFurnished: false,
+  setIsFurnished: () => {},
+  dues: [],
+  setDues: () => {},
+  usageStatus: { tr: "", en: "" },
+  setUsageStatus: () => {},
+  deedStatus: { tr: "", en: "" },
+  setDeedStatus: () => {},
+  heatingType: { tr: "", en: "" },
+  setHeatingType: () => {},
+  source: { tr: "", en: "" },
+  setSource: () => {},
   // Orientation
   orientation: "",
   setOrientation: () => {},
@@ -260,6 +311,26 @@ export default function CreationSteps({
     en: "",
   });
 
+  // New fields state
+  const [exchangeable, setExchangeable] = useState<boolean>(false);
+  const [creditEligible, setCreditEligible] = useState<boolean>(false);
+  const [buildingAge, setBuildingAge] = useState<number>(0);
+  const [isFurnished, setIsFurnished] = useState<boolean>(false);
+  const [dues, setDues] = useState<{ amount: number; currency: string }[]>([]);
+  const [usageStatus, setUsageStatus] = useState<MultilangText>({
+    tr: "",
+    en: "",
+  });
+  const [deedStatus, setDeedStatus] = useState<MultilangText>({
+    tr: "",
+    en: "",
+  });
+  const [heatingType, setHeatingType] = useState<MultilangText>({
+    tr: "",
+    en: "",
+  });
+  const [source, setSource] = useState<MultilangText>({ tr: "", en: "" });
+
   // New state for ThirdCreateStep - Address fields
   const [country, setCountry] = useState<MultilangText>({ tr: "", en: "" });
   const [city, setCity] = useState<MultilangText>({ tr: "", en: "" });
@@ -326,6 +397,35 @@ export default function CreationSteps({
       setBuildYear(hotelData.buildYear);
       setKitchenType(hotelData.kitchenType);
 
+      // New fields
+      if (hotelData.exchangeable !== undefined) {
+        setExchangeable(hotelData.exchangeable);
+      }
+      if (hotelData.creditEligible !== undefined) {
+        setCreditEligible(hotelData.creditEligible);
+      }
+      if (hotelData.buildingAge !== undefined) {
+        setBuildingAge(hotelData.buildingAge);
+      }
+      if (hotelData.isFurnished !== undefined) {
+        setIsFurnished(hotelData.isFurnished);
+      }
+      if (hotelData.dues) {
+        setDues(hotelData.dues);
+      }
+      if (hotelData.usageStatus) {
+        setUsageStatus(hotelData.usageStatus);
+      }
+      if (hotelData.deedStatus) {
+        setDeedStatus(hotelData.deedStatus);
+      }
+      if (hotelData.heatingType) {
+        setHeatingType(hotelData.heatingType);
+      }
+      if (hotelData.source) {
+        setSource(hotelData.source);
+      }
+
       // Set orientation (face)
       setOrientation(hotelData.face);
 
@@ -388,6 +488,25 @@ export default function CreationSteps({
     setBuildYear,
     kitchenType,
     setKitchenType,
+    // New fields
+    exchangeable,
+    setExchangeable,
+    creditEligible,
+    setCreditEligible,
+    buildingAge,
+    setBuildingAge,
+    isFurnished,
+    setIsFurnished,
+    dues,
+    setDues,
+    usageStatus,
+    setUsageStatus,
+    deedStatus,
+    setDeedStatus,
+    heatingType,
+    setHeatingType,
+    source,
+    setSource,
     // Orientation
     orientation,
     setOrientation,
@@ -438,10 +557,16 @@ export default function CreationSteps({
     hotelId,
   };
 
+  console.log({
+    entranceType,
+  });
+
   return (
     <ListingFormContext.Provider value={contextValue}>
       {currentStep === 1 && <FirstCreateStep />}
-      {currentStep === 2 && <SecondCreateStep />}
+      {currentStep === 2 && (
+        <>{entranceType?.tr === "Ev" && <SecondCreateStepForHouse />}</>
+      )}
       {currentStep === 3 && <ThirdCreateStep />}
       {currentStep === 4 && <FourthCreateStep />}
       {currentStep === 5 && <FifthCreateStep />}
