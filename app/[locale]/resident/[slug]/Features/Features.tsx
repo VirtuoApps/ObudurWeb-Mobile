@@ -37,6 +37,8 @@ import {
 import { IconBaseProps } from "react-icons";
 import { useHotelData } from "../hotelContext";
 import { Feature, LocalizedText } from "../page";
+import { infrastructureFeatures } from "../../../../utils/infrastructureFeatures";
+import { views } from "../../../../utils/views";
 
 // Type definitions
 type FeatureItemProps = {
@@ -98,7 +100,31 @@ export default function FeaturesEquipment() {
 
   const outsideFeatures = hotelData.populatedData.outsideFeatures;
 
-  // Feature data with translation keys
+  const infrastructureData: Feature[] =
+    (hotelData as any).infrastructureFeatureIds
+      ?.map((id: string) => {
+        const feature = infrastructureFeatures[id];
+        if (!feature) return null;
+        return {
+          _id: id,
+          name: { tr: feature.tr, en: feature.en },
+          iconUrl: feature.image,
+        };
+      })
+      .filter((f: Feature | null): f is Feature => f !== null) || [];
+
+  const viewData: Feature[] =
+    (hotelData as any).viewIds
+      ?.map((id: string) => {
+        const view = views[id];
+        if (!view) return null;
+        return {
+          _id: id,
+          name: { tr: view.tr, en: view.en },
+          iconUrl: view.image,
+        };
+      })
+      .filter((v: Feature | null): v is Feature => v !== null) || [];
 
   return (
     <section id="features-section" className="max-w-5xl mx-auto p-4 mt-12">
@@ -121,6 +147,20 @@ export default function FeaturesEquipment() {
         features={outsideFeatures}
         locale={currentLocale}
       />
+      {infrastructureData.length > 0 && (
+        <FeatureGroup
+          title="Altyapı Özellikleri"
+          features={infrastructureData}
+          locale={currentLocale}
+        />
+      )}
+      {viewData.length > 0 && (
+        <FeatureGroup
+          title="Manzara"
+          features={viewData}
+          locale={currentLocale}
+        />
+      )}
     </section>
   );
 }
