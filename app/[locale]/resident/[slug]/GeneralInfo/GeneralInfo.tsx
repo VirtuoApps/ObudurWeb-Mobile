@@ -245,6 +245,8 @@ export default function GeneralInfo() {
     totalSize,
     roomCount,
     bathroomCount,
+    projectArea,
+    entranceType,
   } = hotelData.hotelDetails;
 
   // Get general features for the icons
@@ -323,36 +325,74 @@ export default function GeneralInfo() {
       <div className="border-b border-gray-200 my-3 sm:my-4"></div>
 
       {/* Details Section */}
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 py-2">
-        <div className="flex gap-4 sm:gap-8 overflow-x-auto no-scrollbar justify-between sm:justify-start">
-          <div className="flex items-center gap-2 text-[#262626] whitespace-nowrap">
-            <BedIcon />
-            <span>{roomAsText}</span>
+      {entranceType.tr !== "Arsa" && (
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 py-2">
+          <div className="flex gap-4 sm:gap-8 overflow-x-auto no-scrollbar justify-between sm:justify-start">
+            <div className="flex items-center gap-2 text-[#262626] whitespace-nowrap">
+              <BedIcon />
+              <span>{roomAsText}</span>
+            </div>
+            <div className="flex items-center gap-2 text-[#262626] border-r  pr-4 border-l border-[#D9D9D9] pl-4 whitespace-nowrap w-[33%] sm:w-auto flex items-center justify-center">
+              <BathIcon />
+              <span>{bathroomCount}</span>
+            </div>
+            <div className="flex items-center gap-2 text-[#262626] whitespace-nowrap">
+              <AreaIcon />
+              <span>{totalSize}m²</span>
+            </div>
           </div>
-          <div className="flex items-center gap-2 text-[#262626] border-r  pr-4 border-l border-[#D9D9D9] pl-4 whitespace-nowrap w-[33%] sm:w-auto flex items-center justify-center">
-            <BathIcon />
-            <span>{bathroomCount}</span>
-          </div>
-          <div className="flex items-center gap-2 text-[#262626] whitespace-nowrap">
-            <AreaIcon />
-            <span>{totalSize}m²</span>
+          <div className=" items-center gap-2 text-[#262626] text-sm sm:text-base hidden md:flex">
+            <LocationIcon />
+            <span className="truncate">
+              {formatAddress({
+                street: hotelData.hotelDetails.address,
+                buildingNo: hotelData.hotelDetails.buildingNo,
+                apartmentNo: hotelData.hotelDetails.apartmentNo,
+                city: hotelData.hotelDetails.city,
+                state: hotelData.hotelDetails.state,
+                postalCode: hotelData.hotelDetails.postalCode,
+                country: hotelData.hotelDetails.country,
+              })}
+            </span>
           </div>
         </div>
-        <div className=" items-center gap-2 text-[#262626] text-sm sm:text-base hidden md:flex">
-          <LocationIcon />
-          <span className="truncate">
-            {formatAddress({
-              street: hotelData.hotelDetails.address,
-              buildingNo: hotelData.hotelDetails.buildingNo,
-              apartmentNo: hotelData.hotelDetails.apartmentNo,
-              city: hotelData.hotelDetails.city,
-              state: hotelData.hotelDetails.state,
-              postalCode: hotelData.hotelDetails.postalCode,
-              country: hotelData.hotelDetails.country,
-            })}
-          </span>
+      )}
+
+      {entranceType.tr === "Arsa" && (
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 py-2">
+          <div className="flex gap-4 sm:gap-8 overflow-x-auto no-scrollbar justify-between sm:justify-start">
+            <div className="flex items-center gap-2 text-[#262626] whitespace-nowrap">
+              <img src="/m2-icon.png" alt="area" className="w-6 h-6" />
+              <span>{projectArea}m²</span>
+            </div>
+
+            <div className="flex items-center gap-2 text-[#262626] whitespace-nowrap">
+              <img src="/area.png" alt="price" className="w-6 h-6" />
+              <span>
+                {(price[0]?.amount / projectArea)
+                  .toFixed(2)
+                  .split(".")
+                  .join(",")}{" "}
+                ₺/m²
+              </span>
+            </div>
+          </div>
+          <div className=" items-center gap-2 text-[#262626] text-sm sm:text-base hidden md:flex">
+            <LocationIcon />
+            <span className="truncate">
+              {formatAddress({
+                street: hotelData.hotelDetails.address,
+                buildingNo: hotelData.hotelDetails.buildingNo,
+                apartmentNo: hotelData.hotelDetails.apartmentNo,
+                city: hotelData.hotelDetails.city,
+                state: hotelData.hotelDetails.state,
+                postalCode: hotelData.hotelDetails.postalCode,
+                country: hotelData.hotelDetails.country,
+              })}
+            </span>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
