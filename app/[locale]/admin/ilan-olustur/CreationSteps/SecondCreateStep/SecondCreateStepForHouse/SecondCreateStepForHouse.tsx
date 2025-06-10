@@ -20,6 +20,7 @@ interface CustomSelectProps {
   value: string | number;
   onChange: (value: string) => void;
   placeholder?: string;
+  openUpward?: boolean;
 }
 
 export const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -27,6 +28,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
   value,
   onChange,
   placeholder = "Select option",
+  openUpward = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -75,7 +77,13 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 z-10 mt-1 w-full origin-top-right rounded-lg bg-white shadow-lg border border-[#E2E2E2]">
+        <div
+          className={`absolute left-0 z-10 w-full rounded-lg bg-white shadow-lg border border-[#E2E2E2] ${
+            openUpward
+              ? "bottom-full mb-1 origin-bottom-right"
+              : "mt-1 origin-top-right"
+          }`}
+        >
           <div className="py-1 max-h-60 overflow-auto">
             {options.map((option) => (
               <div
@@ -98,6 +106,8 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
 
 export default function SecondCreateStepForHouse() {
   const [errors, setErrors] = useState<string[]>([]);
+  const [selectedDuesCurrency, setSelectedDuesCurrency] =
+    useState<string>("TRY");
 
   // Use context for form state and navigation
   const {
@@ -346,10 +356,6 @@ export default function SecondCreateStepForHouse() {
       newErrors.push("Lütfen kat sayısını seçin");
     }
 
-    if (!buildYear) {
-      newErrors.push("Lütfen yapım yılını giriniz");
-    }
-
     if (!kitchenType || kitchenType.tr === "" || kitchenType.en === "") {
       newErrors.push("Lütfen mutfak tipini seçin");
     }
@@ -366,11 +372,11 @@ export default function SecondCreateStepForHouse() {
       newErrors.push("Lütfen kimden bilgisini seçin");
     }
 
-    if (!usageStatus || usageStatus.tr === "" || usageStatus.en === "") {
+    if (!usageStatus || !usageStatus.get("tr") || !usageStatus.get("en")) {
       newErrors.push("Lütfen kullanım durumunu seçin");
     }
 
-    if (!deedStatus || deedStatus.tr === "" || deedStatus.en === "") {
+    if (!deedStatus || !deedStatus.get("tr") || !deedStatus.get("en")) {
       newErrors.push("Lütfen tapu durumunu seçin");
     }
 
@@ -629,73 +635,50 @@ export default function SecondCreateStepForHouse() {
             </div>
 
             {/* Build Year */}
-            <div className="mb-6">
-              <label
-                htmlFor="buildYear"
-                className="font-semibold block mb-2 text-[#262626]"
-              >
-                Yapım Yılı
-              </label>
-              <input
-                type="text"
-                id="buildYear"
-                value={buildYear || ""}
-                onChange={(e) => {
-                  const numericValue = e.target.value.replace(/[^0-9]/g, "");
-                  setBuildYear(
-                    numericValue === "" ? 0 : parseInt(numericValue)
-                  );
-                }}
-                className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                placeholder="Yapım yılı"
-              />
-            </div>
 
-            {/* Kitchen Type */}
-            <div className="mb-6">
-              <label
-                htmlFor="kitchenType"
-                className="font-semibold block mb-2 text-[#262626]"
-              >
-                Mutfak Tipi
-              </label>
-              <CustomSelect
-                options={kitchenTypeOptions}
-                value={
-                  kitchenType?.tr
-                    ? kitchenTypeOptions.find(
-                        (option) => option.label === kitchenType.tr
-                      )?.value || ""
-                    : ""
-                }
-                onChange={(value) => {
-                  const selected = kitchenTypeOptions.find(
-                    (option) => option.value === value
-                  );
-                  if (selected) {
-                    setKitchenType({
-                      tr: selected.label,
-                      en:
-                        selected.value === "americanKitchen"
-                          ? "American Kitchen"
-                          : selected.value === "separateKitchen"
-                          ? "Separate Kitchen"
-                          : selected.value === "openKitchen"
-                          ? "Open Kitchen"
-                          : selected.value === "islandKitchen"
-                          ? "Island Kitchen"
-                          : selected.value === "cornerKitchen"
-                          ? "Corner Kitchen"
-                          : "",
-                    });
-                  }
-                }}
-                placeholder="Seçiniz"
-              />
-            </div>
-
-            {/* Heating Type and Source - Side by side */}
+            {/* Mutfak Tipi - Isıtma */}
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <div className="w-full sm:w-1/2">
+                <label
+                  htmlFor="kitchenType"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  Mutfak Tipi
+                </label>
+                <CustomSelect
+                  options={kitchenTypeOptions}
+                  value={
+                    kitchenType?.tr
+                      ? kitchenTypeOptions.find(
+                          (option) => option.label === kitchenType.tr
+                        )?.value || ""
+                      : ""
+                  }
+                  onChange={(value) => {
+                    const selected = kitchenTypeOptions.find(
+                      (option) => option.value === value
+                    );
+                    if (selected) {
+                      setKitchenType({
+                        tr: selected.label,
+                        en:
+                          selected.value === "americanKitchen"
+                            ? "American Kitchen"
+                            : selected.value === "separateKitchen"
+                            ? "Separate Kitchen"
+                            : selected.value === "openKitchen"
+                            ? "Open Kitchen"
+                            : selected.value === "islandKitchen"
+                            ? "Island Kitchen"
+                            : selected.value === "cornerKitchen"
+                            ? "Corner Kitchen"
+                            : "",
+                      });
+                    }
+                  }}
+                  placeholder="Seçiniz"
+                />
+              </div>
               <div className="w-full sm:w-1/2">
                 <label
                   htmlFor="heatingType"
@@ -743,6 +726,10 @@ export default function SecondCreateStepForHouse() {
                   placeholder="Seçiniz"
                 />
               </div>
+            </div>
+
+            {/* Kimden - Takaslı */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="w-full sm:w-1/2">
                 <label
                   htmlFor="source"
@@ -780,10 +767,6 @@ export default function SecondCreateStepForHouse() {
                   placeholder="Seçiniz"
                 />
               </div>
-            </div>
-
-            {/* Exchangeable and Credit Eligible - Side by side */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="w-full sm:w-1/2">
                 <label
                   htmlFor="exchangeable"
@@ -798,6 +781,10 @@ export default function SecondCreateStepForHouse() {
                   placeholder="Seçiniz"
                 />
               </div>
+            </div>
+
+            {/* Krediye Uygunluk - Bina Yaşı */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="w-full sm:w-1/2">
                 <label
                   htmlFor="creditEligible"
@@ -812,10 +799,6 @@ export default function SecondCreateStepForHouse() {
                   placeholder="Seçiniz"
                 />
               </div>
-            </div>
-
-            {/* Building Age and Furnished - Side by side */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="w-full sm:w-1/2">
                 <label
                   htmlFor="buildingAge"
@@ -830,6 +813,10 @@ export default function SecondCreateStepForHouse() {
                   placeholder="Seçiniz"
                 />
               </div>
+            </div>
+
+            {/* Eşyalı - Aidat */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="w-full sm:w-1/2">
                 <label
                   htmlFor="isFurnished"
@@ -844,50 +831,38 @@ export default function SecondCreateStepForHouse() {
                   placeholder="Seçiniz"
                 />
               </div>
-            </div>
-
-            {/* Dues Section */}
-            <div className="mb-6">
-              <h2 className="font-semibold mb-4 text-[#262626]">Aidat</h2>
-              <div className="flex flex-col sm:flex-row gap-4 mb-4">
-                <div className="w-full sm:w-1/2">
-                  <label className="font-medium block mb-2 text-[#262626]">
-                    Aidat (TRY)
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium">
-                      ₺
-                    </span>
-                    <input
-                      type="text"
-                      value={getDuesForCurrency("TRY") || ""}
-                      onChange={(e) => handleDuesChange("TRY", e.target.value)}
-                      className="w-full h-12 rounded-lg border border-gray-300 pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                      placeholder="Aidat tutarı"
+              <div className="w-full sm:w-1/2">
+                <label className="font-semibold block mb-2 text-[#262626]">
+                  Aidat
+                </label>
+                <div className="flex gap-2">
+                  <div className="w-24">
+                    <CustomSelect
+                      options={[
+                        { value: "TRY", label: "TRY" },
+                        { value: "USD", label: "USD" },
+                      ]}
+                      value={selectedDuesCurrency}
+                      onChange={(value) => setSelectedDuesCurrency(value)}
+                      placeholder="TRY"
                     />
                   </div>
-                </div>
-                <div className="w-full sm:w-1/2">
-                  <label className="font-medium block mb-2 text-[#262626]">
-                    Aidat (USD)
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium">
-                      $
-                    </span>
+                  <div className="flex-1">
                     <input
                       type="text"
-                      value={getDuesForCurrency("USD") || ""}
-                      onChange={(e) => handleDuesChange("USD", e.target.value)}
-                      className="w-full h-12 rounded-lg border border-gray-300 pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                      placeholder="Aidat tutarı"
+                      value={getDuesForCurrency(selectedDuesCurrency) || ""}
+                      onChange={(e) =>
+                        handleDuesChange(selectedDuesCurrency, e.target.value)
+                      }
+                      className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                      placeholder="Fiyat yazın"
                     />
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Usage Status and Deed Status - Side by side */}
+            {/* Kullanım Durumu - Tapu Durumu */}
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="w-full sm:w-1/2">
                 <label
@@ -899,9 +874,9 @@ export default function SecondCreateStepForHouse() {
                 <CustomSelect
                   options={usageStatusOptions}
                   value={
-                    usageStatus?.tr
+                    usageStatus?.get("tr")
                       ? usageStatusOptions.find(
-                          (option) => option.label === usageStatus.tr
+                          (option) => option.label === usageStatus.get("tr")
                         )?.value || ""
                       : ""
                   }
@@ -910,20 +885,23 @@ export default function SecondCreateStepForHouse() {
                       (option) => option.value === value
                     );
                     if (selected) {
-                      setUsageStatus({
-                        tr: selected.label,
-                        en:
-                          selected.value === "empty"
-                            ? "Empty"
-                            : selected.value === "tenantOccupied"
-                            ? "Tenant Occupied"
-                            : selected.value === "ownerOccupied"
-                            ? "Owner Occupied"
-                            : "",
-                      });
+                      const usageMap = new Map<string, string>();
+                      usageMap.set("tr", selected.label);
+                      usageMap.set(
+                        "en",
+                        selected.value === "empty"
+                          ? "Empty"
+                          : selected.value === "tenantOccupied"
+                          ? "Tenant Occupied"
+                          : selected.value === "ownerOccupied"
+                          ? "Owner Occupied"
+                          : ""
+                      );
+                      setUsageStatus(usageMap);
                     }
                   }}
                   placeholder="Seçiniz"
+                  openUpward={true}
                 />
               </div>
               <div className="w-full sm:w-1/2">
@@ -936,9 +914,9 @@ export default function SecondCreateStepForHouse() {
                 <CustomSelect
                   options={deedStatusOptions}
                   value={
-                    deedStatus?.tr
+                    deedStatus?.get("tr")
                       ? deedStatusOptions.find(
-                          (option) => option.label === deedStatus.tr
+                          (option) => option.label === deedStatus.get("tr")
                         )?.value || ""
                       : ""
                   }
@@ -947,32 +925,35 @@ export default function SecondCreateStepForHouse() {
                       (option) => option.value === value
                     );
                     if (selected) {
-                      setDeedStatus({
-                        tr: selected.label,
-                        en:
-                          selected.value === "condominium"
-                            ? "Condominium"
-                            : selected.value === "floorEasement"
-                            ? "Floor Easement"
-                            : selected.value === "sharedDeed"
-                            ? "Shared Deed"
-                            : selected.value === "detachedDeed"
-                            ? "Detached Deed"
-                            : selected.value === "landDeed"
-                            ? "Land Deed"
-                            : selected.value === "cooperativeShare"
-                            ? "Cooperative Share Deed"
-                            : selected.value === "usufructRight"
-                            ? "Usufruct Right"
-                            : selected.value === "foreignDeed"
-                            ? "Foreign Deed"
-                            : selected.value === "noDeedRecord"
-                            ? "No Deed Record"
-                            : "",
-                      });
+                      const deedMap = new Map<string, string>();
+                      deedMap.set("tr", selected.label);
+                      deedMap.set(
+                        "en",
+                        selected.value === "condominium"
+                          ? "Condominium"
+                          : selected.value === "floorEasement"
+                          ? "Floor Easement"
+                          : selected.value === "sharedDeed"
+                          ? "Shared Deed"
+                          : selected.value === "detachedDeed"
+                          ? "Detached Deed"
+                          : selected.value === "landDeed"
+                          ? "Land Deed"
+                          : selected.value === "cooperativeShare"
+                          ? "Cooperative Share Deed"
+                          : selected.value === "usufructRight"
+                          ? "Usufruct Right"
+                          : selected.value === "foreignDeed"
+                          ? "Foreign Deed"
+                          : selected.value === "noDeedRecord"
+                          ? "No Deed Record"
+                          : ""
+                      );
+                      setDeedStatus(deedMap);
                     }
                   }}
                   placeholder="Seçiniz"
+                  openUpward={true}
                 />
               </div>
             </div>

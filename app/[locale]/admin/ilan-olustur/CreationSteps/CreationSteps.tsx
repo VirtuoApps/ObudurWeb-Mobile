@@ -8,6 +8,8 @@ import FourthCreateStep from "./FourthCreateStep/FourthCreateStep";
 import FifthCreateStep from "./FifthCreateStep/FifthCreateStep";
 import SixthCreateStep from "./SixthCreateStep/SixthCreateStep";
 import SecondCreateStepForHouse from "./SecondCreateStep/SecondCreateStepForHouse/SecondCreateStepForHouse";
+import SecondCreateStepForWork from "./SecondCreateStep/SecondCreateStepForWork/SecondCreateStepForWork";
+import SecondCreateStepForLand from "./SecondCreateStep/SecondCreateStepForLand/SecondCreateStepForLand";
 
 // Define the multilingual text interface
 export interface MultilangText {
@@ -54,6 +56,8 @@ export interface HotelData {
   deedStatus?: MultilangText;
   heatingType?: MultilangText;
   source?: MultilangText;
+  generalFeatures?: MultilangText;
+  zoningStatus?: MultilangText;
   featureIds: string[];
   distances: { typeId: string; value: number }[];
   location: {
@@ -99,8 +103,8 @@ type ListingFormContextType = {
   // New fields
   exchangeable: boolean;
   setExchangeable: React.Dispatch<React.SetStateAction<boolean>>;
-  creditEligible: boolean;
-  setCreditEligible: React.Dispatch<React.SetStateAction<boolean>>;
+  creditEligible: string;
+  setCreditEligible: React.Dispatch<React.SetStateAction<string>>;
   buildingAge: number;
   setBuildingAge: React.Dispatch<React.SetStateAction<number>>;
   isFurnished: boolean;
@@ -109,14 +113,18 @@ type ListingFormContextType = {
   setDues: React.Dispatch<
     React.SetStateAction<{ amount: number; currency: string }[]>
   >;
-  usageStatus: MultilangText;
-  setUsageStatus: React.Dispatch<React.SetStateAction<MultilangText>>;
-  deedStatus: MultilangText;
-  setDeedStatus: React.Dispatch<React.SetStateAction<MultilangText>>;
+  usageStatus: Map<string, string>;
+  setUsageStatus: React.Dispatch<React.SetStateAction<Map<string, string>>>;
+  deedStatus: Map<string, string>;
+  setDeedStatus: React.Dispatch<React.SetStateAction<Map<string, string>>>;
   heatingType: MultilangText;
   setHeatingType: React.Dispatch<React.SetStateAction<MultilangText>>;
   source: MultilangText;
   setSource: React.Dispatch<React.SetStateAction<MultilangText>>;
+  generalFeatures: Map<string, string>;
+  setGeneralFeatures: React.Dispatch<React.SetStateAction<Map<string, string>>>;
+  zoningStatus: Map<string, string>;
+  setZoningStatus: React.Dispatch<React.SetStateAction<Map<string, string>>>;
   // Orientation (facade)
   orientation: string;
   setOrientation: React.Dispatch<React.SetStateAction<string>>;
@@ -204,7 +212,7 @@ export const ListingFormContext = createContext<ListingFormContextType>({
   // New fields defaults
   exchangeable: false,
   setExchangeable: () => {},
-  creditEligible: false,
+  creditEligible: "",
   setCreditEligible: () => {},
   buildingAge: 0,
   setBuildingAge: () => {},
@@ -212,14 +220,18 @@ export const ListingFormContext = createContext<ListingFormContextType>({
   setIsFurnished: () => {},
   dues: [],
   setDues: () => {},
-  usageStatus: { tr: "", en: "" },
+  usageStatus: new Map<string, string>(),
   setUsageStatus: () => {},
-  deedStatus: { tr: "", en: "" },
+  deedStatus: new Map<string, string>(),
   setDeedStatus: () => {},
   heatingType: { tr: "", en: "" },
   setHeatingType: () => {},
   source: { tr: "", en: "" },
   setSource: () => {},
+  generalFeatures: new Map<string, string>(),
+  setGeneralFeatures: () => {},
+  zoningStatus: new Map<string, string>(),
+  setZoningStatus: () => {},
   // Orientation
   orientation: "",
   setOrientation: () => {},
@@ -313,23 +325,25 @@ export default function CreationSteps({
 
   // New fields state
   const [exchangeable, setExchangeable] = useState<boolean>(false);
-  const [creditEligible, setCreditEligible] = useState<boolean>(false);
+  const [creditEligible, setCreditEligible] = useState<string>("");
   const [buildingAge, setBuildingAge] = useState<number>(0);
   const [isFurnished, setIsFurnished] = useState<boolean>(false);
   const [dues, setDues] = useState<{ amount: number; currency: string }[]>([]);
-  const [usageStatus, setUsageStatus] = useState<MultilangText>({
-    tr: "",
-    en: "",
-  });
-  const [deedStatus, setDeedStatus] = useState<MultilangText>({
-    tr: "",
-    en: "",
-  });
+  const [usageStatus, setUsageStatus] = useState<Map<string, string>>(
+    new Map<string, string>()
+  );
+  const [deedStatus, setDeedStatus] = useState<Map<string, string>>(
+    new Map<string, string>()
+  );
   const [heatingType, setHeatingType] = useState<MultilangText>({
     tr: "",
     en: "",
   });
   const [source, setSource] = useState<MultilangText>({ tr: "", en: "" });
+  const [generalFeatures, setGeneralFeatures] = useState(
+    new Map<string, string>()
+  );
+  const [zoningStatus, setZoningStatus] = useState(new Map<string, string>());
 
   // New state for ThirdCreateStep - Address fields
   const [country, setCountry] = useState<MultilangText>({ tr: "", en: "" });
@@ -380,29 +394,31 @@ export default function CreationSteps({
   useEffect(() => {
     if (isUpdate && hotelData) {
       // First step data
-      setListingType(hotelData.listingType);
-      setEntranceType(hotelData.entranceType);
-      setHousingType(hotelData.housingType);
-      setTitle(hotelData.title);
-      setDescription(hotelData.description);
+      setListingType(hotelData.listingType || null);
+      setEntranceType(hotelData.entranceType || null);
+      setHousingType(hotelData.housingType || null);
+      setTitle(hotelData.title || { tr: "", en: "" });
+      setDescription(hotelData.description || { tr: "", en: "" });
 
       // Second step data
-      setPrice(hotelData.price);
-      setProjectArea(hotelData.projectArea);
-      setTotalSize(hotelData.totalSize);
-      setRoomCount(hotelData.roomCount);
-      setBathroomCount(hotelData.bathroomCount);
-      setBedRoomCount(hotelData.bedRoomCount);
-      setFloorCount(hotelData.floorCount);
-      setBuildYear(hotelData.buildYear);
-      setKitchenType(hotelData.kitchenType);
+      setPrice(hotelData.price || []);
+      setProjectArea(hotelData.projectArea || 0);
+      setTotalSize(hotelData.totalSize || 0);
+      setRoomCount(hotelData.roomCount || 0);
+      setBathroomCount(hotelData.bathroomCount || 0);
+      setBedRoomCount(hotelData.bedRoomCount || 0);
+      setFloorCount(hotelData.floorCount || 0);
+      setBuildYear(hotelData.buildYear || 0);
+      setKitchenType(hotelData.kitchenType || { tr: "", en: "" });
 
       // New fields
       if (hotelData.exchangeable !== undefined) {
         setExchangeable(hotelData.exchangeable);
       }
       if (hotelData.creditEligible !== undefined) {
-        setCreditEligible(hotelData.creditEligible);
+        setCreditEligible(
+          hotelData.creditEligible ? hotelData.creditEligible.toString() : ""
+        );
       }
       if (hotelData.buildingAge !== undefined) {
         setBuildingAge(hotelData.buildingAge);
@@ -414,10 +430,10 @@ export default function CreationSteps({
         setDues(hotelData.dues);
       }
       if (hotelData.usageStatus) {
-        setUsageStatus(hotelData.usageStatus);
+        setUsageStatus(new Map(Object.entries(hotelData.usageStatus)));
       }
       if (hotelData.deedStatus) {
-        setDeedStatus(hotelData.deedStatus);
+        setDeedStatus(new Map(Object.entries(hotelData.deedStatus)));
       }
       if (hotelData.heatingType) {
         setHeatingType(hotelData.heatingType);
@@ -425,18 +441,24 @@ export default function CreationSteps({
       if (hotelData.source) {
         setSource(hotelData.source);
       }
+      if (hotelData.generalFeatures) {
+        setGeneralFeatures(new Map(Object.entries(hotelData.generalFeatures)));
+      }
+      if (hotelData.zoningStatus) {
+        setZoningStatus(new Map(Object.entries(hotelData.zoningStatus)));
+      }
 
       // Set orientation (face)
-      setOrientation(hotelData.face);
+      setOrientation(hotelData.face || "");
 
       // Third step data - Address
-      setCountry(hotelData.country);
-      setCity(hotelData.city);
-      setState(hotelData.state);
-      setStreet(hotelData.street);
-      setBuildingNo(hotelData.buildingNo);
-      setApartmentNo(hotelData.apartmentNo);
-      setPostalCode(hotelData.postalCode);
+      setCountry(hotelData.country || { tr: "", en: "" });
+      setCity(hotelData.city || { tr: "", en: "" });
+      setState(hotelData.state || { tr: "", en: "" });
+      setStreet(hotelData.street || { tr: "", en: "" });
+      setBuildingNo(hotelData.buildingNo || "");
+      setApartmentNo(hotelData.apartmentNo || "");
+      setPostalCode(hotelData.postalCode || "");
 
       // Set coordinates if available
       if (hotelData.location && hotelData.location.coordinates) {
@@ -444,12 +466,12 @@ export default function CreationSteps({
       }
 
       // Fourth step data
-      setFeatureIds(hotelData.featureIds);
-      setDistances(hotelData.distances);
+      setFeatureIds(hotelData.featureIds || []);
+      setDistances(hotelData.distances || []);
 
       // Fifth step data
-      setImages(hotelData.images);
-      setVideo(hotelData.video);
+      setImages(hotelData.images || []);
+      setVideo(hotelData.video || "");
 
       // Documents data
       if (hotelData.documents && Array.isArray(hotelData.documents)) {
@@ -507,6 +529,10 @@ export default function CreationSteps({
     setHeatingType,
     source,
     setSource,
+    generalFeatures,
+    setGeneralFeatures,
+    zoningStatus,
+    setZoningStatus,
     // Orientation
     orientation,
     setOrientation,
@@ -565,7 +591,11 @@ export default function CreationSteps({
     <ListingFormContext.Provider value={contextValue}>
       {currentStep === 1 && <FirstCreateStep />}
       {currentStep === 2 && (
-        <>{entranceType?.tr === "Ev" && <SecondCreateStepForHouse />}</>
+        <>
+          {entranceType?.tr === "Ev" && <SecondCreateStepForHouse />}
+          {entranceType?.tr === "İş Yeri" && <SecondCreateStepForWork />}
+          {entranceType?.tr === "Arsa" && <SecondCreateStepForLand />}
+        </>
       )}
       {currentStep === 3 && <ThirdCreateStep />}
       {currentStep === 4 && <FourthCreateStep />}
