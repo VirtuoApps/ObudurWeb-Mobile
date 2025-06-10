@@ -474,34 +474,32 @@ export default function SecondCreateStepForWork() {
               </div> */}
             </div>
 
-            {/* Areas */}
-            <div className="mb-6">
-              <label
-                htmlFor="projectArea"
-                className="font-semibold block mb-2 text-[#262626]"
-              >
-                Metrekare
-              </label>
-              <input
-                type="text"
-                id="projectArea"
-                value={projectArea || ""}
-                onChange={(e) => {
-                  const numericValue = e.target.value.replace(/[^0-9.]/g, "");
-                  const parts = numericValue.split(".");
-                  const validValue =
-                    parts.length > 2
-                      ? parts[0] + "." + parts.slice(1).join("")
-                      : numericValue;
-                  setProjectArea(parseFloat(validValue) || 0);
-                }}
-                className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                placeholder="m²"
-              />
-            </div>
-
-            {/* Room and Floor Counts - Side by side */}
+            {/* Metrekare - Bölüm / Oda Sayısı */}
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <div className="w-full sm:w-1/2">
+                <label
+                  htmlFor="projectArea"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  Metrekare
+                </label>
+                <input
+                  type="text"
+                  id="projectArea"
+                  value={projectArea || ""}
+                  onChange={(e) => {
+                    const numericValue = e.target.value.replace(/[^0-9.]/g, "");
+                    const parts = numericValue.split(".");
+                    const validValue =
+                      parts.length > 2
+                        ? parts[0] + "." + parts.slice(1).join("")
+                        : numericValue;
+                    setProjectArea(parseFloat(validValue) || 0);
+                  }}
+                  className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                  placeholder="m²"
+                />
+              </div>
               <div className="w-full sm:w-1/2">
                 <label
                   htmlFor="roomCount"
@@ -516,6 +514,10 @@ export default function SecondCreateStepForWork() {
                   placeholder="Seçiniz"
                 />
               </div>
+            </div>
+
+            {/* Kat Sayısı - Bina Yaşı */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="w-full sm:w-1/2">
                 <label
                   htmlFor="floorCount"
@@ -530,10 +532,6 @@ export default function SecondCreateStepForWork() {
                   placeholder="Seçiniz"
                 />
               </div>
-            </div>
-
-            {/* Building Age and Heating Type */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="w-full sm:w-1/2">
                 <label
                   htmlFor="buildingAge"
@@ -548,6 +546,10 @@ export default function SecondCreateStepForWork() {
                   placeholder="Seçiniz"
                 />
               </div>
+            </div>
+
+            {/* Isıtma - Kimden */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="w-full sm:w-1/2">
                 <label
                   htmlFor="heatingType"
@@ -595,10 +597,6 @@ export default function SecondCreateStepForWork() {
                   placeholder="Seçiniz"
                 />
               </div>
-            </div>
-
-            {/* Kimden - Takaslı */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="w-full sm:w-1/2">
                 <label
                   htmlFor="source"
@@ -636,6 +634,10 @@ export default function SecondCreateStepForWork() {
                   placeholder="Seçiniz"
                 />
               </div>
+            </div>
+
+            {/* Takaslı - Krediye Uygunluk */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="w-full sm:w-1/2">
                 <label
                   htmlFor="exchangeable"
@@ -650,10 +652,6 @@ export default function SecondCreateStepForWork() {
                   placeholder="Seçiniz"
                 />
               </div>
-            </div>
-
-            {/* Krediye Uygunluk - Kullanım Durumu */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="w-full sm:w-1/2">
                 <label
                   htmlFor="creditEligible"
@@ -668,6 +666,10 @@ export default function SecondCreateStepForWork() {
                   placeholder="Seçiniz"
                 />
               </div>
+            </div>
+
+            {/* Kullanım Durumu - Aidat */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="w-full sm:w-1/2">
                 <label
                   htmlFor="usageStatus"
@@ -708,10 +710,6 @@ export default function SecondCreateStepForWork() {
                   openUpward={true}
                 />
               </div>
-            </div>
-
-            {/* Aidat */}
-            <div className="mb-6">
               <div className="w-full sm:w-1/2">
                 <label className="font-semibold block mb-2 text-[#262626]">
                   Aidat
