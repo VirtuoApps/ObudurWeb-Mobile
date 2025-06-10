@@ -590,7 +590,7 @@ export default function AdminListings() {
       <div className="sm:bg-[#ebeaf1] bg-white w-full h-full min-h-screen pb-6">
         <SimpleHeader customRedirectUrl="/" />
         <Toaster position="top-center" />
-        <main className="max-w-[1440px] mx-auto py-8 px-4">
+        <main className="max-w-[1440px] mx-auto py-8 px-4 md:px-0">
           {/* Header section with filters Mobile */}
 
           <div className="flex flex-row items-center justify-between lg:hidden mb-6">
