@@ -262,9 +262,14 @@
     "deedStatus": "Tapu Durumu",
     "zoningStatus": "İmar Durumu",
     "usageStatus": "Kullanım Durumu",
+    "exchangeable": "Takaslı",
+    "floorCount": "Kat Sayısı",
+    "buildingAge": "Bina Yaşı",
+    "roomCount": "Bölüm/Oda Sayısı",
+    "heatingType": "Isıtma",
+    "dues": "Aidat",
     "adaNo": "Ada No",
-    "parselNo": "Parsel No",
-    "exchangeable": "Takaslı"
+    "parselNo": "Parsel No"
   },
   "features": {
     "title": "Özellikler & Donanımlar",

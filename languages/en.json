@@ -262,9 +262,14 @@
     "deedStatus": "Deed Status",
     "zoningStatus": "Zoning Status",
     "usageStatus": "Usage Status",
+    "exchangeable": "Exchangeable",
+    "floorCount": "Floor Count",
+    "buildingAge": "Building Age",
+    "roomCount": "Room/Section Count",
+    "heatingType": "Heating",
+    "dues": "Maintenance Fee",
     "adaNo": "Block No",
-    "parselNo": "Parcel No",
-    "exchangeable": "Exchangeable"
+    "parselNo": "Parcel No"
   },
   "features": {
     "title": "Features & Amenities",

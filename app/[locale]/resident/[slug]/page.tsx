@@ -80,6 +80,7 @@ interface HotelDetails {
   generalFeatures?: LocalizedText;
   deedStatus?: LocalizedText;
   zoningStatus?: LocalizedText;
+  heatingType?: LocalizedText;
   usageStatus?: LocalizedText;
   adaNo?: string;
   parselNo?: string;
