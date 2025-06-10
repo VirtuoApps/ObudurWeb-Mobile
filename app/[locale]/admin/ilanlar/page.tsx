@@ -103,6 +103,7 @@ export default function AdminListings() {
   const [sortField, setSortField] = useState<string | null>(null);
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
+  const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
   const statusDropdownRef = useRef<HTMLDivElement>(null);
   const typeDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -943,21 +944,45 @@ export default function AdminListings() {
                           className="py-4 px-4 text-right w-[240px]"
                           data-label="İşlemler"
                         >
-                          <div className="flex items-center justify-center gap-2">
-                            <img
-                              src="/edit-icon.png"
-                              alt="edit"
-                              className="w-10 h-10 text-gray-500 hover:scale-110  cursor-pointer transition"
+                          <div className="flex items-center justify-center gap-1">
+                            <button
+                              className="w-[36px] h-[36px] flex items-center justify-center rounded-lg transition-all duration-200 hover:bg-[#5E5691] cursor-pointer"
+                              onMouseEnter={() =>
+                                setHoveredIcon(`${property._id}-edit`)
+                              }
+                              onMouseLeave={() => setHoveredIcon(null)}
                               onClick={() => {
                                 router.push(
                                   `/admin/ilani-duzenle/${property._id}`
                                 );
                               }}
-                            />
-                            <img
-                              src="/location-icon.png"
-                              alt="location"
-                              className="w-5 h-5 text-gray-500 hover:scale-110 cursor-pointer transition"
+                            >
+                              <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 20 20"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M9.24874 3.16909H4.51C2.93971 3.16909 1.66675 4.44202 1.66675 6.01225V15.4895C1.66675 17.0598 2.93971 18.3327 4.51 18.3327H13.9875C15.5578 18.3327 16.8307 17.0598 16.8307 15.4895L16.8307 10.7509M6.40549 13.594L9.85371 12.8992C10.0368 12.8623 10.2048 12.7722 10.3368 12.6401L18.056 4.91699C18.4261 4.5467 18.4259 3.94649 18.0554 3.57651L16.4203 1.94322C16.05 1.5734 15.4501 1.57365 15.0801 1.94378L7.36016 9.66773C7.22842 9.79955 7.13846 9.96728 7.10154 10.15L6.40549 13.594Z"
+                                  stroke={
+                                    hoveredIcon === `${property._id}-edit`
+                                      ? "#FCFCFC"
+                                      : "#262626"
+                                  }
+                                  strokeWidth="1.2"
+                                  strokeLinecap="square"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </button>
+                            <button
+                              className="w-[36px] h-[36px] flex items-center justify-center rounded-lg transition-all duration-200 hover:bg-[#5E5691] cursor-pointer"
+                              onMouseEnter={() =>
+                                setHoveredIcon(`${property._id}-location`)
+                              }
+                              onMouseLeave={() => setHoveredIcon(null)}
                               onClick={() => {
                                 if (
                                   property.location &&
@@ -971,11 +996,42 @@ export default function AdminListings() {
                                   );
                                 }
                               }}
-                            />
-                            <img
-                              src="/share-icon.png"
-                              alt="share"
-                              className="w-4 h-4 text-gray-500 hover:scale-110 cursor-pointer transition"
+                            >
+                              <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 20 20"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M9.99988 18C9.99988 18 16.2608 12.4348 16.2608 8.26087C16.2608 4.80309 13.4577 2 9.99988 2C6.5421 2 3.73901 4.80309 3.73901 8.26087C3.73901 12.4348 9.99988 18 9.99988 18Z"
+                                  stroke={
+                                    hoveredIcon === `${property._id}-location`
+                                      ? "#FCFCFC"
+                                      : "#262626"
+                                  }
+                                  strokeWidth="1.2"
+                                  strokeLinecap="square"
+                                />
+                                <path
+                                  d="M12.0001 8.00013C12.0001 9.1047 11.1047 10.0001 10.0001 10.0001C8.89557 10.0001 8.00014 9.1047 8.00014 8.00013C8.00014 6.89556 8.89557 6.00013 10.0001 6.00013C11.1047 6.00013 12.0001 6.89556 12.0001 8.00013Z"
+                                  stroke={
+                                    hoveredIcon === `${property._id}-location`
+                                      ? "#FCFCFC"
+                                      : "#262626"
+                                  }
+                                  strokeWidth="1.2"
+                                  strokeLinecap="square"
+                                />
+                              </svg>
+                            </button>
+                            <button
+                              className="w-[36px] h-[36px] flex items-center justify-center rounded-lg transition-all duration-200 hover:bg-[#5E5691] cursor-pointer"
+                              onMouseEnter={() =>
+                                setHoveredIcon(`${property._id}-share`)
+                              }
+                              onMouseLeave={() => setHoveredIcon(null)}
                               onClick={() => {
                                 const url = `https://obudur-website.vercel.app/resident/${property.slug}`;
                                 navigator.clipboard
@@ -988,7 +1044,27 @@ export default function AdminListings() {
                                     toast.error("Kopyalama işlemi başarısız");
                                   });
                               }}
-                            />
+                            >
+                              <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 20 20"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M6.14876 8.49164L4.28755 10.3529C3.59243 11.048 3.1927 11.9938 3.20001 12.9878C3.20731 13.9818 3.5983 14.9334 4.32639 15.639C5.03196 16.3671 5.98374 16.7581 6.97759 16.7654C7.99411 16.7728 8.91753 16.3956 9.61268 15.7005L11.4739 13.8393M13.8512 11.5074L15.7125 9.64619C16.4076 8.95108 16.8073 8.00528 16.8 7.01127C16.7927 6.01726 16.4017 5.06568 15.6736 4.36007C14.9682 3.65467 14.0166 3.26366 13.0226 3.25636C12.0286 3.24905 11.0826 3.62609 10.3875 4.32123L8.52627 6.18244M7.17759 12.7722L12.7612 7.18852"
+                                  stroke={
+                                    hoveredIcon === `${property._id}-share`
+                                      ? "#FCFCFC"
+                                      : "#262626"
+                                  }
+                                  strokeWidth="1.2"
+                                  strokeLinecap="square"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                            </button>
                             {property.isPublished && (
                               <button
                                 className="flex items-center justify-center gap-2 w-[102px] h-[36px] border border-[#D9D9D9] rounded-lg py-2 px-2.5 text-xs font-medium text-[#FA9441] transition cursor-pointer"
