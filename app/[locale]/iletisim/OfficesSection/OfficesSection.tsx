@@ -234,13 +234,30 @@ export default function OfficesSection() {
                               {contact.email}
                             </a>
                           </div>
-                          <div className="flex gap-2">
-                            <span className="font-medium text-[#262626] text-sm">
-                              Adres:
-                            </span>
-                            <span className="text-[#595959] text-sm">
+                          <div className="flex flex-row justify-between gap-2">
+                            <span className="text-[#262626] text-sm max-w-[350px] break-words">
                               {contact.address}
                             </span>
+                            <div
+                              className="bg-[#F0F0F0] hover:bg-[#5E5691] transition-all duration-200 rounded-2xl flex items-center justify-center w-[56px] h-[56px] group cursor-pointer"
+                              onClick={() => {
+                                window.open(
+                                  `https://www.google.com/maps/search/?api=1&query=${contact.address}`,
+                                  "_blank"
+                                );
+                              }}
+                            >
+                              <img
+                                src="/marker-04.png"
+                                alt="map"
+                                className="w-[24px] h-[24px] group-hover:hidden"
+                              />
+                              <img
+                                src="/chevron-right.png"
+                                alt="chevron"
+                                className="w-[24px] h-[24px] hidden group-hover:block"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
