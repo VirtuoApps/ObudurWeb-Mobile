@@ -194,12 +194,17 @@ export default function GoogleMapView({
         lat: selectedHotel.location.coordinates[1] + 0.004, // Balanced offset to avoid top bar but stay close to marker
         lng: selectedHotel.location.coordinates[0],
       };
+
+      // Use smooth pan animation without zoom changes
+      // This provides consistent, gentle movement for all hotel selections
       mapInstance.panTo(position);
 
-      // Optionally adjust zoom if needed
+      // Only set zoom once if it's too low, without animation
       const currentZoom = mapInstance.getZoom();
-      if (currentZoom !== undefined && currentZoom < 15) {
-        mapInstance.setZoom(15);
+      if (currentZoom !== undefined && currentZoom < 14) {
+        setTimeout(() => {
+          mapInstance.setZoom(15);
+        }, 300); // Delay zoom until pan is complete
       }
     }
   }, [selectedHotel, mapInstance, hideSelectedHotel]);
