@@ -234,16 +234,24 @@ export default function HomePage({
     }
   }, [searchParams]);
 
+  console.log({
+    currentView,
+  });
+
   // Disable body scroll when component mounts
   useEffect(() => {
     // Disable scroll on body
-    document.body.style.overflow = "hidden";
+    if (currentView === "map") {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "scroll";
+    }
 
     // Cleanup function to re-enable scroll when component unmounts
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, []);
+  }, [currentView]);
 
   useEffect(() => {
     if (isDefaultSale) {
@@ -305,18 +313,24 @@ export default function HomePage({
     );
   }
 
+  console.log({
+    filters,
+  });
+
   if (filters) {
     if (filters.propertyType) {
       filteredHotels = filteredHotels.filter((hotel) =>
-        Object.values(hotel.housingType).some(
+        Object.values(hotel.entranceType).some(
           (value) => value === filters.propertyType
         )
       );
     }
 
     if (filters.roomAsText) {
-      filteredHotels = filteredHotels.filter(
-        (hotel) => hotel.roomAsText === filters.roomAsText
+      filteredHotels = filteredHotels.filter((hotel) =>
+        Object.values(hotel.housingType).some(
+          (value) => value === filters.roomAsText
+        )
       );
     }
 
@@ -536,7 +550,7 @@ export default function HomePage({
         selectedFaceFeatures={selectedFaceFeatures}
         resultCount={filteredHotels.length}
       />
-      <div className="bg-white overflow-hidden h-screen">
+      <div className="bg-white ">
         <Header
           setFilters={setFilters}
           filterOptions={filterOptions}
