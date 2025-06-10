@@ -159,11 +159,9 @@ export default async function ResidentPage({
             <FeaturesEquipment />
             {video && <PanoramicView video={video} />}
             <Location />
-            {hotelData.hotelDetails.documents.length > 0 && (
-              <PlansAndDocumentation
-                documents={hotelData.hotelDetails.documents}
-              />
-            )}
+            <PlansAndDocumentation
+              documents={hotelData.hotelDetails.documents}
+            />
           </div>
 
           <div className="md:w-[30%] w-full p-4 pt-2">
