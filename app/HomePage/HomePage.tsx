@@ -17,6 +17,7 @@ import { currencyOptions } from "@/app/components/LanguageSwitcher";
 import { filterHotelsByProximity } from "@/app/utils/geoUtils";
 import Footer from "../[locale]/resident/[slug]/Footer/Footer";
 import SaveFilterPopup from "./SaveFilterPopup/SaveFilterPopup";
+import NoResultFound from "./ListView/NoResultFound/NoResultFound";
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
   loading: () => {
@@ -238,21 +239,6 @@ export default function HomePage({
     currentView,
   });
 
-  // Disable body scroll when component mounts
-  useEffect(() => {
-    // Disable scroll on body
-    if (currentView === "map") {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "scroll";
-    }
-
-    // Cleanup function to re-enable scroll when component unmounts
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [currentView]);
-
   useEffect(() => {
     if (isDefaultSale) {
       setListingType("For Sale");
@@ -312,10 +298,6 @@ export default function HomePage({
       searchRadius
     );
   }
-
-  console.log({
-    filters,
-  });
 
   if (filters) {
     if (filters.propertyType) {
@@ -481,38 +463,23 @@ export default function HomePage({
     );
   }
 
-  function NoResultsFound() {
-    return (
-      <div className="w-full h-[calc(100vh-155px)] flex flex-col items-center justify-center text-gray-500">
-        <p>{t("noResultsFound")}</p>
-        <button
-          onClick={() => {
-            setFilters(null);
-            setSelectedLocation(null);
-            setSelectedPropertyType(null);
-            setSelectedCategory(null);
-            setListingType("For Sale");
-            setSelectedFeatures([]);
-            setInteriorFeatures([]);
-            setSelectedExteriorFeatures([]);
-            setSelectedAccessibilityFeatures([]);
-            setAccessibilityFeatures([]);
-            setSelectedFaceFeatures([]);
-            setFaceFeatures([]);
-            setMinPrice("");
-            setMaxPrice("");
-            setMinArea("");
-            setMaxArea("");
-            setRoomCount("");
-            setBathroomCount("");
-          }}
-          className="mt-4 px-4 py-2 bg-[#362C75] text-white rounded transition-colors cursor-pointer"
-        >
-          {t("clearFilters")}
-        </button>
-      </div>
-    );
-  }
+  const noResultFound =
+    (filters || selectedLocation) && filteredHotels.length === 0;
+
+  // Disable body scroll when component mounts
+  useEffect(() => {
+    // Disable scroll on body
+    if (currentView === "map" && !noResultFound) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "scroll";
+    }
+
+    // Cleanup function to re-enable scroll when component unmounts
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [currentView, noResultFound]);
 
   return (
     <>
@@ -638,7 +605,29 @@ export default function HomePage({
                   : "opacity-100 transform translate-y-0 scale-100 animate-fade-in-up"
               }`}
             >
-              <NoResultsFound />
+              <NoResultFound
+                resetFilters={() => {
+                  setFilters(null);
+                  setSelectedLocation(null);
+                  setSelectedPropertyType(null);
+                  setSelectedCategory(null);
+                  setListingType("For Sale");
+                  setSelectedFeatures([]);
+                  setInteriorFeatures([]);
+                  setSelectedExteriorFeatures([]);
+                  setSelectedAccessibilityFeatures([]);
+                  setAccessibilityFeatures([]);
+                  setSelectedFaceFeatures([]);
+                  setFaceFeatures([]);
+                  setMinPrice("");
+                  setMaxPrice("");
+                  setMinArea("");
+                  setMaxArea("");
+                  setRoomCount("");
+                  setBathroomCount("");
+                }}
+                allHotels={hotels}
+              />
             </div>
           ) : (
             <div

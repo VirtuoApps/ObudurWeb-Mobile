@@ -5,7 +5,11 @@ import Image from "next/image";
 import axiosInstance from "../../../../../axios";
 import { useTranslations } from "next-intl";
 
-export default function Footer() {
+type FooterType = {
+  customClassName?: string;
+};
+
+export default function Footer({ customClassName = "1440px" }: FooterType) {
   const t = useTranslations("footer.newsletter");
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -43,7 +47,9 @@ export default function Footer() {
       {/* Primary top divider */}
       <div className="border-t border-slate-200"></div>
 
-      <div className="max-w-[1440px] mx-auto px-4 lg:px-0 py-12 lg:py-24">
+      <div
+        className={`${customClassName} max-w-[1440px] mx-auto px-4 lg:px-0 py-12 lg:py-24`}
+      >
         <div className="flex flex-col lg:flex-row lg:justify-between pt-8 pb-10 gap-8 lg:gap-0">
           {/* Newsletter Column - Move to top on mobile */}
           <div className="w-full lg:w-[400px] order-first lg:order-last">
@@ -230,10 +236,12 @@ export default function Footer() {
       </div>
 
       {/* Primary bottom divider */}
-      <div className="border-t border-[#C1BED4] max-w-[1440px] mx-auto"></div>
+      <div
+        className={`border-t border-[#C1BED4] ${customClassName} max-w-[1440px] mx-auto`}
+      ></div>
 
       {/* Bottom bar */}
-      <div className="max-w-[1440px] mx-auto px-4 lg:px-0">
+      <div className={`${customClassName} max-w-[1440px] mx-auto px-4 lg:px-0`}>
         <div className="flex justify-center lg:justify-between items-center py-4 lg:py-6 text-xs text-slate-500">
           <div className="flex items-center">
             <Image
