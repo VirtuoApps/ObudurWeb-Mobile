@@ -136,17 +136,20 @@ export default function FeaturesEquipment() {
           {t("description")}
         </p>
       </div>
-
-      <FeatureGroup
-        title={t("indoorTitle")}
-        features={insideFeatures}
-        locale={currentLocale}
-      />
-      <FeatureGroup
-        title={t("outdoorTitle")}
-        features={outsideFeatures}
-        locale={currentLocale}
-      />
+      {insideFeatures.length > 0 && (
+        <FeatureGroup
+          title={t("indoorTitle")}
+          features={insideFeatures}
+          locale={currentLocale}
+        />
+      )}
+      {outsideFeatures.length > 0 && (
+        <FeatureGroup
+          title={t("outdoorTitle")}
+          features={outsideFeatures}
+          locale={currentLocale}
+        />
+      )}
       {infrastructureData.length > 0 && (
         <FeatureGroup
           title="Altyapı Özellikleri"

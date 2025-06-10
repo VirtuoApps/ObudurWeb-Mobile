@@ -76,6 +76,18 @@ interface HotelDetails {
   housingType: LocalizedText;
   entranceType: LocalizedText;
   listingType: LocalizedText;
+  source?: LocalizedText;
+  generalFeatures?: LocalizedText;
+  deedStatus?: LocalizedText;
+  zoningStatus?: LocalizedText;
+  usageStatus?: LocalizedText;
+  adaNo?: string;
+  parselNo?: string;
+  exchangeable?: boolean;
+  creditEligible?: any;
+  buildingAge?: number;
+  isFurnished?: boolean;
+  dues?: any;
   featureIds: string[];
   distances: { typeId: string; value: number }[];
   location: LocationPoint;

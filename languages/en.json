@@ -254,7 +254,17 @@
     "floor": "Floor",
     "propertyType": "Property Type",
     "entrance": "Entrance",
-    "listingType": "Listing Type"
+    "listingType": "Listing Type",
+    "source": "Listed By",
+    "landType": "Land Type",
+    "creditEligible": "Mortgage Eligible",
+    "generalFeatures": "General Features",
+    "deedStatus": "Deed Status",
+    "zoningStatus": "Zoning Status",
+    "usageStatus": "Usage Status",
+    "adaNo": "Block No",
+    "parselNo": "Parcel No",
+    "exchangeable": "Exchangeable"
   },
   "features": {
     "title": "Features & Amenities",
