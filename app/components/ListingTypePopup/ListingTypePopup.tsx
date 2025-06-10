@@ -24,6 +24,32 @@ export default function ListingTypePopup({
     listingType
   );
 
+  // Drag to close state
+  const [touchStartY, setTouchStartY] = useState<number | null>(null);
+  const [translateY, setTranslateY] = useState(0);
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    setTouchStartY(e.touches[0].clientY);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (touchStartY === null) return;
+    const deltaY = e.touches[0].clientY - touchStartY;
+    if (deltaY > 0) {
+      setTranslateY(deltaY);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (translateY > 100) {
+      // If dragged down enough, close the popup
+      onClose();
+    }
+    // Reset position
+    setTranslateY(0);
+    setTouchStartY(null);
+  };
+
   // Keep local state in sync if the parent listingType changes while popup is open
   useEffect(() => {
     setSelectedType(listingType);
@@ -40,7 +66,16 @@ export default function ListingTypePopup({
       <div className="absolute inset-0 bg-black/60" onClick={onClose} />
 
       {/* Bottom sheet */}
-      <div className="relative w-full max-w-md bg-white rounded-t-2xl p-6 pb-8 shadow-xl">
+      <div
+        className="relative w-full max-w-md bg-white rounded-t-2xl p-6 pb-8 shadow-xl"
+        style={{
+          transform: `translateY(${translateY}px)`,
+          transition: touchStartY ? "none" : "transform 0.3s ease-out",
+        }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         {/* Drag handle */}
         <span className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1.5 bg-gray-300 rounded-full" />
 

@@ -165,6 +165,33 @@ export default function FilterPopup({
   const [hotelTypes, setHotelTypes] = useState<HotelType[]>([]);
   const [isLoadingHotelTypes, setIsLoadingHotelTypes] = useState(false);
 
+  /* -------------------- Mobile drag-to-close logic -------------------- */
+  const [touchStartY, setTouchStartY] = useState<number | null>(null);
+  const [translateY, setTranslateY] = useState(0);
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    // Only enable on mobile (screen width < 768px)
+    if (window.innerWidth >= 768) return;
+    setTouchStartY(e.touches[0].clientY);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (touchStartY === null || window.innerWidth >= 768) return;
+    const deltaY = e.touches[0].clientY - touchStartY;
+    if (deltaY > 0) {
+      setTranslateY(deltaY);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (window.innerWidth >= 768) return;
+    if (translateY > 120) {
+      onClose();
+    }
+    setTranslateY(0);
+    setTouchStartY(null);
+  };
+
   // Fetch hotel types from API
   useEffect(() => {
     const fetchHotelTypes = async () => {
@@ -555,7 +582,16 @@ export default function FilterPopup({
         style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
       ></div>
 
-      <div className="relative bg-white rounded-2xl shadow-xl max-w-[600px] w-full mx-auto max-h-[90vh] flex flex-col">
+      <div
+        className="relative bg-white rounded-2xl shadow-xl max-w-[600px] w-full mx-auto max-h-[90vh] flex flex-col"
+        style={{
+          transform: `translateY(${translateY}px)`,
+          transition: touchStartY ? "none" : "transform 0.3s ease-out",
+        }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         {/* Header - Fixed at top */}
         <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-2xl relative">
           <div className="flex items-center justify-between">
