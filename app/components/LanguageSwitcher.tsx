@@ -9,7 +9,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 const languageOptions = [
   { code: "tr", name: "Türkçe", translation: "Turkish" },
   { code: "en", name: "English", translation: "English" },
-  { code: "ru", name: "Russian", translation: "Russian" },
+  // { code: "ru", name: "Russian", translation: "Russian" },
 ];
 
 export const currencyOptions = [
@@ -104,7 +104,7 @@ export default function LanguageSwitcher() {
               <div className="text-gray-400">{ls("language")}</div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 mb-8">
+            <div className="grid grid-cols-2 gap-4 mb-8">
               {languageOptions.map((lang) => (
                 <div
                   key={lang.code}

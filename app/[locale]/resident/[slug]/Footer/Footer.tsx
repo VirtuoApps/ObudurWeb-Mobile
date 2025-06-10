@@ -52,7 +52,7 @@ export default function Footer({ customClassName = "1440px" }: FooterType) {
       >
         <div className="flex flex-col lg:flex-row lg:justify-between pt-8 pb-10 gap-8 lg:gap-0">
           {/* Newsletter Column - Move to top on mobile */}
-          <div className="w-full lg:w-[400px] order-first lg:order-last">
+          <div className="w-full lg:w-[400px] order-first lg:order-last hidden lg:block">
             <form onSubmit={handleSubscribe}>
               <div className="flex flex-col border-b border-gray-300 pb-4">
                 {isSubscribed ? (
@@ -62,7 +62,7 @@ export default function Footer({ customClassName = "1440px" }: FooterType) {
                 ) : error ? (
                   <p className="text-red-500 text-sm mb-2">{error}</p>
                 ) : null}
-                <div className="flex flex-col sm:flex-row gap-2 sm:gap-0">
+                <div className="flex  flex-col sm:flex-row gap-2 sm:gap-0 ">
                   <input
                     type="email"
                     id="email"
