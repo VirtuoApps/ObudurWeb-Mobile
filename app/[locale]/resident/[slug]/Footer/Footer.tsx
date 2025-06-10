@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import axiosInstance from "../../../../../axios";
 import { useTranslations } from "next-intl";
+import LanguageSwitcher from "../../../../components/LanguageSwitcher";
 
 type FooterType = {
   customClassName?: string;
@@ -15,6 +16,7 @@ export default function Footer({ customClassName = "1440px" }: FooterType) {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isLanguageSwitcherOpen, setIsLanguageSwitcherOpen] = useState(false);
 
   useEffect(() => {
     // Check if user is already subscribed
@@ -192,7 +194,10 @@ export default function Footer({ customClassName = "1440px" }: FooterType) {
                   </a>
                 </li>
                 <li>
-                  <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
+                  <a
+                    className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                    onClick={() => setIsLanguageSwitcherOpen(true)}
+                  >
                     Dil & Para Birimi
                   </a>
                 </li>
@@ -256,6 +261,13 @@ export default function Footer({ customClassName = "1440px" }: FooterType) {
         </div>
       </div>
       <div className="w-full h-[16px] bg-[#C1BED4]"></div>
+
+      {/* Language and Currency Switcher */}
+      <LanguageSwitcher
+        isOpen={isLanguageSwitcherOpen}
+        onClose={() => setIsLanguageSwitcherOpen(false)}
+        showButton={false}
+      />
     </footer>
   );
 }
