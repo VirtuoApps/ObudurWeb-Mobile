@@ -24,7 +24,9 @@ interface Location {
 }
 
 export default function OfficesSection() {
-  const [expandedOffice, setExpandedOffice] = useState<string | null>(null);
+  const [expandedOffices, setExpandedOffices] = useState<Set<string>>(
+    new Set()
+  );
   const [expandedLocations, setExpandedLocations] = useState<Set<string>>(
     new Set()
   );
@@ -120,11 +122,13 @@ export default function OfficesSection() {
   ];
 
   const toggleOffice = (officeId: string) => {
-    if (expandedOffice === officeId) {
-      setExpandedOffice(null);
+    const newExpanded = new Set(expandedOffices);
+    if (newExpanded.has(officeId)) {
+      newExpanded.delete(officeId);
     } else {
-      setExpandedOffice(officeId);
+      newExpanded.add(officeId);
     }
+    setExpandedOffices(newExpanded);
   };
 
   const toggleLocation = (locationId: string) => {
@@ -144,7 +148,7 @@ export default function OfficesSection() {
         {offices
           .filter((_, index) => index % 2 === 0)
           .map((office) => {
-            const isExpanded = expandedOffice === office.id;
+            const isExpanded = expandedOffices.has(office.id);
             return (
               <div
                 key={office.id}
@@ -253,7 +257,7 @@ export default function OfficesSection() {
         {offices
           .filter((_, index) => index % 2 === 1)
           .map((office) => {
-            const isExpanded = expandedOffice === office.id;
+            const isExpanded = expandedOffices.has(office.id);
             return (
               <div
                 key={office.id}
