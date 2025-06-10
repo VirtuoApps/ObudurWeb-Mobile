@@ -363,7 +363,7 @@ export default function GeneralInfo() {
       <div className="border-b border-gray-200 my-3 sm:my-4"></div>
 
       {/* Details Section */}
-      {entranceType.tr !== "Arsa" && (
+      {entranceType.tr !== "Arsa" && entranceType.tr !== "İş Yeri" && (
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 py-2">
           <div className="flex gap-4 sm:gap-8 overflow-x-auto no-scrollbar justify-between sm:justify-start">
             <div className="flex items-center gap-2 text-[#262626] whitespace-nowrap">
@@ -396,7 +396,7 @@ export default function GeneralInfo() {
         </div>
       )}
 
-      {entranceType.tr === "Arsa" && (
+      {(entranceType.tr === "Arsa" || entranceType.tr === "İş Yeri") && (
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 py-2">
           <div className="flex gap-4 sm:gap-8 overflow-x-auto no-scrollbar justify-between sm:justify-start">
             <div className="flex items-center gap-2 text-[#262626] whitespace-nowrap">
