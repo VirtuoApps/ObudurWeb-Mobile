@@ -11,12 +11,14 @@ interface HeaderProps {
   customRedirectUrl?: string;
   showBackButton?: boolean;
   backUrl?: string;
+  customMaxWidth?: string;
 }
 
 export default function SimpleHeader({
   customRedirectUrl,
   showBackButton,
   backUrl,
+  customMaxWidth,
 }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -24,7 +26,11 @@ export default function SimpleHeader({
 
   return (
     <header className="relative border-b border-[#f0f0f0] py-4 bg-white h-[80px] w-full md:px-0 px-8">
-      <div className="max-w-[1440px] mx-auto flex flex-wrap items-center justify-between">
+      <div
+        className={`${
+          customMaxWidth ? customMaxWidth : "max-w-[1440px]"
+        } mx-auto flex flex-wrap items-center justify-between`}
+      >
         {showBackButton && (
           <div
             onClick={() => router.push(backUrl || "/")}

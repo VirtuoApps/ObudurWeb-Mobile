@@ -8,11 +8,11 @@ import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
 export default function sozlesmeler() {
   return (
     <>
-      <SimpleHeader />
+      <SimpleHeader customMaxWidth="max-w-[1288px]" />
 
       <div className="w-full bg-[#ebeaf1] min-h-screen pt-32">
         <AggrementsBox />
-        <Footer />
+        <Footer customMaxWidth="max-w-[1288px]" />
       </div>
     </>
   );
