@@ -772,6 +772,7 @@ export default function ThirdCreateStep() {
                   extraClassName="w-full h-12 border border-gray-300"
                   popoverMaxWidth="400"
                   maxHeight="200"
+                  popoverExtraClassName="w-auto max-w-[420px]"
                 />
               </div>
 
@@ -792,6 +793,7 @@ export default function ThirdCreateStep() {
                   extraClassName="w-full h-12 border border-gray-300"
                   popoverMaxWidth="400"
                   maxHeight="200"
+                  popoverExtraClassName="w-auto max-w-[420px]"
                 />
               </div>
             </div>
@@ -815,6 +817,7 @@ export default function ThirdCreateStep() {
                   extraClassName="w-full h-12 border border-gray-300"
                   popoverMaxWidth="400"
                   maxHeight="200"
+                  popoverExtraClassName="w-auto max-w-[420px]"
                 />
               </div>
               <div className="w-full sm:w-1/2">
