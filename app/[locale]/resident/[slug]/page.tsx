@@ -183,7 +183,7 @@ export default async function ResidentPage({
         </div>
 
         <Footer
-          customMaxWidth="max-w-[1572px] mx-auto px-0"
+          customMaxWidth="max-w-[1592px] mx-auto px-0"
           customPadding="px-0"
         />
       </div>
