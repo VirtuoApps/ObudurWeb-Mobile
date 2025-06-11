@@ -98,6 +98,8 @@ export default function SignupForm({
       // Fetch user data to update Redux store
       await dispatch(fetchUserData());
 
+      window.location.href = "/?showSignupEmailVerifySendPopup=true";
+
       // Close the popup
       onClose();
     } catch (error: any) {

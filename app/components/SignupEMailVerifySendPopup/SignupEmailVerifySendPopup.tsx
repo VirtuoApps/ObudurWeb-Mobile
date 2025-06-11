@@ -1,34 +1,13 @@
 import { useAppSelector } from "@/app/store/hooks";
 import React, { useEffect, useState } from "react";
 
-interface SuccessPopupProps {}
+interface SuccessPopupProps {
+  onClose: () => void;
+}
 
-export default function SignupEmailVerifySendPopup({}: SuccessPopupProps) {
-  const [showEmailVerifySendPopup, setShowEmailVerifySendPopup] =
-    useState(false);
-
-  const { user } = useAppSelector((state) => state.user);
-
-  console.log({
-    user,
-  });
-
-  useEffect(() => {
-    if (user && !user.verified) {
-      const isAlreadyShown = localStorage.getItem("emailVerifySendPopupShown");
-      if (!isAlreadyShown) {
-        setShowEmailVerifySendPopup(true);
-        localStorage.setItem("emailVerifySendPopupShown", "true");
-      }
-    }
-  }, [user]);
-
-  const onClose = () => {
-    setShowEmailVerifySendPopup(false);
-  };
-
-  if (!showEmailVerifySendPopup) return null;
-
+export default function SignupEmailVerifySendPopup({
+  onClose,
+}: SuccessPopupProps) {
   return (
     <div
       className="fixed inset-0  flex items-center justify-center z-50"

@@ -1,5 +1,3 @@
-"use client";
-
 import { Metadata } from "next";
 import "./globals.css";
 import AuthCheck from "./components/AuthCheck/AuthCheck";
@@ -16,7 +14,6 @@ export default function RootLayout({
   return (
     <ReduxProvider>
       <AuthCheck />
-      <SignupEmailVerifySendPopup />
       {children}
     </ReduxProvider>
   );

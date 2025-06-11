@@ -20,6 +20,7 @@ import SaveFilterPopup from "./SaveFilterPopup/SaveFilterPopup";
 import NoResultFound from "./ListView/NoResultFound/NoResultFound";
 import EmailVerifiedSuccessPopup from "../components/EmailVerifiedSuccessPopup/EmailVerifiedSuccessPopup";
 import PersonalInformationFormPopup from "../components/PersonalInformationsFormPopup/PersonalInformationsFormPopup";
+import SignupEmailVerifySendPopup from "../components/SignupEMailVerifySendPopup/SignupEmailVerifySendPopup";
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
   loading: () => {
@@ -104,10 +105,18 @@ export default function HomePage({
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
 
   const [showEmailVerifiedPopup, setShowEmailVerifiedPopup] = useState(false);
+  const [showSignupEmailVerifySendPopup, setShowSignupEmailVerifySendPopup] =
+    useState(false);
 
   useEffect(() => {
     if (searchParams.get("emailConfirmed") === "true") {
       setShowEmailVerifiedPopup(true);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (searchParams.get("showSignupEmailVerifySendPopup") === "true") {
+      setShowSignupEmailVerifySendPopup(true);
     }
   }, [searchParams]);
 
@@ -506,6 +515,14 @@ export default function HomePage({
       {showEmailVerifiedPopup && (
         <EmailVerifiedSuccessPopup onClose={handleCloseEmailVerifiedPopup} />
       )}
+      {showSignupEmailVerifySendPopup && (
+        <SignupEmailVerifySendPopup
+          onClose={() => {
+            setShowSignupEmailVerifySendPopup(false);
+          }}
+        />
+      )}
+
       {/* <PersonalInformationFormPopup onClose={() => {}} /> */}
       <div
         className="fixed bottom-4 left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-10 px-3 h-[40px] rounded-lg shadow-lg"
