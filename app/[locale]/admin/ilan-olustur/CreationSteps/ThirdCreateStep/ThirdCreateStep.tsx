@@ -698,26 +698,23 @@ export default function ThirdCreateStep() {
     <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start p-4">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">
         <div className="flex flex-col md:flex-row p-10">
-          {/* Left Info Panel - 30% width on desktop */}
+          {/* Left Info Panel */}
           <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 flex flex-col">
             <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
-              Adres bilgilerini girin.
+              İlanın konumunu belirtin.
             </h1>
-            <div className="mt-4 text-base  text-[#595959] font-medium">
+            <div className="mt-4 text-base text-[#595959] font-medium">
               <p className="leading-[140%]">
-                İlan vereceğiniz mülkün kategorilerini belirtin.
-                <br />
-                <br />
-                İlan Başlığı ve İlan Açıklaması için farklı dillerde yapacağınız
-                girişler ilanın anlaşılırlığını artıracaktır gibi bir açıklama
-                metni.
+                Bu adımda, mülkünüzün adres bilgilerini ve harita üzerindeki
+                konumunu doğru bir şekilde işaretleyin. Konum bilgisi,
+                potansiyel alıcılar ve kiracılar için en önemli kriterlerden
+                biridir.
               </p>
             </div>
-            <GoBackButton handleBack={handleBack} step={3} totalSteps={5} />
           </div>
 
-          {/* Right Form Panel - 70% width on desktop */}
-          <div className="w-full md:w-[70%] md:pl-6">
+          {/* Right Form Panel */}
+          <div className="w-full md:w-[70%] md:pl-6 h-[67vh] 2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
             {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
@@ -744,300 +741,125 @@ export default function ThirdCreateStep() {
               </div>
             )}
 
-            {/* Country and City */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <div className="w-full sm:w-1/2">
-                <label
-                  htmlFor="country"
-                  className="font-semibold block mb-2 text-[#262626]"
-                >
-                  {locale === "tr" ? "Ülke" : "Country"}
-                </label>
-                <GeneralSelect
-                  selectedItem={getSelectedCountry()}
-                  onSelect={handleCountrySelect}
-                  options={countriesList}
-                  defaultText={
-                    locale === "en" ? "Select Country" : "Ülke Seçin"
-                  }
-                  extraClassName="w-full h-12 border border-gray-300"
-                  popoverMaxWidth="400"
-                  maxHeight="200"
-                  popoverExtraClassName="w-auto max-w-[420px]"
-                />
-              </div>
-
-              <div className="w-full sm:w-1/2">
-                <label
-                  htmlFor="state"
-                  className="font-semibold block mb-2 text-[#262626]"
-                >
-                  {locale === "tr" ? "Şehir" : "Province"}
-                </label>
-                <GeneralSelect
-                  selectedItem={getSelectedState()}
-                  onSelect={handleStateSelect}
-                  options={statesList}
-                  defaultText={
-                    locale === "en" ? "Select Province" : "Şehir Seçin"
-                  }
-                  extraClassName="w-full h-12 border border-gray-300"
-                  popoverMaxWidth="400"
-                  maxHeight="200"
-                  popoverExtraClassName="w-auto max-w-[420px]"
-                />
-              </div>
-            </div>
-
-            {/* State and Street */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <div className="w-full sm:w-1/2">
-                <label
-                  htmlFor="city"
-                  className="font-semibold block mb-2 text-[#262626]"
-                >
-                  {locale === "tr" ? "İlçe" : "District"}
-                </label>
-                <GeneralSelect
-                  selectedItem={getSelectedCity()}
-                  onSelect={handleCitySelect}
-                  options={citiesList}
-                  defaultText={
-                    locale === "en" ? "Select District" : "İlçe Seçin"
-                  }
-                  extraClassName="w-full h-12 border border-gray-300"
-                  popoverMaxWidth="400"
-                  maxHeight="200"
-                  popoverExtraClassName="w-auto max-w-[420px]"
-                />
-              </div>
-              <div className="w-full sm:w-1/2">
-                <label
-                  htmlFor="street"
-                  className="font-semibold block mb-2 text-[#262626]"
-                >
-                  {locale === "tr" ? "Sokak" : "Street"}
-                </label>
-                <input
-                  type="text"
-                  id="street"
-                  value={street?.tr || ""}
-                  onChange={(e) => handleStreetChange(e.target.value)}
-                  className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                  placeholder={locale === "en" ? "Street" : "Sokak"}
-                />
-              </div>
-            </div>
-
-            {/* Building / Parcel information conditional */}
-            {entranceType?.tr === "Arsa" ? (
-              <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                <div className="w-full sm:w-1/2">
-                  <label
-                    htmlFor="adaNo"
-                    className="font-semibold block mb-2 text-[#262626]"
-                  >
-                    Ada No
+            {isLoaded ? (
+              <div className="space-y-8">
+                {/* Map Section */}
+                <div>
+                  <label className="font-semibold block mb-2 text-[#262626]">
+                    Haritada Konum Seçin
                   </label>
-                  <input
-                    type="text"
-                    id="adaNo"
-                    value={adaNo}
-                    onChange={(e) => setAdaNo(e.target.value)}
-                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                    placeholder="Ada No"
-                  />
-                </div>
-                <div className="w-full sm:w-1/2">
-                  <label
-                    htmlFor="parselNo"
-                    className="font-semibold block mb-2 text-[#262626]"
-                  >
-                    Parsel No
-                  </label>
-                  <input
-                    type="text"
-                    id="parselNo"
-                    value={parselNo}
-                    onChange={(e) => setParselNo(e.target.value)}
-                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                    placeholder="Parsel No"
-                  />
+                  <p className="text-sm text-gray-500 mb-2">
+                    Konumu bulmak için arama yapabilir veya harita üzerinde
+                    tıklayarak tam konumu belirleyebilirsiniz.
+                  </p>
+
+                  {/* Search Input with Autocomplete */}
+                  <div className="relative mb-2">
+                    <div className="flex">
+                      <div className="relative flex-grow" ref={searchInputRef}>
+                        <input
+                          type="text"
+                          placeholder="Adres ara..."
+                          value={searchInput}
+                          onChange={(e) => setSearchInput(e.target.value)}
+                          className="w-full h-12 pl-10 pr-4 rounded-l-lg border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              searchLocation();
+                            }
+                          }}
+                          onFocus={() => {
+                            if (suggestions.length > 0) {
+                              setShowSuggestions(true);
+                            }
+                          }}
+                        />
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+                        </div>
+
+                        {/* Suggestions Dropdown */}
+                        {showSuggestions && suggestions.length > 0 && (
+                          <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
+                            {suggestions.map((suggestion, index) => (
+                              <div
+                                key={index}
+                                className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-800"
+                                onClick={() =>
+                                  handleSelectSuggestion(suggestion.placeId)
+                                }
+                              >
+                                {suggestion.description}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      <button
+                        onClick={searchLocation}
+                        disabled={isSearching}
+                        className="h-12 px-4 bg-[#6656AD] text-white rounded-r-lg hover:bg-[#5349a0] transition"
+                      >
+                        {isSearching ? "Aranıyor..." : "Ara"}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="h-[400px] w-full rounded-lg overflow-hidden border border-gray-300">
+                    <GoogleMap
+                      mapContainerStyle={containerStyle}
+                      center={center}
+                      zoom={12}
+                      onClick={handleMapClick}
+                      onLoad={onLoad}
+                      onUnmount={onUnmount}
+                      options={{
+                        streetViewControl: false,
+                        mapTypeControl: false,
+                      }}
+                    >
+                      <Marker
+                        position={{ lat: coordinates[1], lng: coordinates[0] }}
+                        draggable={true}
+                        onDragEnd={(e) => {
+                          if (e.latLng) {
+                            const lat = e.latLng.lat();
+                            const lng = e.latLng.lng();
+                            setCoordinates([lng, lat]);
+                          }
+                        }}
+                      />
+                    </GoogleMap>
+                  </div>
+
+                  <div className="mt-2 text-sm grid grid-cols-2 gap-4">
+                    <div>
+                      <span className="font-medium">Enlem:</span>{" "}
+                      {coordinates[1].toFixed(6)}
+                    </div>
+                    <div>
+                      <span className="font-medium">Boylam:</span>{" "}
+                      {coordinates[0].toFixed(6)}
+                    </div>
+                  </div>
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                <div className="w-full sm:w-1/3">
-                  <label
-                    htmlFor="buildingNo"
-                    className="font-semibold block mb-2 text-[#262626]"
-                  >
-                    Bina No
-                  </label>
-                  <input
-                    type="text"
-                    id="buildingNo"
-                    value={buildingNo}
-                    onChange={(e) => setBuildingNo(e.target.value)}
-                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                    placeholder="Bina No"
-                  />
-                </div>
-                <div className="w-full sm:w-1/3">
-                  <label
-                    htmlFor="apartmentNo"
-                    className="font-semibold block mb-2 text-[#262626]"
-                  >
-                    Daire No
-                  </label>
-                  <input
-                    type="text"
-                    id="apartmentNo"
-                    value={apartmentNo}
-                    onChange={(e) => setApartmentNo(e.target.value)}
-                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                    placeholder="Daire No (opsiyonel)"
-                  />
-                </div>
-                <div className="w-full sm:w-1/3">
-                  <label
-                    htmlFor="postalCode"
-                    className="font-semibold block mb-2 text-[#262626]"
-                  >
-                    Posta Kodu
-                  </label>
-                  <input
-                    type="text"
-                    id="postalCode"
-                    value={postalCode}
-                    onChange={(e) => setPostalCode(e.target.value)}
-                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                    placeholder="Posta Kodu"
-                  />
-                </div>
-              </div>
+              <div>Loading Map...</div>
             )}
-
-            {/* Google Maps Section */}
-            <div className="mb-6">
-              <label className="font-semibold block mb-2 text-[#262626]">
-                Haritada Konum Seçin
-              </label>
-              <p className="text-sm text-gray-500 mb-2">
-                Konumu bulmak için arama yapabilir veya harita üzerinde
-                tıklayarak tam konumu belirleyebilirsiniz.
-              </p>
-
-              {/* Search Input with Autocomplete */}
-              <div className="relative mb-2">
-                <div className="flex">
-                  <div className="relative flex-grow" ref={searchInputRef}>
-                    <input
-                      type="text"
-                      placeholder="Adres ara..."
-                      value={searchInput}
-                      onChange={(e) => setSearchInput(e.target.value)}
-                      className="w-full h-12 pl-10 pr-4 rounded-l-lg border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
-                          searchLocation();
-                        }
-                      }}
-                      onFocus={() => {
-                        if (suggestions.length > 0) {
-                          setShowSuggestions(true);
-                        }
-                      }}
-                    />
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
-                    </div>
-
-                    {/* Suggestions Dropdown */}
-                    {showSuggestions && suggestions.length > 0 && (
-                      <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
-                        {suggestions.map((suggestion, index) => (
-                          <div
-                            key={index}
-                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-800"
-                            onClick={() =>
-                              handleSelectSuggestion(suggestion.placeId)
-                            }
-                          >
-                            {suggestion.description}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <button
-                    onClick={searchLocation}
-                    disabled={isSearching}
-                    className="h-12 px-4 bg-[#6656AD] text-white rounded-r-lg hover:bg-[#5349a0] transition"
-                  >
-                    {isSearching ? "Aranıyor..." : "Ara"}
-                  </button>
-                </div>
-              </div>
-
-              <div className="h-[400px] w-full rounded-lg overflow-hidden border border-gray-300">
-                {isLoaded ? (
-                  <GoogleMap
-                    mapContainerStyle={containerStyle}
-                    center={center}
-                    zoom={12}
-                    onClick={handleMapClick}
-                    onLoad={onLoad}
-                    onUnmount={onUnmount}
-                    options={{
-                      streetViewControl: false,
-                      mapTypeControl: false,
-                    }}
-                  >
-                    <Marker
-                      position={{ lat: coordinates[1], lng: coordinates[0] }}
-                      draggable={true}
-                      onDragEnd={(e) => {
-                        if (e.latLng) {
-                          const lat = e.latLng.lat();
-                          const lng = e.latLng.lng();
-                          setCoordinates([lng, lat]);
-                        }
-                      }}
-                    />
-                  </GoogleMap>
-                ) : (
-                  <div className="flex items-center justify-center h-full bg-gray-100">
-                    <p>Harita yükleniyor...</p>
-                  </div>
-                )}
-              </div>
-
-              <div className="mt-2 text-sm grid grid-cols-2 gap-4">
-                <div>
-                  <span className="font-medium">Enlem:</span>{" "}
-                  {coordinates[1].toFixed(6)}
-                </div>
-                <div>
-                  <span className="font-medium">Boylam:</span>{" "}
-                  {coordinates[0].toFixed(6)}
-                </div>
-              </div>
-            </div>
-
-            {/* Step navigation buttons */}
-            <div className="mt-10 flex flex-col sm:flex-row justify-end items-center">
-              <button
-                type="button"
-                onClick={handleContinue}
-                className="w-full sm:w-auto bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
-              >
-                Devam Et
-                <ChevronRightIcon className="h-5 w-5" />
-              </button>
-            </div>
           </div>
+        </div>
+        <div className=" flex flex-col sm:flex-row justify-between items-center p-6">
+          <GoBackButton handleBack={handleBack} step={3} totalSteps={6} />
+          <button
+            type="button"
+            onClick={handleContinue}
+            className="w-full sm:w-auto bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+          >
+            Devam Et
+            <ChevronRightIcon className="h-5 w-5" />
+          </button>
         </div>
       </div>
     </div>

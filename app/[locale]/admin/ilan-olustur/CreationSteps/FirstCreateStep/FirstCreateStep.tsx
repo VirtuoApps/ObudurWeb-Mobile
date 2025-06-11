@@ -251,14 +251,6 @@ export default function FirstCreateStep() {
           "placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]";
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading...
-      </div>
-    );
-  }
-
   // Mapping of predefined translations for selection options
   const optionTranslations = {
     listingType: {

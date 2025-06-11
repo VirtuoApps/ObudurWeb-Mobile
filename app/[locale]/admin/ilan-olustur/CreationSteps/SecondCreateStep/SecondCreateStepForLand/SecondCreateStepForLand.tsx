@@ -346,26 +346,22 @@ export default function SecondCreateStepForLand() {
     <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start p-4">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">
         <div className="flex flex-col md:flex-row p-10">
-          {/* Left Info Panel - 30% width on desktop */}
+          {/* Left Info Panel */}
           <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 flex flex-col">
             <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
-              İlan detaylarını girin.
+              Arsa özelliklerini belirtin.
             </h1>
-            <div className="mt-4 text-base  text-[#595959] font-medium">
+            <div className="mt-4 text-base text-[#595959] font-medium">
               <p className="leading-[140%]">
-                İlan vereceğiniz mülkün kategorilerini belirtin.
-                <br />
-                <br />
-                İlan Başlığı ve İlan Açıklaması için farklı dillerde yapacağınız
-                girişler ilanın anlaşılırlığını artıracaktır gibi bir açıklama
-                metni.
+                Bu adımda, arsanın temel özelliklerini, fiyatını ve imar durumu
+                gibi diğer önemli detayları girebilirsiniz. Bu bilgilerin
+                doğruluğu, potansiyel alıcıların ilgisini çekmek için kritiktir.
               </p>
             </div>
-            <GoBackButton handleBack={handleBack} step={2} totalSteps={5} />
           </div>
 
-          {/* Right Form Panel - 70% width on desktop */}
-          <div className="w-full md:w-[70%] md:pl-6">
+          {/* Right Form Panel */}
+          <div className="w-full md:w-[70%] md:pl-6 h-[67vh] 2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
             {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
@@ -392,10 +388,11 @@ export default function SecondCreateStepForLand() {
               </div>
             )}
 
-            {/* Price Section */}
+            {/* Price */}
             <div className="mb-6">
-              <h2 className="font-semibold mb-4 text-[#262626]">Fiyat</h2>
-
+              <h2 className="font-semibold mb-2 text-[#262626] text-2xl">
+                Fiyat
+              </h2>
               <div className="flex flex-col sm:flex-row gap-4 mb-4">
                 <div className="w-full sm:w-1/2">
                   <label className="font-medium block mb-2 text-[#262626]">
@@ -622,19 +619,18 @@ export default function SecondCreateStepForLand() {
                 />
               </div>
             </div>
-
-            {/* Step navigation buttons */}
-            <div className="mt-10 flex flex-col sm:flex-row justify-end items-center">
-              <button
-                type="button"
-                onClick={handleContinue}
-                className="w-full sm:w-auto bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
-              >
-                Devam Et
-                <ChevronRightIcon className="h-5 w-5" />
-              </button>
-            </div>
           </div>
+        </div>
+        <div className=" flex flex-col sm:flex-row justify-between items-center p-6">
+          <GoBackButton handleBack={handleBack} step={2} totalSteps={6} />
+          <button
+            type="button"
+            onClick={handleContinue}
+            className="w-full sm:w-auto bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+          >
+            Devam Et
+            <ChevronRightIcon className="h-5 w-5" />
+          </button>
         </div>
       </div>
     </div>

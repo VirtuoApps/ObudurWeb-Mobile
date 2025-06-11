@@ -399,39 +399,27 @@ export default function FourthCreateStep() {
     setCurrentStep(3);
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading...
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start p-4">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">
         <div className="flex flex-col md:flex-row p-10">
-          {/* Left Info Panel - 30% width on desktop */}
+          {/* Left Info Panel */}
           <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 flex flex-col">
             <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
-              İlan özelliklerini belirleyin.
+              İlanın özelliklerini ve çevresel bilgilerini ekleyin.
             </h1>
-            <div className="mt-4 text-base  text-[#595959] font-medium">
+            <div className="mt-4 text-base text-[#595959] font-medium">
               <p className="leading-[140%]">
-                İlan vereceğiniz mülkün kategorilerini belirtin.
-                <br />
-                <br />
-                İlan Başlığı ve İlan Açıklaması için farklı dillerde yapacağınız
-                girişler ilanın anlaşılırlığını artıracaktır gibi bir açıklama
-                metni.
+                Bu adımda, mülkünüzün sahip olduğu iç, dış ve genel özellikleri,
+                manzarayı, cepheyi ve çevresindeki önemli noktalara olan
+                uzaklıkları belirtebilirsiniz. Detaylı bilgi, ilanı daha çekici
+                kılar.
               </p>
             </div>
-
-            <GoBackButton handleBack={handleBack} step={4} totalSteps={5} />
           </div>
 
-          {/* Right Form Panel - 70% width on desktop */}
-          <div className="w-full md:w-[70%] md:pl-6">
+          {/* Right Form Panel */}
+          <div className="w-full md:w-[70%] md:pl-6 h-[67vh] 2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
             {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
@@ -458,90 +446,133 @@ export default function FourthCreateStep() {
               </div>
             )}
 
-            {/* Orientation (Cephe) Section */}
-            {entranceType?.tr !== "Arsa" && (
-              <div className="mb-8">
-                <h2 className="font-semibold mb-4 text-[#262626] text-xl">
-                  Cephe
-                </h2>
-                <div className="flex flex-wrap gap-4">
-                  {orientationOptions.map((option) => (
-                    <button
-                      key={option._id}
-                      type="button"
-                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-full transition border cursor-pointer ${
-                        orientation === option._id
-                          ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75] "
-                          : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
-                      }`}
-                      onClick={() => handleOrientationChange(option._id)}
-                    >
-                      <Image
-                        src={option.iconUrl}
-                        alt={
-                          option.name[
-                            selectedLanguage as keyof typeof option.name
-                          ] || ""
-                        }
-                        width={20}
-                        height={20}
-                        className="object-contain"
-                      />
-                      <span className="font-medium ml-2">
-                        {option.name[
-                          selectedLanguage as keyof typeof option.name
-                        ] || ""}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* General Features */}
-            {entranceType?.tr !== "Arsa" && (
-              <FeatureSection
-                title="Genel Özellikler"
-                features={generalFeatures}
-              />
-            )}
-
-            {/* Interior Features */}
-            {entranceType?.tr !== "Arsa" && (
-              <FeatureSection title="İç Özellikler" features={insideFeatures} />
-            )}
-
-            {/* Exterior Features */}
-            {entranceType?.tr !== "Arsa" && (
-              <FeatureSection
-                title="Dış Özellikler"
-                features={outsideFeatures}
-              />
-            )}
-
-            {/* Elderly and Disabled Features */}
-            {entranceType?.tr !== "Arsa" && (
-              <FeatureSection
-                title="Engelliye ve Yaşlıya Yönelik Özellikler"
-                features={elderlyDisabledFeatures}
-              />
-            )}
-
-            {/* Infrastructure Features */}
-            {entranceType?.tr === "Arsa" && (
-              <>
-                {" "}
-                <div className="mt-6">
-                  <h2 className="font-semibold mb-2 text-[#262626]">
-                    Altyapı Özellikleri
+            <div className="space-y-8">
+              {/* Orientation (Cephe) */}
+              {entranceType?.tr !== "Arsa" && (
+                <div>
+                  <h2 className="font-semibold mb-4 text-[#262626] text-xl">
+                    Cephe
                   </h2>
-                  <div className="flex flex-wrap gap-2">
-                    {Object.entries(infrastructureFeatures).map(
-                      ([key, feature]) => {
-                        const isSelected =
-                          infrastructureFeatureIds.includes(key);
+                  <div className="flex flex-wrap gap-4">
+                    {orientationOptions.map((option) => (
+                      <button
+                        key={option._id}
+                        type="button"
+                        className={`inline-flex items-center gap-2 px-4 py-2 rounded-full transition border cursor-pointer ${
+                          orientation === option._id
+                            ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75] "
+                            : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
+                        }`}
+                        onClick={() => handleOrientationChange(option._id)}
+                      >
+                        <Image
+                          src={option.iconUrl}
+                          alt={
+                            option.name[
+                              selectedLanguage as keyof typeof option.name
+                            ] || ""
+                          }
+                          width={20}
+                          height={20}
+                          className="object-contain"
+                        />
+                        <span className="font-medium ml-2">
+                          {option.name[
+                            selectedLanguage as keyof typeof option.name
+                          ] || ""}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* General Features */}
+              {entranceType?.tr !== "Arsa" && (
+                <FeatureSection
+                  title="Genel Özellikler"
+                  features={generalFeatures}
+                />
+              )}
+
+              {/* Interior Features */}
+              {entranceType?.tr !== "Arsa" && (
+                <FeatureSection
+                  title="İç Özellikler"
+                  features={insideFeatures}
+                />
+              )}
+
+              {/* Exterior Features */}
+              {entranceType?.tr !== "Arsa" && (
+                <FeatureSection
+                  title="Dış Özellikler"
+                  features={outsideFeatures}
+                />
+              )}
+
+              {/* Elderly and Disabled Features */}
+              {entranceType?.tr !== "Arsa" && (
+                <FeatureSection
+                  title="Engelliye ve Yaşlıya Yönelik Özellikler"
+                  features={elderlyDisabledFeatures}
+                />
+              )}
+
+              {/* Infrastructure Features */}
+              {entranceType?.tr === "Arsa" && (
+                <>
+                  {" "}
+                  <div className="mt-6">
+                    <h2 className="font-semibold mb-2 text-[#262626]">
+                      Altyapı Özellikleri
+                    </h2>
+                    <div className="flex flex-wrap gap-2">
+                      {Object.entries(infrastructureFeatures).map(
+                        ([key, feature]) => {
+                          const isSelected =
+                            infrastructureFeatureIds.includes(key);
+                          const displayName =
+                            selectedLanguage === "en" ? feature.en : feature.tr;
+                          return (
+                            <button
+                              key={key}
+                              type="button"
+                              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full transition border  cursor-pointer ${
+                                isSelected
+                                  ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                                  : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
+                              }`}
+                              onClick={() => toggleInfrastructureFeature(key)}
+                            >
+                              {feature.image && (
+                                <div className="w-5 h-5 relative">
+                                  <Image
+                                    src={feature.image}
+                                    alt={displayName}
+                                    width={20}
+                                    height={20}
+                                    className="object-contain"
+                                  />
+                                </div>
+                              )}
+                              {displayName}
+                            </button>
+                          );
+                        }
+                      )}
+                    </div>
+                  </div>
+                  {/* View (Manzara) Section */}
+                  <div className="mt-8">
+                    <h2 className="font-semibold mb-2 text-[#262626]">
+                      Manzara
+                    </h2>
+                    <div className="flex flex-wrap gap-4">
+                      {Object.entries(views).map(([key, view]) => {
+                        const isSelected = viewIds.includes(key);
                         const displayName =
-                          selectedLanguage === "en" ? feature.en : feature.tr;
+                          selectedLanguage === "en" ? view.en : view.tr;
                         return (
                           <button
                             key={key}
@@ -551,191 +582,156 @@ export default function FourthCreateStep() {
                                 ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
                                 : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
                             }`}
-                            onClick={() => toggleInfrastructureFeature(key)}
+                            onClick={() => toggleView(key)}
                           >
-                            {feature.image && (
-                              <div className="w-5 h-5 relative">
-                                <Image
-                                  src={feature.image}
-                                  alt={displayName}
-                                  width={20}
-                                  height={20}
-                                  className="object-contain"
-                                />
-                              </div>
-                            )}
-                            {displayName}
+                            <Image
+                              src={view.image}
+                              alt={displayName}
+                              width={20}
+                              height={20}
+                              className="object-contain"
+                            />
+                            <span className="font-medium ml-2">
+                              {displayName}
+                            </span>
                           </button>
                         );
-                      }
-                    )}
+                      })}
+                    </div>
                   </div>
+                </>
+              )}
+
+              {/* Distances */}
+              <div>
+                <h2 className="text-xl font-bold text-[#181818] mb-2">
+                  Lokasyon Özellikleri
+                </h2>
+                <p className="text-sm text-[#6C6C6C] mb-6">
+                  Gayrimenkulün merkezi lokasyonlara olan uzaklığını belirtin.
+                </p>
+
+                {/* Add new distance form */}
+                <div className="space-y-4 mb-6">
+                  {distanceTypes.filter(
+                    (type) => !distances.some((d) => d.typeId === type._id)
+                  ).length > 0 ? (
+                    <>
+                      <div className="w-full">
+                        <CustomSelect
+                          options={distanceTypes
+                            .filter(
+                              (type) =>
+                                !distances.some((d) => d.typeId === type._id)
+                            )
+                            .map((type) => ({
+                              value: type._id,
+                              label:
+                                type.name[
+                                  selectedLanguage as keyof typeof type.name
+                                ] ||
+                                type.name.tr ||
+                                type.name.en,
+                            }))}
+                          value={newDistanceTypeId}
+                          onChange={(value) => setNewDistanceTypeId(value)}
+                          placeholder="Uzaklık Tipi"
+                        />
+                      </div>
+                      <div className="w-full">
+                        <input
+                          type="number"
+                          step="0.1"
+                          min="0"
+                          className="w-full h-12 px-4 border border-[#E2E2E2] rounded-lg placeholder:text-gray-400 text-gray-700 focus:outline-none focus:border-[#5D568D]"
+                          placeholder="Lokasyona olan uzaklığı yazın (Km)"
+                          value={newDistanceValue}
+                          onChange={(e) => setNewDistanceValue(e.target.value)}
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={addDistance}
+                        className="px-6 py-2 bg-[#5D568D] text-white rounded-lg flex items-center justify-center gap-2 hover:bg-[#4A4570] transition-colors cursor-pointer"
+                      >
+                        <PlusIcon className="h-5 w-5" />
+                        Ekle
+                      </button>
+                    </>
+                  ) : (
+                    <div className="text-center py-4 text-gray-500">
+                      <p>Tüm lokasyon tipleri eklenmiştir.</p>
+                    </div>
+                  )}
                 </div>
-                {/* View (Manzara) Section */}
-                <div className="mt-8">
-                  <h2 className="font-semibold mb-2 text-[#262626]">Manzara</h2>
-                  <div className="flex flex-wrap gap-4">
-                    {Object.entries(views).map(([key, view]) => {
-                      const isSelected = viewIds.includes(key);
-                      const displayName =
-                        selectedLanguage === "en" ? view.en : view.tr;
-                      return (
+
+                {/* Separator line */}
+                <div className="border-t border-[#E2E2E2] mb-6"></div>
+
+                {/* Current distances as chips */}
+                {distances.length > 0 && (
+                  <div className="flex flex-wrap gap-3">
+                    {distances.map((distance) => (
+                      <div
+                        key={distance.typeId}
+                        className="flex items-center gap-3 h-10 px-4 border-[0.5px] border-[#362C75] rounded-[20px] bg-[#EBEAF180]"
+                      >
+                        {/* Icon */}
+                        {distanceTypes.find((dt) => dt._id === distance.typeId)
+                          ?.iconUrl && (
+                          <div className="w-6 h-6 relative flex-shrink-0">
+                            <Image
+                              src={
+                                distanceTypes.find(
+                                  (dt) => dt._id === distance.typeId
+                                )?.iconUrl || ""
+                              }
+                              alt={getDistanceTypeName(distance.typeId)}
+                              width={24}
+                              height={24}
+                              className="object-contain"
+                            />
+                          </div>
+                        )}
+
+                        {/* Location name */}
+                        <span className="text-sm font-medium text-[#362C75]">
+                          {getDistanceTypeName(distance.typeId)}
+                        </span>
+
+                        {/* Distance value */}
+                        <span className="text-sm text-[#8C8C8C]">
+                          {distance.value}{" "}
+                          {getDistanceTypeUnit(distance.typeId)}
+                        </span>
+
+                        {/* Close button */}
                         <button
-                          key={key}
                           type="button"
-                          className={`inline-flex items-center gap-2 px-4 py-2 rounded-full transition border  cursor-pointer ${
-                            isSelected
-                              ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
-                              : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
-                          }`}
-                          onClick={() => toggleView(key)}
+                          onClick={() => removeDistance(distance.typeId)}
+                          className="text-[#333] hover:text-red-500 transition-colors ml-1 cursor-pointer"
                         >
-                          <Image
-                            src={view.image}
-                            alt={displayName}
-                            width={20}
-                            height={20}
-                            className="object-contain"
-                          />
-                          <span className="font-medium ml-2">
-                            {displayName}
-                          </span>
+                          <img src="/x-03.png" alt="x" className="w-6 h-6" />
                         </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* Distances Section */}
-            <div className="mt-8 bg-white px-0 rounded-lg">
-              <h2 className="text-xl font-bold text-[#181818] mb-2">
-                Lokasyon Özellikleri
-              </h2>
-              <p className="text-sm text-[#6C6C6C] mb-6">
-                Gayrimenkulün merkezi lokasyonlara olan uzaklığını belirtin.
-              </p>
-
-              {/* Add new distance form */}
-              <div className="space-y-4 mb-6">
-                {distanceTypes.filter(
-                  (type) => !distances.some((d) => d.typeId === type._id)
-                ).length > 0 ? (
-                  <>
-                    <div className="w-full">
-                      <CustomSelect
-                        options={distanceTypes
-                          .filter(
-                            (type) =>
-                              !distances.some((d) => d.typeId === type._id)
-                          )
-                          .map((type) => ({
-                            value: type._id,
-                            label:
-                              type.name[
-                                selectedLanguage as keyof typeof type.name
-                              ] ||
-                              type.name.tr ||
-                              type.name.en,
-                          }))}
-                        value={newDistanceTypeId}
-                        onChange={(value) => setNewDistanceTypeId(value)}
-                        placeholder="Uzaklık Tipi"
-                      />
-                    </div>
-                    <div className="w-full">
-                      <input
-                        type="number"
-                        step="0.1"
-                        min="0"
-                        className="w-full h-12 px-4 border border-[#E2E2E2] rounded-lg placeholder:text-gray-400 text-gray-700 focus:outline-none focus:border-[#5D568D]"
-                        placeholder="Lokasyona olan uzaklığı yazın (Km)"
-                        value={newDistanceValue}
-                        onChange={(e) => setNewDistanceValue(e.target.value)}
-                      />
-                    </div>
-                    <button
-                      type="button"
-                      onClick={addDistance}
-                      className="px-6 py-2 bg-[#5D568D] text-white rounded-lg flex items-center justify-center gap-2 hover:bg-[#4A4570] transition-colors cursor-pointer"
-                    >
-                      <PlusIcon className="h-5 w-5" />
-                      Ekle
-                    </button>
-                  </>
-                ) : (
-                  <div className="text-center py-4 text-gray-500">
-                    <p>Tüm lokasyon tipleri eklenmiştir.</p>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
-
-              {/* Separator line */}
-              <div className="border-t border-[#E2E2E2] mb-6"></div>
-
-              {/* Current distances as chips */}
-              {distances.length > 0 && (
-                <div className="flex flex-wrap gap-3">
-                  {distances.map((distance) => (
-                    <div
-                      key={distance.typeId}
-                      className="flex items-center gap-3 h-10 px-4 border-[0.5px] border-[#362C75] rounded-[20px] bg-[#EBEAF180]"
-                    >
-                      {/* Icon */}
-                      {distanceTypes.find((dt) => dt._id === distance.typeId)
-                        ?.iconUrl && (
-                        <div className="w-6 h-6 relative flex-shrink-0">
-                          <Image
-                            src={
-                              distanceTypes.find(
-                                (dt) => dt._id === distance.typeId
-                              )?.iconUrl || ""
-                            }
-                            alt={getDistanceTypeName(distance.typeId)}
-                            width={24}
-                            height={24}
-                            className="object-contain"
-                          />
-                        </div>
-                      )}
-
-                      {/* Location name */}
-                      <span className="text-sm font-medium text-[#362C75]">
-                        {getDistanceTypeName(distance.typeId)}
-                      </span>
-
-                      {/* Distance value */}
-                      <span className="text-sm text-[#8C8C8C]">
-                        {distance.value} {getDistanceTypeUnit(distance.typeId)}
-                      </span>
-
-                      {/* Close button */}
-                      <button
-                        type="button"
-                        onClick={() => removeDistance(distance.typeId)}
-                        className="text-[#333] hover:text-red-500 transition-colors ml-1 cursor-pointer"
-                      >
-                        <img src="/x-03.png" alt="x" className="w-6 h-6" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Step counter and continue button */}
-            <div className="mt-10 flex flex-col sm:flex-row justify-end items-center">
-              <button
-                type="button"
-                onClick={handleContinue}
-                className="w-full sm:w-auto bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
-              >
-                Devam Et
-                <ChevronRightIcon className="h-5 w-5" />
-              </button>
             </div>
           </div>
+        </div>
+
+        <div className=" flex flex-col sm:flex-row justify-between items-center p-6">
+          <GoBackButton handleBack={handleBack} step={4} totalSteps={6} />
+          <button
+            type="button"
+            onClick={handleContinue}
+            className="w-full sm:w-auto bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+          >
+            Devam Et
+            <ChevronRightIcon className="h-5 w-5" />
+          </button>
         </div>
       </div>
     </div>

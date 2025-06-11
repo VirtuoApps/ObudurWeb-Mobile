@@ -1,5 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/solid";
 import { useListingForm } from "../CreationSteps";
 import axiosInstance from "@/axios";
 import { useRouter } from "@/app/utils/router";
@@ -319,7 +323,7 @@ export default function FifthCreateStep() {
     setVideo("");
   };
 
-  const handleContinue = () => {
+  const handleSubmit = () => {
     // Clear previous errors
     setErrors([]);
 
@@ -359,64 +363,71 @@ export default function FifthCreateStep() {
     }
   };
 
+  const handleBack = () => {
+    setCurrentStep(4);
+  };
+
   return (
     <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start p-4">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">
         <div className="flex flex-col md:flex-row p-10">
-          {/* Left Info Panel - 30% width on desktop */}
+          {/* Left Info Panel */}
           <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 flex flex-col">
             <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
-              {isUpdate
-                ? "İlan görsellerini düzenleyin."
-                : "İlan görsellerini yükleyin."}
+              İlanınız için görseller ve video ekleyin.
             </h1>
-            <div className="mt-4 text-base  text-[#595959] font-medium">
+            <div className="mt-4 text-base text-[#595959] font-medium">
               <p className="leading-[140%]">
-                İlan vereceğiniz mülkün kategorilerini belirtin.
-                <br />
-                <br />
-                İlan Başlığı ve İlan Açıklaması için farklı dillerde yapacağınız
-                girişler ilanın anlaşılırlığını artıracaktır gibi bir açıklama
-                metni.
+                Bu adımda, mülkünüzün fotoğraflarını ve tanıtım videosunu
+                yükleyebilirsiniz. Kaliteli ve çeşitli görseller, potansiyel
+                alıcıların ve kiracıların ilgisini çekmede en önemli
+                faktörlerdendir.
               </p>
             </div>
-            <GoBackButton
-              handleBack={() => {
-                setCurrentStep(4);
-              }}
-              step={5}
-              totalSteps={6}
-            />
           </div>
 
-          {/* Right Form Panel - 70% width on desktop */}
-          <div className="w-full md:w-[70%] md:pl-6">
-            {/* Errors display */}
+          {/* Right Form Panel */}
+          <div className="w-full md:w-[70%] md:pl-6 h-[67vh] 2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
+            {/* Error display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
-                <div className="ml-3">
-                  <h3 className="text-sm font-medium text-red-800">
-                    Lütfen aşağıdaki hataları düzeltin:
-                  </h3>
-                  <div className="mt-2 text-sm text-red-700">
-                    <ul className="list-disc pl-5 space-y-1">
-                      {errors.map((error, index) => (
-                        <li key={index}>{error}</li>
-                      ))}
-                    </ul>
+                <div className="flex items-start">
+                  <div className="flex-shrink-0">
+                    <XCircleIcon
+                      className="h-5 w-5 text-red-400"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <div className="ml-3">
+                    <h3 className="text-sm font-medium text-red-800">
+                      Lütfen aşağıdaki hataları düzeltin:
+                    </h3>
+                    <div className="mt-2 text-sm text-red-700">
+                      <ul className="list-disc pl-5 space-y-1">
+                        {errors.map((error, index) => (
+                          <li key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
             )}
-
-            {/* Form submission error */}
             {submitError && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
-                <div className="ml-3">
-                  <h3 className="text-sm font-medium text-red-800">
-                    İlan oluşturma hatası:
-                  </h3>
-                  <div className="mt-2 text-sm text-red-700">{submitError}</div>
+                <div className="flex items-start">
+                  <div className="flex-shrink-0">
+                    <XCircleIcon
+                      className="h-5 w-5 text-red-400"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <div className="ml-3">
+                    <h3 className="text-sm font-medium text-red-800">
+                      Form gönderilirken bir hata oluştu:
+                    </h3>
+                    <p className="mt-2 text-sm text-red-700">{submitError}</p>
+                  </div>
                 </div>
               </div>
             )}
@@ -667,19 +678,23 @@ export default function FifthCreateStep() {
                 </div>
               )}
             </div>
-
-            {/* Navigation buttons */}
-            <div className="mt-10 flex flex-col sm:flex-row justify-end items-center">
-              <button
-                type="button"
-                onClick={handleContinue}
-                className="w-full sm:w-auto bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
-              >
-                Devam Et
-                <ChevronRightIcon className="h-5 w-5" />
-              </button>
-            </div>
           </div>
+        </div>
+        <div className=" flex flex-col sm:flex-row justify-between items-center p-6">
+          <GoBackButton handleBack={handleBack} step={5} totalSteps={6} />
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            className="w-full sm:w-auto bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition disabled:opacity-50"
+          >
+            {isSubmitting
+              ? "Kaydediliyor..."
+              : isUpdate
+              ? "İlanı Güncelle"
+              : "İlanı Kaydet"}
+            <ChevronRightIcon className="h-5 w-5" />
+          </button>
         </div>
       </div>
     </div>
