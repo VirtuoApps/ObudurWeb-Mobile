@@ -320,19 +320,15 @@ export default function FourthCreateStep() {
       newErrors.push("En az bir özellik seçmelisiniz");
     }
 
-    setErrors(newErrors);
-    return newErrors.length === 0;
+    return newErrors;
   };
 
   // Handle form submission
   const handleContinue = () => {
-    // Clear previous errors
-    setErrors([]);
+    const validationErrors = validateFields();
+    setErrors(validationErrors);
 
-    // Validate fields
-    const isValid = validateFields();
-
-    if (isValid) {
+    if (validationErrors.length === 0) {
       // Log current form data
       console.log({
         featureIds,
@@ -342,9 +338,6 @@ export default function FourthCreateStep() {
 
       // Move to the next step
       setCurrentStep(5);
-    } else {
-      // Scroll to top to see errors
-      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
