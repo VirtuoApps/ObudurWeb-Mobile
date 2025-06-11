@@ -318,6 +318,20 @@ export default function ThirdCreateStep() {
     }
   }, [citiesList, city, selectedCityId, selectedStateId, autoSelectCity]);
 
+  // Default to Turkey if no country is selected
+  useEffect(() => {
+    if (countriesList.length > 0 && !country?.tr && !selectedCountryId) {
+      const turkey = countriesList.find(
+        (c) =>
+          c.name.toLowerCase() === "turkey" ||
+          c.originalName?.toLowerCase() === "turkey"
+      );
+      if (turkey) {
+        handleCountrySelect(turkey);
+      }
+    }
+  }, [countriesList, country, selectedCountryId, handleCountrySelect]);
+
   // Update map center when coordinates change
   useEffect(() => {
     if (mapInstance && coordinates && coordinates.length === 2) {
@@ -737,6 +751,180 @@ export default function ThirdCreateStep() {
                       </ul>
                     </div>
                   </div>
+                </div>
+              </div>
+            )}
+
+            {/* Country and City */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <div className="w-full sm:w-1/2">
+                <label
+                  htmlFor="country"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  {locale === "tr" ? "Ülke" : "Country"}
+                </label>
+                <GeneralSelect
+                  selectedItem={getSelectedCountry()}
+                  onSelect={handleCountrySelect}
+                  options={countriesList}
+                  defaultText={
+                    locale === "en" ? "Select Country" : "Ülke Seçin"
+                  }
+                  extraClassName="w-full h-12 border border-gray-300"
+                  popoverMaxWidth="400"
+                  maxHeight="200"
+                  popoverExtraClassName="w-auto max-w-[420px]"
+                />
+              </div>
+
+              <div className="w-full sm:w-1/2">
+                <label
+                  htmlFor="state"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  {locale === "tr" ? "Şehir" : "Province"}
+                </label>
+                <GeneralSelect
+                  selectedItem={getSelectedState()}
+                  onSelect={handleStateSelect}
+                  options={statesList}
+                  defaultText={
+                    locale === "en" ? "Select Province" : "Şehir Seçin"
+                  }
+                  extraClassName="w-full h-12 border border-gray-300"
+                  popoverMaxWidth="400"
+                  maxHeight="200"
+                  popoverExtraClassName="w-auto max-w-[420px]"
+                />
+              </div>
+            </div>
+
+            {/* State and Street */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <div className="w-full sm:w-1/2">
+                <label
+                  htmlFor="city"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  {locale === "tr" ? "İlçe" : "District"}
+                </label>
+                <GeneralSelect
+                  selectedItem={getSelectedCity()}
+                  onSelect={handleCitySelect}
+                  options={citiesList}
+                  defaultText={
+                    locale === "en" ? "Select District" : "İlçe Seçin"
+                  }
+                  extraClassName="w-full h-12 border border-gray-300"
+                  popoverMaxWidth="400"
+                  maxHeight="200"
+                  popoverExtraClassName="w-auto max-w-[420px]"
+                />
+              </div>
+              <div className="w-full sm:w-1/2">
+                <label
+                  htmlFor="street"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  {locale === "tr" ? "Sokak" : "Street"}
+                </label>
+                <input
+                  type="text"
+                  id="street"
+                  value={street?.tr || ""}
+                  onChange={(e) => handleStreetChange(e.target.value)}
+                  className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                  placeholder={locale === "en" ? "Street" : "Sokak"}
+                />
+              </div>
+            </div>
+
+            {/* Building / Parcel information conditional */}
+            {entranceType?.tr === "Arsa" ? (
+              <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                <div className="w-full sm:w-1/2">
+                  <label
+                    htmlFor="adaNo"
+                    className="font-semibold block mb-2 text-[#262626]"
+                  >
+                    Ada No
+                  </label>
+                  <input
+                    type="text"
+                    id="adaNo"
+                    value={adaNo}
+                    onChange={(e) => setAdaNo(e.target.value)}
+                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                    placeholder="Ada No"
+                  />
+                </div>
+                <div className="w-full sm:w-1/2">
+                  <label
+                    htmlFor="parselNo"
+                    className="font-semibold block mb-2 text-[#262626]"
+                  >
+                    Parsel No
+                  </label>
+                  <input
+                    type="text"
+                    id="parselNo"
+                    value={parselNo}
+                    onChange={(e) => setParselNo(e.target.value)}
+                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                    placeholder="Parsel No"
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                <div className="w-full sm:w-1/3">
+                  <label
+                    htmlFor="buildingNo"
+                    className="font-semibold block mb-2 text-[#262626]"
+                  >
+                    Bina No
+                  </label>
+                  <input
+                    type="text"
+                    id="buildingNo"
+                    value={buildingNo}
+                    onChange={(e) => setBuildingNo(e.target.value)}
+                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                    placeholder="Bina No"
+                  />
+                </div>
+                <div className="w-full sm:w-1/3">
+                  <label
+                    htmlFor="apartmentNo"
+                    className="font-semibold block mb-2 text-[#262626]"
+                  >
+                    Daire No
+                  </label>
+                  <input
+                    type="text"
+                    id="apartmentNo"
+                    value={apartmentNo}
+                    onChange={(e) => setApartmentNo(e.target.value)}
+                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                    placeholder="Daire No (opsiyonel)"
+                  />
+                </div>
+                <div className="w-full sm:w-1/3">
+                  <label
+                    htmlFor="postalCode"
+                    className="font-semibold block mb-2 text-[#262626]"
+                  >
+                    Posta Kodu
+                  </label>
+                  <input
+                    type="text"
+                    id="postalCode"
+                    value={postalCode}
+                    onChange={(e) => setPostalCode(e.target.value)}
+                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                    placeholder="Posta Kodu"
+                  />
                 </div>
               </div>
             )}
