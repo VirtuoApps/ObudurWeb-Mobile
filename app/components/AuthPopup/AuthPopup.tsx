@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import LoginForm from "./LoginForm/LoginForm";
 import SignupForm from "./SignupForm/SignupForm";
 import ForgotPasswordForm from "./ForgotPasswordForm/ForgotPasswordForm";
+import SignupEmailVerifySendPopup from "../SignupEMailVerifySendPopup/SignupEmailVerifySendPopup";
 
 type AuthPopupProps = {
   isOpen: boolean;
