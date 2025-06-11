@@ -20,7 +20,7 @@ export default function FooterBottom() {
               alt="Obudur Logo"
               width={28}
               height={32}
-              className="h-5 w-auto mr-2"
+              className="w-[28px] h-[32px] w-auto mr-2"
             />
             <span className="text-sm text-[#8C8C8C] ml-3">© 2025 Obudur</span>
             <span className="text-sm text-[#8C8C8C] ml-4">

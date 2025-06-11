@@ -191,7 +191,6 @@ export default async function ResidentPage({
           fullWidthBottomBorder={true}
           fullWidthStripe={true}
         />
-        <FooterBottom />
       </div>
     </ClientWrapper>
   );

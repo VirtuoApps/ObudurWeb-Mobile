@@ -8,30 +8,36 @@ import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
 
 export default function BayimizOlun() {
   return (
-    <div className="w-full pb-24">
-      <SimpleHeader />
-      <div className="w-full max-w-[1200px] mx-auto mt-24">
-        <FormTexts />
-        <FormSection />
-      </div>
-      <img
-        src="/bayimiz.png"
-        alt="bayimiz"
-        className="w-full max-w-[1440px] mx-auto"
-      />
-      <div className="w-full max-w-[1440px] mx-auto flex justify-between items-center mt-12">
-        <div className="flex flex-row items-center">
-          <img src="/obudur-icon-v2.png" className="w-[28px] h-[32px]" />
-          <p className="text-[#8C8C8C] text-[14px] font-medium ml-5">
-            © 2025 Obudur
-          </p>
+    <>
+      <div className="w-full pb-12">
+        <SimpleHeader />
+        <div className="w-full max-w-[1200px] mx-auto mt-24">
+          <FormTexts />
+          <FormSection />
         </div>
+        <img
+          src="/bayimiz.png"
+          alt="bayimiz"
+          className="w-full max-w-[1440px] mx-auto"
+        />
+        <div className="w-full max-w-[1440px] mx-auto flex justify-between items-center mt-12 border-t border-[#EBEAF1] pt-7">
+          <div className="flex flex-row items-center">
+            <img src="/obudur-icon-v2.png" className="w-[28px] h-[32px]" />
+            <p className="text-[#8C8C8C] text-[14px] font-medium ml-5">
+              © 2025 Obudur
+            </p>
+          </div>
 
-        <div className="flex flex-row items-center">
-          <p className="font-medium text-[#595959] text-[14px]">Created by</p>
-          <p className="font-medium text-[#8C8C8C] text-[14px] ml-1"> Talya</p>
+          <div className="flex flex-row items-center ">
+            <p className="font-medium text-[#595959] text-[14px]">Created by</p>
+            <p className="font-medium text-[#8C8C8C] text-[14px] ml-1">
+              {" "}
+              Talya
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+      <div className={` h-[16px] bg-[#C1BED4] w-full mx-auto`}></div>
+    </>
   );
 }

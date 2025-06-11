@@ -1531,7 +1531,7 @@ export default function AdminListings() {
           </div>
         )}
       </div>
-      <SimpleFooter />
+      <SimpleFooter hideBorderTop />
     </>
   );
 }

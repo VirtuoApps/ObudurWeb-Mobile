@@ -48,7 +48,7 @@ export default function Header({
 
   return (
     <header className="relative lg:border-b lg:border-[#F0F0F0] py-4 bg-white h-[80px] w-full px-0 xl:px-0">
-      <div className=" mx-auto flex flex-wrap items-center justify-between px-4 sm:px-12">
+      <div className=" mx-auto flex flex-wrap items-center justify-between px-4 sm:px-5">
         {/* Logo */}
         <div className="xl:flex hidden items-center">
           <Image

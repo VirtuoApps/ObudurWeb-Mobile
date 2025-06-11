@@ -5,6 +5,7 @@ import Image from "next/image";
 import axiosInstance from "../../../../../axios";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "../../../../components/LanguageSwitcher";
+import FooterBottom from "./FooterBottom/FooterBottom";
 
 type FooterType = {
   customClassName?: string;
@@ -13,6 +14,7 @@ type FooterType = {
   fullWidthTopBorder?: boolean;
   fullWidthBottomBorder?: boolean;
   fullWidthStripe?: boolean;
+  customMy?: string;
 };
 
 export default function Footer({
@@ -22,6 +24,7 @@ export default function Footer({
   fullWidthTopBorder = false,
   fullWidthBottomBorder = false,
   fullWidthStripe = false,
+  customMy,
 }: FooterType) {
   const t = useTranslations("footer.newsletter");
   const [email, setEmail] = useState("");
@@ -57,10 +60,12 @@ export default function Footer({
   };
 
   return (
-    <>
+    <div className="w-full bg-white">
       <div className="bg-[#EBEAF1] w-full h-[1px] mb-12 mt-12"></div>
 
-      <footer className="w-full bg-white  my-[100px]">
+      <footer
+        className={`w-full bg-white  ${customMy ? customMy : "my-[0px]"}`}
+      >
         {/* Primary top divider */}
         <div
           className={`
@@ -73,7 +78,7 @@ export default function Footer({
           className={`${
             customMaxWidth ? customMaxWidth : "max-w-[1440px]"
           } ${customClassName} mx-auto ${
-            customPadding ? customPadding : "px-4 lg:px-0 py-12 lg:py-24"
+            customPadding ? customPadding : "px-4 lg:px-0 py-12 lg:py-12"
           }`}
         >
           <div className="flex flex-col lg:flex-row lg:justify-between pt-8 pb-10 gap-8 lg:gap-0">
@@ -271,6 +276,8 @@ export default function Footer({
           showButton={false}
         />
       </footer>
-    </>
+
+      <FooterBottom />
+    </div>
   );
 }

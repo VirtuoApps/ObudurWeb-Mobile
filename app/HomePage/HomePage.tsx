@@ -667,14 +667,8 @@ export default function HomePage({
                       hotels.length !== filteredHotels.length
                     }
                   />
-                  <Footer
-                    customClassName="w-full max-w-full px-6"
-                    customMaxWidth="max-w-[1440px]"
-                    customPadding="md:px-4 px-2"
-                    fullWidthTopBorder={true}
-                    fullWidthBottomBorder={true}
-                    fullWidthStripe={true}
-                  />
+                  <div className="pt-24 w-full"></div>
+                  <Footer />
                 </div>
               )}
             </div>

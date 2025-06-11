@@ -53,7 +53,7 @@ export default function contact() {
         </p>
         <OfficesSection />
       </div>
-      <Footer customClassName="" />
+      <Footer customClassName="" customMy="my-0" />
     </div>
   );
 }

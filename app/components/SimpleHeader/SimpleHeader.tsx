@@ -28,7 +28,7 @@ export default function SimpleHeader({
     <header className="relative border-b border-[#f0f0f0] py-4 bg-white h-[80px] w-full md:px-0 px-8">
       <div
         className={`${
-          customMaxWidth ? customMaxWidth : "max-w-[1440px]"
+          customMaxWidth ? customMaxWidth : "max-w-full px-5"
         } mx-auto flex flex-wrap items-center justify-between`}
       >
         {showBackButton && (
