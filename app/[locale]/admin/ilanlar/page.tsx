@@ -608,7 +608,7 @@ export default function AdminListings() {
 
           {/* Header section with filters Web */}
 
-          <div className="  rounded-xl p-4 mb-6 hidden lg:block">
+          <div className="  rounded-xl mb-6 hidden lg:block">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <h1 className="text-2xl  text-gray-800 font-bold">
