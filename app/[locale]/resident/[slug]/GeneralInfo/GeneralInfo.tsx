@@ -283,10 +283,29 @@ export default function GeneralInfo() {
       })
       .filter((v: Feature | null): v is Feature => v !== null) || [];
 
-  const iconsToDisplay: Feature[] =
+  let iconsToDisplay: Feature[] =
     entranceType.tr === "Arsa"
       ? [...infrastructureData, ...viewData].slice(0, 6)
       : quickFilters.slice(0, 6);
+
+  const insideFeatures = hotelData.populatedData.insideFeatures;
+
+  const outsideFeatures = hotelData.populatedData.outsideFeatures;
+
+  const allFeatures = [...insideFeatures, ...outsideFeatures];
+
+  if (iconsToDisplay.length < 6) {
+    iconsToDisplay = [
+      ...iconsToDisplay,
+      ...allFeatures.slice(0, 6 - iconsToDisplay.length),
+    ];
+  }
+
+  //Remove the duplicates in iconsToDisplay
+  iconsToDisplay = iconsToDisplay.filter(
+    (feature, index, self) =>
+      index === self.findIndex((t) => t._id === feature._id)
+  );
 
   // Format price with currency
   const mainPrice = price[0]?.amount || 0;
@@ -334,30 +353,34 @@ export default function GeneralInfo() {
       </div>
 
       {/* Separator Line */}
-      <div className="border-b border-gray-200 my-3 sm:my-4"></div>
+      {iconsToDisplay.length >= 6 && (
+        <div className="border-b border-gray-200 my-3 sm:my-4"></div>
+      )}
 
       {/* Features Icons Row - Scrollable on mobile */}
-      <div className="flex overflow-x-auto py-3 sm:py-4 justify-between no-scrollbar">
-        <div
-          className={`flex ${
-            entranceType.tr === "Arsa" ? "gap-12" : "justify-between gap-4"
-          }  min-w-full`}
-        >
-          {iconsToDisplay.map((feature) => (
-            <FeatureIcon
-              key={feature._id}
-              icon={
-                <img
-                  src={feature.iconUrl}
-                  alt={feature.name[currentLocale]}
-                  className="w-6 h-6"
-                />
-              }
-              label={feature.name[currentLocale]}
-            />
-          ))}
+      {iconsToDisplay.length >= 6 && (
+        <div className="flex overflow-x-auto py-3 sm:py-4 justify-between no-scrollbar">
+          <div
+            className={`flex ${
+              entranceType.tr === "Arsa" ? "gap-12" : "justify-between gap-4"
+            }  min-w-full`}
+          >
+            {iconsToDisplay.map((feature, index) => (
+              <FeatureIcon
+                key={feature._id + index}
+                icon={
+                  <img
+                    src={feature.iconUrl}
+                    alt={feature.name[currentLocale]}
+                    className="w-6 h-6"
+                  />
+                }
+                label={feature.name[currentLocale]}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Separator Line */}
       <div className="border-b border-gray-200 my-3 sm:my-4"></div>
@@ -431,6 +454,8 @@ export default function GeneralInfo() {
           </div>
         </div>
       )}
+
+      <div className="border-b border-gray-200 my-3 sm:my-4"></div>
     </div>
   );
 }

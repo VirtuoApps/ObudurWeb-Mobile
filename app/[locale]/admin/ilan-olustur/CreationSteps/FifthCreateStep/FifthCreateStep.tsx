@@ -32,7 +32,6 @@ export default function FifthCreateStep() {
     floorCount,
     buildYear,
     kitchenType,
-    orientation,
     country,
     city,
     state,
@@ -688,11 +687,7 @@ export default function FifthCreateStep() {
             disabled={isSubmitting}
             className="w-full sm:w-auto bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition disabled:opacity-50"
           >
-            {isSubmitting
-              ? "Kaydediliyor..."
-              : isUpdate
-              ? "İlanı Güncelle"
-              : "İlanı Kaydet"}
+            Devam Et
             <ChevronRightIcon className="h-5 w-5" />
           </button>
         </div>

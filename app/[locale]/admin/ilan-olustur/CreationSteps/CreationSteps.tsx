@@ -20,7 +20,7 @@ export interface MultilangText {
 export interface HotelData {
   _id: string;
   no: number;
-  face: string;
+  faces: string[];
   slug: string;
   title: MultilangText;
   description: MultilangText;
@@ -131,8 +131,8 @@ type ListingFormContextType = {
   zoningStatus: Map<string, string>;
   setZoningStatus: React.Dispatch<React.SetStateAction<Map<string, string>>>;
   // Orientation (facade)
-  orientation: string;
-  setOrientation: React.Dispatch<React.SetStateAction<string>>;
+  faces: string[];
+  setFaces: React.Dispatch<React.SetStateAction<string[]>>;
   // Infrastructure Feature IDs
   infrastructureFeatureIds: string[];
   setInfrastructureFeatureIds: React.Dispatch<React.SetStateAction<string[]>>;
@@ -248,9 +248,9 @@ export const ListingFormContext = createContext<ListingFormContextType>({
   setGeneralFeatures: () => {},
   zoningStatus: new Map<string, string>(),
   setZoningStatus: () => {},
-  // Orientation
-  orientation: "",
-  setOrientation: () => {},
+  // Orientation (facade)
+  faces: [],
+  setFaces: () => {},
   // Infrastructure Feature IDs
   infrastructureFeatureIds: [],
   setInfrastructureFeatureIds: () => {},
@@ -394,15 +394,15 @@ export default function CreationSteps({
   // New state for FourthCreateStep - Infrastructure Features
   const [infrastructureFeatureIds, setInfrastructureFeatureIds] = useState<
     string[]
-  >([]);
+  >(hotelData?.infrastructureFeatureIds || []);
 
   // New state for FourthCreateStep - Views
-  const [viewIds, setViewIds] = useState<string[]>([]);
+  const [viewIds, setViewIds] = useState<string[]>(hotelData?.viewIds || []);
 
   // New state for FourthCreateStep - Distances
   const [distances, setDistances] = useState<
     { typeId: string; value: number }[]
-  >([]);
+  >(hotelData?.distances || []);
 
   // New state for FourthCreateStep - Distance editing
   const [newDistanceTypeId, setNewDistanceTypeId] = useState<string>("");
@@ -415,20 +415,20 @@ export default function CreationSteps({
   const [currentStep, setCurrentStep] = useState(1);
 
   // Orientation state
-  const [orientation, setOrientation] = useState<string>("");
+  const [faces, setFaces] = useState<string[]>(hotelData?.faces || []);
 
   // Images and video states
-  const [images, setImages] = useState<string[]>([]);
-  const [video, setVideo] = useState<string>("");
+  const [images, setImages] = useState<string[]>(hotelData?.images || []);
+  const [video, setVideo] = useState<string>(hotelData?.video || "");
 
   // Documents state
   const [documents, setDocuments] = useState<
     { name: MultilangText; file: string }[]
-  >([]);
+  >(hotelData?.documents || []);
 
   // Land specific fields (Arsa)
-  const [adaNo, setAdaNo] = useState<string>("");
-  const [parselNo, setParselNo] = useState<string>("");
+  const [adaNo, setAdaNo] = useState<string>(hotelData?.adaNo || "");
+  const [parselNo, setParselNo] = useState<string>(hotelData?.parselNo || "");
 
   // Set hotelId from hotelData if in update mode
   const hotelId = isUpdate && hotelData ? hotelData._id : null;
@@ -500,7 +500,7 @@ export default function CreationSteps({
       }
 
       // Set orientation (face)
-      setOrientation(hotelData.face || "");
+      setFaces(hotelData.faces || []);
 
       // Third step data - Address
       setCountry(hotelData.country || { tr: "", en: "" });
@@ -592,13 +592,13 @@ export default function CreationSteps({
     setGeneralFeatures,
     zoningStatus,
     setZoningStatus,
-    // Orientation
-    orientation,
-    setOrientation,
-    // Infrastructure Feature IDs
+    // Add orientation to context
+    faces,
+    setFaces,
+    // Add infrastructure features to context
     infrastructureFeatureIds,
     setInfrastructureFeatureIds,
-    // View IDs
+    // Add view IDs to context
     viewIds,
     setViewIds,
     // Address fields

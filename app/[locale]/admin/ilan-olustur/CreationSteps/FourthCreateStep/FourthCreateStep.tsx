@@ -92,8 +92,8 @@ export default function FourthCreateStep() {
     setEditingDistanceId,
     editingDistanceValue,
     setEditingDistanceValue,
-    orientation,
-    setOrientation,
+    faces,
+    setFaces,
     setCurrentStep,
     infrastructureFeatureIds,
     setInfrastructureFeatureIds,
@@ -217,15 +217,19 @@ export default function FourthCreateStep() {
 
   const toggleView = (viewId: string) => {
     if (viewIds.includes(viewId)) {
-      setViewIds(viewIds.filter((id: string) => id !== viewId));
+      setViewIds(viewIds.filter((id) => id !== viewId));
     } else {
       setViewIds([...viewIds, viewId]);
     }
   };
 
-  // Handle orientation selection
-  const handleOrientationChange = (value: string) => {
-    setOrientation(value);
+  // Toggle face selection
+  const toggleFace = (faceId: string) => {
+    setFaces((prevFaces) =>
+      prevFaces.includes(faceId)
+        ? prevFaces.filter((id) => id !== faceId)
+        : [...prevFaces, faceId]
+    );
   };
 
   // Add new distance
@@ -333,7 +337,7 @@ export default function FourthCreateStep() {
       console.log({
         featureIds,
         distances,
-        orientation,
+        faces,
       });
 
       // Move to the next step
@@ -453,17 +457,17 @@ export default function FourthCreateStep() {
                   <h2 className="font-semibold mb-4 text-[#262626] text-xl">
                     Cephe
                   </h2>
-                  <div className="flex flex-wrap gap-4">
+                  <div className="flex flex-wrap gap-2">
                     {orientationOptions.map((option) => (
                       <button
                         key={option._id}
                         type="button"
-                        className={`inline-flex items-center gap-2 px-4 py-2 rounded-full transition border cursor-pointer ${
-                          orientation === option._id
+                        className={`inline-flex items-center  px-4 py-2 rounded-full transition border cursor-pointer ${
+                          faces.includes(option._id)
                             ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75] "
                             : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
                         }`}
-                        onClick={() => handleOrientationChange(option._id)}
+                        onClick={() => toggleFace(option._id)}
                       >
                         <Image
                           src={option.iconUrl}
