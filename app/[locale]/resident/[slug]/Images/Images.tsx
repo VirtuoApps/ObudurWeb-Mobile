@@ -22,10 +22,10 @@ export default function Images() {
   if (images.length < 4) {
     images = [
       hotelData.hotelDetails.images[0],
-      hotelData.hotelDetails.images[0],
-      hotelData.hotelDetails.images[0],
-      hotelData.hotelDetails.images[0],
-      hotelData.hotelDetails.images[0],
+      hotelData.hotelDetails.images[1] || hotelData.hotelDetails.images[0],
+      hotelData.hotelDetails.images[2] || hotelData.hotelDetails.images[0],
+      hotelData.hotelDetails.images[3] || hotelData.hotelDetails.images[0],
+      hotelData.hotelDetails.images[4] || hotelData.hotelDetails.images[0],
     ];
   }
 
