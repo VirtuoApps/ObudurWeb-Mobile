@@ -17,7 +17,7 @@ export default function GoBackButton({
   totalSteps,
 }: GoBackButtonProps) {
   return (
-    <div className="flex flex-row items-center mb-4 sm:mb-0 mt-auto">
+    <div className="flex flex-row items-center justify-between mb-4 sm:mb-0 mt-auto w-full md:justify-start md:w-auto">
       <button
         type="button"
         onClick={handleBack}

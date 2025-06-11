@@ -387,7 +387,7 @@ export default function FifthCreateStep() {
           </div>
 
           {/* Right Form Panel */}
-          <div className="w-full md:w-[70%] md:pl-6 h-[67vh] 2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
+          <div className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
             {/* Error display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
