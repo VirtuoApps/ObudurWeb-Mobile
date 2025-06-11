@@ -112,7 +112,7 @@ export default function GeneralSelect({
                 isOpen ? "bg-[#F5F5F5]" : ""
               } flex items-center justify-between  px-3 py-3 text-sm ${extraClassName} ${
                 !customTextColor ? "text-gray-700" : ""
-              } cursor-pointer rounded-[16px] outline-none `}
+              } cursor-pointer rounded-[8px] outline-none `}
             >
               <div className="flex items-center">
                 <span className="truncate">
@@ -128,7 +128,7 @@ export default function GeneralSelect({
             <PopoverPanel
               className={`absolute md:left-1/2 -left-4 z-50 mt-2 flex w-screen  md:-translate-x-1/2 px-4 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in ${popoverExtraClassName}`}
             >
-              <div className="w-full  flex-auto overflow-hidden rounded-[16px] bg-white text-sm/6 shadow-2xl border border-[#D9D9D9] ring-1 ring-gray-900/5 ">
+              <div className="w-full  flex-auto overflow-hidden rounded-[8px] bg-white text-sm/6 shadow-2xl border border-[#D9D9D9] ring-1 ring-gray-900/5 ">
                 <div
                   ref={panelRef}
                   className="overflow-y-auto"
