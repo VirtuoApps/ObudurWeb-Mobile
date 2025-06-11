@@ -214,14 +214,23 @@ export default function ThirdCreateStep() {
   useEffect(() => {
     if (selectedCountryId && selectedStateId) {
       GetCity(selectedCountryId, selectedStateId).then((result) => {
-        setCitiesList(result);
+        const selectedState = statesList.find((s) => s.id === selectedStateId);
+        if (selectedState) {
+          const filteredCities = result.filter(
+            (city: any) =>
+              city.name.toLowerCase() !== selectedState.name.toLowerCase()
+          );
+          setCitiesList(filteredCities);
+        } else {
+          setCitiesList(result);
+        }
         // Don't clear selectedCityId here - it interferes with auto-selection
         // This is cleared by user interactions in handleStateSelect when needed
       });
     } else {
       setCitiesList([]);
     }
-  }, [selectedStateId]);
+  }, [selectedCountryId, selectedStateId, statesList]);
 
   // Auto-select country when countries list is loaded and we have a pending country
   useEffect(() => {
@@ -755,7 +764,7 @@ export default function ThirdCreateStep() {
               </div>
             )}
 
-            {/* Country and City */}
+            {/* Country and Province */}
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="w-full sm:w-1/2">
                 <label
@@ -800,7 +809,7 @@ export default function ThirdCreateStep() {
               </div>
             </div>
 
-            {/* State and Street */}
+            {/* District and Street */}
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="w-full sm:w-1/2">
                 <label
