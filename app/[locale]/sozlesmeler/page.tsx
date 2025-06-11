@@ -10,7 +10,7 @@ export default function sozlesmeler() {
     <>
       <SimpleHeader />
 
-      <div className="w-full bg-[#ebeaf1] min-h-screen pt-32">
+      <div className="w-full bg-[#ebeaf1] min-h-screen pt-8">
         <AggrementsBox />
         <Footer />
       </div>
