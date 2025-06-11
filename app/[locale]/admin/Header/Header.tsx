@@ -17,7 +17,7 @@ export default function Header({ customRedirectUrl }: HeaderProps) {
   const router = useRouter();
 
   return (
-    <header className="relative border-b shadow-sm py-4 bg-white h-[80px] w-full px-4 md:px-0">
+    <header className="relative border-b border-[#F0F0F0] py-4 bg-white h-[80px] w-full px-4 md:px-0">
       <div className=" mx-auto flex flex-wrap items-center justify-between px-5">
         {/* Logo */}
         <div

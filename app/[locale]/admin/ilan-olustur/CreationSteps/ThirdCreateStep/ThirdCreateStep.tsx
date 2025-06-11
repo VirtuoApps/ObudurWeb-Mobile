@@ -11,14 +11,7 @@ import GoBackButton from "../../GoBackButton/GoBackButton";
 import { useGoogleMaps } from "../../../../../contexts/GoogleMapsContext";
 import { GetCountries, GetState, GetCity } from "react-country-state-city";
 import GeneralSelect from "../../../../../components/GeneralSelect/GeneralSelect";
-
-interface Language {
-  _id: string;
-  code: string;
-  name: string;
-  nativeName: string;
-  isDefault: boolean;
-}
+import { useLocale } from "next-intl";
 
 interface PlaceSuggestion {
   description: string;
@@ -26,24 +19,8 @@ interface PlaceSuggestion {
 }
 
 export default function ThirdCreateStep() {
+  const locale = useLocale();
   const [errors, setErrors] = useState<string[]>([]);
-  const [selectedLanguage, setSelectedLanguage] = useState<string>("tr");
-  const [languages, setLanguages] = useState<Language[]>([
-    {
-      _id: "1",
-      code: "tr",
-      name: "Turkish",
-      nativeName: "Türkçe",
-      isDefault: true,
-    },
-    {
-      _id: "2",
-      code: "en",
-      name: "English",
-      nativeName: "English",
-      isDefault: false,
-    },
-  ]);
 
   // Use context for form state and navigation
   const {
@@ -208,9 +185,15 @@ export default function ThirdCreateStep() {
   // Load countries on component mount
   useEffect(() => {
     GetCountries().then((result) => {
-      setCountriesList(result);
+      const newCountriesList = result.map((country: any) => {
+        if (locale === "tr" && country.name === "Turkey") {
+          return { ...country, name: "Türkiye", originalName: "Turkey" };
+        }
+        return country;
+      });
+      setCountriesList(newCountriesList);
     });
-  }, []);
+  }, [locale]);
 
   // Load states when country changes
   useEffect(() => {
@@ -244,7 +227,9 @@ export default function ThirdCreateStep() {
   useEffect(() => {
     if (countriesList.length > 0 && pendingCountryName) {
       const matchingCountry = countriesList.find(
-        (c) => c.name.toLowerCase() === pendingCountryName.toLowerCase()
+        (c) =>
+          c.name.toLowerCase() === pendingCountryName.toLowerCase() ||
+          c.originalName?.toLowerCase() === pendingCountryName.toLowerCase()
       );
       if (matchingCountry) {
         autoSelectCountry(matchingCountry);
@@ -285,7 +270,9 @@ export default function ThirdCreateStep() {
       const matchingCountry = countriesList.find(
         (c) =>
           c.name.toLowerCase() === country.tr.toLowerCase() ||
-          c.name.toLowerCase() === country.en.toLowerCase()
+          c.originalName?.toLowerCase() === country.tr.toLowerCase() ||
+          c.name.toLowerCase() === country.en.toLowerCase() ||
+          c.originalName?.toLowerCase() === country.en.toLowerCase()
       );
       if (matchingCountry) {
         autoSelectCountry(matchingCountry);
@@ -361,7 +348,7 @@ export default function ThirdCreateStep() {
         const response = await fetch(
           `/api/places/autocomplete?input=${encodeURIComponent(
             searchInput
-          )}&language=${selectedLanguage}`
+          )}&language=${locale}`
         );
 
         const data = await response.json();
@@ -391,7 +378,7 @@ export default function ThirdCreateStep() {
         clearTimeout(searchTimeoutRef.current);
       }
     };
-  }, [searchInput, selectedLanguage]);
+  }, [searchInput, locale]);
 
   // Handle clicking outside suggestions
   useEffect(() => {
@@ -479,7 +466,10 @@ export default function ThirdCreateStep() {
     if (countryComponent) {
       // Find matching country in the list
       const matchingCountry = countriesList.find(
-        (c) => c.name.toLowerCase() === countryComponent.long_name.toLowerCase()
+        (c) =>
+          c.name.toLowerCase() === countryComponent.long_name.toLowerCase() ||
+          c.originalName?.toLowerCase() ===
+            countryComponent.long_name.toLowerCase()
       );
       if (matchingCountry) {
         autoSelectCountry(matchingCountry);
@@ -723,24 +713,6 @@ export default function ThirdCreateStep() {
                 metni.
               </p>
             </div>
-            {/* <div className="mt-6">
-              <div className="flex gap-2 flex-wrap">
-                {languages.map((language) => (
-                  <button
-                    key={language._id}
-                    type="button"
-                    className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition border border-[#6656AD] text-[#6656AD] ${
-                      selectedLanguage === language.code
-                        ? "bg-[#EBEAF1] "
-                        : "bg-transparent "
-                    }`}
-                    onClick={() => setSelectedLanguage(language.code)}
-                  >
-                    {language.nativeName}
-                  </button>
-                ))}
-              </div>
-            </div> */}
             <GoBackButton handleBack={handleBack} step={3} totalSteps={5} />
           </div>
 
@@ -779,14 +751,14 @@ export default function ThirdCreateStep() {
                   htmlFor="country"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Ülke
+                  {locale === "tr" ? "Ülke" : "Country"}
                 </label>
                 <GeneralSelect
                   selectedItem={getSelectedCountry()}
                   onSelect={handleCountrySelect}
                   options={countriesList}
                   defaultText={
-                    selectedLanguage === "en" ? "Select Country" : "Ülke Seçin"
+                    locale === "en" ? "Select Country" : "Ülke Seçin"
                   }
                   extraClassName="w-full h-12 border border-gray-300"
                   popoverMaxWidth="400"
@@ -800,14 +772,14 @@ export default function ThirdCreateStep() {
                   htmlFor="state"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Şehir
+                  {locale === "tr" ? "Şehir" : "Province"}
                 </label>
                 <GeneralSelect
                   selectedItem={getSelectedState()}
                   onSelect={handleStateSelect}
                   options={statesList}
                   defaultText={
-                    selectedLanguage === "en" ? "Select District" : "İlçe Seçin"
+                    locale === "en" ? "Select Province" : "Şehir Seçin"
                   }
                   extraClassName="w-full h-12 border border-gray-300"
                   popoverMaxWidth="400"
@@ -824,14 +796,14 @@ export default function ThirdCreateStep() {
                   htmlFor="city"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  İlçe
+                  {locale === "tr" ? "İlçe" : "District"}
                 </label>
                 <GeneralSelect
                   selectedItem={getSelectedCity()}
                   onSelect={handleCitySelect}
                   options={citiesList}
                   defaultText={
-                    selectedLanguage === "en" ? "Select City" : "Şehir Seçin"
+                    locale === "en" ? "Select District" : "İlçe Seçin"
                   }
                   extraClassName="w-full h-12 border border-gray-300"
                   popoverMaxWidth="400"
@@ -844,7 +816,7 @@ export default function ThirdCreateStep() {
                   htmlFor="street"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Sokak
+                  {locale === "tr" ? "Sokak" : "Street"}
                 </label>
                 <input
                   type="text"
@@ -852,7 +824,7 @@ export default function ThirdCreateStep() {
                   value={street?.tr || ""}
                   onChange={(e) => handleStreetChange(e.target.value)}
                   className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                  placeholder={selectedLanguage === "en" ? "Street" : "Sokak"}
+                  placeholder={locale === "en" ? "Street" : "Sokak"}
                 />
               </div>
             </div>
