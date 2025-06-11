@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import axiosInstance from "@/axios";
 import Header from "./Header/Header";
 import FilterList from "./FilterList/FilterList";
@@ -18,6 +18,7 @@ import { filterHotelsByProximity } from "@/app/utils/geoUtils";
 import Footer from "../[locale]/resident/[slug]/Footer/Footer";
 import SaveFilterPopup from "./SaveFilterPopup/SaveFilterPopup";
 import NoResultFound from "./ListView/NoResultFound/NoResultFound";
+import EmailVerifiedSuccessPopup from "../components/EmailVerifiedSuccessPopup/EmailVerifiedSuccessPopup";
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
   loading: () => {
@@ -56,6 +57,7 @@ export default function HomePage({
   const t = useTranslations("common");
   const searchParams = useSearchParams();
   const router = useRouter();
+  const pathname = usePathname();
   const [currentView, setCurrentView] = useState<"map" | "list">("map");
   const [filters, setFilters] = useState<FilterType | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
@@ -99,6 +101,23 @@ export default function HomePage({
   const [isSaveFilterPopupOpen, setIsSaveFilterPopupOpen] = useState(false);
 
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
+
+  const [showEmailVerifiedPopup, setShowEmailVerifiedPopup] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get("emailConfirmed") === "true") {
+      setShowEmailVerifiedPopup(true);
+    }
+  }, [searchParams]);
+
+  const handleCloseEmailVerifiedPopup = () => {
+    setShowEmailVerifiedPopup(false);
+    const newParams = new URLSearchParams(searchParams.toString());
+    newParams.delete("emailConfirmed");
+    const newSearch = newParams.toString();
+    const newUrl = newSearch ? `${pathname}?${newSearch}` : pathname;
+    router.replace(newUrl, { scroll: false });
+  };
 
   // Function to apply saved filter
   const applySavedFilter = async (filterId: string) => {
@@ -483,6 +502,9 @@ export default function HomePage({
 
   return (
     <>
+      {showEmailVerifiedPopup && (
+        <EmailVerifiedSuccessPopup onClose={handleCloseEmailVerifiedPopup} />
+      )}
       <div
         className="fixed bottom-4 left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-10 px-3 h-[40px] rounded-lg shadow-lg"
         onClick={() => handleViewChange(currentView === "map" ? "list" : "map")}
