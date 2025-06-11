@@ -23,6 +23,7 @@ import Pagination from "./Pagination/Pagination";
 import SimpleFooter from "@/app/components/SimpleFooter/SimpleFooter";
 import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
 import AdminPropertyCard from "@/app/components/AdminPropertyCard/AdminPropertyCard";
+import Footer from "../../resident/[slug]/Footer/Footer";
 
 interface Price {
   amount: number;
@@ -1531,7 +1532,7 @@ export default function AdminListings() {
           </div>
         )}
       </div>
-      <SimpleFooter hideBorderTop />
+      <Footer hideTopMargin />
     </>
   );
 }

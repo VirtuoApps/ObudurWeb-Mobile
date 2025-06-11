@@ -15,6 +15,7 @@ type FooterType = {
   fullWidthBottomBorder?: boolean;
   fullWidthStripe?: boolean;
   customMy?: string;
+  hideTopMargin?: boolean;
 };
 
 export default function Footer({
@@ -25,6 +26,7 @@ export default function Footer({
   fullWidthBottomBorder = false,
   fullWidthStripe = false,
   customMy,
+  hideTopMargin = false,
 }: FooterType) {
   const t = useTranslations("footer.newsletter");
   const [email, setEmail] = useState("");
@@ -61,7 +63,11 @@ export default function Footer({
 
   return (
     <div className="w-full bg-white">
-      <div className="bg-[#EBEAF1] w-full h-[1px] mb-12 mt-12"></div>
+      <div
+        className={`bg-[#EBEAF1] w-full h-[1px] ${
+          hideTopMargin ? "mt-0" : "mt-12"
+        }`}
+      ></div>
 
       <footer
         className={`w-full bg-white  ${customMy ? customMy : "my-[0px]"}`}

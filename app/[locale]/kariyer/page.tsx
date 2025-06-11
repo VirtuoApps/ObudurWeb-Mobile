@@ -6,6 +6,7 @@ import FormTexts from "./FormTexts/FormTexts";
 import FormSection from "./FormSection/FormSection";
 import SimpleFooter from "@/app/components/SimpleFooter/SimpleFooter";
 import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
+import Footer from "../resident/[slug]/Footer/Footer";
 
 export default function BayimizOlun() {
   return (
@@ -20,7 +21,7 @@ export default function BayimizOlun() {
         alt="bayimiz"
         className="w-full max-w-[1440px] mx-auto"
       />
-      <SimpleFooter />
+      <Footer />
     </div>
   );
 }
