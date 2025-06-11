@@ -259,14 +259,13 @@ export default function SaveFilterPopup({
             </div>
 
             {/* Notifications Section */}
-            <div className="mb-12">
+            {/* <div className="mb-12">
               <h3 className="text-lg font-bold text-[#262626]">Bildirimler</h3>
               <p className="text-[#595959] text-sm mb-4 leading-relaxed">
                 Arama kriterlerinize uygun yeni ilanları hemen öğrenmek için
                 bildirimleri açabilirsiniz.
               </p>
 
-              {/* Notification Options */}
               <div className="space-y-2">
                 <label className="flex items-center cursor-pointer border border-[#F0F0F0] rounded-2xl p-4">
                   <div className="relative">
@@ -322,7 +321,7 @@ export default function SaveFilterPopup({
                   </span>
                 </label>
               </div>
-            </div>
+            </div> */}
 
             {/* Action Buttons */}
             <div className="flex gap-4">

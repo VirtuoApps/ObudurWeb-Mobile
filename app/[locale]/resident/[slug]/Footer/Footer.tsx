@@ -45,6 +45,9 @@ export default function Footer({
   }, []);
 
   const handleSubscribe = async (e: React.FormEvent<HTMLFormElement>) => {
+    if (!email.includes(".com")) {
+      return;
+    }
     e.preventDefault();
     setIsLoading(true);
     setError("");
@@ -117,7 +120,11 @@ export default function Footer({
                       className={`text-sm sm:ml-4 px-4 py-2 rounded-md sm:rounded-xl transition w-full sm:w-[200px] ${
                         isSubscribed
                           ? "bg-green-100 text-green-600"
-                          : "bg-slate-100 text-[#8C8C8C] hover:bg-slate-200"
+                          : `  ${
+                              email.includes(".com")
+                                ? "bg-[#5E5691] text-white"
+                                : "bg-slate-100 text-[#8C8C8C] hover:bg-slate-200"
+                            }`
                       }`}
                     >
                       {isLoading
