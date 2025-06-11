@@ -86,13 +86,12 @@ export default function PlansAndDocumentation({
             <div
               key={button.key}
               className="relative flex items-center justify-between w-full rounded-xl border border-[#D9D9D9] px-6 md:px-8 py-3 bg-white cursor-not-allowed group"
-              title="Ekli Dosya Bulunmuyor"
             >
               <span className="text-[#8C8C8C] font-medium text-base lg:text-lg">
                 {button.name[currentLocale]}
               </span>
               <img
-                src="/arrow-up-right.png"
+                src="/arrow-up-right_gray.png"
                 alt="arrow-right"
                 className="w-[24px] opacity-40"
               />
