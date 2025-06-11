@@ -17,8 +17,8 @@ interface SelectOption {
 
 interface CustomSelectProps {
   options: SelectOption[];
-  value: string | number;
-  onChange: (value: string) => void;
+  value: string | number | boolean;
+  onChange: (value: string | number | boolean) => void;
   placeholder?: string;
   openUpward?: boolean;
 }
@@ -509,7 +509,7 @@ export default function SecondCreateStepForWork() {
                 <CustomSelect
                   options={roomCountOptions}
                   value={roomCount || 0}
-                  onChange={(value) => setRoomCount(parseInt(value))}
+                  onChange={(value) => setRoomCount(parseInt(value.toString()))}
                   placeholder="Seçiniz"
                 />
               </div>
@@ -527,7 +527,9 @@ export default function SecondCreateStepForWork() {
                 <CustomSelect
                   options={floorCountOptions}
                   value={floorCount || 0}
-                  onChange={(value) => setFloorCount(parseInt(value))}
+                  onChange={(value) =>
+                    setFloorCount(parseInt(value.toString()))
+                  }
                   placeholder="Seçiniz"
                 />
               </div>
@@ -541,7 +543,9 @@ export default function SecondCreateStepForWork() {
                 <CustomSelect
                   options={buildingAgeOptions}
                   value={buildingAge || 0}
-                  onChange={(value) => setBuildingAge(parseInt(value))}
+                  onChange={(value) =>
+                    setBuildingAge(parseInt(value.toString()))
+                  }
                   placeholder="Seçiniz"
                 />
               </div>
@@ -646,8 +650,8 @@ export default function SecondCreateStepForWork() {
                 </label>
                 <CustomSelect
                   options={booleanOptions}
-                  value={exchangeable ? "true" : "false"}
-                  onChange={(value) => setExchangeable(value === "true")}
+                  value={exchangeable ? true : false}
+                  onChange={(value) => setExchangeable(value as any)}
                   placeholder="Seçiniz"
                 />
               </div>
@@ -660,8 +664,8 @@ export default function SecondCreateStepForWork() {
                 </label>
                 <CustomSelect
                   options={booleanOptions}
-                  value={creditEligible ? "true" : "false"}
-                  onChange={(value) => setCreditEligible(value === "true")}
+                  value={creditEligible ? true : false}
+                  onChange={(value) => setCreditEligible(value as any)}
                   placeholder="Seçiniz"
                 />
               </div>
@@ -721,7 +725,9 @@ export default function SecondCreateStepForWork() {
                         { value: "USD", label: "USD" },
                       ]}
                       value={selectedDuesCurrency}
-                      onChange={(value) => setSelectedDuesCurrency(value)}
+                      onChange={(value) =>
+                        setSelectedDuesCurrency(value as string)
+                      }
                       placeholder="TRY"
                     />
                   </div>

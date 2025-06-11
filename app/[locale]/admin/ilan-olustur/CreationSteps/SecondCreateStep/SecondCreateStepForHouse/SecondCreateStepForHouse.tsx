@@ -793,7 +793,7 @@ export default function SecondCreateStepForHouse() {
                 <CustomSelect
                   options={booleanOptions}
                   value={creditEligible ? "true" : "false"}
-                  onChange={(value) => setCreditEligible(value === "true")}
+                  onChange={(value) => setCreditEligible(value as any)}
                   placeholder="Seçiniz"
                 />
               </div>
