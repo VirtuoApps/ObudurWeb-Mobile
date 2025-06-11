@@ -19,6 +19,7 @@ import Footer from "../[locale]/resident/[slug]/Footer/Footer";
 import SaveFilterPopup from "./SaveFilterPopup/SaveFilterPopup";
 import NoResultFound from "./ListView/NoResultFound/NoResultFound";
 import EmailVerifiedSuccessPopup from "../components/EmailVerifiedSuccessPopup/EmailVerifiedSuccessPopup";
+import PersonalInformationFormPopup from "../components/PersonalInformationsFormPopup/PersonalInformationsFormPopup";
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
   loading: () => {
@@ -505,6 +506,7 @@ export default function HomePage({
       {showEmailVerifiedPopup && (
         <EmailVerifiedSuccessPopup onClose={handleCloseEmailVerifiedPopup} />
       )}
+      {/* <PersonalInformationFormPopup onClose={() => {}} /> */}
       <div
         className="fixed bottom-4 left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-10 px-3 h-[40px] rounded-lg shadow-lg"
         onClick={() => handleViewChange(currentView === "map" ? "list" : "map")}

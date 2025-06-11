@@ -156,7 +156,7 @@ export default function AuthBox({
 
             {!user.profilePicture && (
               <div className="bg-gray-100 rounded-lg flex items-center justify-center py-3 px-3 h-[48px] w-[48px]">
-                <img src={"/user-profile-03.png"} className="w-6" />
+                <img src={"/user-profile-03.png"} className="w-6 h-6" />
               </div>
             )}
 
