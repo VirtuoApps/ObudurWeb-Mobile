@@ -272,7 +272,7 @@ export default function FirstCreateStep() {
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">
         <div className="flex flex-col md:flex-row p-10">
           {/* Left Info Panel - 30% width on desktop */}
-          <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 flex flex-col">
+          <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 flex flex-col ">
             <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
               İlan kategorilerini belirleyin.
             </h1>
@@ -286,14 +286,10 @@ export default function FirstCreateStep() {
                 metni.
               </p>
             </div>
-
-            <span className="text-sm text-gray-600 mb-4 sm:mb-0 mt-auto">
-              Adım 1 / 6
-            </span>
           </div>
 
           {/* Right Form Panel - 70% width on desktop */}
-          <div className="w-full md:w-[70%] md:pl-6">
+          <div className="w-full md:w-[70%] md:pl-6 h-[67vh] 2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
             {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
@@ -498,17 +494,21 @@ export default function FirstCreateStep() {
             </div>
 
             {/* Step counter and continue button */}
-            <div className="mt-10 flex flex-col sm:flex-row justify-end items-center">
-              <button
-                type="button"
-                onClick={handleContinue}
-                className="w-full sm:w-auto bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
-              >
-                Devam Et
-                <ChevronRightIcon className="h-5 w-5" />
-              </button>
-            </div>
           </div>
+        </div>
+
+        <div className=" flex flex-col sm:flex-row justify-between items-center p-6">
+          <span className="text-sm text-gray-600 mb-4 sm:mb-0 mt-auto">
+            Adım 1 / 6
+          </span>
+          <button
+            type="button"
+            onClick={handleContinue}
+            className="w-full sm:w-auto bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+          >
+            Devam Et
+            <ChevronRightIcon className="h-5 w-5" />
+          </button>
         </div>
       </div>
     </div>

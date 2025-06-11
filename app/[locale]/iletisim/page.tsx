@@ -43,7 +43,7 @@ export default function contact() {
         <FormSection />
 
         <p
-          className="text-[#262626] font-extrabold text-4xl mt-8"
+          className="text-[#262626] font-extrabold text-4xl mt-20"
           id="offices-section"
         >
           Gayrimenkül Ofislerimiz
