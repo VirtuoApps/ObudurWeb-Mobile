@@ -15,7 +15,11 @@ export default function SignupEmailVerifySendPopup({}: SuccessPopupProps) {
 
   useEffect(() => {
     if (user && !user.verified) {
-      setShowEmailVerifySendPopup(true);
+      const isAlreadyShown = localStorage.getItem("emailVerifySendPopupShown");
+      if (!isAlreadyShown) {
+        setShowEmailVerifySendPopup(true);
+        localStorage.setItem("emailVerifySendPopupShown", "true");
+      }
     }
   }, [user]);
 
