@@ -164,27 +164,31 @@ export default async function ResidentPage({
       </div>
       <div className="md:pt-[80px]">
         <Images />
-        <div className="flex md:flex-row flex-col items-start mt-12">
-          <div className="md:w-[70%] w-full">
-            <GeneralInfo />
-            <Descriptions />
-            <Details />
-            <FeaturesEquipment />
-            {video && <PanoramicView video={video} />}
-            <Location />
-            <PlansAndDocumentation
-              documents={hotelData.hotelDetails.documents}
-            />
-          </div>
+        <div className="max-w-[1472px] mx-auto px-6">
+          <div className="flex md:flex-row flex-col items-start mt-12">
+            <div className="md:w-[70%] w-full md:pr-6">
+              <GeneralInfo />
+              <Descriptions />
+              <Details />
+              <FeaturesEquipment />
+              {video && <PanoramicView video={video} />}
+              <Location />
+              <PlansAndDocumentation
+                documents={hotelData.hotelDetails.documents}
+              />
+            </div>
 
-          <div className="md:w-[30%] w-full p-4 pt-2">
-            <ContactBox hotelData={hotelData} />
+            <div className="md:w-[30%] w-full md:pl-6 mt-8 md:mt-0">
+              <ContactBox hotelData={hotelData} />
+            </div>
           </div>
         </div>
-
         <Footer
-          customMaxWidth="max-w-[1592px] mx-auto px-0"
-          customPadding="px-0"
+          customMaxWidth="max-w-[1472px]"
+          customPadding="md:px-10 px-6"
+          fullWidthTopBorder={true}
+          fullWidthBottomBorder={true}
+          fullWidthStripe={true}
         />
       </div>
     </ClientWrapper>

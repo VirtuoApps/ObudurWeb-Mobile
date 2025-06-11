@@ -12,7 +12,13 @@ export default function sozlesmeler() {
 
       <div className="w-full bg-[#ebeaf1] min-h-screen pt-32">
         <AggrementsBox />
-        <Footer customMaxWidth="max-w-[1288px]" />
+        <Footer
+          customMaxWidth="max-w-[1288px]"
+          customPadding="sm:px-0 px-4"
+          fullWidthTopBorder={true}
+          fullWidthBottomBorder={true}
+          fullWidthStripe={true}
+        />
       </div>
     </>
   );

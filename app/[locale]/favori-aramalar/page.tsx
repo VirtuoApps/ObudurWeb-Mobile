@@ -124,7 +124,13 @@ export default function FavoriAramalarPage() {
         </div>
       </div>
 
-      <Footer />
+      <Footer
+        customMaxWidth="max-w-[1448px]"
+        customPadding="md:px-4 px-2"
+        fullWidthTopBorder={true}
+        fullWidthBottomBorder={true}
+        fullWidthStripe={true}
+      />
     </div>
   );
 }

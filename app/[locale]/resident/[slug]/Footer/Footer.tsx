@@ -10,12 +10,18 @@ type FooterType = {
   customClassName?: string;
   customMaxWidth?: string;
   customPadding?: string;
+  fullWidthTopBorder?: boolean;
+  fullWidthBottomBorder?: boolean;
+  fullWidthStripe?: boolean;
 };
 
 export default function Footer({
   customClassName = "1440px",
   customMaxWidth,
   customPadding,
+  fullWidthTopBorder = false,
+  fullWidthBottomBorder = false,
+  fullWidthStripe = false,
 }: FooterType) {
   const t = useTranslations("footer.newsletter");
   const [email, setEmail] = useState("");
@@ -54,13 +60,21 @@ export default function Footer({
     <>
       <footer className="w-full bg-white mt-32">
         {/* Primary top divider */}
-        <div className="border-t border-slate-200"></div>
+        <div
+          className={`
+            border-t border-slate-200 
+            ${
+              !fullWidthTopBorder &&
+              `${customMaxWidth ? customMaxWidth : "max-w-[1440px]"} mx-auto`
+            }
+          `}
+        ></div>
 
         <div
           className={`${
             customMaxWidth ? customMaxWidth : "max-w-[1440px]"
-          } ${customClassName} mx-auto px-4 ${
-            customPadding ? customPadding : "lg:px-0 py-12 lg:py-24"
+          } ${customClassName} mx-auto ${
+            customPadding ? customPadding : "px-4 lg:px-0 py-12 lg:py-24"
           }`}
         >
           <div className="flex flex-col lg:flex-row lg:justify-between pt-8 pb-10 gap-8 lg:gap-0">
@@ -253,16 +267,21 @@ export default function Footer({
 
         {/* Primary bottom divider */}
         <div
-          className={`border-t border-[#C1BED4] ${customClassName} ${
-            customMaxWidth ? customMaxWidth : "max-w-[1440px]"
-          } mx-auto`}
+          className={`
+            border-t border-[#C1BED4] 
+            ${
+              !fullWidthBottomBorder &&
+              `${customMaxWidth ? customMaxWidth : "max-w-[1440px]"} mx-auto`
+            }
+            ${customClassName}
+          `}
         ></div>
 
         {/* Bottom bar */}
         <div
           className={`${customClassName} ${
             customMaxWidth ? customMaxWidth : "max-w-[1440px]"
-          } mx-auto px-4 ${customPadding ? customPadding : "lg:px-0"}`}
+          } mx-auto ${customPadding ? customPadding : "px-4 lg:px-0"}`}
         >
           <div className="flex justify-center lg:justify-between items-center py-4 lg:py-6 text-xs text-slate-500">
             <div className="flex items-center">
@@ -286,7 +305,12 @@ export default function Footer({
         />
       </footer>
 
-      <div className="w-full h-[16px] bg-[#C1BED4]"></div>
+      <div
+        className={`w-full h-[16px] bg-[#C1BED4] ${
+          !fullWidthStripe &&
+          `${customMaxWidth ? customMaxWidth : "max-w-[1440px]"} mx-auto`
+        }`}
+      ></div>
     </>
   );
 }
