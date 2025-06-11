@@ -14,6 +14,7 @@ import ClientWrapper from "./ClientWrapper";
 import NotFound from "../../not-found";
 import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
 import MenuItems from "./Header/MenuItems/MenuItems";
+import FooterBottom from "./Footer/FooterBottom/FooterBottom";
 
 // Types for API response
 interface LocalizedText {
@@ -190,6 +191,7 @@ export default async function ResidentPage({
           fullWidthBottomBorder={true}
           fullWidthStripe={true}
         />
+        <FooterBottom />
       </div>
     </ClientWrapper>
   );

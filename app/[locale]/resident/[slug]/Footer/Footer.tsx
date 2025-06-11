@@ -58,15 +58,14 @@ export default function Footer({
 
   return (
     <>
-      <footer className="w-full bg-white mt-32">
+      <div className="bg-[#EBEAF1] w-full h-[1px] mb-12 mt-12"></div>
+
+      <footer className="w-full bg-white  my-[100px]">
         {/* Primary top divider */}
         <div
           className={`
-            border-t border-slate-200 
-            ${
-              !fullWidthTopBorder &&
-              `${customMaxWidth ? customMaxWidth : "max-w-[1440px]"} mx-auto`
-            }
+           
+            ${`${customMaxWidth ? customMaxWidth : "max-w-[1440px]"} mx-auto`}
           `}
         ></div>
 
@@ -265,38 +264,6 @@ export default function Footer({
           </div>
         </div>
 
-        {/* Primary bottom divider */}
-        <div
-          className={`
-            border-t border-[#C1BED4] 
-            ${
-              !fullWidthBottomBorder &&
-              `${customMaxWidth ? customMaxWidth : "max-w-[1440px]"} mx-auto`
-            }
-            ${customClassName}
-          `}
-        ></div>
-
-        {/* Bottom bar */}
-        <div
-          className={`${customClassName} ${
-            customMaxWidth ? customMaxWidth : "max-w-[1440px]"
-          } mx-auto ${customPadding ? customPadding : "px-4 lg:px-0"}`}
-        >
-          <div className="flex justify-center lg:justify-between items-center py-4 lg:py-6 text-xs text-slate-500">
-            <div className="flex items-center">
-              <Image
-                src="/obudur-icon.png"
-                alt="Obudur Logo"
-                width={20}
-                height={20}
-                className="h-5 w-auto mr-2"
-              />
-              <span>© 2025 Obudur</span>
-            </div>
-          </div>
-        </div>
-
         {/* Language and Currency Switcher */}
         <LanguageSwitcher
           isOpen={isLanguageSwitcherOpen}
@@ -304,13 +271,6 @@ export default function Footer({
           showButton={false}
         />
       </footer>
-
-      <div
-        className={`w-full h-[16px] bg-[#C1BED4] ${
-          !fullWidthStripe &&
-          `${customMaxWidth ? customMaxWidth : "max-w-[1440px]"} mx-auto`
-        }`}
-      ></div>
     </>
   );
 }
