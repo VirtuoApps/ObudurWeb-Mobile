@@ -203,6 +203,7 @@ export default function AuthBox({
 
               <Link
                 href="/account"
+                onClick={() => setDropdownOpen(false)}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
                 <div className="flex flex-row items-center font-medium lg:font-normal">
@@ -251,6 +252,7 @@ export default function AuthBox({
               {(user.role === "admin" || user.role === "super-admin") && (
                 <Link
                   href="/admin/ilanlar"
+                  onClick={() => setDropdownOpen(false)}
                   className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
                 >
                   <div className="flex flex-row items-center font-medium lg:font-normal">
@@ -281,6 +283,7 @@ export default function AuthBox({
 
               <Link
                 href="/favorilerim"
+                onClick={() => setDropdownOpen(false)}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
                 <div className="flex flex-row items-center font-medium lg:font-normal">
@@ -310,6 +313,7 @@ export default function AuthBox({
 
               <Link
                 href="/favori-aramalar"
+                onClick={() => setDropdownOpen(false)}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
                 <div className="flex flex-row items-center font-medium lg:font-normal">
@@ -341,6 +345,7 @@ export default function AuthBox({
 
               <Link
                 href="/iletisim"
+                onClick={() => setDropdownOpen(false)}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
                 <div className="flex flex-row items-center font-medium lg:font-normal">
@@ -382,6 +387,7 @@ export default function AuthBox({
 
               <Link
                 href="/iletisim#offices-section"
+                onClick={() => setDropdownOpen(false)}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
                 <div className="flex flex-row items-center font-medium lg:font-normal">
@@ -453,6 +459,7 @@ export default function AuthBox({
 
             <Link
               href="/iletisim"
+              onClick={() => setDropdownOpen(false)}
               className="px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] font-[500] text-[#595959] hover:bg-gray-100 flex flex-row items-center"
             >
               Geri Bildirim
@@ -476,6 +483,7 @@ export default function AuthBox({
           </div>
         )}
       </div>
+      </>
     );
   }
 

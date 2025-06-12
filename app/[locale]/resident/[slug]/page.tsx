@@ -1,20 +1,20 @@
-import axiosInstance from "@/axios";
+import ClientWrapper from "./ClientWrapper";
 import ContactBox from "./ContactBox/ContactBox";
 import Descriptions from "./Descriptions/Descriptions";
 import Details from "./Details/Details";
 import FeaturesEquipment from "./Features/Features";
 import Footer from "./Footer/Footer";
+import FooterBottom from "./Footer/FooterBottom/FooterBottom";
 import GeneralInfo from "./GeneralInfo/GeneralInfo";
 import Header from "./Header/Header";
 import Images from "./Images/Images";
 import Location from "./Location/Location";
+import MenuItems from "./Header/MenuItems/MenuItems";
+import NotFound from "../../not-found";
 import PanoramicView from "./PanoramicView/PanoramicView";
 import PlansAndDocumentation from "./PlansAndDocumentation/PlansAndDocumentation";
-import ClientWrapper from "./ClientWrapper";
-import NotFound from "../../not-found";
 import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
-import MenuItems from "./Header/MenuItems/MenuItems";
-import FooterBottom from "./Footer/FooterBottom/FooterBottom";
+import axiosInstance from "@/axios";
 
 // Types for API response
 interface LocalizedText {
@@ -165,9 +165,9 @@ export default async function ResidentPage({
       </div>
       <div className="md:pt-[80px]">
         <Images />
-        <div className="max-w-[1472px] mx-auto px-6">
-          <div className="flex md:flex-row flex-col items-start mt-12">
-            <div className="md:w-[70%] w-full md:pr-6">
+        <div className="max-w-[1440px] mx-auto px-6 lg:px-0">
+          <div className="flex md:flex-row flex-col items-start mt-[80px] justify-between">
+            <div className="md:max-w-[952px] w-full pr-6 lg:pr-0">
               <GeneralInfo />
               <Descriptions />
               <Details />
@@ -179,7 +179,7 @@ export default async function ResidentPage({
               />
             </div>
 
-            <div className="md:w-[30%] w-full md:pl-6 mt-8 md:mt-0">
+            <div className="md:max-w-[342px] w-full pl-6 lg:pl-0 mt-8 md:mt-0">
               <ContactBox hotelData={hotelData} />
             </div>
           </div>

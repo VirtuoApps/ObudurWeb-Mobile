@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, Fragment } from "react";
-import { useTranslations } from "next-intl";
 import { Dialog, Transition } from "@headlessui/react";
+import React, { Fragment, useState } from "react";
+
+import { useTranslations } from "next-intl";
 
 type PanoramicViewProps = {
   video: string;
@@ -13,8 +14,8 @@ export default function PanoramicView({ video }: PanoramicViewProps) {
   const t = useTranslations("panoramicView");
 
   return (
-    <section id="panoramic-section" className="max-w-5xl mx-auto p-4 mt-12">
-      <h2 className="text-[#31286A] font-semibold tracking-tight text-3xl md:text-4xl">
+    <section id="panoramic-section" className="max-w-5xl mx-auto p-4 lg:p-0 mt-12">
+      <h2 className="text-[#31286A] font-semibold tracking-tight text-3xl md:text-2xl">
         {t("title")}
       </h2>
       <p className="mt-2 max-w-lg text-sm md:text-base leading-relaxed text-gray-500">

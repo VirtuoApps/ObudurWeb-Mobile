@@ -1,13 +1,14 @@
-import React, { useState, useMemo, useEffect, useCallback } from "react";
-import { GoogleMap, Marker, InfoWindow, Circle } from "@react-google-maps/api";
+import { Circle, GoogleMap, InfoWindow, Marker } from "@react-google-maps/api";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+
 import HomeDetailsPopup from "./HomeDetailsPopup/HomeDetailsPopup";
-import { useRouter } from "@/app/utils/router";
 import { Hotel } from "@/types/hotel.type";
 import ResidentBox from "../ListView/ResidentBox/ResidentBox";
 import { formatAddress } from "@/app/utils/addressFormatter";
 import { getDisplayPrice } from "@/app/utils/priceFormatter";
 import { getLocalizedText } from "../ListView/ListView";
 import { useGoogleMaps } from "../../contexts/GoogleMapsContext";
+import { useRouter } from "@/app/utils/router";
 
 const containerStyle = {
   width: "100%",
@@ -218,12 +219,12 @@ export default function GoogleMapView({
       mapInstance.panTo(position);
 
       // Only set zoom once if it's too low, without animation
-      const currentZoom = mapInstance.getZoom();
-      if (currentZoom !== undefined && currentZoom < 14) {
-        setTimeout(() => {
-          mapInstance.setZoom(15);
-        }, 300); // Delay zoom until pan is complete
-      }
+      // const currentZoom = mapInstance.getZoom();
+      // if (currentZoom !== undefined && currentZoom < 14) {
+      //   setTimeout(() => {
+      //     mapInstance.setZoom(15);
+      //   }, 300); // Delay zoom until pan is complete
+      // }
     }
   }, [selectedHotel, mapInstance, hideSelectedHotel]);
 
@@ -281,6 +282,7 @@ export default function GoogleMapView({
               color: "white",
               fontSize: "12px",
               fontWeight: "bold",
+              fontFamily: "var(--font-kumbh-sans), sans-serif",
             }}
             icon={{
               // Draw a 200 x 50 rectangle with rounded corners (12px radius)
