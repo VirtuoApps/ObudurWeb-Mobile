@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
-import { useTranslations } from "next-intl";
-import { useHotelData } from "../../hotelContext";
 import { LocalizedText } from "../../page";
+import React from "react";
+import { useHotelData } from "../../hotelContext";
+import { useTranslations } from "next-intl";
 
 export default function DetailsForWork() {
   const t = useTranslations("details");
@@ -18,9 +18,9 @@ export default function DetailsForWork() {
   };
 
   return (
-    <section id="details-section" className="max-w-5xl mx-auto p-4 mt-12">
+    <section id="details-section" className="max-w-5xl mx-auto p-4 lg:p-0 mt-12">
       <div className="header">
-        <h2 className="font-semibold tracking-tight text-[#31286A] text-3xl md:text-4xl">
+        <h2 className="font-semibold tracking-tight text-[#31286A] text-3xl md:text-2xl">
           {t("title")}
         </h2>
         <p className="max-w-2xl mt-2 leading-relaxed text-sm md:text-base text-gray-500">

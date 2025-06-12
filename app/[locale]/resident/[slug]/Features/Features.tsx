@@ -1,43 +1,44 @@
 "use client";
 
-import React from "react";
-import { useTranslations } from "next-intl";
+import { Feature, LocalizedText } from "../page";
 import {
-  FiTv,
-  FiWifi,
-  FiBell,
-  FiGrid,
-  FiHome,
-  FiMonitor,
-  FiCpu,
-  FiCoffee,
-  FiHardDrive,
-  FiWind,
-  FiPackage,
-  FiLayers,
-  FiScissors,
-  FiFile,
-  FiSun,
-  FiAperture,
-  FiCloud,
-  FiBox,
-  FiUsers,
-  FiMove,
   FiActivity,
-  FiCircle,
-  FiTruck,
-  FiVideo,
+  FiAperture,
   FiArchive,
-  FiLock,
-  FiMusic,
-  FiDroplet,
+  FiBell,
+  FiBox,
   FiBriefcase,
   FiCalendar,
+  FiCircle,
+  FiCloud,
+  FiCoffee,
+  FiCpu,
+  FiDroplet,
+  FiFile,
+  FiGrid,
+  FiHardDrive,
+  FiHome,
+  FiLayers,
+  FiLock,
+  FiMonitor,
+  FiMove,
+  FiMusic,
+  FiPackage,
+  FiScissors,
+  FiSun,
+  FiTruck,
+  FiTv,
+  FiUsers,
+  FiVideo,
+  FiWifi,
+  FiWind,
 } from "react-icons/fi";
+
 import { IconBaseProps } from "react-icons";
-import { useHotelData } from "../hotelContext";
-import { Feature, LocalizedText } from "../page";
+import React from "react";
 import { infrastructureFeatures } from "../../../../utils/infrastructureFeatures";
+import { useHotelData } from "../hotelContext";
+import { useTranslations } from "next-intl";
 import { views } from "../../../../utils/views";
 
 // Type definitions
@@ -127,9 +128,9 @@ export default function FeaturesEquipment() {
       .filter((v: Feature | null): v is Feature => v !== null) || [];
 
   return (
-    <section id="features-section" className="max-w-5xl mx-auto p-4 mt-12">
+    <section id="features-section" className="max-w-5xl mx-auto p-4 lg:p-0 mt-12">
       <div>
-        <h2 className="text-[#31286A] font-semibold tracking-tight text-3xl md:text-4xl">
+        <h2 className="text-[#31286A] font-semibold tracking-tight text-3xl md:text-2xl">
           {t("title")}
         </h2>
         <p className="mt-2 max-w-xl text-sm md:text-base leading-relaxed text-gray-500">

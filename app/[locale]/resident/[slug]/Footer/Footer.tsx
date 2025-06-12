@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 
+import FooterBottom from "./FooterBottom/FooterBottom";
 import Image from "next/image";
+import LanguageSwitcher from "../../../../components/LanguageSwitcher";
 import axiosInstance from "../../../../../axios";
 import { useTranslations } from "next-intl";
-import LanguageSwitcher from "../../../../components/LanguageSwitcher";
-import FooterBottom from "./FooterBottom/FooterBottom";
 
 type FooterType = {
   customClassName?: string;
@@ -294,5 +294,6 @@ export default function Footer({
       </div>
       <div className="w-full h-[16px] bg-[#C1BED4]"></div>
     </footer>
+    </div>
   );
 }

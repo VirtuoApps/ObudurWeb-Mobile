@@ -27,6 +27,14 @@ body {
   font-family: var(--font-kumbh-sans), sans-serif;
 }
 
+.gm-style {
+  /* font-size: 14px !important; */
+  color: #FCFCFC !important;
+  /* font-family: var(--font-kumbh-sans), sans-serif !important; */
+  /* font-weight: 400 !important; */
+  font: 400 14px var(--font-kumbh-sans), sans-serif !important;
+}
+
 /* Leaflet map styles */
 .price-marker {
   background-color: #4b3f72;

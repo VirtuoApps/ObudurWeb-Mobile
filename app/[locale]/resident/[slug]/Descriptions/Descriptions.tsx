@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
-import { useTranslations } from "next-intl";
-import { useHotelData } from "../hotelContext";
 import { LocalizedText } from "../page";
+import React from "react";
+import { useHotelData } from "../hotelContext";
+import { useTranslations } from "next-intl";
 
 export default function Descriptions() {
   const t = useTranslations("residentMenu");
@@ -12,7 +12,7 @@ export default function Descriptions() {
   const currentLocale = locale as keyof LocalizedText;
 
   return (
-    <div id="descriptions-section" className="max-w-5xl mx-auto p-4 mt-12">
+    <div id="descriptions-section" className="max-w-5xl mx-auto p-4 lg:p-0 mt-0 lg:mt-[48px]">
       <p className="font-bold text-[#362C75] text-2xl">{t("descriptions")}</p>
 
       <div className="flex md:flex-row flex-col mt-8 gap-6">
