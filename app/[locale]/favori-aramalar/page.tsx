@@ -78,7 +78,11 @@ export default function FavoriAramalarPage() {
 
   return (
     <div className="w-full">
-      <SimpleHeader showBackButton backUrl="/" />
+      <SimpleHeader
+        showBackButton
+        backUrl="/"
+        customMaxWidth="max-w-full px-5"
+      />
 
       <div className="w-full bg-[#ebeaf1] min-h-screen  sm:px-6 lg:px-0">
         <HeaderSection totalFilters={savedFilters.length} />
@@ -124,7 +128,13 @@ export default function FavoriAramalarPage() {
         </div>
       </div>
 
-      <Footer />
+      <Footer
+        customMaxWidth="max-w-[1448px]"
+        customPadding="md:px-4 px-2"
+        fullWidthTopBorder={true}
+        fullWidthBottomBorder={true}
+        fullWidthStripe={true}
+      />
     </div>
   );
 }

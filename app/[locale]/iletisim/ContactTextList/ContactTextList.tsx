@@ -6,7 +6,7 @@ export default function ContactTextList() {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
           {/* Merkez Ofis */}
-          <div>
+          <div className="text-center md:text-left">
             <h3 className="text-[#262626] text-2xl font-semibold mb-6">
               Merkez Ofis
             </h3>
@@ -43,11 +43,11 @@ export default function ContactTextList() {
           </div>
 
           {/* Bizi Takip Edin */}
-          <div>
-            <h3 className="text-[#262626] text-2xl font-semibold mb-4 flex justify-end">
+          <div className="text-center md:text-right">
+            <h3 className="text-[#262626] text-2xl font-semibold mb-4 flex justify-center md:justify-end">
               Bizi Takip Edin
             </h3>
-            <div className="flex flex-col items-end">
+            <div className="flex flex-col items-center md:items-end">
               <span className="inline-flex items-center  rounded-full text-[#262626] text-base">
                 Facebook
               </span>

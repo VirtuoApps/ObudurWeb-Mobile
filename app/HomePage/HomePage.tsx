@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import axiosInstance from "@/axios";
 import Header from "./Header/Header";
 import FilterList from "./FilterList/FilterList";
@@ -17,6 +17,10 @@ import { currencyOptions } from "@/app/components/LanguageSwitcher";
 import { filterHotelsByProximity } from "@/app/utils/geoUtils";
 import Footer from "../[locale]/resident/[slug]/Footer/Footer";
 import SaveFilterPopup from "./SaveFilterPopup/SaveFilterPopup";
+import NoResultFound from "./ListView/NoResultFound/NoResultFound";
+import EmailVerifiedSuccessPopup from "../components/EmailVerifiedSuccessPopup/EmailVerifiedSuccessPopup";
+import PersonalInformationFormPopup from "../components/PersonalInformationsFormPopup/PersonalInformationsFormPopup";
+import SignupEmailVerifySendPopup from "../components/SignupEMailVerifySendPopup/SignupEmailVerifySendPopup";
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
   loading: () => {
@@ -55,6 +59,7 @@ export default function HomePage({
   const t = useTranslations("common");
   const searchParams = useSearchParams();
   const router = useRouter();
+  const pathname = usePathname();
   const [currentView, setCurrentView] = useState<"map" | "list">("map");
   const [filters, setFilters] = useState<FilterType | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
@@ -98,6 +103,31 @@ export default function HomePage({
   const [isSaveFilterPopupOpen, setIsSaveFilterPopupOpen] = useState(false);
 
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
+
+  const [showEmailVerifiedPopup, setShowEmailVerifiedPopup] = useState(false);
+  const [showSignupEmailVerifySendPopup, setShowSignupEmailVerifySendPopup] =
+    useState(false);
+
+  useEffect(() => {
+    if (searchParams.get("emailConfirmed") === "true") {
+      setShowEmailVerifiedPopup(true);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (searchParams.get("showSignupEmailVerifySendPopup") === "true") {
+      setShowSignupEmailVerifySendPopup(true);
+    }
+  }, [searchParams]);
+
+  const handleCloseEmailVerifiedPopup = () => {
+    setShowEmailVerifiedPopup(false);
+    const newParams = new URLSearchParams(searchParams.toString());
+    newParams.delete("emailConfirmed");
+    const newSearch = newParams.toString();
+    const newUrl = newSearch ? `${pathname}?${newSearch}` : pathname;
+    router.replace(newUrl, { scroll: false });
+  };
 
   // Function to apply saved filter
   const applySavedFilter = async (filterId: string) => {
@@ -234,16 +264,9 @@ export default function HomePage({
     }
   }, [searchParams]);
 
-  // Disable body scroll when component mounts
-  useEffect(() => {
-    // Disable scroll on body
-    document.body.style.overflow = "hidden";
-
-    // Cleanup function to re-enable scroll when component unmounts
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, []);
+  console.log({
+    currentView,
+  });
 
   useEffect(() => {
     if (isDefaultSale) {
@@ -308,15 +331,17 @@ export default function HomePage({
   if (filters) {
     if (filters.propertyType) {
       filteredHotels = filteredHotels.filter((hotel) =>
-        Object.values(hotel.housingType).some(
+        Object.values(hotel.entranceType).some(
           (value) => value === filters.propertyType
         )
       );
     }
 
     if (filters.roomAsText) {
-      filteredHotels = filteredHotels.filter(
-        (hotel) => hotel.roomAsText === filters.roomAsText
+      filteredHotels = filteredHotels.filter((hotel) =>
+        Object.values(hotel.housingType).some(
+          (value) => value === filters.roomAsText
+        )
       );
     }
 
@@ -467,41 +492,38 @@ export default function HomePage({
     );
   }
 
-  function NoResultsFound() {
-    return (
-      <div className="w-full h-[calc(100vh-155px)] flex flex-col items-center justify-center text-gray-500">
-        <p>{t("noResultsFound")}</p>
-        <button
-          onClick={() => {
-            setFilters(null);
-            setSelectedLocation(null);
-            setSelectedPropertyType(null);
-            setSelectedCategory(null);
-            setListingType("For Sale");
-            setSelectedFeatures([]);
-            setInteriorFeatures([]);
-            setSelectedExteriorFeatures([]);
-            setSelectedAccessibilityFeatures([]);
-            setAccessibilityFeatures([]);
-            setSelectedFaceFeatures([]);
-            setFaceFeatures([]);
-            setMinPrice("");
-            setMaxPrice("");
-            setMinArea("");
-            setMaxArea("");
-            setRoomCount("");
-            setBathroomCount("");
-          }}
-          className="mt-4 px-4 py-2 bg-[#362C75] text-white rounded transition-colors cursor-pointer"
-        >
-          {t("clearFilters")}
-        </button>
-      </div>
-    );
-  }
+  const noResultFound =
+    (filters || selectedLocation) && filteredHotels.length === 0;
+
+  // Disable body scroll when component mounts
+  useEffect(() => {
+    // Disable scroll on body
+    if (currentView === "map" && !noResultFound) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "scroll";
+    }
+
+    // Cleanup function to re-enable scroll when component unmounts
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [currentView, noResultFound]);
 
   return (
     <>
+      {showEmailVerifiedPopup && (
+        <EmailVerifiedSuccessPopup onClose={handleCloseEmailVerifiedPopup} />
+      )}
+      {showSignupEmailVerifySendPopup && (
+        <SignupEmailVerifySendPopup
+          onClose={() => {
+            setShowSignupEmailVerifySendPopup(false);
+          }}
+        />
+      )}
+
+      {/* <PersonalInformationFormPopup onClose={() => {}} /> */}
       <div
         className="fixed bottom-4 left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-10 px-3 h-[40px] rounded-lg shadow-lg"
         onClick={() => handleViewChange(currentView === "map" ? "list" : "map")}
@@ -536,7 +558,7 @@ export default function HomePage({
         selectedFaceFeatures={selectedFaceFeatures}
         resultCount={filteredHotels.length}
       />
-      <div className="bg-white overflow-hidden h-screen">
+      <div className="bg-white ">
         <Header
           setFilters={setFilters}
           filterOptions={filterOptions}
@@ -624,7 +646,30 @@ export default function HomePage({
                   : "opacity-100 transform translate-y-0 scale-100 animate-fade-in-up"
               }`}
             >
-              <NoResultsFound />
+              <NoResultFound
+                resetFilters={() => {
+                  setFilters(null);
+                  setSelectedLocation(null);
+                  setSelectedPropertyType(null);
+                  setSelectedCategory(null);
+                  setListingType("For Sale");
+                  setSelectedFeatures([]);
+                  setInteriorFeatures([]);
+                  setSelectedExteriorFeatures([]);
+                  setSelectedAccessibilityFeatures([]);
+                  setAccessibilityFeatures([]);
+                  setSelectedFaceFeatures([]);
+                  setFaceFeatures([]);
+                  setMinPrice("");
+                  setMaxPrice("");
+                  setMinArea("");
+                  setMaxArea("");
+                  setRoomCount("");
+                  setBathroomCount("");
+                }}
+                allHotels={hotels}
+                currentView={currentView}
+              />
             </div>
           ) : (
             <div
@@ -663,6 +708,7 @@ export default function HomePage({
                       hotels.length !== filteredHotels.length
                     }
                   />
+                  <div className="pt-24 w-full"></div>
                   <Footer />
                 </div>
               )}

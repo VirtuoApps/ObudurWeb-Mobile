@@ -254,7 +254,22 @@
     "floor": "Kat",
     "propertyType": "Konut Tipi",
     "entrance": "Giriş",
-    "listingType": "İlan Türü"
+    "listingType": "İlan Türü",
+    "source": "Kimden",
+    "landType": "Arsa Tipi",
+    "creditEligible": "Krediye Uygun",
+    "generalFeatures": "Genel Özellikler",
+    "deedStatus": "Tapu Durumu",
+    "zoningStatus": "İmar Durumu",
+    "usageStatus": "Kullanım Durumu",
+    "exchangeable": "Takaslı",
+    "floorCount": "Kat Sayısı",
+    "buildingAge": "Bina Yaşı",
+    "roomCount": "Bölüm/Oda Sayısı",
+    "heatingType": "Isıtma",
+    "dues": "Aidat",
+    "adaNo": "Ada No",
+    "parselNo": "Parsel No"
   },
   "features": {
     "title": "Özellikler & Donanımlar",

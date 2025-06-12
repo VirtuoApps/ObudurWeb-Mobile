@@ -9,7 +9,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 const languageOptions = [
   { code: "tr", name: "Türkçe", translation: "Turkish" },
   { code: "en", name: "English", translation: "English" },
-  { code: "ru", name: "Russian", translation: "Russian" },
+  // { code: "ru", name: "Russian", translation: "Russian" },
 ];
 
 export const currencyOptions = [
@@ -18,14 +18,32 @@ export const currencyOptions = [
   { code: "USD", symbol: "$", name: "US Dollar" },
 ];
 
-export default function LanguageSwitcher() {
+interface LanguageSwitcherProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+  showButton?: boolean;
+}
+
+export default function LanguageSwitcher({
+  isOpen: externalIsOpen,
+  onClose: externalOnClose,
+  showButton = true,
+}: LanguageSwitcherProps = {}) {
   const t = useTranslations("header");
   const ls = useTranslations("languageSwitcher");
   const currentLocale = useLocale();
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(currentLocale);
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
+
+  // Use external isOpen if provided, otherwise use internal state
+  const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
+  const setIsOpen = externalOnClose
+    ? (value: boolean) => {
+        if (!value) externalOnClose();
+      }
+    : setInternalIsOpen;
 
   useEffect(() => {
     // Initialize selectedCurrency from localStorage if available
@@ -34,6 +52,12 @@ export default function LanguageSwitcher() {
       setSelectedCurrency(savedCurrency);
     }
   }, []);
+
+  useEffect(() => {
+    if (externalIsOpen !== undefined) {
+      setInternalIsOpen(externalIsOpen);
+    }
+  }, [externalIsOpen]);
 
   const changeLanguage = (newLocale: string) => {
     let newPath = pathname;
@@ -72,12 +96,14 @@ export default function LanguageSwitcher() {
 
   return (
     <div className="relative">
-      <button
-        onClick={() => setIsOpen(true)}
-        className="w-[48px] h-[48px] flex items-center justify-center hover:bg-gray-100 transition-all duration-200 rounded-lg cursor-pointer"
-      >
-        <img src="/globe.png" className="w-[24px] h-[24px]" />
-      </button>
+      {showButton && (
+        <button
+          onClick={() => setInternalIsOpen(true)}
+          className="w-[48px] h-[48px] flex items-center justify-center hover:bg-gray-100 transition-all duration-200 rounded-lg cursor-pointer"
+        >
+          <img src="/globe.png" className="w-[24px] h-[24px]" />
+        </button>
+      )}
 
       {isOpen && (
         <div
@@ -104,7 +130,7 @@ export default function LanguageSwitcher() {
               <div className="text-gray-400">{ls("language")}</div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 mb-8">
+            <div className="grid grid-cols-2 gap-4 mb-8">
               {languageOptions.map((lang) => (
                 <div
                   key={lang.code}

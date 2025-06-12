@@ -12,12 +12,14 @@ interface HeaderProps {
   customRedirectUrl?: string;
   showBackButton?: boolean;
   backUrl?: string;
+  customMaxWidth?: string;
 }
 
 export default function SimpleHeader({
   customRedirectUrl,
   showBackButton,
   backUrl,
+  customMaxWidth,
 }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 

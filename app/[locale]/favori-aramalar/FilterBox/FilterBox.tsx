@@ -215,7 +215,7 @@ export default function FilterBox({
         </div>
 
         {/* Notification Preferences */}
-        <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8 p-4 sm:p-6 border-b border-[#F0F0F0]">
+        {/* <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8 p-4 sm:p-6 border-b border-[#F0F0F0]">
           <div className="flex items-center">
             <label className="relative inline-flex items-center cursor-pointer">
               <input
@@ -353,7 +353,7 @@ export default function FilterBox({
               E-Posta bildirimleri almak istiyorum
             </span>
           </div>
-        </div>
+        </div> */}
 
         {/* Action Buttons */}
         <div className="flex flex-row gap-3 sm:gap-4 p-4 sm:p-6 pt-0 sm:justify-between">

@@ -120,7 +120,9 @@ export default function ResidentBox({
     <>
       <div
         className="w-full overflow-hidden bg-white rounded-2xl  transition-shadow duration-300 cursor-pointer border-[9px] border-white"
-        onClick={() => router.push(`/resident/${slug}`)}
+        onClick={() => {
+          window.open(`/resident/${slug}`, "_blank");
+        }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >

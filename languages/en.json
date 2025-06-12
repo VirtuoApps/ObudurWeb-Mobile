@@ -254,7 +254,22 @@
     "floor": "Floor",
     "propertyType": "Property Type",
     "entrance": "Entrance",
-    "listingType": "Listing Type"
+    "listingType": "Listing Type",
+    "source": "Listed By",
+    "landType": "Land Type",
+    "creditEligible": "Mortgage Eligible",
+    "generalFeatures": "General Features",
+    "deedStatus": "Deed Status",
+    "zoningStatus": "Zoning Status",
+    "usageStatus": "Usage Status",
+    "exchangeable": "Exchangeable",
+    "floorCount": "Floor Count",
+    "buildingAge": "Building Age",
+    "roomCount": "Room/Section Count",
+    "heatingType": "Heating",
+    "dues": "Maintenance Fee",
+    "adaNo": "Block No",
+    "parselNo": "Parcel No"
   },
   "features": {
     "title": "Features & Amenities",

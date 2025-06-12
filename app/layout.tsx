@@ -2,11 +2,7 @@ import { Metadata } from "next";
 import "./globals.css";
 import AuthCheck from "./components/AuthCheck/AuthCheck";
 import { ReduxProvider } from "./providers/ReduxProvider";
-
-export const metadata: Metadata = {
-  title: "oBudur Website",
-  description: "Find your place with oBudur",
-};
+import SignupEmailVerifySendPopup from "./components/SignupEMailVerifySendPopup/SignupEmailVerifySendPopup";
 
 export default function RootLayout({
   children,

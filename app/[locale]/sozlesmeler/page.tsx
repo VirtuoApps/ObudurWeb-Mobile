@@ -5,10 +5,12 @@ import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
 
 export default function sozlesmeler() {
   return (
-    <div className="w-full bg-[#ebeaf1] min-h-screen">
+    <>
       <SimpleHeader />
-      <AggrementsBox />
-      <Footer />
-    </div>
+      <div className="w-full bg-[#ebeaf1] min-h-screen pt-8">
+        <AggrementsBox />
+        <Footer />
+      </div>
+    </>
   );
 }

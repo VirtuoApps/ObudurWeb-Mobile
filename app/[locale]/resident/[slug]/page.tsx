@@ -14,6 +14,7 @@ import ClientWrapper from "./ClientWrapper";
 import NotFound from "../../not-found";
 import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
 import MenuItems from "./Header/MenuItems/MenuItems";
+import FooterBottom from "./Footer/FooterBottom/FooterBottom";
 
 // Types for API response
 interface LocalizedText {
@@ -76,6 +77,19 @@ interface HotelDetails {
   housingType: LocalizedText;
   entranceType: LocalizedText;
   listingType: LocalizedText;
+  source?: LocalizedText;
+  generalFeatures?: LocalizedText;
+  deedStatus?: LocalizedText;
+  zoningStatus?: LocalizedText;
+  heatingType?: LocalizedText;
+  usageStatus?: LocalizedText;
+  adaNo?: string;
+  parselNo?: string;
+  exchangeable?: boolean;
+  creditEligible?: any;
+  buildingAge?: number;
+  isFurnished?: boolean;
+  dues?: any;
   featureIds: string[];
   distances: { typeId: string; value: number }[];
   location: LocationPoint;
@@ -151,27 +165,32 @@ export default async function ResidentPage({
       </div>
       <div className="md:pt-[80px]">
         <Images />
-        <div className="flex md:flex-row flex-col items-start mt-12">
-          <div className="md:w-[70%] w-full">
-            <GeneralInfo />
-            <Descriptions />
-            <Details />
-            <FeaturesEquipment />
-            {video && <PanoramicView video={video} />}
-            <Location />
-            {hotelData.hotelDetails.documents.length > 0 && (
+        <div className="max-w-[1472px] mx-auto px-6">
+          <div className="flex md:flex-row flex-col items-start mt-12">
+            <div className="md:w-[70%] w-full md:pr-6">
+              <GeneralInfo />
+              <Descriptions />
+              <Details />
+              <FeaturesEquipment />
+              {video && <PanoramicView video={video} />}
+              <Location />
               <PlansAndDocumentation
                 documents={hotelData.hotelDetails.documents}
               />
-            )}
-          </div>
+            </div>
 
-          <div className="md:w-[30%] w-full p-4 pt-2">
-            <ContactBox hotelData={hotelData} />
+            <div className="md:w-[30%] w-full md:pl-6 mt-8 md:mt-0">
+              <ContactBox hotelData={hotelData} />
+            </div>
           </div>
         </div>
-
-        <Footer />
+        <Footer
+          customMaxWidth="max-w-[1472px]"
+          customPadding="md:px-10 px-6"
+          fullWidthTopBorder={true}
+          fullWidthBottomBorder={true}
+          fullWidthStripe={true}
+        />
       </div>
     </ClientWrapper>
   );

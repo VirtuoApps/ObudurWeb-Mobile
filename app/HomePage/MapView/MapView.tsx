@@ -31,10 +31,10 @@ export default function GoogleMapView({
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
   const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
   const [hideSelectedHotel, setHideSelectedHotel] = useState(false);
-
-  console.log({
-    selectedLocation: JSON.stringify(selectedLocation),
-  });
+  const [randomHotelCenter, setRandomHotelCenter] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
 
   const router = useRouter();
 
@@ -56,6 +56,20 @@ export default function GoogleMapView({
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
   }, [selectedCurrency]);
+
+  useEffect(() => {
+    // Set a random hotel as center only on initial load and if no location is selected
+    if (hotels.length > 0 && !selectedLocation && !randomHotelCenter) {
+      const randomIndex = Math.floor(Math.random() * hotels.length);
+      const hotel = hotels[randomIndex];
+      if (hotel.location?.coordinates) {
+        setRandomHotelCenter({
+          lat: hotel.location.coordinates[1],
+          lng: hotel.location.coordinates[0],
+        });
+      }
+    }
+  }, [hotels, selectedLocation, randomHotelCenter]);
 
   // Calculate the center based on selectedLocation first, then average of all coordinates
   const center = useMemo(() => {
@@ -81,6 +95,10 @@ export default function GoogleMapView({
         lat: selectedLocation.coordinates[1],
         lng: selectedLocation.coordinates[0],
       };
+    }
+
+    if (randomHotelCenter) {
+      return randomHotelCenter;
     }
 
     if (!hotels || hotels.length === 0) {
@@ -114,7 +132,7 @@ export default function GoogleMapView({
       lat: sum.lat / validHotels.length,
       lng: sum.lng / validHotels.length,
     };
-  }, [hotels, selectedLocation, selectedHotel]);
+  }, [hotels, selectedLocation, selectedHotel, randomHotelCenter]);
 
   const onLoad = useCallback(function callback(map: google.maps.Map) {
     setMapInstance(map);
@@ -194,12 +212,17 @@ export default function GoogleMapView({
         lat: selectedHotel.location.coordinates[1] + 0.004, // Balanced offset to avoid top bar but stay close to marker
         lng: selectedHotel.location.coordinates[0],
       };
+
+      // Use smooth pan animation without zoom changes
+      // This provides consistent, gentle movement for all hotel selections
       mapInstance.panTo(position);
 
-      // Optionally adjust zoom if needed
+      // Only set zoom once if it's too low, without animation
       const currentZoom = mapInstance.getZoom();
-      if (currentZoom !== undefined && currentZoom < 15) {
-        mapInstance.setZoom(15);
+      if (currentZoom !== undefined && currentZoom < 14) {
+        setTimeout(() => {
+          mapInstance.setZoom(15);
+        }, 300); // Delay zoom until pan is complete
       }
     }
   }, [selectedHotel, mapInstance, hideSelectedHotel]);

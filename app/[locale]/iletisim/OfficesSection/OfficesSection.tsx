@@ -24,7 +24,9 @@ interface Location {
 }
 
 export default function OfficesSection() {
-  const [expandedOffice, setExpandedOffice] = useState<string | null>(null);
+  const [expandedOffices, setExpandedOffices] = useState<Set<string>>(
+    new Set()
+  );
   const [expandedLocations, setExpandedLocations] = useState<Set<string>>(
     new Set()
   );
@@ -120,11 +122,13 @@ export default function OfficesSection() {
   ];
 
   const toggleOffice = (officeId: string) => {
-    if (expandedOffice === officeId) {
-      setExpandedOffice(null);
+    const newExpanded = new Set(expandedOffices);
+    if (newExpanded.has(officeId)) {
+      newExpanded.delete(officeId);
     } else {
-      setExpandedOffice(officeId);
+      newExpanded.add(officeId);
     }
+    setExpandedOffices(newExpanded);
   };
 
   const toggleLocation = (locationId: string) => {
@@ -144,7 +148,7 @@ export default function OfficesSection() {
         {offices
           .filter((_, index) => index % 2 === 0)
           .map((office) => {
-            const isExpanded = expandedOffice === office.id;
+            const isExpanded = expandedOffices.has(office.id);
             return (
               <div
                 key={office.id}
@@ -156,7 +160,7 @@ export default function OfficesSection() {
                   onClick={() => toggleOffice(office.id)}
                 >
                   <div className="flex items-center gap-3">
-                    <h3 className="font-bold text-[#262626] text-base">
+                    <h3 className="font-bold text-[#262626] text-base w-[200px] break-words md:w-auto">
                       {office.name}
                     </h3>
                     <span className="text-base text-[#8C8C8C]  py-1 rounded-full">
@@ -196,7 +200,7 @@ export default function OfficesSection() {
                             : ""
                         }`}
                       >
-                        <p className="text-[#262626] font-bold text-base mb-4">
+                        <p className="text-[#262626] font-bold text-base mb-4 w-[200px] break-words md:w-auto">
                           {contact.baseTitle}
                         </p>
                         <div className="space-y-2">
@@ -230,13 +234,30 @@ export default function OfficesSection() {
                               {contact.email}
                             </a>
                           </div>
-                          <div className="flex gap-2">
-                            <span className="font-medium text-[#262626] text-sm">
-                              Adres:
-                            </span>
-                            <span className="text-[#595959] text-sm">
+                          <div className="flex flex-row justify-between gap-2">
+                            <span className="text-[#262626] text-sm max-w-[350px] break-words">
                               {contact.address}
                             </span>
+                            <div
+                              className="bg-[#F0F0F0] hover:bg-[#5E5691] transition-all duration-200 rounded-2xl flex items-center justify-center w-[56px] h-[56px] group cursor-pointer"
+                              onClick={() => {
+                                window.open(
+                                  `https://www.google.com/maps/search/?api=1&query=${contact.address}`,
+                                  "_blank"
+                                );
+                              }}
+                            >
+                              <img
+                                src="/marker-04.png"
+                                alt="map"
+                                className="w-[24px] h-[24px] group-hover:hidden"
+                              />
+                              <img
+                                src="/chevron-right.png"
+                                alt="chevron"
+                                className="w-[24px] h-[24px] hidden group-hover:block"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -253,7 +274,7 @@ export default function OfficesSection() {
         {offices
           .filter((_, index) => index % 2 === 1)
           .map((office) => {
-            const isExpanded = expandedOffice === office.id;
+            const isExpanded = expandedOffices.has(office.id);
             return (
               <div
                 key={office.id}
@@ -265,7 +286,7 @@ export default function OfficesSection() {
                   onClick={() => toggleOffice(office.id)}
                 >
                   <div className="flex items-center gap-3">
-                    <h3 className="font-bold text-[#262626] text-base">
+                    <h3 className="font-bold text-[#262626] text-base w-[200px] break-words md:w-auto">
                       {office.name}
                     </h3>
                     <span className="text-base text-[#8C8C8C]  py-1 rounded-full">
@@ -292,7 +313,9 @@ export default function OfficesSection() {
                 {/* Office Details */}
                 <div
                   className={`transition-all duration-300 overflow-hidden ${
-                    isExpanded ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                    isExpanded
+                      ? "max-h-[1000px] opacity-100"
+                      : "max-h-0 opacity-0"
                   }`}
                 >
                   <div className=" pb-4 border-t border-[#D9D9D9]">
@@ -339,13 +362,30 @@ export default function OfficesSection() {
                               {contact.email}
                             </a>
                           </div>
-                          <div className="flex gap-2">
-                            <span className="font-medium text-[#262626] text-sm">
-                              Adres:
-                            </span>
-                            <span className="text-[#595959] text-sm">
+                          <div className="flex flex-row justify-between gap-2">
+                            <span className="text-[#262626] text-sm max-w-[350px] break-words">
                               {contact.address}
                             </span>
+                            <div
+                              className="bg-[#F0F0F0] hover:bg-[#5E5691] transition-all duration-200 rounded-2xl flex items-center justify-center w-[56px] h-[56px] group cursor-pointer"
+                              onClick={() => {
+                                window.open(
+                                  `https://www.google.com/maps/search/?api=1&query=${contact.address}`,
+                                  "_blank"
+                                );
+                              }}
+                            >
+                              <img
+                                src="/marker-04.png"
+                                alt="map"
+                                className="w-[24px] h-[24px] group-hover:hidden"
+                              />
+                              <img
+                                src="/chevron-right.png"
+                                alt="chevron"
+                                className="w-[24px] h-[24px] hidden group-hover:block"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>

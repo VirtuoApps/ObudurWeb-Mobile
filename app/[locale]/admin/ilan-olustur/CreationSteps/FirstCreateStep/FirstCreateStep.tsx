@@ -252,14 +252,6 @@ export default function FirstCreateStep() {
           "placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]";
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading...
-      </div>
-    );
-  }
-
   // Mapping of predefined translations for selection options
   const optionTranslations = {
     listingType: {
@@ -287,14 +279,10 @@ export default function FirstCreateStep() {
                 metni.
               </p>
             </div>
-
-            <span className="text-sm text-gray-600 mb-4 sm:mb-0 mt-auto">
-              Adım 1 / 6
-            </span>
           </div>
 
           {/* Right Form Panel - 70% width on desktop */}
-          <div className="w-full md:w-[67%] p-6 flex flex-col gap-6">
+          <div className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
             {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4">
@@ -488,17 +476,21 @@ export default function FirstCreateStep() {
             </div>
 
             {/* Step counter and continue button */}
-            <div className="mt-6 flex flex-col sm:flex-row justify-end items-center">
-              <button
-                type="button"
-                onClick={handleContinue}
-                className="w-full sm:w-auto bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
-              >
-                Devam Et
-                <ChevronRightIcon className="h-5 w-5" />
-              </button>
-            </div>
           </div>
+        </div>
+
+        <div className=" flex flex-col sm:flex-row justify-between items-center p-6">
+          <span className="text-sm text-gray-600 mb-4 sm:mb-0 mt-auto">
+            Adım 1 / 6
+          </span>
+          <button
+            type="button"
+            onClick={handleContinue}
+            className="w-full sm:w-auto bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+          >
+            Devam Et
+            <ChevronRightIcon className="h-5 w-5" />
+          </button>
         </div>
       </div>
     </div>

@@ -5,13 +5,36 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import axiosInstance from "../../../../../axios";
 import { useTranslations } from "next-intl";
+import LanguageSwitcher from "../../../../components/LanguageSwitcher";
+import FooterBottom from "./FooterBottom/FooterBottom";
 
-export default function Footer() {
+type FooterType = {
+  customClassName?: string;
+  customMaxWidth?: string;
+  customPadding?: string;
+  fullWidthTopBorder?: boolean;
+  fullWidthBottomBorder?: boolean;
+  fullWidthStripe?: boolean;
+  customMy?: string;
+  hideTopMargin?: boolean;
+};
+
+export default function Footer({
+  customClassName = "1440px",
+  customMaxWidth,
+  customPadding,
+  fullWidthTopBorder = false,
+  fullWidthBottomBorder = false,
+  fullWidthStripe = false,
+  customMy,
+  hideTopMargin = false,
+}: FooterType) {
   const t = useTranslations("footer.newsletter");
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isLanguageSwitcherOpen, setIsLanguageSwitcherOpen] = useState(false);
 
   useEffect(() => {
     // Check if user is already subscribed
@@ -23,6 +46,9 @@ export default function Footer() {
   }, []);
 
   const handleSubscribe = async (e: React.FormEvent<HTMLFormElement>) => {
+    if (!email.includes(".com")) {
+      return;
+    }
     e.preventDefault();
     setIsLoading(true);
     setError("");
@@ -40,9 +66,23 @@ export default function Footer() {
   };
 
   return (
-    <footer className="w-full bg-white mt-32">
-      {/* Primary top divider */}
-      <div className="border-t border-slate-200"></div>
+    <div className="w-full bg-white">
+      <div
+        className={`bg-[#EBEAF1] w-full h-[1px] ${
+          hideTopMargin ? "mt-0" : "mt-12"
+        }`}
+      ></div>
+
+      <footer
+        className={`w-full bg-white  ${customMy ? customMy : "my-[0px]"}`}
+      >
+        {/* Primary top divider */}
+        <div
+          className={`
+           
+            ${`${customMaxWidth ? customMaxWidth : "max-w-[1440px]"} mx-auto`}
+          `}
+        ></div>
 
       <div className="max-w-[1440px] mx-auto px-4 lg:px-0 py-12 lg:py-20">
         <div className="flex flex-col lg:flex-row lg:justify-between pt-8 pb-10 gap-8 lg:gap-0">
@@ -159,76 +199,79 @@ export default function Footer() {
               </ul>
             </nav>
 
-            {/* Column 3 */}
-            <nav className="col-span-1">
-              <ul className="space-y-2">
-                <li>
-                  <a
-                    href="/iletisim"
-                    className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
-                  >
-                    Geri Bildirim
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/sozlesmeler?id=sozlesmeler&itemId=bireysel"
-                    className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
-                  >
-                    Kullanıcı Sözleşmeleri
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/sozlesmeler?id=cerezler&itemId=tercihler"
-                    className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
-                  >
-                    Çerez Politikası
-                  </a>
-                </li>
-                <li>
-                  <a className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer">
-                    Dil & Para Birimi
-                  </a>
-                </li>
-              </ul>
-            </nav>
+              {/* Column 3 */}
+              <nav className="col-span-1">
+                <ul className="space-y-2">
+                  <li>
+                    <a
+                      href="/iletisim"
+                      className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                    >
+                      Geri Bildirim
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="/sozlesmeler?id=sozlesmeler&itemId=bireysel"
+                      className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                    >
+                      Kullanıcı Sözleşmeleri
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="/sozlesmeler?id=cerezler&itemId=tercihler"
+                      className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                    >
+                      Çerez Politikası
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                      onClick={() => setIsLanguageSwitcherOpen(true)}
+                    >
+                      Dil & Para Birimi
+                    </a>
+                  </li>
+                </ul>
+              </nav>
 
-            {/* Column 4 */}
-            <nav className="col-span-1">
-              <ul className="space-y-2">
-                <li>
-                  <a
-                    href="https://www.instagram.com/obudurcom/"
-                    target="_blank"
-                    className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
-                  >
-                    Instagram
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.facebook.com/Obudurcom"
-                    target="_blank"
-                    className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
-                  >
-                    Facebook
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.linkedin.com/company/obudurcom"
-                    target="_blank"
-                    className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
-                  >
-                    LinkedIn
-                  </a>
-                </li>
-              </ul>
-            </nav>
+              {/* Column 4 */}
+              <nav className="col-span-1">
+                <ul className="space-y-2">
+                  <li>
+                    <a
+                      href="https://www.instagram.com/obudurcom/"
+                      target="_blank"
+                      className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                    >
+                      Instagram
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.facebook.com/Obudurcom"
+                      target="_blank"
+                      className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                    >
+                      Facebook
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.linkedin.com/company/obudurcom"
+                      target="_blank"
+                      className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                    >
+                      LinkedIn
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
           </div>
         </div>
-      </div>
 
       {/* Primary bottom divider */}
       <div className="border-t border-[#C1BED4] max-w-[1440px] mx-auto"></div>

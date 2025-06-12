@@ -1,4 +1,5 @@
 export const countryCodes = [
+  { country: "Turkey", code: "90", iso: "TR" },
   { country: "Afghanistan", code: "93", iso: "AF" },
   { country: "Albania", code: "355", iso: "AL" },
   { country: "Algeria", code: "213", iso: "DZ" },
@@ -218,7 +219,6 @@ export const countryCodes = [
   { country: "Tonga", code: "676", iso: "TO" },
   { country: "Trinidad and Tobago", code: "1-868", iso: "TT" },
   { country: "Tunisia", code: "216", iso: "TN" },
-  { country: "Turkey", code: "90", iso: "TR" },
   { country: "Turkmenistan", code: "993", iso: "TM" },
   { country: "Turks and Caicos Islands", code: "1-649", iso: "TC" },
   { country: "Tuvalu", code: "688", iso: "TV" },

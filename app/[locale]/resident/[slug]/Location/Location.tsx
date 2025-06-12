@@ -87,29 +87,33 @@ export default function Location() {
       </div>
 
       {/* Distances */}
-      <h3 className="mt-14 mb-6 text-lg font-semibold text-gray-900">
-        {t("distancesTitle")}
-      </h3>
-      <ul role="list" className="flex flex-wrap justify-between  gap-y-5">
-        {hotelData.populatedData.distances.map((distance) => (
-          <li
-            key={distance._id}
-            className="flex items-center gap-3 w-1/2 md:w-1/3 lg:w-1/5 pr-4 sm:min-w-[220px]"
-          >
-            <img
-              className="w-6 h-6"
-              src={distance.iconUrl}
-              alt={distance.name[currentLocale]}
-            />
-            <span className="text-gray-700 font-medium text-sm">
-              {distance.name[currentLocale]}{" "}
-              <span className="text-gray-500 font-normal">
-                {distance.value} km
-              </span>
-            </span>
-          </li>
-        ))}
-      </ul>
+      {hotelData.populatedData.distances.length > 0 && (
+        <>
+          <h3 className="mt-14 mb-6 text-lg font-semibold text-gray-900">
+            {t("distancesTitle")}
+          </h3>
+          <ul role="list" className="flex flex-wrap justify-between  gap-y-5">
+            {hotelData.populatedData.distances.map((distance) => (
+              <li
+                key={distance._id}
+                className="flex items-center gap-3 w-1/2 md:w-1/3 lg:w-1/5 pr-4 sm:min-w-[220px]"
+              >
+                <img
+                  className="w-6 h-6"
+                  src={distance.iconUrl}
+                  alt={distance.name[currentLocale]}
+                />
+                <span className="text-gray-700 font-medium text-sm">
+                  {distance.name[currentLocale]}{" "}
+                  <span className="text-gray-500 font-normal">
+                    {distance.value} km
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
     </section>
   );
 }

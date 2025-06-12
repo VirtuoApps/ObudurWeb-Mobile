@@ -286,7 +286,9 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
               }}
               className="flex-1 bg-[#EC755D] text-white py-2 px-4 rounded-xl font-medium cursor-pointer"
             >
-              {isLoginned ? managerPhone : maskPhone(managerPhone)}
+              {isLoginned
+                ? managerPhone
+                : maskPhone(managerPhone || "0539 000 00 00")}
             </button>
             <button className="flex-1 bg-[#FCFCFC] text-gray-800 py-2 px-4 rounded-xl border border-gray-200 font-medium cursor-pointer">
               {t("allListings")}

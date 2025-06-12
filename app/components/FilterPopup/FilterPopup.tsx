@@ -165,6 +165,33 @@ export default function FilterPopup({
   const [hotelTypes, setHotelTypes] = useState<HotelType[]>([]);
   const [isLoadingHotelTypes, setIsLoadingHotelTypes] = useState(false);
 
+  /* -------------------- Mobile drag-to-close logic -------------------- */
+  const [touchStartY, setTouchStartY] = useState<number | null>(null);
+  const [translateY, setTranslateY] = useState(0);
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    // Only enable on mobile (screen width < 768px)
+    if (window.innerWidth >= 768) return;
+    setTouchStartY(e.touches[0].clientY);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (touchStartY === null || window.innerWidth >= 768) return;
+    const deltaY = e.touches[0].clientY - touchStartY;
+    if (deltaY > 0) {
+      setTranslateY(deltaY);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (window.innerWidth >= 768) return;
+    if (translateY > 120) {
+      onClose();
+    }
+    setTranslateY(0);
+    setTouchStartY(null);
+  };
+
   // Fetch hotel types from API
   useEffect(() => {
     const fetchHotelTypes = async () => {
@@ -548,25 +575,38 @@ export default function FilterPopup({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 overflow-y-auto">
+    <div className="fixed inset-0 z-[99999] flex items-end md:items-center justify-center lg:p-4 overflow-y-auto">
       <div
         className="fixed inset-0"
         onClick={onClose}
         style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
       ></div>
 
-      <div className="relative bg-white rounded-2xl shadow-xl max-w-[600px] w-full mx-auto max-h-[90vh] flex flex-col">
+      <div
+        className="relative bg-white rounded-2xl shadow-xl max-w-[600px] w-full mx-auto max-h-[90vh] flex flex-col"
+        style={{
+          transform: `translateY(${translateY}px)`,
+          transition: touchStartY ? "none" : "transform 0.3s ease-out",
+        }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         {/* Header - Fixed at top */}
-        <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-2xl">
+        <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-2xl relative">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-gray-700">{t("title")}</h2>
+            <h2 className="md:text-lg text-2xl font-bold text-gray-700">
+              {t("title")}
+            </h2>
             <button
               className="text-gray-400 hover:text-gray-600 cursor-pointer"
               onClick={onClose}
             >
-              <XMarkIcon className="w-6 h-6 text-gray-700" />
+              <XMarkIcon className="w-8 h-8 md:w-6 md:h-6 text-gray-700" />
             </button>
           </div>
+          {/* Drag handle visible only on mobile */}
+          <span className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1.5 bg-gray-300 rounded-full md:hidden"></span>
         </div>
 
         {/* Scrollable content area */}

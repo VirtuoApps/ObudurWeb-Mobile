@@ -37,7 +37,13 @@ export default function AccountPage() {
       <div className="max-w-[1440px] mx-auto px-4 lg:px-[60px] py-12">
         {user && <AccountForm user={user} />}
       </div>
-      <Footer />
+      <Footer
+        customMaxWidth="max-w-[1420px]"
+        customPadding="md:px-10 px-6"
+        fullWidthTopBorder={true}
+        fullWidthBottomBorder={true}
+        fullWidthStripe={true}
+      />
     </div>
   );
 }

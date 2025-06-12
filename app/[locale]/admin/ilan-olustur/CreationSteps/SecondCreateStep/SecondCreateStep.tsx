@@ -20,6 +20,7 @@ interface CustomSelectProps {
   value: string | number;
   onChange: (value: string) => void;
   placeholder?: string;
+  openUpward?: boolean;
 }
 
 export const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -27,6 +28,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
   value,
   onChange,
   placeholder = "Select option",
+  openUpward = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -75,7 +77,13 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 z-10 mt-1 w-full origin-top-right rounded-lg bg-white shadow-lg border border-[#E2E2E2]">
+        <div
+          className={`absolute left-0 z-10 w-full rounded-lg bg-white shadow-lg border border-[#E2E2E2] ${
+            openUpward
+              ? "bottom-full mb-1 origin-bottom-right"
+              : "mt-1 origin-top-right"
+          }`}
+        >
           <div className="py-1 max-h-60 overflow-auto">
             {options.map((option) => (
               <div
@@ -119,6 +127,24 @@ export default function SecondCreateStep() {
     setBuildYear,
     kitchenType,
     setKitchenType,
+    exchangeable,
+    setExchangeable,
+    creditEligible,
+    setCreditEligible,
+    buildingAge,
+    setBuildingAge,
+    isFurnished,
+    setIsFurnished,
+    dues,
+    setDues,
+    usageStatus,
+    setUsageStatus,
+    deedStatus,
+    setDeedStatus,
+    heatingType,
+    setHeatingType,
+    source,
+    setSource,
     setCurrentStep,
   } = useListingForm();
 
@@ -166,6 +192,50 @@ export default function SecondCreateStep() {
     return currencyPrice ? currencyPrice.amount : 0;
   };
 
+  // Handle dues change for a specific currency
+  const handleDuesChange = (currency: string, amount: string) => {
+    // Only allow numbers and decimal point
+    const numericValue = amount.replace(/[^0-9.]/g, "");
+    // Prevent multiple decimal points
+    const parts = numericValue.split(".");
+    const validValue =
+      parts.length > 2
+        ? parts[0] + "." + parts.slice(1).join("")
+        : numericValue;
+
+    const numericAmount = validValue === "" ? 0 : parseFloat(validValue);
+
+    setDues((prevDues) => {
+      // Check if this currency already exists
+      const existingCurrencyIndex = prevDues?.findIndex(
+        (d) => d.currency === currency
+      );
+
+      if (existingCurrencyIndex !== undefined && existingCurrencyIndex >= 0) {
+        // Update existing currency
+        const updatedDues = [...(prevDues || [])];
+        updatedDues[existingCurrencyIndex] = {
+          ...updatedDues[existingCurrencyIndex],
+          amount: numericAmount,
+        };
+        return updatedDues;
+      } else {
+        // Add new currency
+        return [
+          ...(prevDues || []),
+          { currency: currency, amount: numericAmount },
+        ];
+      }
+    });
+  };
+
+  // Get dues for a specific currency
+  const getDuesForCurrency = (currency: string): number => {
+    if (!dues) return 0;
+    const currencyDues = dues.find((d) => d.currency === currency);
+    return currencyDues ? currencyDues.amount : 0;
+  };
+
   // Kitchen type options
   const kitchenTypeOptions = [
     { value: "americanKitchen", label: "Amerikan Mutfak" },
@@ -173,6 +243,64 @@ export default function SecondCreateStep() {
     { value: "openKitchen", label: "Açık Mutfak" },
     { value: "islandKitchen", label: "Ada Mutfak" },
     { value: "cornerKitchen", label: "Köşe Mutfak" },
+  ];
+
+  // Heating type options
+  const heatingTypeOptions = [
+    { value: "none", label: "Yok" },
+    { value: "stove", label: "Soba" },
+    { value: "naturalGasStove", label: "Doğalgaz Sobası" },
+    { value: "floorHeater", label: "Kat Kaloriferi" },
+    { value: "naturalGasBoiler", label: "Doğalgaz (kombi)" },
+    { value: "central", label: "Merkezi" },
+    { value: "airConditioning", label: "Klima" },
+    { value: "solarEnergy", label: "Güneş Enerjisi" },
+  ];
+
+  // Source options
+  const sourceOptions = [
+    { value: "fromOwner", label: "Sahibinden" },
+    { value: "fromRealEstate", label: "Emlak Ofisinden" },
+    { value: "fromConstruction", label: "İnşaat Firmasından" },
+  ];
+
+  // Usage status options
+  const usageStatusOptions = [
+    { value: "empty", label: "Boş" },
+    { value: "tenantOccupied", label: "Kiracılı" },
+    { value: "ownerOccupied", label: "Mülk Sahibi" },
+  ];
+
+  // Deed status options
+  const deedStatusOptions = [
+    { value: "condominium", label: "Kat Mülkiyetli" },
+    { value: "floorEasement", label: "Kat İrtifaklı" },
+    { value: "sharedDeed", label: "Hisseli Tapu" },
+    { value: "detachedDeed", label: "Müstakil Tapulu" },
+    { value: "landDeed", label: "Arsa Tapulu" },
+    { value: "cooperativeShare", label: "Kooperatif Hisseli Tapu" },
+    { value: "usufructRight", label: "İntifa Hakkı Tesisli" },
+    { value: "foreignDeed", label: "Yurt Dışı Tapulu" },
+    { value: "noDeedRecord", label: "Tapu Kaydı Yok" },
+  ];
+
+  // Building age options
+  const buildingAgeOptions = [
+    { value: 0, label: "0" },
+    { value: 1, label: "1" },
+    { value: 2, label: "2" },
+    { value: 3, label: "3" },
+    { value: 4, label: "4" },
+    { value: 5, label: "5" },
+    { value: 10, label: "10" },
+    { value: 15, label: "15" },
+    { value: 20, label: "20+" },
+  ];
+
+  // Boolean options
+  const booleanOptions = [
+    { value: "true", label: "Evet" },
+    { value: "false", label: "Hayır" },
   ];
 
   // Generate options for number-based selects
@@ -232,6 +360,26 @@ export default function SecondCreateStep() {
 
     if (!kitchenType || kitchenType.tr === "" || kitchenType.en === "") {
       newErrors.push("Lütfen mutfak tipini seçin");
+    }
+
+    if (!buildingAge && buildingAge !== 0) {
+      newErrors.push("Lütfen bina yaşını seçin");
+    }
+
+    if (!heatingType || heatingType.tr === "" || heatingType.en === "") {
+      newErrors.push("Lütfen ısıtma tipini seçin");
+    }
+
+    if (!source || source.tr === "" || source.en === "") {
+      newErrors.push("Lütfen kimden bilgisini seçin");
+    }
+
+    if (!usageStatus || usageStatus.tr === "" || usageStatus.en === "") {
+      newErrors.push("Lütfen kullanım durumunu seçin");
+    }
+
+    if (!deedStatus || deedStatus.tr === "" || deedStatus.en === "") {
+      newErrors.push("Lütfen tapu durumunu seçin");
     }
 
     setErrors(newErrors);
@@ -463,7 +611,7 @@ export default function SecondCreateStep() {
                   htmlFor="bedRoomCount"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Yatak Odası Sayısı
+                  Balkon Sayısı
                 </label>
                 <CustomSelect
                   options={generateNumberOptions(0, 5)}
@@ -552,6 +700,291 @@ export default function SecondCreateStep() {
                 }}
                 placeholder="Seçiniz"
               />
+            </div>
+
+            {/* Heating Type and Source - Side by side */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <div className="w-full sm:w-1/2">
+                <label
+                  htmlFor="heatingType"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  Isıtma
+                </label>
+                <CustomSelect
+                  options={heatingTypeOptions}
+                  value={
+                    heatingType?.tr
+                      ? heatingTypeOptions.find(
+                          (option) => option.label === heatingType.tr
+                        )?.value || ""
+                      : ""
+                  }
+                  onChange={(value) => {
+                    const selected = heatingTypeOptions.find(
+                      (option) => option.value === value
+                    );
+                    if (selected) {
+                      setHeatingType({
+                        tr: selected.label,
+                        en:
+                          selected.value === "none"
+                            ? "None"
+                            : selected.value === "stove"
+                            ? "Stove"
+                            : selected.value === "naturalGasStove"
+                            ? "Natural Gas Stove"
+                            : selected.value === "floorHeater"
+                            ? "Floor Heater"
+                            : selected.value === "naturalGasBoiler"
+                            ? "Natural Gas (Boiler)"
+                            : selected.value === "central"
+                            ? "Central"
+                            : selected.value === "airConditioning"
+                            ? "Air Conditioning"
+                            : selected.value === "solarEnergy"
+                            ? "Solar Energy"
+                            : "",
+                      });
+                    }
+                  }}
+                  placeholder="Seçiniz"
+                />
+              </div>
+              <div className="w-full sm:w-1/2">
+                <label
+                  htmlFor="source"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  Kimden
+                </label>
+                <CustomSelect
+                  options={sourceOptions}
+                  value={
+                    source?.tr
+                      ? sourceOptions.find(
+                          (option) => option.label === source.tr
+                        )?.value || ""
+                      : ""
+                  }
+                  onChange={(value) => {
+                    const selected = sourceOptions.find(
+                      (option) => option.value === value
+                    );
+                    if (selected) {
+                      setSource({
+                        tr: selected.label,
+                        en:
+                          selected.value === "fromOwner"
+                            ? "From Owner"
+                            : selected.value === "fromRealEstate"
+                            ? "From Real Estate Office"
+                            : selected.value === "fromConstruction"
+                            ? "From Construction Company"
+                            : "",
+                      });
+                    }
+                  }}
+                  placeholder="Seçiniz"
+                />
+              </div>
+            </div>
+
+            {/* Exchangeable and Credit Eligible - Side by side */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <div className="w-full sm:w-1/2">
+                <label
+                  htmlFor="exchangeable"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  Takaslı
+                </label>
+                <CustomSelect
+                  options={booleanOptions}
+                  value={exchangeable ? "true" : "false"}
+                  onChange={(value) => setExchangeable(value === "true")}
+                  placeholder="Seçiniz"
+                />
+              </div>
+              <div className="w-full sm:w-1/2">
+                <label
+                  htmlFor="creditEligible"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  Krediye Uygunluk
+                </label>
+                <CustomSelect
+                  options={booleanOptions}
+                  value={creditEligible ? "true" : "false"}
+                  onChange={(value) => setCreditEligible(value === "true")}
+                  placeholder="Seçiniz"
+                />
+              </div>
+            </div>
+
+            {/* Building Age and Furnished - Side by side */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <div className="w-full sm:w-1/2">
+                <label
+                  htmlFor="buildingAge"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  Bina Yaşı
+                </label>
+                <CustomSelect
+                  options={buildingAgeOptions}
+                  value={buildingAge || 0}
+                  onChange={(value) => setBuildingAge(parseInt(value))}
+                  placeholder="Seçiniz"
+                />
+              </div>
+              <div className="w-full sm:w-1/2">
+                <label
+                  htmlFor="isFurnished"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  Eşyalı
+                </label>
+                <CustomSelect
+                  options={booleanOptions}
+                  value={isFurnished ? "true" : "false"}
+                  onChange={(value) => setIsFurnished(value === "true")}
+                  placeholder="Seçiniz"
+                />
+              </div>
+            </div>
+
+            {/* Dues Section */}
+            <div className="mb-6">
+              <h2 className="font-semibold mb-4 text-[#262626]">Aidat</h2>
+              <div className="flex flex-col sm:flex-row gap-4 mb-4">
+                <div className="w-full sm:w-1/2">
+                  <label className="font-medium block mb-2 text-[#262626]">
+                    Aidat (TRY)
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium">
+                      ₺
+                    </span>
+                    <input
+                      type="text"
+                      value={getDuesForCurrency("TRY") || ""}
+                      onChange={(e) => handleDuesChange("TRY", e.target.value)}
+                      className="w-full h-12 rounded-lg border border-gray-300 pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                      placeholder="Aidat tutarı"
+                    />
+                  </div>
+                </div>
+                <div className="w-full sm:w-1/2">
+                  <label className="font-medium block mb-2 text-[#262626]">
+                    Aidat (USD)
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium">
+                      $
+                    </span>
+                    <input
+                      type="text"
+                      value={getDuesForCurrency("USD") || ""}
+                      onChange={(e) => handleDuesChange("USD", e.target.value)}
+                      className="w-full h-12 rounded-lg border border-gray-300 pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                      placeholder="Aidat tutarı"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Usage Status and Deed Status - Side by side */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
+              <div className="w-full sm:w-1/2">
+                <label
+                  htmlFor="usageStatus"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  Kullanım Durumu
+                </label>
+                <CustomSelect
+                  options={usageStatusOptions}
+                  value={
+                    usageStatus?.tr
+                      ? usageStatusOptions.find(
+                          (option) => option.label === usageStatus.tr
+                        )?.value || ""
+                      : ""
+                  }
+                  onChange={(value) => {
+                    const selected = usageStatusOptions.find(
+                      (option) => option.value === value
+                    );
+                    if (selected) {
+                      setUsageStatus({
+                        tr: selected.label,
+                        en:
+                          selected.value === "empty"
+                            ? "Empty"
+                            : selected.value === "tenantOccupied"
+                            ? "Tenant Occupied"
+                            : selected.value === "ownerOccupied"
+                            ? "Owner Occupied"
+                            : "",
+                      });
+                    }
+                  }}
+                  placeholder="Seçiniz"
+                  openUpward={true}
+                />
+              </div>
+              <div className="w-full sm:w-1/2">
+                <label
+                  htmlFor="deedStatus"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  Tapu Durumu
+                </label>
+                <CustomSelect
+                  options={deedStatusOptions}
+                  value={
+                    deedStatus?.tr
+                      ? deedStatusOptions.find(
+                          (option) => option.label === deedStatus.tr
+                        )?.value || ""
+                      : ""
+                  }
+                  onChange={(value) => {
+                    const selected = deedStatusOptions.find(
+                      (option) => option.value === value
+                    );
+                    if (selected) {
+                      setDeedStatus({
+                        tr: selected.label,
+                        en:
+                          selected.value === "condominium"
+                            ? "Condominium"
+                            : selected.value === "floorEasement"
+                            ? "Floor Easement"
+                            : selected.value === "sharedDeed"
+                            ? "Shared Deed"
+                            : selected.value === "detachedDeed"
+                            ? "Detached Deed"
+                            : selected.value === "landDeed"
+                            ? "Land Deed"
+                            : selected.value === "cooperativeShare"
+                            ? "Cooperative Share Deed"
+                            : selected.value === "usufructRight"
+                            ? "Usufruct Right"
+                            : selected.value === "foreignDeed"
+                            ? "Foreign Deed"
+                            : selected.value === "noDeedRecord"
+                            ? "No Deed Record"
+                            : "",
+                      });
+                    }
+                  }}
+                  placeholder="Seçiniz"
+                  openUpward={true}
+                />
+              </div>
             </div>
 
             {/* Step navigation buttons */}

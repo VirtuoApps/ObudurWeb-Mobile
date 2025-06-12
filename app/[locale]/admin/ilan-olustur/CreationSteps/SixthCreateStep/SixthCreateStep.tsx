@@ -38,7 +38,18 @@ export default function SixthCreateStep() {
     floorCount,
     buildYear,
     kitchenType,
-    orientation,
+    exchangeable,
+    creditEligible,
+    buildingAge,
+    isFurnished,
+    dues,
+    usageStatus,
+    deedStatus,
+    generalFeatures,
+    zoningStatus,
+    heatingType,
+    source,
+    faces,
     country,
     city,
     state,
@@ -52,6 +63,10 @@ export default function SixthCreateStep() {
     // Get update mode details
     isUpdate,
     hotelId,
+    infrastructureFeatureIds,
+    viewIds,
+    parselNo,
+    adaNo,
   } = useListingForm();
 
   const [errors, setErrors] = useState<string[]>([]);
@@ -70,7 +85,7 @@ export default function SixthCreateStep() {
   useEffect(() => {
     if (isUpdate && documents.length > 0) {
       const links: { [key: string]: string } = {};
-      documents.forEach((doc) => {
+      documents.forEach((doc: any) => {
         const docKey = `${doc.name.tr}_${doc.name.en}`;
         links[docKey] = doc.file;
       });
@@ -102,9 +117,9 @@ export default function SixthCreateStep() {
         file: response.data.location,
       };
 
-      setDocuments((prev) => {
+      setDocuments((prev: any) => {
         const filtered = prev.filter(
-          (doc) => doc.name.tr !== docType.tr || doc.name.en !== docType.en
+          (doc: any) => doc.name.tr !== docType.tr || doc.name.en !== docType.en
         );
         return [...filtered, newDocument];
       });
@@ -155,17 +170,17 @@ export default function SixthCreateStep() {
         file: link,
       };
 
-      setDocuments((prev) => {
+      setDocuments((prev: any) => {
         const filtered = prev.filter(
-          (doc) => doc.name.tr !== docType.tr || doc.name.en !== docType.en
+          (doc: any) => doc.name.tr !== docType.tr || doc.name.en !== docType.en
         );
         return [...filtered, newDocument];
       });
     } else {
       // Remove document if link is empty
-      setDocuments((prev) =>
+      setDocuments((prev: any) =>
         prev.filter(
-          (doc) => doc.name.tr !== docType.tr || doc.name.en !== docType.en
+          (doc: any) => doc.name.tr !== docType.tr || doc.name.en !== docType.en
         )
       );
     }
@@ -180,9 +195,9 @@ export default function SixthCreateStep() {
       return newLinks;
     });
 
-    setDocuments((prev) =>
+    setDocuments((prev: any) =>
       prev.filter(
-        (doc) => doc.name.tr !== docType.tr || doc.name.en !== docType.en
+        (doc: any) => doc.name.tr !== docType.tr || doc.name.en !== docType.en
       )
     );
   };
@@ -235,7 +250,7 @@ export default function SixthCreateStep() {
         listingType,
         entranceType,
         housingType,
-        price: price.map((p) => ({
+        price: price.map((p: any) => ({
           amount: p.amount,
           currency: p.currency,
         })),
@@ -247,7 +262,23 @@ export default function SixthCreateStep() {
         floorCount,
         buildYear,
         kitchenType,
-        face: orientation,
+        exchangeable,
+        creditEligible:
+          creditEligible === "true"
+            ? true
+            : creditEligible === "false"
+            ? false
+            : null,
+        buildingAge,
+        isFurnished,
+        dues,
+        usageStatus: Object.fromEntries(usageStatus),
+        deedStatus: Object.fromEntries(deedStatus),
+        generalFeatures: Object.fromEntries(generalFeatures),
+        zoningStatus: Object.fromEntries(zoningStatus),
+        heatingType,
+        source,
+        faces: faces,
         country,
         city,
         state,
@@ -260,7 +291,9 @@ export default function SixthCreateStep() {
           coordinates: coordinates,
         },
         featureIds,
-        distances: distances.map((d) => ({
+        infrastructureFeatureIds,
+        viewIds,
+        distances: distances.map((d: any) => ({
           typeId: d.typeId,
           value: d.value,
         })),
@@ -269,6 +302,8 @@ export default function SixthCreateStep() {
         ...(video && { video }),
         // Add documents
         documents,
+        adaNo,
+        parselNo,
       };
 
       console.log("hotelData", hotelData);
