@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+
 import LeftSide from "./LeftSide/LeftSide";
 import RightSide from "./RightSide/RightSide";
 
@@ -15,7 +16,7 @@ export default function AggrementsBox() {
   };
 
   return (
-    <div className="bg-white max-w-[1440px] w-full mx-auto min-h-screen rounded-4xl flex sm:flex-row flex-col">
+    <div className="bg-white max-w-[1440px] w-full mx-auto min-h-screen rounded-4xl flex sm:flex-row flex-col mt-6">
       <LeftSide handleItemClick={handleItemClick} selectedItem={selectedItem} />
       <RightSide selectedItem={selectedItem} />
     </div>

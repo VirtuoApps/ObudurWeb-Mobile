@@ -1,33 +1,35 @@
-import React, { useState, useRef, useEffect } from "react";
 import {
+  FaBath,
+  FaCar,
+  FaChargingStation,
+  FaDumbbell,
+  FaFilter,
   FaHotjar,
   FaKey,
-  FaCar,
   FaParking,
-  FaDumbbell,
-  FaBath,
-  FaChargingStation,
-  FaFilter,
 } from "react-icons/fa";
-import { TbSquarePlus } from "react-icons/tb";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import {
-  MdHouse,
   MdHolidayVillage,
+  MdHouse,
+  MdKitchen,
   MdLocationCity,
   MdPool,
-  MdKitchen,
 } from "react-icons/md";
-import { LuSettings2 } from "react-icons/lu";
-import { useTranslations, useLocale } from "next-intl";
-import FilterPopup from "@/app/components/FilterPopup/FilterPopup";
-import ListViewIcon from "@/app/svgIcons/ListViewIcon";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import React, { useEffect, useRef, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+
 import { Feature } from "@/types/feature.type";
 import { FilterOptions } from "@/types/filter-options.type";
+import FilterPopup from "@/app/components/FilterPopup/FilterPopup";
 import { FilterType } from "@/types/filter.type";
+import { Hotel } from "@/types/hotel.type";
+import ListViewIcon from "@/app/svgIcons/ListViewIcon";
+import { LuSettings2 } from "react-icons/lu";
 import NewFilterItem from "./NewFilterItem/NewFilterItem";
 import SizeFilterItem from "./SizeFilterItem/SizeFilterıtem";
-import { Hotel } from "@/types/hotel.type";
+import { TbSquarePlus } from "react-icons/tb";
+
 const iconClassName = "text-xl";
 const iconColor = "rgba(0,0,0,0.6)";
 
@@ -290,11 +292,11 @@ export default function FilterList({
         searchRadius={searchRadius}
       />
       <div
-        className={`bg-white flex flex-row ${
+        className={`bg-white flex flex-row transition-all duration-350 ease-in-out ${
           currentView === "map"
-            ? "absolute lg:top-24 top-[80px] left-0 right-0 w-full lg:w-[60%] lg:shadow-lg"
+            ? "fixed lg:top-28 top-[71px] left-0 right-0 w-full lg:w-[924px] lg:shadow-lg"
             : "mt-0 mb-7 relative w-full border-b border-[#F0F0F0]"
-        } z-10  mx-auto  lg:rounded-2xl  border-b border-[#F0F0F0] `}
+        } z-20  mx-auto  lg:rounded-2xl lg:border-none border-b border-[#F0F0F0] `}
       >
         {showRightArrow && (
           <button
@@ -316,7 +318,7 @@ export default function FilterList({
 
         <div
           onClick={onChangeCurrentView}
-          className="hidden lg:flex items-center justify-center border-r px-2 py-2 border-gray-200 cursor-pointer  "
+          className={`hidden lg:flex items-center justify-center border-r py-[10px] border-gray-200 cursor-pointer ${currentView === "map" ? "px-[10px]" : "px-[16px]"}`}
         >
           <div className="ease-in-out  hover:bg-[#F5F5F5] transition-all duration-300 p-2 rounded-lg">
             {currentView === "map" && <ListViewIcon />}
@@ -340,7 +342,7 @@ export default function FilterList({
         <div className="flex-1 flex items-center relative overflow-hidden">
           <div
             ref={scrollContainerRef}
-            className="flex flex-row items-center overflow-x-auto scrollbar-hide w-full no-scrollbar px-3 py-2 gap-3 filter-scroll"
+            className="flex flex-row items-center overflow-x-auto scrollbar-hide w-full no-scrollbar px-3 py-3 lg:py-[7px] gap-2 filter-scroll"
           >
             <NewFilterItem filters={filters} setFilters={setFilters} />
             <SizeFilterItem

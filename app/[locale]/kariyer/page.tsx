@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
-import Header from "./Header/Header";
-import FormTexts from "./FormTexts/FormTexts";
 import FormSection from "./FormSection/FormSection";
+import FormTexts from "./FormTexts/FormTexts";
+import Header from "./Header/Header";
+import React from "react";
 import SimpleFooter from "@/app/components/SimpleFooter/SimpleFooter";
 import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
 import Footer from "../resident/[slug]/Footer/Footer";

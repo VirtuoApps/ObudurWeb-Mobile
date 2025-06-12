@@ -1,15 +1,16 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
-import { GoPerson } from "react-icons/go";
-import { useTranslations } from "next-intl";
-import AuthPopup from "@/app/components/AuthPopup/AuthPopup";
-import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
-import { clearUser } from "@/app/store/userSlice";
+import React, { useEffect, useRef, useState } from "react";
 import axiosInstance, { mainWebsiteUrl } from "@/axios";
-import { MdFavoriteBorder } from "react-icons/md";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+
+import AuthPopup from "@/app/components/AuthPopup/AuthPopup";
+import { GoPerson } from "react-icons/go";
 import { Link } from "@/app/components/nprogress";
+import { MdFavoriteBorder } from "react-icons/md";
+import { clearUser } from "@/app/store/userSlice";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 // Like Button Component
 const LikeButton = ({
@@ -168,10 +169,10 @@ export default function AuthBox({
             )}
           </div>
 
-          {/* Dropdown Menu */}
-          {dropdownOpen && (
-            <div className="fixed lg:absolute inset-0 lg:inset-auto lg:-right-4 lg:right-0 lg:mt-2 lg:min-w-[320px] bg-white lg:rounded-[16px] lg:shadow-lg z-50 lg:py-1">
-              {/* Mobile Close Button */}
+        {/* Dropdown Menu */}
+        {dropdownOpen && (
+          <div className="fixed lg:absolute inset-0 lg:inset-auto lg:-right-4 lg:right-0 lg:mt-2 lg:min-w-[320px] bg-white lg:rounded-[16px] lg:shadow-lg z-50 lg:border lg:border-[#D9D9D9] flex flex-col">
+            {/* Mobile Close Button */}
 
               {/* Mobile Header */}
               <div className="lg:hidden px-4 pb-6 flex flex-row items-center justify-between mt-5">
@@ -190,13 +191,15 @@ export default function AuthBox({
                 </button>
               </div>
 
-              {/* Desktop Header */}
-              <div className="hidden lg:block px-4 border-b border-gray-100 pb-3">
-                <p className="text-[#362C75] text-[16px] font-bold">
-                  {user.firstName} {user.lastName}
-                </p>
-                <p className="text-[#A39EC0] text-[14px]">{user.email}</p>
-              </div>
+            {/* Desktop Header */}
+            <div className="hidden lg:flex px-4 mt-4 flex-col gap-2">
+              <p className="text-[#362C75] text-[16px] font-bold leading-[14px]">
+                {user.firstName} {user.lastName}
+              </p>
+              <p className="text-[#A39EC0] text-[14px] leading-[14px]">{user.email}</p>
+            </div>
+
+            <div className="hidden lg:block border-b border-gray-100 my-3 lg:my-2"></div>
 
               <Link
                 href="/account"
@@ -448,32 +451,31 @@ export default function AuthBox({
 
               <div className="border-b border-gray-100 my-3 lg:my-2"></div>
 
-              <Link
-                href="/iletisim"
-                className="px-4 py-4 lg:py-2 text-[14px] lg:text-[12px] font-[500] text-[#595959] hover:bg-gray-100 flex flex-row items-center"
-              >
-                Geri Bildirim
-              </Link>
+            <Link
+              href="/iletisim"
+              className="px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] font-[500] text-[#595959] hover:bg-gray-100 flex flex-row items-center"
+            >
+              Geri Bildirim
+            </Link>
 
-              <Link
-                href="/sozlesmeler?id=sozlesmeler&itemId=bireysel"
-                className="px-4 py-4 lg:py-2 text-[14px] lg:text-[12px] font-[500] text-[#595959] hover:bg-gray-100 flex flex-row items-center"
-              >
-                Kullanıcı Sözleşmeleri
-              </Link>
+            <Link
+              href="/sozlesmeler?id=sozlesmeler&itemId=bireysel"
+              className="px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] font-[500] text-[#595959] hover:bg-gray-100 flex flex-row items-center"
+            >
+              Kullanıcı Sözleşmeleri
+            </Link>
 
               <div className="border-b border-gray-100 my-3 lg:my-2"></div>
 
-              <button
-                onClick={handleLogout}
-                className="block w-full text-left px-4 py-4 lg:py-2 text-[14px] lg:text-[12px] text-[#EF1A28] hover:bg-gray-100 cursor-pointer flex flex-row items-center justify-between"
-              >
-                <span>Çıkış Yap</span>
-              </button>
-            </div>
-          )}
-        </div>
-      </>
+            <button
+              onClick={handleLogout}
+              className="block w-full text-left px-4 py-4 lg:py-2 text-[14px] lg:text-[12px] text-[#EF1A28] hover:bg-gray-100 cursor-pointer flex flex-row items-center justify-between mb-4"
+            >
+              <span>Çıkış Yap</span>
+            </button>
+          </div>
+        )}
+      </div>
     );
   }
 

@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+
 import Image from "next/image";
 import axiosInstance from "../../../../../axios";
 import { useTranslations } from "next-intl";
@@ -83,130 +84,120 @@ export default function Footer({
           `}
         ></div>
 
-        <div
-          className={`${
-            customMaxWidth ? customMaxWidth : "max-w-[1440px]"
-          } ${customClassName} mx-auto ${
-            customPadding ? customPadding : "px-4 lg:px-0 py-12 lg:py-12"
-          }`}
-        >
-          <div className="flex flex-col lg:flex-row lg:justify-between pt-8 pb-10 gap-8 lg:gap-0">
-            {/* Newsletter Column - Move to top on mobile */}
-            <div className="w-full lg:w-[400px] order-first lg:order-last hidden lg:block">
-              <form onSubmit={handleSubscribe}>
-                <div className="flex flex-col border-b border-gray-300 pb-4">
-                  {isSubscribed ? (
-                    <p className="text-green-600 text-sm mb-2">
-                      {t("successMessage")}
-                    </p>
-                  ) : error ? (
-                    <p className="text-red-500 text-sm mb-2">{error}</p>
-                  ) : null}
-                  <div className="flex  flex-col sm:flex-row gap-2 sm:gap-0 ">
-                    <input
-                      type="email"
-                      id="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      disabled={isSubscribed || isLoading}
-                      aria-label={t("placeholder")}
-                      placeholder={t("placeholder")}
-                      className="w-full sm:max-w-xs rounded-md sm:rounded-l-md sm:rounded-r-none px-3 py-2 text-sm focus:outline-none focus:ring-none focus::border-none outline-none placeholder:text-gray-400 text-gray-700 disabled:bg-gray-100"
-                      required
-                    />
-                    <button
-                      type="submit"
-                      disabled={isSubscribed || isLoading}
-                      className={`text-sm sm:ml-4 px-4 py-2 rounded-md sm:rounded-xl transition w-full sm:w-[200px] ${
-                        isSubscribed
-                          ? "bg-green-100 text-green-600"
-                          : `  ${
-                              email.includes(".com")
-                                ? "bg-[#5E5691] text-white"
-                                : "bg-slate-100 text-[#8C8C8C] hover:bg-slate-200"
-                            }`
-                      }`}
-                    >
-                      {isLoading
-                        ? t("subscribing")
-                        : isSubscribed
-                        ? t("subscribed")
-                        : t("subscribe")}
-                    </button>
-                  </div>
+      <div className="max-w-[1440px] mx-auto px-4 lg:px-0 py-12 lg:py-20">
+        <div className="flex flex-col lg:flex-row lg:justify-between pt-8 pb-10 gap-8 lg:gap-0">
+          {/* Newsletter Column - Move to top on mobile */}
+          <div className="w-full lg:w-[342px] order-first lg:order-last">
+            <form onSubmit={handleSubscribe}>
+              <div className="flex flex-col border-b border-gray-300 pb-4">
+                {isSubscribed ? (
+                  <p className="text-green-600 text-sm mb-2">
+                    {t("successMessage")}
+                  </p>
+                ) : error ? (
+                  <p className="text-red-500 text-sm mb-2">{error}</p>
+                ) : null}
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-0">
+                  <input
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={isSubscribed || isLoading}
+                    aria-label={t("placeholder")}
+                    placeholder={t("placeholder")}
+                    className="w-full sm:max-w-xs rounded-md sm:rounded-l-md sm:rounded-r-none px-3 py-2 text-sm focus:outline-none focus:ring-none focus::border-none outline-none placeholder:text-gray-400 text-gray-700 disabled:bg-gray-100"
+                    required
+                  />
+                  <button
+                    type="submit"
+                    disabled={isSubscribed || isLoading}
+                    className={`text-sm sm:ml-4 px-4 py-2 rounded-md sm:rounded-xl transition w-full sm:w-[200px] ${
+                      isSubscribed
+                        ? "bg-green-100 text-green-600"
+                        : "bg-slate-100 text-[#8C8C8C] hover:bg-slate-200"
+                    }`}
+                  >
+                    {isLoading
+                      ? t("subscribing")
+                      : isSubscribed
+                      ? t("subscribed")
+                      : t("subscribe")}
+                  </button>
                 </div>
-              </form>
-            </div>
+              </div>
+            </form>
+          </div>
 
-            {/* Navigation Columns Container */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 w-full lg:w-auto">
-              {/* Column 1 */}
-              <nav className="col-span-1">
-                <ul className="space-y-2">
-                  <li>
-                    <a
-                      href="/admin/ilan-olustur"
-                      className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
-                    >
-                      İlan Verin
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/satilik"
-                      className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
-                    >
-                      Satılık İlanlar
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/kiralik"
-                      className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
-                    >
-                      Kiralık İlanlar
-                    </a>
-                  </li>
-                </ul>
-              </nav>
+          {/* Navigation Columns Container */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-28 w-full lg:w-auto">
+            {/* Column 1 */}
+            <nav className="col-span-1">
+              <ul className="space-y-2">
+                <li>
+                  <a
+                    href="/admin/ilan-olustur"
+                    className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                  >
+                    İlan Verin
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/satilik"
+                    className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                  >
+                    Satılık İlanlar
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/kiralik"
+                    className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                  >
+                    Kiralık İlanlar
+                  </a>
+                </li>
+              </ul>
+            </nav>
 
-              {/* Column 2 */}
-              <nav className="col-span-1">
-                <ul className="space-y-2">
-                  <li>
-                    <a
-                      className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
-                      href="/kariyer"
-                    >
-                      Kariyer
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/bayimiz-olun"
-                      className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
-                    >
-                      Bayimiz Olun
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/iletisim#offices-section"
-                      className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
-                    >
-                      Satış Ofizlerimiz
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/iletisim"
-                      className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
-                    >
-                      İletişim
-                    </a>
-                  </li>
-                </ul>
-              </nav>
+            {/* Column 2 */}
+            <nav className="col-span-1">
+              <ul className="space-y-2">
+                <li>
+                  <a
+                    className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                    href="/kariyer"
+                  >
+                    Kariyer
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/bayimiz-olun"
+                    className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                  >
+                    Bayimiz Olun
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/iletisim#offices-section"
+                    className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                  >
+                    Satış Ofislerimiz
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/iletisim"
+                    className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
+                  >
+                    İletişim
+                  </a>
+                </li>
+              </ul>
+            </nav>
 
               {/* Column 3 */}
               <nav className="col-span-1">
@@ -282,15 +273,26 @@ export default function Footer({
           </div>
         </div>
 
-        {/* Language and Currency Switcher */}
-        <LanguageSwitcher
-          isOpen={isLanguageSwitcherOpen}
-          onClose={() => setIsLanguageSwitcherOpen(false)}
-          showButton={false}
-        />
-      </footer>
+      {/* Primary bottom divider */}
+      <div className="border-t border-[#C1BED4] max-w-[1440px] mx-auto"></div>
 
-      <FooterBottom />
-    </div>
+      {/* Bottom bar */}
+      <div className="max-w-[1440px] mx-auto px-4 lg:px-0">
+        <div className="flex justify-center lg:justify-between items-center py-4 lg:py-12 text-xs text-slate-500">
+          <div className="flex items-center">
+            <Image
+              src="/obudur-icon.png"
+              alt="Obudur Logo"
+              width={32}
+              height={32}
+              className="mr-4"
+            />
+            <span className="text-[14px] font-medium mr-4">© 2025 Obudur</span>
+            <span className="text-[14px] font-medium">Şirket Bilgileri</span>
+          </div>
+        </div>
+      </div>
+      <div className="w-full h-[16px] bg-[#C1BED4]"></div>
+    </footer>
   );
 }

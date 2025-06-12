@@ -1,12 +1,10 @@
 "use client";
 
-import React from "react";
-import Header from "./Header/Header";
 import ContactTextList from "./ContactTextList/ContactTextList";
+import Footer from "../resident/[slug]/Footer/Footer";
 import FormSection from "./FormSection/FormSection";
 import OfficesSection from "./OfficesSection/OfficesSection";
-import Footer from "../resident/[slug]/Footer/Footer";
-import HeaderWithoutButton from "@/app/components/HeaderWithoutButton/HeaderWithoutButton";
+import React from "react";
 import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
 
 export default function contact() {

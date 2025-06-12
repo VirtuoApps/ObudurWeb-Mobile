@@ -1,8 +1,9 @@
+import { MultilangText, useListingForm } from "../CreationSteps";
 import React, { useEffect, useState } from "react";
+
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
-import { useListingForm, MultilangText } from "../CreationSteps";
-import axiosInstance from "@/axios";
 import { XCircleIcon } from "@heroicons/react/24/solid";
+import axiosInstance from "@/axios";
 
 interface Language {
   _id: string;
@@ -260,15 +261,15 @@ export default function FirstCreateStep() {
   };
 
   return (
-    <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start p-4">
-      <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">
-        <div className="flex flex-col md:flex-row p-10">
+    <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start py-6 mx-auto">
+      <div className="w-full max-w-[1288px] rounded-2xl shadow-lg bg-white">
+        <div className="flex flex-col md:flex-row">
           {/* Left Info Panel - 30% width on desktop */}
-          <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 flex flex-col ">
-            <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
+          <div className="w-full md:w-[33%] mb-8 md:mb-0 flex flex-col p-6 border-solid border-r border-[#F0F0F0]">
+            <h1 className="text-2xl font-extrabold leading-tight text-[#362C75] max-w-[241px]">
               İlan kategorilerini belirleyin.
             </h1>
-            <div className="mt-4 text-base  text-[#595959] font-medium">
+            <div className="mt-4 text-base  text-[#595959] font-medium max-w-[241px]">
               <p className="leading-[140%]">
                 İlan vereceğiniz mülkün kategorilerini belirtin.
                 <br />
@@ -284,7 +285,7 @@ export default function FirstCreateStep() {
           <div className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
             {/* Errors display */}
             {errors.length > 0 && (
-              <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
+              <div className="bg-red-50 border border-red-200 rounded-md p-4">
                 <div className="flex items-start">
                   <div className="flex-shrink-0">
                     <XCircleIcon
@@ -309,14 +310,14 @@ export default function FirstCreateStep() {
             )}
 
             {/* Sale or Rent */}
-            <div className="mb-6">
+            <div className="flex flex-col gap-4">
               <h2 className="font-semibold mb-2 text-[#262626] text-2xl">
                 Satılık mı, kiralık mı?
               </h2>
               <div className="flex gap-2">
                 <button
                   type="button"
-                  className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer  ${
+                  className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full transition font-medium cursor-pointer text-[14px] ${
                     listingType && listingType.tr === "Satılık"
                       ? "bg-[#EBEAF180] border-[0.5px]  border-[#362C75] text-[#362C75]"
                       : "bg-transparent border-[0.5px] border-[#BFBFBF] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
@@ -329,7 +330,7 @@ export default function FirstCreateStep() {
                 </button>
                 <button
                   type="button"
-                  className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer  ${
+                  className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full transition font-medium cursor-pointer text-[14px] font-medium ${
                     listingType && listingType.tr === "Kiralık"
                       ? "bg-[#EBEAF180] border-[0.5px]  border-[#362C75] text-[#362C75]"
                       : "bg-transparent border-[0.5px] border-[#BFBFBF] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
@@ -344,7 +345,7 @@ export default function FirstCreateStep() {
             </div>
 
             {/* Property Type */}
-            <div className="mt-6">
+            <div className="flex flex-col gap-4">
               <h2 className="font-semibold mb-2 text-[#262626] text-2xl">
                 Emlak Tipi Seçin
               </h2>
@@ -353,7 +354,7 @@ export default function FirstCreateStep() {
                   <button
                     key={type._id}
                     type="button"
-                    className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer ${
+                    className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer text-[14px] font-medium ${
                       entranceType && entranceType.tr === type.name.tr
                         ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
                         : "bg-transparent border-[0.5px] border-[#BFBFBF] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
@@ -367,7 +368,7 @@ export default function FirstCreateStep() {
             </div>
 
             {/* Category */}
-            <div className="mt-6">
+            <div className="flex flex-col gap-4">
               <h2 className="font-semibold mb-2 text-[#262626] text-2xl">
                 Kategori Seçin
               </h2>
@@ -376,7 +377,7 @@ export default function FirstCreateStep() {
                   <button
                     key={cat._id}
                     type="button"
-                    className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer ${
+                    className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer text-[14px] font-medium ${
                       housingType && housingType.tr === cat.name.tr
                         ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
                         : "bg-transparent border-[0.5px] border-[#BFBFBF] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
@@ -395,63 +396,56 @@ export default function FirstCreateStep() {
             </div>
 
             {/* Listing Title */}
-            <div className="mt-8 space-y-6">
+            <div className="flex flex-col gap-6">
               {/* Turkish Title */}
 
-              <h2 className="font-semibold mb-2 text-[#262626] text-2xl">
+
+              <h2 className="font-semibold text-[#262626] text-2xl">
                 İlan Başlığı ve Açıklaması
               </h2>
-              <div>
-                <h3 className="font-semibold text-base mb-4 text-[#262626]">
+              <div className="flex flex-col gap-4">
+                <h3 className="font-semibold text-base text-[#262626]">
                   Türkçe{" "}
                   <span className="text-[#595959] text-base font-normal">
                     Zorunlu
                   </span>
                 </h3>
-                <div className="space-y-4">
-                  <div>
-                    <input
-                      type="text"
-                      id="title-tr"
-                      value={title?.tr || ""}
-                      onChange={(e) =>
-                        setTitle((prev) => ({
-                          ...prev,
-                          tr: e.target.value,
-                        }))
-                      }
-                      className={getFieldClassName("title", "tr")}
-                      placeholder=" İlan Başlığı"
-                    />
-                  </div>
+                <input
+                  type="text"
+                  id="title-tr"
+                  value={title?.tr || ""}
+                  onChange={(e) =>
+                    setTitle((prev) => ({
+                      ...prev,
+                      tr: e.target.value,
+                    }))
+                  }
+                  className={getFieldClassName("title", "tr")}
+                  placeholder=" İlan Başlığı"
+                />
 
-                  <div>
-                    <textarea
-                      id="description-tr"
-                      value={description?.tr || ""}
-                      onChange={(e) =>
-                        setDescription((prev) => ({
-                          ...prev,
-                          tr: e.target.value,
-                        }))
-                      }
-                      className={getFieldClassName("description", "tr")}
-                      placeholder="  İlan Açıklaması"
-                    />
-                  </div>
-                </div>
+                <textarea
+                  id="description-tr"
+                  value={description?.tr || ""}
+                  onChange={(e) =>
+                    setDescription((prev) => ({
+                      ...prev,
+                      tr: e.target.value,
+                    }))
+                  }
+                  className={getFieldClassName("description", "tr")}
+                  placeholder="  İlan Açıklaması"
+                />
               </div>
 
               {/* English Title */}
-              <div>
-                <h3 className="font-semibold text-base mb-4 text-[#262626]">
+              <div className="flex flex-col gap-4">
+                <h3 className="font-semibold text-base text-[#262626]">
                   English{" "}
                   <span className="text-[#595959] text-base font-normal">
                     Zorunlu
                   </span>
                 </h3>
-                <div className="space-y-4">
-                  <div>
                     <input
                       type="text"
                       id="title-en"
@@ -465,9 +459,7 @@ export default function FirstCreateStep() {
                       className={getFieldClassName("title", "en")}
                       placeholder="Title"
                     />
-                  </div>
 
-                  <div>
                     <textarea
                       id="description-en"
                       value={description?.en || ""}
@@ -480,8 +472,6 @@ export default function FirstCreateStep() {
                       className={getFieldClassName("description", "en")}
                       placeholder="Description"
                     />
-                  </div>
-                </div>
               </div>
             </div>
 

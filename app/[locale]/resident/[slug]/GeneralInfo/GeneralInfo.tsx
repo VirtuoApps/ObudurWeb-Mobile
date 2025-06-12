@@ -1,13 +1,14 @@
 "use client";
 
-import React from "react";
-import BedIcon from "@/app/svgIcons/BedIcon";
+import { Feature, LocalizedText } from "../page";
+
 import AreaIcon from "@/app/svgIcons/AreaIcon";
-import { useTranslations } from "next-intl";
-import { useHotelData } from "../hotelContext";
-import { LocalizedText, Feature } from "../page";
+import BedIcon from "@/app/svgIcons/BedIcon";
+import React from "react";
 import { formatAddress } from "@/app/utils/addressFormatter";
 import { infrastructureFeatures } from "@/app/utils/infrastructureFeatures";
+import { useHotelData } from "../hotelContext";
+import { useTranslations } from "next-intl";
 import { views } from "@/app/utils/views";
 
 interface FeatureIconProps {

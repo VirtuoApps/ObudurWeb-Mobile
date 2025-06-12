@@ -1,16 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
-import MiddleSearchBox from "./MiddleSearchBox/MiddlesearchBox";
+
 import AuthBox from "./AuthBox/AuthBox";
-import LanguageSwitcher from "../../components/LanguageSwitcher";
-import { useTranslations } from "next-intl";
 import { FaBars } from "react-icons/fa";
-import { FilterType } from "@/types/filter.type";
 import { FilterOptions } from "@/types/filter-options.type";
-import { useAppSelector } from "@/app/store/hooks";
+import { FilterType } from "@/types/filter.type";
+import Image from "next/image";
+import LanguageSwitcher from "../../components/LanguageSwitcher";
+import MiddleSearchBox from "./MiddleSearchBox/MiddlesearchBox";
 import MobileSearchBox from "./MobileSearchBox/MobileSearchBox";
+import { useAppSelector } from "@/app/store/hooks";
+import { useTranslations } from "next-intl";
 
 export default function Header({
   setFilters,
@@ -47,15 +48,15 @@ export default function Header({
   const { user } = useAppSelector((state) => state.user);
 
   return (
-    <header className="relative lg:border-b lg:border-[#F0F0F0] py-4 bg-white h-[80px] w-full px-0 xl:px-0">
-      <div className=" mx-auto flex flex-wrap items-center justify-between px-4 sm:px-5">
+    <header className="relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex">
+      <div className="w-full flex flex-wrap items-center justify-between px-4 sm:px-6">
         {/* Logo */}
         <div className="xl:flex hidden items-center">
           <Image
             src="/obudur-logo.png"
             alt="oBudur Logo"
-            width={120}
-            height={40}
+            width={144}
+            height={32}
             priority
           />
         </div>
