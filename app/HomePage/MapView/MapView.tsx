@@ -390,6 +390,10 @@ export default function GoogleMapView({
               images={selectedHotel.images}
               isFavorite={false}
               roomAsText={selectedHotel.roomAsText}
+              roomCount={selectedHotel.roomCount || 0}
+              entranceType={selectedHotel.entranceType}
+              priceAsNumber={selectedHotel.price[0].amount}
+              areaAsNumber={+selectedHotel.projectArea}
             />
           </div>
         </InfoWindow>

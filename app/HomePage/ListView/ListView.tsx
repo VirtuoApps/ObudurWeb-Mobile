@@ -138,6 +138,10 @@ export default function ListView({
             isFavorite={false}
             roomAsText={hotel.roomAsText}
             isListView={true}
+            roomCount={hotel.roomCount || 0}
+            entranceType={hotel.entranceType}
+            priceAsNumber={hotel.price[0].amount}
+            areaAsNumber={+hotel.projectArea}
           />
         ))}
       </div>

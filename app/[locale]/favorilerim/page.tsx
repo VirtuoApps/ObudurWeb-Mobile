@@ -110,6 +110,8 @@ export default function FavoritesPage() {
               }`;
             }
 
+            const price = hotel.price[0];
+
             return (
               <ResidentBox
                 key={favorite._id}
@@ -131,6 +133,10 @@ export default function FavoritesPage() {
                 }
                 images={hotel.images || []}
                 roomAsText={hotel.roomAsText?.tr || ""}
+                roomCount={hotel.roomCount || 0}
+                entranceType={hotel.entranceType}
+                priceAsNumber={price[0].amount}
+                areaAsNumber={+hotel.projectArea}
               />
             );
           })}
