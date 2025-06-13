@@ -577,15 +577,7 @@ export default function AdminListings() {
     setUnpublishModalOpen(true);
   };
 
-  const handleCardViewMessages = (propertyId: string) => {
-    const property = properties.find((p) => p._id === propertyId);
-    if (property) {
-      setSelectedProperty(property);
-      setSelectedPropertyId(propertyId);
-      fetchPropertyMessages(propertyId);
-      setMessageModalOpen(true);
-    }
-  };
+
 
   return (
     <>
@@ -1187,21 +1179,20 @@ export default function AdminListings() {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {currentItems.map((property) => (
-                  <AdminPropertyCard
-                    key={property._id}
-                    property={property}
-                    onEdit={handleCardEdit}
-                    onDelete={() => {
-                      handleDeleteProperty(property._id);
-                    }}
-                    onPublish={() => {
-                      handleUpdatePublishStatus(true, property._id);
-                    }}
-                    onUnpublish={() => {
-                      handleUpdatePublishStatus(false, property._id);
-                    }}
-                    onViewMessages={handleCardViewMessages}
-                  />
+                                  <AdminPropertyCard
+                  key={property._id}
+                  property={property}
+                  onEdit={handleCardEdit}
+                  onDelete={() => {
+                    handleDeleteProperty(property._id);
+                  }}
+                  onPublish={() => {
+                    handleUpdatePublishStatus(true, property._id);
+                  }}
+                  onUnpublish={() => {
+                    handleUpdatePublishStatus(false, property._id);
+                  }}
+                />
                 ))}
               </div>
             )}
