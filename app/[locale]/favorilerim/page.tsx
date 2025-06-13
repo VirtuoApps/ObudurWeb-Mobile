@@ -55,7 +55,10 @@ export default function FavoritesPage() {
   if (loading) {
     return (
       <div className="container mx-auto p-8">
-        <h1 className="text-2xl font-bold mb-8">Favorilerim</h1>
+        <h1 className="text-2xl font-bold mb-8">Favori İlanlar</h1>
+        <p className=" text-[#595959] text-sm">
+          {favorites.length} adet favori ilanınız var.
+        </p>
         <div className="flex justify-center items-center min-h-[300px]">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
         </div>
@@ -79,9 +82,10 @@ export default function FavoritesPage() {
 
   return (
     <div className="container mx-auto p-8 px-2">
-      <h1 className="text-2xl font-bold mb-8 text-gray-700 pl-4">
-        Favorilerim
-      </h1>
+      <h1 className="text-[#262626] font-bold text-2xl">Favori İlanlar</h1>
+      <p className=" text-[#595959] text-sm mb-8">
+        {favorites.length} adet favori ilanınız var.
+      </p>
 
       {favorites.length === 0 ? (
         <div className="bg-gray-100 p-8 rounded-lg text-center">
@@ -96,7 +100,7 @@ export default function FavoritesPage() {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 -mx-3">
           {favorites.map((favorite) => {
             const hotel = favorite.hotelDetails;
             if (!hotel) return null;
@@ -135,7 +139,7 @@ export default function FavoritesPage() {
                 roomAsText={hotel.roomAsText?.tr || ""}
                 roomCount={hotel.roomCount || 0}
                 entranceType={hotel.entranceType}
-                priceAsNumber={price[0].amount}
+                priceAsNumber={hotel.price[0].amount}
                 areaAsNumber={+hotel.projectArea}
               />
             );
