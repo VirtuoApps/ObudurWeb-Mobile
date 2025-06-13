@@ -59,14 +59,11 @@ export default function GoogleMapView({
   }, [selectedCurrency]);
 
   useEffect(() => {
-    // Set initial center to specific coordinates only on initial load and if no location is selected
-    if (hotels.length > 0 && !selectedLocation && !initialCenter) {
-      setInitialCenter({
-        lat: 36.884804,
-        lng:  30.704044,
-      });
+    // Set Antalya as the center on initial load if no location is selected
+    if (!selectedLocation && !initialCenter) {
+      setInitialCenter({ lat: 36.855, lng: 30.805 });
     }
-  }, [hotels, selectedLocation, initialCenter]);
+  }, [selectedLocation, initialCenter]);
 
   // Calculate the center based on selectedLocation first, then average of all coordinates
   const center = useMemo(() => {
@@ -192,7 +189,7 @@ export default function GoogleMapView({
       } else {
         // No effective filter, or all hotels are shown. Use default view.
         mapInstance.setCenter(center); // 'center' is already calculated based on all 'hotels'
-        mapInstance.setZoom(12); // Default overview zoom for all hotels
+        mapInstance.setZoom(11); // Default overview zoom for all hotels
       }
     }
   }, [mapInstance, hotels, center, totalHotelsCount, selectedLocation]);
@@ -230,7 +227,7 @@ export default function GoogleMapView({
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={center}
-      zoom={12}
+      zoom={11}
       options={{
         // Turn off default UI if you want a cleaner map;
         // or leave on certain controls like zoomControl if desired
