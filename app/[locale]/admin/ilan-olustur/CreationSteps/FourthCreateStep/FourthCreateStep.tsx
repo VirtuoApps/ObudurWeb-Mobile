@@ -484,7 +484,14 @@ export default function FourthCreateStep() {
                 </div>
               )}
 
-  
+              {/* General Features */}
+              {entranceType?.tr !== "Arsa" && (
+                <FeatureSection
+                  title="Genel Özellikler"
+                  features={generalFeatures}
+                />
+              )}
+
               {/* Interior Features */}
               {entranceType?.tr !== "Arsa" && (
                 <FeatureSection

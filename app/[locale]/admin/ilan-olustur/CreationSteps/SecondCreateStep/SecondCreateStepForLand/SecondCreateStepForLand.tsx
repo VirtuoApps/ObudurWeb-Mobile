@@ -602,6 +602,7 @@ export default function SecondCreateStepForLand() {
                     }
                   }}
                   placeholder="Seçiniz"
+                  openUpward={true}
                 />
               </div>
               <div className="w-full sm:w-1/2">
@@ -616,6 +617,7 @@ export default function SecondCreateStepForLand() {
                   value={exchangeable ? "true" : "false"}
                   onChange={(value) => setExchangeable(value === "true")}
                   placeholder="Seçiniz"
+                  openUpward={true}
                 />
               </div>
             </div>

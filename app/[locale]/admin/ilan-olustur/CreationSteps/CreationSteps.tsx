@@ -662,7 +662,7 @@ export default function CreationSteps({
       {currentStep === 1 && <FirstCreateStep />}
       {currentStep === 2 && (
         <>
-          {entranceType?.tr === "Ev" && <SecondCreateStepForHouse />}
+          {entranceType?.tr === "Konut" && <SecondCreateStepForHouse />}
           {entranceType?.tr === "İş Yeri" && <SecondCreateStepForWork />}
           {entranceType?.tr === "Arsa" && <SecondCreateStepForLand />}
         </>
