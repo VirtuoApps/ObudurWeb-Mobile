@@ -160,23 +160,39 @@ export default async function ResidentPage({
       <div className="w-full block md:hidden">
         <SimpleHeader showBackButton />
       </div>
-      <div className="block md:hidden w-full">
+      <div className="block md:hidden w-full sticky top-0 bg-white z-10">
         <MenuItems />
       </div>
       <div className="md:pt-[80px]">
-        <Images />
+        <div id="images-section">
+          <Images />
+        </div>
         <div className="max-w-[1440px] mx-auto px-6 lg:px-0">
           <div className="flex md:flex-row flex-col items-start mt-[80px] justify-between">
             <div className="md:max-w-[952px] w-full pr-6 lg:pr-0">
               <GeneralInfo />
-              <Descriptions />
-              <Details />
-              <FeaturesEquipment />
-              {video && <PanoramicView video={video} />}
-              <Location />
-              <PlansAndDocumentation
-                documents={hotelData.hotelDetails.documents}
-              />
+              <div id="descriptions-section">
+                <Descriptions />
+              </div>
+              <div id="details-section">
+                <Details />
+              </div>
+              <div id="features-section">
+                <FeaturesEquipment />
+              </div>
+              {video && (
+                <div id="panoramic-section">
+                  <PanoramicView video={video} />
+                </div>
+              )}
+              <div id="location-section">
+                <Location />
+              </div>
+              <div id="plans-section">
+                <PlansAndDocumentation
+                  documents={hotelData.hotelDetails.documents}
+                />
+              </div>
             </div>
 
             <div className="md:max-w-[342px] w-full pl-6 lg:pl-0 mt-8 md:mt-0 sticky top-[104px]">
