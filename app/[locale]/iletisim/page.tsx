@@ -12,7 +12,7 @@ export default function contact() {
     <div className="w-full h-full bg-[#ebeaf1]">
       <SimpleHeader />
 
-      <div className="bg-[#ebeaf1] w-full min-h-screen pt-20   max-w-[1440px] mx-auto -mb-24 md:mb-0 px-8 md:px-0">
+      <div className="bg-[#ebeaf1] w-full min-h-screen pt-20   max-w-[1440px] mx-auto -mb-24 md:mb-0 px-4 md:px-0">
         <div className="flex flex-col items-center justify-center text-center md:py-10 -mt-12 md:mt-0">
           <h1 className=" sm:text-[56px] text-[32px] md:text-[56px] font-bold text-[#362C75] mb-3">
             Obudur’a ulaşmak çok kolay!

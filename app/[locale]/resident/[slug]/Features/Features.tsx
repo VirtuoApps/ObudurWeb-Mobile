@@ -128,7 +128,7 @@ export default function FeaturesEquipment() {
       .filter((v: Feature | null): v is Feature => v !== null) || [];
 
   return (
-    <section id="features-section" className="max-w-5xl mx-auto p-4 lg:p-0 mt-12">
+    <section id="features-section" className="max-w-5xl mx-auto my-[24px] md:my-[72px]">
       <div>
         <h2 className="text-[#31286A] font-semibold tracking-tight text-3xl md:text-2xl">
           {t("title")}

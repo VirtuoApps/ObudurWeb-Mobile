@@ -319,7 +319,7 @@ export default function GeneralInfo() {
   }).format(mainPrice);
 
   return (
-    <div className="max-w-5xl mx-auto px-3 sm:px-0 font-sans mb-0 md:mb-6">
+    <div className="max-w-5xl mx-auto font-sans">
       {/* Title and Price Section */}
       <div className="mb-4 sm:mb-6">
         <div className="flex flex-row-reverse sm:flex-row  justify-between sm:items-start gap-3 sm:gap-0">
@@ -355,7 +355,7 @@ export default function GeneralInfo() {
 
       {/* Separator Line */}
       {iconsToDisplay.length >= 6 && (
-        <div className="border-b border-gray-200 my-3 sm:my-6"></div>
+        <div className="border-b border-gray-200 mt-3 sm:mt-6"></div>
       )}
 
       {/* Features Icons Row - Scrollable on mobile */}
@@ -611,7 +611,7 @@ export default function GeneralInfo() {
         </div>
       )}
 
-      <div className="border-b border-gray-200 my-3 sm:my-6"></div>
+      <div className="border-b border-gray-200 mt-3 sm:mt-6"></div>
     </div>
   );
 }
