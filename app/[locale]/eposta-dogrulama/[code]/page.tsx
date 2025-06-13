@@ -1,18 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import axiosInstance from "@/axios";
 
-type VerifyEmailPageProps = {
-  params: {
-    code: string;
-  };
-};
-
-export default function VerifyEmailPage({ params }: VerifyEmailPageProps) {
+export default function VerifyEmailPage() {
   const router = useRouter();
-  const { code } = params;
+  const params = useParams();
+  const code = params.code as string;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,9 +28,10 @@ export default function VerifyEmailPage({ params }: VerifyEmailPageProps) {
           }
         } catch (err: any) {
           setError("E-posta doğrulaması sırasında bir hata oluştu.");
-          setTimeout(() => {
-            router.push("/");
-          }, 3000);
+          console.log(err);
+          // setTimeout(() => {
+          //   router.push("/");
+          // }, 3000);
         } finally {
           setLoading(false);
         }
