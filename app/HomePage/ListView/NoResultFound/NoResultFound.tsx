@@ -25,7 +25,6 @@ export default function NoResultFound({
   allHotels = [],
   currentView,
 }: NoResultFoundProps) {
-  const t = useTranslations("homePage");
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
   const selectedLanguage = useLocale();
 
