@@ -583,7 +583,7 @@ export default function FilterPopup({
       ></div>
 
       <div
-        className="relative bg-white rounded-2xl shadow-xl max-w-[600px] w-full mx-auto max-h-[90vh] flex flex-col"
+        className="relative bg-white rounded-t-2xl md:rounded-2xl shadow-xl max-w-[600px] w-full mx-auto h-[90vh] md:h-auto md:max-h-[90vh] flex flex-col"
         style={{
           transform: `translateY(${translateY}px)`,
           transition: touchStartY ? "none" : "transform 0.3s ease-out",

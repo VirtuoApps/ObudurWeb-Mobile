@@ -498,17 +498,17 @@ export default function HomePage({
   // Disable body scroll when component mounts
   useEffect(() => {
     // Disable scroll on body
-    if (currentView === "map" && !noResultFound) {
+    if ((currentView === "map" && !noResultFound) || isFilterPopupOpen) {
       document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "scroll";
+      document.body.style.overflow = "auto";
     }
 
     // Cleanup function to re-enable scroll when component unmounts
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "auto";
     };
-  }, [currentView, noResultFound]);
+  }, [currentView, noResultFound, isFilterPopupOpen]);
 
   return (
     <>
