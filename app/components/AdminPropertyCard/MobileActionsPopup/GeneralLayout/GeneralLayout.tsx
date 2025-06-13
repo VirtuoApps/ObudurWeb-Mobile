@@ -49,7 +49,6 @@ interface GeneralLayoutProps {
   onShare: () => void;
   onLocationClick: () => void;
   onClose: () => void;
-  onViewMessages: (propertyId: string) => void;
 }
 
 export default function GeneralLayout({
@@ -60,7 +59,6 @@ export default function GeneralLayout({
   onShare,
   onLocationClick,
   onClose,
-  onViewMessages,
 }: GeneralLayoutProps) {
   const shouldShowPause = property.isPublished;
   const shouldShowPublish = !property.isPublished;
@@ -128,16 +126,6 @@ export default function GeneralLayout({
         <img src="/marker-02.png" className="w-6 h-6" />
         <p className="text-base font-medium text-[#262626] ml-4">
           Haritada Gör
-        </p>
-      </div>
-
-      <div
-        className="w-full bg-[#F5F5F5] h-[56px] rounded-2xl flex flex-row items-center justify-start mt-2 pl-5 cursor-pointer"
-        onClick={() => onViewMessages(property._id)}
-      >
-        <img src="/mail_resident.png" className="w-6 h-6" />
-        <p className="text-base font-medium text-[#262626] ml-4">
-          Mesajları Gör
         </p>
       </div>
 

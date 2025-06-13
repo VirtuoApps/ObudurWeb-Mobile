@@ -56,7 +56,6 @@ interface AdminPropertyCardProps {
   onDelete: (propertyId: string) => void;
   onPublish: (propertyId: string) => void;
   onUnpublish: (propertyId: string) => void;
-  onViewMessages: (propertyId: string) => void;
 }
 
 export default function AdminPropertyCard({
@@ -65,7 +64,6 @@ export default function AdminPropertyCard({
   onDelete,
   onPublish,
   onUnpublish,
-  onViewMessages,
 }: AdminPropertyCardProps) {
   const router = useRouter();
   const [showMobileActionsPopup, setShowMobileActionsPopup] = useState(false);
@@ -154,7 +152,6 @@ export default function AdminPropertyCard({
           onDelete={onDelete}
           onPublish={onPublish}
           onUnpublish={onUnpublish}
-          onViewMessages={onViewMessages}
           onShare={handleShare}
           onLocationClick={handleLocationClick}
           onClose={handlePopupClose}

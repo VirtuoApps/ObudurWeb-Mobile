@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import GeneralLayout from "./GeneralLayout/GeneralLayout";
 import PauseConfirm from "./PauseConfim/PauseConfirm";
 
@@ -49,7 +49,6 @@ interface MobileActionsPopupProps {
   onDelete: (propertyId: string) => void;
   onPublish: (propertyId: string) => void;
   onUnpublish: (propertyId: string) => void;
-  onViewMessages: (propertyId: string) => void;
   onShare: () => void;
   onLocationClick: () => void;
   onClose: () => void;
@@ -61,22 +60,90 @@ export default function MobileActionsPopup({
   onDelete,
   onPublish,
   onUnpublish,
-  onViewMessages,
   onShare,
   onLocationClick,
   onClose,
 }: MobileActionsPopupProps) {
   const [showPauseConfirm, setShowPauseConfirm] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [translateY, setTranslateY] = useState(0);
+  const [touchStartY, setTouchStartY] = useState<number | null>(null);
+  const [isClosing, setIsClosing] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Prevent body scroll when popup is open and handle opening animation
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    
+    // Start opening animation
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 10);
+    
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setIsVisible(false);
+    
+    // Wait for animation to complete before calling onClose
+    setTimeout(() => {
+      onClose();
+    }, 300);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartY(e.touches[0].clientY);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (touchStartY === null) return;
+    
+    const currentY = e.touches[0].clientY;
+    const deltaY = currentY - touchStartY;
+    
+    // Only allow downward movement
+    if (deltaY > 0) {
+      setTranslateY(deltaY);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (translateY > 100) {
+      // Close if dragged more than 100px down
+      handleClose();
+    } else {
+      // Reset position
+      setTranslateY(0);
+    }
+    setTouchStartY(null);
+  };
 
   return (
     <div
       className="fixed bottom-0 left-0 right-0 z-50 flex flex-col items-end justify-end w-full h-full"
       style={{
-        backgroundColor: "rgba(0,0,0,0.1)",
+        backgroundColor: "rgba(0, 0, 0, 0.8)",
       }}
+      onClick={handleClose}
     >
-      <div className="bg-[#FCFCFC] h-[60%]  w-full z-50 rounded-t-[32px] px-4 pt-8 flex flex-col pb-6">
+      <div 
+        className="bg-[#FCFCFC] h-[60%] w-full z-50 rounded-t-[32px] px-4 pt-8 flex flex-col pb-6"
+        style={{
+          transform: `translateY(${isVisible ? translateY : 100}%)`,
+          transition: touchStartY ? "none" : "transform 0.3s ease-out",
+        }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Drag handle */}
+        <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-14 h-1.5 bg-gray-300 rounded-full"></div>
+
         {!showPauseConfirm && !showDeleteConfirm && (
           <GeneralLayout
             property={property}
@@ -85,8 +152,7 @@ export default function MobileActionsPopup({
             onPause={() => setShowPauseConfirm(true)}
             onShare={onShare}
             onLocationClick={onLocationClick}
-            onClose={onClose}
-            onViewMessages={onViewMessages}
+            onClose={handleClose}
           />
         )}
         {showPauseConfirm && (
@@ -94,7 +160,7 @@ export default function MobileActionsPopup({
             property={property}
             onPublish={onPublish}
             onUnpublish={onUnpublish}
-            onClose={onClose}
+            onClose={handleClose}
             onBack={() => setShowPauseConfirm(false)}
           />
         )}
@@ -105,7 +171,7 @@ export default function MobileActionsPopup({
               <img
                 src="/close-button-ani.png"
                 className="w-6 h-6 cursor-pointer"
-                onClick={onClose}
+                onClick={handleClose}
               />
             </div>
 
@@ -127,7 +193,7 @@ export default function MobileActionsPopup({
                 className="bg-[#F24853] rounded-2xl h-[54px] w-1/2"
                 onClick={() => {
                   onDelete(property._id);
-                  onClose();
+                  handleClose();
                 }}
               >
                 <p className="text-white text-base font-medium">Sil</p>
@@ -139,3 +205,4 @@ export default function MobileActionsPopup({
     </div>
   );
 }
+
