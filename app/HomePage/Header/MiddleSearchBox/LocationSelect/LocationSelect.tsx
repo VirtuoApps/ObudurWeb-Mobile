@@ -105,12 +105,18 @@ export default function LocationSelect({
   }, [searchQuery, locale]);
 
   // Convert suggestions to the expected format
-  const searchResults = suggestions.map((suggestion) => ({
-    name: suggestion.description.split(",")[0], // Get main part of description
-    description: suggestion.description.split(",").slice(1).join(",").trim(), // Get secondary part
-    href: "#",
-    place_id: suggestion.placeId,
-  }));
+  const searchResults = suggestions.map((suggestion) => {
+    const parts = suggestion.description.split(",");
+    const name = parts[0].trim(); // Get main part of description
+    const description = parts.slice(1).join(",").trim(); // Get secondary part (province, country etc.)
+
+    return {
+      name,
+      description,
+      href: "#",
+      place_id: suggestion.placeId,
+    };
+  });
 
   // Fetch coordinates for selected location
   const fetchLocationCoordinates = async (
@@ -312,6 +318,11 @@ export default function LocationSelect({
                             <div className="font-normal text-[#595959] flex items-center">
                               {location.name}
                             </div>
+                            {location.description && (
+                              <div className="text-xs text-gray-400 mt-1">
+                                {location.description}
+                              </div>
+                            )}
                           </div>
                         </div>
                       ))
