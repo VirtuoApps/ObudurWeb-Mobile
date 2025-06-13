@@ -118,22 +118,6 @@ export default function AuthBox({
     };
   }, []);
 
-  // Prevent body scroll when dropdown is open on mobile
-  useEffect(() => {
-    if (dropdownOpen) {
-      // Prevent body scroll on mobile
-      document.body.style.overflow = 'hidden';
-    } else {
-      // Restore body scroll
-      document.body.style.overflow = 'unset';
-    }
-
-    // Cleanup function to restore scroll when component unmounts
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [dropdownOpen]);
-
   const handleLogout = () => {
     // Clear token from localStorage
     localStorage.removeItem("accessToken");
@@ -203,11 +187,10 @@ export default function AuthBox({
             )}
           </div>
 
-        {/* Dropdown Menu */}
-        {dropdownOpen && (
-          <div className="fixed lg:absolute inset-0 lg:inset-auto lg:-right-4 lg:right-0 lg:mt-2 lg:min-w-[320px] bg-white lg:rounded-[16px] lg:shadow-lg z-50 lg:border lg:border-[#D9D9D9] flex flex-col max-h-screen lg:max-h-[80vh] overflow-y-auto">
-            {/* Mobile Close Button */}
-
+          {/* Dropdown Menu */}
+          {dropdownOpen && (
+            <div className="fixed lg:absolute inset-0 lg:inset-auto lg:-right-4 lg:right-0 lg:mt-2 lg:min-w-[320px] bg-white lg:rounded-[16px] lg:shadow-lg z-50 lg:border lg:border-[#D9D9D9] flex flex-col">
+              {/* Mobile Close Button */}
 
               {/* Mobile Header */}
               <div className="lg:hidden px-4 pb-6 flex flex-row items-center justify-between mt-5">
