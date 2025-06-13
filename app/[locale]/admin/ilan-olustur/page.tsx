@@ -1,7 +1,6 @@
-import CreationSteps from "./CreationSteps/CreationSteps";
-import Header from "../Header/Header";
-import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
 import { unstable_noStore as noStore } from "next/cache";
+import Header from "../Header/Header";
+import CreationSteps from "./CreationSteps/CreationSteps";
 
 export default async function AdminHome() {
   // Disable caching at the page level
@@ -9,7 +8,7 @@ export default async function AdminHome() {
 
   return (
     <>
-      <SimpleHeader />
+      <Header />
       <CreationSteps />
     </>
   );

@@ -24,6 +24,7 @@ import SimpleFooter from "@/app/components/SimpleFooter/SimpleFooter";
 import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
 import AdminPropertyCard from "@/app/components/AdminPropertyCard/AdminPropertyCard";
 import Footer from "../../resident/[slug]/Footer/Footer";
+import PersonalInformationFormPopup from "@/app/components/PersonalInformationsFormPopup/PersonalInformationsFormPopup";
 
 interface Price {
   amount: number;
@@ -121,6 +122,18 @@ export default function AdminListings() {
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(
     null
   );
+
+  const [
+    showIsPersonalInformationFormPopup,
+    setShowIsPersonalInformationFormPopup,
+  ] = useState(false);
+
+  const isUserAccountCompleted =
+    user?.firstName &&
+    user?.lastName &&
+    user?.email &&
+    user.phoneNumber &&
+    user.birthDate;
 
   // Handle outside clicks to close dropdowns
   useEffect(() => {
@@ -589,6 +602,13 @@ export default function AdminListings() {
 
   return (
     <>
+      {!isUserAccountCompleted && (
+        <PersonalInformationFormPopup
+          onClose={() => {
+            window.location.href = "/";
+          }}
+        />
+      )}
       <div className="sm:bg-[#ebeaf1] bg-white w-full h-full min-h-screen pb-6">
         <SimpleHeader customRedirectUrl="/" />
         <Toaster position="top-center" />

@@ -32,9 +32,10 @@ export default function VerifyEmailPage({ params }: VerifyEmailPageProps) {
             setError("E-posta doğrulaması başarısız oldu.");
           }
         } catch (err: any) {
-          setError(
-            err?.message || "E-posta doğrulaması sırasında bir hata oluştu."
-          );
+          setError("E-posta doğrulaması sırasında bir hata oluştu.");
+          setTimeout(() => {
+            router.push("/");
+          }, 3000);
         } finally {
           setLoading(false);
         }

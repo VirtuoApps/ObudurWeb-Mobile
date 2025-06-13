@@ -71,18 +71,30 @@ const LikeButton = ({
 export default function AuthBox({
   showLikeButton = false,
   hideCreateListingButton = false,
+  setShowIsPersonalInformationFormPopup,
 }: {
   showLikeButton?: boolean;
   hideCreateListingButton?: boolean;
+  setShowIsPersonalInformationFormPopup?: (show: boolean) => void;
 }) {
   const t = useTranslations("header");
   const [isOpen, setIsOpen] = useState(false);
+  const [authState, setAuthState] = useState("login");
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [guestDropdownOpen, setGuestDropdownOpen] = useState(false);
   const { user } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const guestDropdownRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
+
+  const isUserAccountCompleted =
+    user?.firstName &&
+    user?.lastName &&
+    user?.email &&
+    user.phoneNumber &&
+    user.birthDate;
 
   // Handle clicks outside dropdown to close it
   useEffect(() => {
@@ -92,6 +104,12 @@ export default function AuthBox({
         !dropdownRef.current.contains(event.target as Node)
       ) {
         setDropdownOpen(false);
+      }
+      if (
+        guestDropdownRef.current &&
+        !guestDropdownRef.current.contains(event.target as Node)
+      ) {
+        setGuestDropdownOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -132,34 +150,34 @@ export default function AuthBox({
   if (user) {
     return (
       <>
-        <AuthPopup isOpen={isOpen} onClose={() => setIsOpen(false)} />
+        <AuthPopup
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          defaultState={authState}
+        />
 
         <div className="relative" ref={dropdownRef}>
           <div
             className="flex items-center gap-2 cursor-pointer lg:max-w-[200px] max-w-[50px]"
             onClick={() => setDropdownOpen(!dropdownOpen)}
           >
-            {user.role !== "admin" && user.role !== "super-admin" && (
-              <div className="text-right">
-                <div className="text-sm text-black font-bold">
-                  {user.firstName} {user.lastName}
-                </div>
-              </div>
-            )}
+            {!showLikeButton && !hideCreateListingButton && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
 
-            {(user.role === "admin" || user.role === "super-admin") &&
-              !showLikeButton &&
-              !hideCreateListingButton && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    router.push("/admin/ilan-olustur");
-                  }}
-                  className="hidden lg:block rounded-lg px-2 py-3 transition-all duration-300 hover:bg-gray-50 text-[#5E5691] cursor-pointer font-medium text-[14px] w-[82px] h-[48px]"
-                >
-                  <p className="">{t("postListing")}</p>
-                </button>
-              )}
+                  if (!isUserAccountCompleted) {
+                    setShowIsPersonalInformationFormPopup?.(true);
+                    return;
+                  }
+
+                  router.push("/admin/ilan-olustur");
+                }}
+                className="hidden lg:block rounded-lg px-2 py-3 transition-all duration-300 hover:bg-gray-50 text-[#5E5691] cursor-pointer font-medium text-[14px] w-[82px] h-[48px]"
+              >
+                <p className="">{t("postListing")}</p>
+              </button>
+            )}
 
             {showLikeButton && (
               <LikeButton
@@ -190,6 +208,7 @@ export default function AuthBox({
           <div className="fixed lg:absolute inset-0 lg:inset-auto lg:-right-4 lg:right-0 lg:mt-2 lg:min-w-[320px] bg-white lg:rounded-[16px] lg:shadow-lg z-50 lg:border lg:border-[#D9D9D9] flex flex-col max-h-screen lg:max-h-[80vh] overflow-y-auto">
             {/* Mobile Close Button */}
 
+
               {/* Mobile Header */}
               <div className="lg:hidden px-4 pb-6 flex flex-row items-center justify-between mt-5">
                 <div>
@@ -207,15 +226,17 @@ export default function AuthBox({
                 </button>
               </div>
 
-            {/* Desktop Header */}
-            <div className="hidden lg:flex px-4 mt-4 flex-col gap-2">
-              <p className="text-[#362C75] text-[16px] font-bold leading-[14px]">
-                {user.firstName} {user.lastName}
-              </p>
-              <p className="text-[#A39EC0] text-[14px] leading-[14px]">{user.email}</p>
-            </div>
+              {/* Desktop Header */}
+              <div className="hidden lg:flex px-4 mt-4 flex-col gap-2">
+                <p className="text-[#362C75] text-[16px] font-bold leading-[14px]">
+                  {user.firstName} {user.lastName}
+                </p>
+                <p className="text-[#A39EC0] text-[14px] leading-[14px]">
+                  {user.email}
+                </p>
+              </div>
 
-            <div className="hidden lg:block border-b border-gray-100 my-3 lg:my-2"></div>
+              <div className="hidden lg:block border-b border-gray-100 my-3 lg:my-2"></div>
 
               <Link
                 href="/account"
@@ -265,37 +286,35 @@ export default function AuthBox({
 
               <div className="hidden lg:block border-b border-gray-100 my-3 lg:my-2"></div>
 
-              {(user.role === "admin" || user.role === "super-admin") && (
-                <Link
-                  href="/admin/ilanlar"
-                  onClick={() => setDropdownOpen(false)}
-                  className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
+              <Link
+                href="/admin/ilanlar"
+                onClick={() => setDropdownOpen(false)}
+                className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
+              >
+                <div className="flex flex-row items-center font-medium lg:font-normal">
+                  <img
+                    src="/favourite.png"
+                    className="w-[24px] h-[24px] lg:w-[20px] lg:h-[20px] mr-3 lg:mr-2"
+                  />
+                  İlanlarım
+                </div>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="lg:hidden"
                 >
-                  <div className="flex flex-row items-center font-medium lg:font-normal">
-                    <img
-                      src="/favourite.png"
-                      className="w-[24px] h-[24px] lg:w-[20px] lg:h-[20px] mr-3 lg:mr-2"
-                    />
-                    İlanlarım
-                  </div>
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="lg:hidden"
-                  >
-                    <path
-                      d="M9 18L15 12L9 6"
-                      stroke="#595959"
-                      strokeWidth="2"
-                      strokeLinecap="square"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </Link>
-              )}
+                  <path
+                    d="M9 18L15 12L9 6"
+                    stroke="#595959"
+                    strokeWidth="2"
+                    strokeLinecap="square"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </Link>
 
               <Link
                 href="/favorilerim"
@@ -513,57 +532,255 @@ export default function AuthBox({
 
               <div className="border-b border-gray-100 my-3 lg:my-2"></div>
 
-            <Link
-              href="/iletisim"
-              onClick={() => setDropdownOpen(false)}
-              className="px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] font-[500] text-[#595959] hover:bg-gray-100 flex flex-row items-center"
-            >
-              Geri Bildirim
-            </Link>
+              <Link
+                href="/iletisim"
+                onClick={() => setDropdownOpen(false)}
+                className="px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] font-[500] text-[#595959] hover:bg-gray-100 flex flex-row items-center"
+              >
+                Geri Bildirim
+              </Link>
 
-            <Link
-              href="/sozlesmeler?id=sozlesmeler&itemId=bireysel"
-              className="px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] font-[500] text-[#595959] hover:bg-gray-100 flex flex-row items-center"
-            >
-              Kullanıcı Sözleşmeleri
-            </Link>
+              <Link
+                href="/sozlesmeler?id=sozlesmeler&itemId=bireysel"
+                className="px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] font-[500] text-[#595959] hover:bg-gray-100 flex flex-row items-center"
+              >
+                Kullanıcı Sözleşmeleri
+              </Link>
 
               <div className="border-b border-gray-100 my-3 lg:my-2"></div>
 
-            <button
-              onClick={handleLogout}
-              className="block w-full text-left px-4 py-4 lg:py-2 text-[14px] lg:text-[12px] text-[#EF1A28] hover:bg-gray-100 cursor-pointer flex flex-row items-center justify-between mb-4"
-            >
-              <span>Çıkış Yap</span>
-            </button>
-          </div>
-        )}
-      </div>
+              <button
+                onClick={handleLogout}
+                className="block w-full text-left px-4 py-4 lg:py-2 text-[14px] lg:text-[12px] text-[#EF1A28] hover:bg-gray-100 cursor-pointer flex flex-row items-center justify-between mb-4"
+              >
+                <span>Çıkış Yap</span>
+              </button>
+            </div>
+          )}
+        </div>
       </>
     );
   }
 
   return (
     <>
-      <AuthPopup isOpen={isOpen} onClose={() => setIsOpen(false)} />
-      <div
-        className="flex items-center gap-4 cursor-pointer lg:w-auto w-[50px]"
-        onClick={() => setIsOpen(true)}
-      >
-        <div className="text-right hidden lg:block">
-          <div className="text-sm text-black font-bold hidden lg:block">
-            {t("welcome")}
+      <AuthPopup
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        defaultState={authState}
+      />
+      <div className="relative" ref={guestDropdownRef}>
+        <div
+          className="flex items-center gap-4 cursor-pointer lg:w-auto w-[50px]"
+          onClick={() => setGuestDropdownOpen(!guestDropdownOpen)}
+        >
+          <div className="text-right hidden lg:block">
+            <div className="text-sm text-black font-bold hidden lg:block">
+              {t("welcome")}
+            </div>
+            <div className="text-sm text-gray-600">{t("login")}</div>
           </div>
-          <div className="text-sm text-gray-600">{t("login")}</div>
+
+          <div className="bg-gray-100 rounded-lg items-center justify-center py-3 px-3 h-[48px] w-[48px] flex lg:hidden">
+            <img src={"/user-profile-03.png"} className="w-6" />
+          </div>
+
+          <div className="bg-gray-100 hidden rounded-lg lg:flex items-center justify-center py-3 px-3">
+            <img src="/user-profile-03.png" className="w-6" />
+          </div>
         </div>
 
-        <div className="bg-gray-100 rounded-lg items-center justify-center py-3 px-3 h-[48px] w-[48px] flex lg:hidden">
-          <img src={"/user-profile-03.png"} className="w-6" />
-        </div>
+        {/* Guest Dropdown Menu */}
+        {guestDropdownOpen && (
+          <div className="fixed lg:absolute inset-0 lg:inset-auto lg:-right-4 lg:right-0 lg:mt-2 lg:min-w-[320px] bg-white lg:rounded-[16px] lg:shadow-lg z-50 lg:border lg:border-[#D9D9D9] flex flex-col">
+            {/* Mobile Close Button */}
+            <div className="lg:hidden px-4 pb-6 flex flex-row items-center justify-between mt-5">
+              <div>
+                <p className="text-[#362C75] text-[24px] font-bold">
+                  Hoş Geldiniz!
+                </p>
+              </div>
 
-        <div className="bg-gray-100 hidden rounded-lg lg:flex items-center justify-center py-3 px-3">
-          <img src="/user-profile-03.png" className="w-6" />
-        </div>
+              <button
+                onClick={() => setGuestDropdownOpen(false)}
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100"
+              >
+                <img src="/popup-close-icon.png" className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* Desktop Header */}
+            <div className="hidden lg:flex px-4 mt-4 flex-col gap-2">
+              <p className="text-[#362C75] text-[16px] font-bold leading-[14px]">
+                Hoş Geldiniz!
+              </p>
+            </div>
+
+            <div className="hidden lg:block border-b border-gray-100 my-3 lg:my-2"></div>
+
+            <button
+              onClick={() => {
+                setGuestDropdownOpen(false);
+                setAuthState("login");
+                setIsOpen(true);
+              }}
+              className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between text-left"
+            >
+              <span className="font-medium lg:font-normal">Giriş Yap</span>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="lg:hidden"
+              >
+                <path
+                  d="M9 18L15 12L9 6"
+                  stroke="#595959"
+                  strokeWidth="2"
+                  strokeLinecap="square"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+
+            <button
+              onClick={() => {
+                setGuestDropdownOpen(false);
+                setAuthState("signup");
+                setIsOpen(true);
+              }}
+              className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between text-left"
+            >
+              <span className="font-medium lg:font-normal">Üye Ol</span>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="lg:hidden"
+              >
+                <path
+                  d="M9 18L15 12L9 6"
+                  stroke="#595959"
+                  strokeWidth="2"
+                  strokeLinecap="square"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+
+            <div
+              className="border-b border-[#F5F5F5] my-3 lg:my-2"
+              style={{ borderWidth: "1px" }}
+            ></div>
+
+            <Link
+              onClick={() => {
+                setGuestDropdownOpen(false);
+                setAuthState("signup");
+                setIsOpen(true);
+              }}
+              className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between cursor-pointer"
+            >
+              <span className="font-medium lg:font-normal">İlan Ver</span>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="lg:hidden"
+              >
+                <path
+                  d="M9 18L15 12L9 6"
+                  stroke="#595959"
+                  strokeWidth="2"
+                  strokeLinecap="square"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Link>
+
+            <div
+              className="border-b border-[#F5F5F5] my-3 lg:my-2"
+              style={{ borderWidth: "1px" }}
+            ></div>
+
+            <Link
+              href="/iletisim"
+              onClick={() => setGuestDropdownOpen(false)}
+              className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
+            >
+              <span className="font-medium lg:font-normal">İletişim</span>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="lg:hidden"
+              >
+                <path
+                  d="M9 18L15 12L9 6"
+                  stroke="#262626"
+                  strokeWidth="2"
+                  strokeLinecap="square"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Link>
+
+            <Link
+              href="/iletisim#offices-section"
+              onClick={() => setGuestDropdownOpen(false)}
+              className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
+            >
+              <span className="font-medium lg:font-normal">
+                Gayrimenkul Ofislerimiz
+              </span>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="lg:hidden"
+              >
+                <path
+                  d="M9 18L15 12L9 6"
+                  stroke="#262626"
+                  strokeWidth="2"
+                  strokeLinecap="square"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Link>
+
+            <div
+              className="border-b border-[#F5F5F5] my-3 lg:my-2"
+              style={{ borderWidth: "1px" }}
+            ></div>
+
+            <Link
+              href="/iletisim"
+              onClick={() => setGuestDropdownOpen(false)}
+              className="px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center"
+            >
+              Geri Bildirim
+            </Link>
+
+            <Link
+              href="/sozlesmeler?id=sozlesmeler&itemId=bireysel"
+              onClick={() => setGuestDropdownOpen(false)}
+              className="px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center mb-4"
+            >
+              Kullanıcı Sözleşmeleri
+            </Link>
+          </div>
+        )}
       </div>
     </>
   );

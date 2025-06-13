@@ -129,6 +129,7 @@ export default function CategorySelect({
       extraClassName="min-w-[180px] text-[#8c8c8c] hover:text-[#595959] transition-all duration-300"
       customTextColor={true}
       popoverExtraClassName="max-w-[250px]"
+      maxHeight="300"
     />
   );
 }

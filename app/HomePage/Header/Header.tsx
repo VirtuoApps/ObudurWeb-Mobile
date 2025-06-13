@@ -27,6 +27,7 @@ export default function Header({
   searchRadius,
   setSearchRadius,
   setIsFilterPopupOpen,
+  setShowIsPersonalInformationFormPopup,
 }: {
   setFilters: (filters: FilterType) => void;
   filterOptions: FilterOptions;
@@ -41,6 +42,7 @@ export default function Header({
   searchRadius?: number;
   setSearchRadius?: (radius: number) => void;
   setIsFilterPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowIsPersonalInformationFormPopup: (show: boolean) => void;
 }) {
   const t = useTranslations("header");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -101,7 +103,11 @@ export default function Header({
 
         {/* Right Side Items for Desktop */}
         <div className="hidden xl:flex items-center gap-3">
-          <AuthBox />
+          <AuthBox
+            setShowIsPersonalInformationFormPopup={
+              setShowIsPersonalInformationFormPopup
+            }
+          />
           <LanguageSwitcher />
         </div>
 

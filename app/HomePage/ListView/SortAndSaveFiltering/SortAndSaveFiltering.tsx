@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 
 interface SortAndSaveFilteringProps {
-  sortOption: "ascending" | "descending" | null;
+  sortOption: "ascending" | "descending" | "newest" | "oldest" | null;
   setSortOption: React.Dispatch<
-    React.SetStateAction<"ascending" | "descending" | null>
+    React.SetStateAction<
+      "ascending" | "descending" | "newest" | "oldest" | null
+    >
   >;
   totalHotelsCount: number;
   setIsSaveFilterPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,9 +21,26 @@ export default function SortAndSaveFiltering({
 }: SortAndSaveFilteringProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleSortSelection = (option: "ascending" | "descending") => {
+  const handleSortSelection = (
+    option: "ascending" | "descending" | "newest" | "oldest"
+  ) => {
     setSortOption(option);
     setIsOpen(false);
+  };
+
+  const getSortDisplayText = () => {
+    switch (sortOption) {
+      case "ascending":
+        return "En Düşük Fiyat";
+      case "descending":
+        return "En Yüksek Fiyat";
+      case "newest":
+        return "Önce En Yeni İlan";
+      case "oldest":
+        return "Önce En Eski İlan";
+      default:
+        return "Sırala";
+    }
   };
 
   return (
@@ -48,11 +67,7 @@ export default function SortAndSaveFiltering({
             className="border bg-transparent flex flex-row items-center justify-between rounded-xl px-5 py-3 cursor-pointer min-w-[240px]"
           >
             <p className="text-sm text-gray-500 font-semibold mr-12">
-              {sortOption === "ascending"
-                ? "Artan Fiyat"
-                : sortOption === "descending"
-                ? "Azalan Fiyat"
-                : "Sırala"}
+              {getSortDisplayText()}
             </p>
             <img
               src="/chevron-down.png"
@@ -69,13 +84,25 @@ export default function SortAndSaveFiltering({
                 className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
                 onClick={() => handleSortSelection("ascending")}
               >
-                <p className="text-sm">Artan Fiyat</p>
+                <p className="text-sm">En Düşük Fiyat</p>
               </div>
               <div
                 className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
                 onClick={() => handleSortSelection("descending")}
               >
-                <p className="text-sm">Azalan Fiyat</p>
+                <p className="text-sm">En Yüksek Fiyat</p>
+              </div>
+              <div
+                className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                onClick={() => handleSortSelection("newest")}
+              >
+                <p className="text-sm">Önce En Yeni İlan</p>
+              </div>
+              <div
+                className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                onClick={() => handleSortSelection("oldest")}
+              >
+                <p className="text-sm">Önce En Eski İlan</p>
               </div>
             </div>
           )}

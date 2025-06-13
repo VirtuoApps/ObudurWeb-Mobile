@@ -25,7 +25,6 @@ export default function NoResultFound({
   allHotels = [],
   currentView,
 }: NoResultFoundProps) {
-  const t = useTranslations("homePage");
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
   const selectedLanguage = useLocale();
 
@@ -110,6 +109,10 @@ export default function NoResultFound({
                 isFavorite={false}
                 roomAsText={hotel.roomAsText}
                 isListView={true}
+                roomCount={hotel.roomCount || 0}
+                entranceType={hotel.entranceType}
+                priceAsNumber={hotel.price[0].amount}
+                areaAsNumber={+hotel.projectArea}
               />
             ))}
           </div>

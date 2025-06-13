@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LoginForm from "./LoginForm/LoginForm";
 import SignupForm from "./SignupForm/SignupForm";
 import ForgotPasswordForm from "./ForgotPasswordForm/ForgotPasswordForm";
@@ -9,10 +9,22 @@ import SignupEmailVerifySendPopup from "../SignupEMailVerifySendPopup/SignupEmai
 type AuthPopupProps = {
   isOpen: boolean;
   onClose: () => void;
+  defaultState?: string;
 };
 
-export default function AuthPopup({ isOpen, onClose }: AuthPopupProps) {
-  const [authState, setAuthState] = useState("login");
+export default function AuthPopup({
+  isOpen,
+  onClose,
+  defaultState = "login",
+}: AuthPopupProps) {
+  const [authState, setAuthState] = useState(defaultState);
+
+  // Reset authState when popup opens or defaultState changes
+  useEffect(() => {
+    if (isOpen) {
+      setAuthState(defaultState);
+    }
+  }, [isOpen, defaultState]);
 
   if (!isOpen) return null;
 

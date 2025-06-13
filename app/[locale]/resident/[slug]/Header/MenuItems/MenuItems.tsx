@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-
-import { useHotelData } from "../../hotelContext";
+import React, { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import { useHotelData } from "../../hotelContext";
 
 export default function MenuItems() {
   const t = useTranslations("residentMenu");
@@ -88,7 +87,7 @@ export default function MenuItems() {
           display: none; /* Safari and Chrome */
         }
       `}</style>
-      <div className="flex flex-row w-full items-center gap-4 md:gap-[32px] mb-5 md:mb-0 overflow-x-auto flex-nowrap px-4 md:px-0 hide-scrollbar pt-4 sm:pt-0">
+      <div className="flex flex-row w-full items-center gap-4 md:gap-10 mb-5 md:mb-0 overflow-x-auto flex-nowrap px-4 md:px-0 hide-scrollbar pt-4 sm:pt-0">
         {menuItems.map((item) => (
           <div
             key={item.key}

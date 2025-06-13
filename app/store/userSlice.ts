@@ -21,6 +21,7 @@ interface User {
   verified: boolean;
   createdAt: string;
   updatedAt: string;
+  birthDate: string | null;
 }
 
 interface UpdateUserPayload {

@@ -53,6 +53,7 @@ export default function SixthCreateStep() {
     country,
     city,
     state,
+    neighborhood,
     street,
     buildingNo,
     apartmentNo,
@@ -262,7 +263,12 @@ export default function SixthCreateStep() {
         floorCount,
         buildYear,
         kitchenType,
-        exchangeable,
+        exchangeable:
+          typeof exchangeable === "string"
+            ? exchangeable === "true"
+              ? true
+              : false
+            : exchangeable,
         creditEligible:
           creditEligible === "true"
             ? true
@@ -282,7 +288,14 @@ export default function SixthCreateStep() {
         country,
         city,
         state,
-        street,
+        neighborhood: {
+          tr: neighborhood.tr,
+          en: neighborhood.en,
+        },
+        street: {
+          tr: street.tr,
+          en: street.en,
+        },
         buildingNo,
         apartmentNo,
         postalCode,

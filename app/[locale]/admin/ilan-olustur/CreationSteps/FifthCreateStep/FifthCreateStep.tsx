@@ -200,8 +200,11 @@ export default function FifthCreateStep() {
     if (!event.target.files) return;
 
     const files = Array.from(event.target.files);
-    if (selectedImages.length + files.length > 20) {
-      setErrors(["Maksimum 20 görsel yükleyebilirsiniz."]);
+    if (selectedImages.length + files.length > 5) {
+      setErrors(["Maksimum 5 görsel yükleyebilirsiniz."]);
+      setTimeout(() => {
+        setErrors([]);
+      }, 3000);
       return;
     }
 
@@ -252,8 +255,8 @@ export default function FifthCreateStep() {
       file.type.startsWith("image/")
     );
 
-    if (selectedImages.length + files.length > 20) {
-      setErrors(["Maksimum 20 görsel yükleyebilirsiniz."]);
+    if (selectedImages.length + files.length > 5) {
+      setErrors(["Maksimum 5 görsel yükleyebilirsiniz."]);
       return;
     }
 
@@ -330,9 +333,19 @@ export default function FifthCreateStep() {
 
     const newErrors = [];
 
+    // Check minimum image requirement (3 images)
+    if (selectedImages.length < 3 && images.length < 3) {
+      newErrors.push("Lütfen en az 3 görsel yükleyin.");
+    }
+
+    // Check maximum image requirement (5 images)
+    if (selectedImages.length > 5 || images.length > 5) {
+      newErrors.push("Maksimum 5 görsel yükleyebilirsiniz.");
+    }
+
     // Check if there are no images at all (neither in selectedImages nor in context)
     if (selectedImages.length === 0 && images.length === 0) {
-      newErrors.push("Lütfen en az bir görsel yükleyin.");
+      newErrors.push("Lütfen en az 3 görsel yükleyin.");
     }
 
     const hasUploadingImages = selectedImages.some((img) => img.uploading);
@@ -357,6 +370,7 @@ export default function FifthCreateStep() {
       // Move to the next step
       setCurrentStep(6);
     } else {
+      setErrors(newErrors);
       // Scroll to top to see errors
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
@@ -437,7 +451,7 @@ export default function FifthCreateStep() {
                 Görseller
               </h2>
               <p className="text-sm text-gray-500 mb-4">
-                Maksimum 20 görsel yükleyebilirsiniz. (JPG, PNG)
+                En az 3, en fazla 5 görsel yükleyebilirsiniz. (JPG, PNG)
               </p>
 
               {/* Drag and drop area for images */}

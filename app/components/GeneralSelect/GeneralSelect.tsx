@@ -126,7 +126,7 @@ export default function GeneralSelect({
             </PopoverButton>
 
             <PopoverPanel
-              className={`absolute md:left-1/2 -left-4 z-50 mt-2 flex w-screen  md:-translate-x-1/2 px-4 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in ${popoverExtraClassName}`}
+              className={`absolute md:left-1/2 -left-4 z-50 mt-2 z-50 flex w-screen  md:-translate-x-1/2 px-4 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in ${popoverExtraClassName}`}
             >
               <div className="w-full  flex-auto overflow-hidden rounded-[8px] bg-white text-sm/6 shadow-2xl border border-[#D9D9D9] ring-1 ring-gray-900/5 ">
                 <div

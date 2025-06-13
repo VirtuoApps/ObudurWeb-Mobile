@@ -64,7 +64,7 @@ export default function HomePage({
   const [filters, setFilters] = useState<FilterType | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
   const [sortOption, setSortOption] = useState<
-    "ascending" | "descending" | null
+    "ascending" | "descending" | "newest" | "oldest" | null
   >(null);
 
   // Transition states
@@ -98,7 +98,7 @@ export default function HomePage({
   const [listingType, setListingType] = useState<"For Sale" | "For Rent">(
     "For Sale"
   );
-  const [searchRadius, setSearchRadius] = useState<number>(5); // Default 50km radius
+  const [searchRadius, setSearchRadius] = useState<number>(50); // Default 50km radius
 
   const [isSaveFilterPopupOpen, setIsSaveFilterPopupOpen] = useState(false);
 
@@ -107,6 +107,11 @@ export default function HomePage({
   const [showEmailVerifiedPopup, setShowEmailVerifiedPopup] = useState(false);
   const [showSignupEmailVerifySendPopup, setShowSignupEmailVerifySendPopup] =
     useState(false);
+
+  const [
+    isPersonalInformationFormPopupOpen,
+    setIsPersonalInformationFormPopupOpen,
+  ] = useState(false);
 
   useEffect(() => {
     if (searchParams.get("emailConfirmed") === "true") {
@@ -513,7 +518,13 @@ export default function HomePage({
   return (
     <>
       {showEmailVerifiedPopup && (
-        <EmailVerifiedSuccessPopup onClose={handleCloseEmailVerifiedPopup} />
+        <EmailVerifiedSuccessPopup
+          onClose={() => {
+            handleCloseEmailVerifiedPopup();
+
+            setIsPersonalInformationFormPopupOpen(true);
+          }}
+        />
       )}
       {showSignupEmailVerifySendPopup && (
         <SignupEmailVerifySendPopup
@@ -523,7 +534,13 @@ export default function HomePage({
         />
       )}
 
-      {/* <PersonalInformationFormPopup onClose={() => {}} /> */}
+      {isPersonalInformationFormPopupOpen && (
+        <PersonalInformationFormPopup
+          onClose={() => {
+            setIsPersonalInformationFormPopupOpen(false);
+          }}
+        />
+      )}
       <div
         className="fixed bottom-4 left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-10 px-3 h-[40px] rounded-lg shadow-lg"
         onClick={() => handleViewChange(currentView === "map" ? "list" : "map")}
@@ -573,6 +590,9 @@ export default function HomePage({
           searchRadius={searchRadius}
           setSearchRadius={setSearchRadius}
           setIsFilterPopupOpen={setIsFilterPopupOpen}
+          setShowIsPersonalInformationFormPopup={
+            setIsPersonalInformationFormPopupOpen
+          }
         />
         <FilterList
           features={features}
@@ -638,7 +658,7 @@ export default function HomePage({
             </div>
           )}
 
-          {(filters || selectedLocation) && filteredHotels.length === 0 ? (
+          {filteredHotels.length === 0 ? (
             <div
               className={`transition-all duration-400 ease-out ${
                 isTransitioning
