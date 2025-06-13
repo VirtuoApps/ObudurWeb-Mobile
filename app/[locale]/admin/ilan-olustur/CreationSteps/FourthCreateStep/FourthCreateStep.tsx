@@ -485,12 +485,12 @@ export default function FourthCreateStep() {
               )}
 
               {/* General Features */}
-              {entranceType?.tr !== "Arsa" && (
+              {/* {entranceType?.tr !== "Arsa" && (
                 <FeatureSection
                   title="Genel Özellikler"
                   features={generalFeatures}
                 />
-              )}
+              )} */}
 
               {/* Interior Features */}
               {entranceType?.tr !== "Arsa" && (
