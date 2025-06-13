@@ -518,13 +518,18 @@ export default function HomePage({
   return (
     <>
       {showEmailVerifiedPopup && (
-        <EmailVerifiedSuccessPopup onClose={handleCloseEmailVerifiedPopup} />
+        <EmailVerifiedSuccessPopup
+          onClose={() => {
+            handleCloseEmailVerifiedPopup();
+
+            setIsPersonalInformationFormPopupOpen(true);
+          }}
+        />
       )}
       {showSignupEmailVerifySendPopup && (
         <SignupEmailVerifySendPopup
           onClose={() => {
             setShowSignupEmailVerifySendPopup(false);
-            setIsPersonalInformationFormPopupOpen(true);
           }}
         />
       )}

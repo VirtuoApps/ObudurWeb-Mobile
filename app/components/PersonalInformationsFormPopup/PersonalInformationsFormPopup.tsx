@@ -167,7 +167,7 @@ export default function PersonalInformationFormPopup({
 
       // Close popup after 2 seconds
       setTimeout(() => {
-        onClose();
+        window.location.reload();
       }, 2000);
     } catch (error: any) {
       console.error("Error updating profile:", error);

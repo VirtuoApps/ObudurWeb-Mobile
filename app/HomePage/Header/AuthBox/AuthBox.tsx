@@ -256,37 +256,35 @@ export default function AuthBox({
 
               <div className="hidden lg:block border-b border-gray-100 my-3 lg:my-2"></div>
 
-              {(user.role === "admin" || user.role === "super-admin") && (
-                <Link
-                  href="/admin/ilanlar"
-                  onClick={() => setDropdownOpen(false)}
-                  className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
+              <Link
+                href="/admin/ilanlar"
+                onClick={() => setDropdownOpen(false)}
+                className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
+              >
+                <div className="flex flex-row items-center font-medium lg:font-normal">
+                  <img
+                    src="/favourite.png"
+                    className="w-[24px] h-[24px] lg:w-[20px] lg:h-[20px] mr-3 lg:mr-2"
+                  />
+                  İlanlarım
+                </div>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="lg:hidden"
                 >
-                  <div className="flex flex-row items-center font-medium lg:font-normal">
-                    <img
-                      src="/favourite.png"
-                      className="w-[24px] h-[24px] lg:w-[20px] lg:h-[20px] mr-3 lg:mr-2"
-                    />
-                    İlanlarım
-                  </div>
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="lg:hidden"
-                  >
-                    <path
-                      d="M9 18L15 12L9 6"
-                      stroke="#595959"
-                      strokeWidth="2"
-                      strokeLinecap="square"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </Link>
-              )}
+                  <path
+                    d="M9 18L15 12L9 6"
+                    stroke="#595959"
+                    strokeWidth="2"
+                    strokeLinecap="square"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </Link>
 
               <Link
                 href="/favorilerim"
