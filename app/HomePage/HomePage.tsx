@@ -333,10 +333,6 @@ export default function HomePage({
     );
   }
 
-  console.log({
-    filters,
-  });
-
   if (filters) {
     if (filters.propertyType) {
       filteredHotels = filteredHotels.filter((hotel) =>
