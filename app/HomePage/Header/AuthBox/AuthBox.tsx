@@ -71,9 +71,11 @@ const LikeButton = ({
 export default function AuthBox({
   showLikeButton = false,
   hideCreateListingButton = false,
+  setShowIsPersonalInformationFormPopup,
 }: {
   showLikeButton?: boolean;
   hideCreateListingButton?: boolean;
+  setShowIsPersonalInformationFormPopup?: (show: boolean) => void;
 }) {
   const t = useTranslations("header");
   const [isOpen, setIsOpen] = useState(false);
@@ -83,6 +85,13 @@ export default function AuthBox({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
+
+  const isUserAccountCompleted =
+    user?.firstName &&
+    user?.lastName &&
+    user?.email &&
+    user.phoneNumber &&
+    user.birthDate;
 
   // Handle clicks outside dropdown to close it
   useEffect(() => {
@@ -123,27 +132,23 @@ export default function AuthBox({
             className="flex items-center gap-2 cursor-pointer lg:max-w-[200px] max-w-[50px]"
             onClick={() => setDropdownOpen(!dropdownOpen)}
           >
-            {user.role !== "admin" && user.role !== "super-admin" && (
-              <div className="text-right">
-                <div className="text-sm text-black font-bold">
-                  {user.firstName} {user.lastName}
-                </div>
-              </div>
-            )}
+            {!showLikeButton && !hideCreateListingButton && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
 
-            {(user.role === "admin" || user.role === "super-admin") &&
-              !showLikeButton &&
-              !hideCreateListingButton && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    router.push("/admin/ilan-olustur");
-                  }}
-                  className="hidden lg:block rounded-lg px-2 py-3 transition-all duration-300 hover:bg-gray-50 text-[#5E5691] cursor-pointer font-medium text-[14px] w-[82px] h-[48px]"
-                >
-                  <p className="">{t("postListing")}</p>
-                </button>
-              )}
+                  if (!isUserAccountCompleted) {
+                    setShowIsPersonalInformationFormPopup?.(true);
+                    return;
+                  }
+
+                  router.push("/admin/ilan-olustur");
+                }}
+                className="hidden lg:block rounded-lg px-2 py-3 transition-all duration-300 hover:bg-gray-50 text-[#5E5691] cursor-pointer font-medium text-[14px] w-[82px] h-[48px]"
+              >
+                <p className="">{t("postListing")}</p>
+              </button>
+            )}
 
             {showLikeButton && (
               <LikeButton
@@ -169,10 +174,10 @@ export default function AuthBox({
             )}
           </div>
 
-        {/* Dropdown Menu */}
-        {dropdownOpen && (
-          <div className="fixed lg:absolute inset-0 lg:inset-auto lg:-right-4 lg:right-0 lg:mt-2 lg:min-w-[320px] bg-white lg:rounded-[16px] lg:shadow-lg z-50 lg:border lg:border-[#D9D9D9] flex flex-col">
-            {/* Mobile Close Button */}
+          {/* Dropdown Menu */}
+          {dropdownOpen && (
+            <div className="fixed lg:absolute inset-0 lg:inset-auto lg:-right-4 lg:right-0 lg:mt-2 lg:min-w-[320px] bg-white lg:rounded-[16px] lg:shadow-lg z-50 lg:border lg:border-[#D9D9D9] flex flex-col">
+              {/* Mobile Close Button */}
 
               {/* Mobile Header */}
               <div className="lg:hidden px-4 pb-6 flex flex-row items-center justify-between mt-5">
@@ -191,15 +196,17 @@ export default function AuthBox({
                 </button>
               </div>
 
-            {/* Desktop Header */}
-            <div className="hidden lg:flex px-4 mt-4 flex-col gap-2">
-              <p className="text-[#362C75] text-[16px] font-bold leading-[14px]">
-                {user.firstName} {user.lastName}
-              </p>
-              <p className="text-[#A39EC0] text-[14px] leading-[14px]">{user.email}</p>
-            </div>
+              {/* Desktop Header */}
+              <div className="hidden lg:flex px-4 mt-4 flex-col gap-2">
+                <p className="text-[#362C75] text-[16px] font-bold leading-[14px]">
+                  {user.firstName} {user.lastName}
+                </p>
+                <p className="text-[#A39EC0] text-[14px] leading-[14px]">
+                  {user.email}
+                </p>
+              </div>
 
-            <div className="hidden lg:block border-b border-gray-100 my-3 lg:my-2"></div>
+              <div className="hidden lg:block border-b border-gray-100 my-3 lg:my-2"></div>
 
               <Link
                 href="/account"
@@ -497,32 +504,32 @@ export default function AuthBox({
 
               <div className="border-b border-gray-100 my-3 lg:my-2"></div>
 
-            <Link
-              href="/iletisim"
-              onClick={() => setDropdownOpen(false)}
-              className="px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] font-[500] text-[#595959] hover:bg-gray-100 flex flex-row items-center"
-            >
-              Geri Bildirim
-            </Link>
+              <Link
+                href="/iletisim"
+                onClick={() => setDropdownOpen(false)}
+                className="px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] font-[500] text-[#595959] hover:bg-gray-100 flex flex-row items-center"
+              >
+                Geri Bildirim
+              </Link>
 
-            <Link
-              href="/sozlesmeler?id=sozlesmeler&itemId=bireysel"
-              className="px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] font-[500] text-[#595959] hover:bg-gray-100 flex flex-row items-center"
-            >
-              Kullanıcı Sözleşmeleri
-            </Link>
+              <Link
+                href="/sozlesmeler?id=sozlesmeler&itemId=bireysel"
+                className="px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] font-[500] text-[#595959] hover:bg-gray-100 flex flex-row items-center"
+              >
+                Kullanıcı Sözleşmeleri
+              </Link>
 
               <div className="border-b border-gray-100 my-3 lg:my-2"></div>
 
-            <button
-              onClick={handleLogout}
-              className="block w-full text-left px-4 py-4 lg:py-2 text-[14px] lg:text-[12px] text-[#EF1A28] hover:bg-gray-100 cursor-pointer flex flex-row items-center justify-between mb-4"
-            >
-              <span>Çıkış Yap</span>
-            </button>
-          </div>
-        )}
-      </div>
+              <button
+                onClick={handleLogout}
+                className="block w-full text-left px-4 py-4 lg:py-2 text-[14px] lg:text-[12px] text-[#EF1A28] hover:bg-gray-100 cursor-pointer flex flex-row items-center justify-between mb-4"
+              >
+                <span>Çıkış Yap</span>
+              </button>
+            </div>
+          )}
+        </div>
       </>
     );
   }

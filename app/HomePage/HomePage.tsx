@@ -108,6 +108,11 @@ export default function HomePage({
   const [showSignupEmailVerifySendPopup, setShowSignupEmailVerifySendPopup] =
     useState(false);
 
+  const [
+    isPersonalInformationFormPopupOpen,
+    setIsPersonalInformationFormPopupOpen,
+  ] = useState(false);
+
   useEffect(() => {
     if (searchParams.get("emailConfirmed") === "true") {
       setShowEmailVerifiedPopup(true);
@@ -519,11 +524,18 @@ export default function HomePage({
         <SignupEmailVerifySendPopup
           onClose={() => {
             setShowSignupEmailVerifySendPopup(false);
+            setIsPersonalInformationFormPopupOpen(true);
           }}
         />
       )}
 
-      {/* <PersonalInformationFormPopup onClose={() => {}} /> */}
+      {isPersonalInformationFormPopupOpen && (
+        <PersonalInformationFormPopup
+          onClose={() => {
+            setIsPersonalInformationFormPopupOpen(false);
+          }}
+        />
+      )}
       <div
         className="fixed bottom-4 left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-10 px-3 h-[40px] rounded-lg shadow-lg"
         onClick={() => handleViewChange(currentView === "map" ? "list" : "map")}
@@ -573,6 +585,9 @@ export default function HomePage({
           searchRadius={searchRadius}
           setSearchRadius={setSearchRadius}
           setIsFilterPopupOpen={setIsFilterPopupOpen}
+          setShowIsPersonalInformationFormPopup={
+            setIsPersonalInformationFormPopupOpen
+          }
         />
         <FilterList
           features={features}
