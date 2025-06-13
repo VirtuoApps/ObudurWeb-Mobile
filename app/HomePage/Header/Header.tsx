@@ -49,7 +49,7 @@ export default function Header({
 
   return (
     <header className="relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex">
-      <div className="w-full flex flex-wrap items-center justify-between px-4 sm:px-6">
+      <div className="w-full flex items-center justify-between px-4 sm:px-6 gap-3">
         {/* Logo */}
         <div className="xl:flex hidden items-center">
           <Image
@@ -72,7 +72,7 @@ export default function Header({
         </div>
 
         {/* Center Navigation - Hidden on mobile, shown on md and larger */}
-        <div className="hidden xl:flex xl:flex-1 xl:justify-center xl:px-4 xl:px-8 ">
+        <div className="hidden xl:flex flex-1 justify-center px-4">
           <MiddleSearchBox
             setFilters={setFilters}
             filterOptions={filterOptions}
@@ -89,7 +89,7 @@ export default function Header({
           />
         </div>
 
-        <div className="xl:hidden md:w-[80%] flex items-center">
+        <div className="xl:hidden flex-1 items-center">
           <MobileSearchBox
             selectedLocation={selectedLocation}
             setSelectedLocation={setSelectedLocation}
@@ -106,7 +106,7 @@ export default function Header({
         </div>
 
         {/* Hamburger Menu Button for Mobile */}
-        <div className="sm:hidden flex items-center">
+        <div className="flex items-center xl:hidden">
           <AuthBox />
         </div>
       </div>

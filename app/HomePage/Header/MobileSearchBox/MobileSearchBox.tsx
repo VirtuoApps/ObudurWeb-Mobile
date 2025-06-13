@@ -201,7 +201,7 @@ export default function MobileSearchBox({
         </p>
 
         <div className="flex-1 bg-transparent outline-none text-[#8C8C8C]  text-sm pl-4 pr-3">
-          <p>Konum, Kategori, Fiyat...</p>
+          <p className="truncate">Konum, Kategori, Fiyat...</p>
         </div>
 
         {/* <input
@@ -228,7 +228,7 @@ export default function MobileSearchBox({
         <img
           src="/header-search-icon.png"
           alt="search"
-          className="w-[14px] h-[14px]"
+          className="w-[14px] h-[14px] mr-4"
         />
       </div>
 
