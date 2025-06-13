@@ -29,9 +29,9 @@ export default function VerifyEmailPage() {
         } catch (err: any) {
           setError("E-posta doğrulaması sırasında bir hata oluştu.");
           console.log(err);
-          // setTimeout(() => {
-          //   router.push("/");
-          // }, 3000);
+          setTimeout(() => {
+            router.push("/");
+          }, 3000);
         } finally {
           setLoading(false);
         }
