@@ -64,7 +64,7 @@ export default function HomePage({
   const [filters, setFilters] = useState<FilterType | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
   const [sortOption, setSortOption] = useState<
-    "ascending" | "descending" | null
+    "ascending" | "descending" | "newest" | "oldest" | null
   >(null);
 
   // Transition states

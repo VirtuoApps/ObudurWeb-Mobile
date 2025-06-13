@@ -22,9 +22,11 @@ export default function ListView({
   isCurrentFilterExist,
 }: {
   hotels: Hotel[];
-  sortOption: "ascending" | "descending" | null;
+  sortOption: "ascending" | "descending" | "newest" | "oldest" | null;
   setSortOption: React.Dispatch<
-    React.SetStateAction<"ascending" | "descending" | null>
+    React.SetStateAction<
+      "ascending" | "descending" | "newest" | "oldest" | null
+    >
   >;
   setIsSaveFilterPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isCurrentFilterExist: boolean;
@@ -66,10 +68,21 @@ export default function ListView({
   const sortedHotels = [...hotels].sort((a, b) => {
     if (!sortOption) return 0;
 
-    const priceA = getNumericPrice(a.price, selectedCurrency);
-    const priceB = getNumericPrice(b.price, selectedCurrency);
+    // Price-based sorting
+    if (sortOption === "ascending" || sortOption === "descending") {
+      const priceA = getNumericPrice(a.price, selectedCurrency);
+      const priceB = getNumericPrice(b.price, selectedCurrency);
+      return sortOption === "ascending" ? priceA - priceB : priceB - priceA;
+    }
 
-    return sortOption === "ascending" ? priceA - priceB : priceB - priceA;
+    // Date-based sorting
+    if (sortOption === "newest" || sortOption === "oldest") {
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
+      return sortOption === "newest" ? dateB - dateA : dateA - dateB;
+    }
+
+    return 0;
   });
 
   // Calculate pagination
