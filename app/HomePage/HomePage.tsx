@@ -98,7 +98,7 @@ export default function HomePage({
   const [listingType, setListingType] = useState<"For Sale" | "For Rent">(
     "For Sale"
   );
-  const [searchRadius, setSearchRadius] = useState<number>(5); // Default 50km radius
+  const [searchRadius, setSearchRadius] = useState<number>(50); // Default 50km radius
 
   const [isSaveFilterPopupOpen, setIsSaveFilterPopupOpen] = useState(false);
 
