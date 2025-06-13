@@ -658,7 +658,7 @@ export default function HomePage({
             </div>
           )}
 
-          {(filters || selectedLocation) && filteredHotels.length === 0 ? (
+          {filteredHotels.length === 0 ? (
             <div
               className={`transition-all duration-400 ease-out ${
                 isTransitioning
