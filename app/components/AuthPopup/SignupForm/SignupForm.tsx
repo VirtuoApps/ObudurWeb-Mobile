@@ -95,6 +95,8 @@ export default function SignupForm({
         "Authorization"
       ] = `Bearer ${accessToken}`;
 
+      //
+
       // Fetch user data to update Redux store
       await dispatch(fetchUserData());
 
