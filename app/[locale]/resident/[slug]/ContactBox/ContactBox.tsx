@@ -96,6 +96,20 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
     }
   }, [user, setValue]);
 
+  // Prevent body scroll when bottom sheet is open
+  useEffect(() => {
+    if (isSheetOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isSheetOpen]);
+
   // Check for existing messages when component mounts if user is logged in
   useEffect(() => {
     const checkExistingMessages = async () => {
@@ -585,14 +599,14 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
 
       {/* Mobile: Bottom Sheet */}
       {isSheetOpen && (
-        <div className="fixed inset-0 z-[99999] flex items-end justify-center md:hidden">
+        <div className="fixed inset-0 z-[99999] flex items-end justify-center md:hidden pt-28">
           <div
             className="fixed inset-0"
             onClick={() => setIsSheetOpen(false)}
             style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
           ></div>
           <div
-            className="relative bg-white rounded-t-2xl shadow-xl max-w-[600px] w-full mx-auto max-h-[90vh] flex flex-col"
+            className="relative bg-white rounded-t-[24px] shadow-xl max-w-[600px] w-full mx-auto max-h-[calc(100vh-112px)] flex flex-col mt-28"
             style={{
               transform: `translateY(${translateY}px)`,
               transition: touchStartY ? "none" : "transform 0.3s ease-out",
@@ -602,7 +616,7 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
             onTouchEnd={handleTouchEnd}
           >
             {/* Header */}
-            <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-2xl relative">
+            <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-[24px] relative">
               <div className="flex items-center justify-between">
                 <h2 className="md:text-lg text-2xl font-bold text-gray-700">
                   İletişime Geç
