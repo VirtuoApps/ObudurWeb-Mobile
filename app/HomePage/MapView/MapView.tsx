@@ -32,7 +32,7 @@ export default function GoogleMapView({
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
   const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
   const [hideSelectedHotel, setHideSelectedHotel] = useState(false);
-  const [randomHotelCenter, setRandomHotelCenter] = useState<{
+  const [initialCenter, setInitialCenter] = useState<{
     lat: number;
     lng: number;
   } | null>(null);
@@ -59,18 +59,14 @@ export default function GoogleMapView({
   }, [selectedCurrency]);
 
   useEffect(() => {
-    // Set a random hotel as center only on initial load and if no location is selected
-    if (hotels.length > 0 && !selectedLocation && !randomHotelCenter) {
-      const randomIndex = Math.floor(Math.random() * hotels.length);
-      const hotel = hotels[randomIndex];
-      if (hotel.location?.coordinates) {
-        setRandomHotelCenter({
-          lat: hotel.location.coordinates[1],
-          lng: hotel.location.coordinates[0],
-        });
-      }
+    // Set initial center to specific coordinates only on initial load and if no location is selected
+    if (hotels.length > 0 && !selectedLocation && !initialCenter) {
+      setInitialCenter({
+        lat: 36.884804,
+        lng:  30.704044,
+      });
     }
-  }, [hotels, selectedLocation, randomHotelCenter]);
+  }, [hotels, selectedLocation, initialCenter]);
 
   // Calculate the center based on selectedLocation first, then average of all coordinates
   const center = useMemo(() => {
@@ -98,8 +94,8 @@ export default function GoogleMapView({
       };
     }
 
-    if (randomHotelCenter) {
-      return randomHotelCenter;
+    if (initialCenter) {
+      return initialCenter;
     }
 
     if (!hotels || hotels.length === 0) {
@@ -133,7 +129,7 @@ export default function GoogleMapView({
       lat: sum.lat / validHotels.length,
       lng: sum.lng / validHotels.length,
     };
-  }, [hotels, selectedLocation, selectedHotel, randomHotelCenter]);
+  }, [hotels, selectedLocation, selectedHotel, initialCenter]);
 
   const onLoad = useCallback(function callback(map: google.maps.Map) {
     setMapInstance(map);
@@ -196,7 +192,7 @@ export default function GoogleMapView({
       } else {
         // No effective filter, or all hotels are shown. Use default view.
         mapInstance.setCenter(center); // 'center' is already calculated based on all 'hotels'
-        mapInstance.setZoom(14); // Default overview zoom for all hotels
+        mapInstance.setZoom(12); // Default overview zoom for all hotels
       }
     }
   }, [mapInstance, hotels, center, totalHotelsCount, selectedLocation]);
@@ -234,7 +230,7 @@ export default function GoogleMapView({
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={center}
-      zoom={14}
+      zoom={12}
       options={{
         // Turn off default UI if you want a cleaner map;
         // or leave on certain controls like zoomControl if desired
