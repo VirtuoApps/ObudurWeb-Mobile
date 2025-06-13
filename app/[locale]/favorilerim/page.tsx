@@ -19,6 +19,10 @@ export default function FavoritesPage() {
   );
   const [isAuthPopupOpen, setIsAuthPopupOpen] = useState(false);
   const [checkedAuth, setCheckedAuth] = useState(false);
+  const [sortOption, setSortOption] = useState<
+    "ascending" | "descending" | "newest" | "oldest" | null
+  >(null);
+  const [isSortOpen, setIsSortOpen] = useState(false);
 
   useEffect(() => {
     // Wait a moment to ensure Redux state is fully loaded
@@ -52,6 +56,64 @@ export default function FavoritesPage() {
     }
   };
 
+  const handleSortSelection = (
+    option: "ascending" | "descending" | "newest" | "oldest"
+  ) => {
+    setSortOption(option);
+    setIsSortOpen(false);
+  };
+
+  const getSortDisplayText = () => {
+    switch (sortOption) {
+      case "ascending":
+        return "En Düşük Fiyat";
+      case "descending":
+        return "En Yüksek Fiyat";
+      case "newest":
+        return "Önce En Yeni İlan";
+      case "oldest":
+        return "Önce En Eski İlan";
+      default:
+        return "Sırala";
+    }
+  };
+
+  // Sort favorites based on selected option
+  const sortedFavorites = React.useMemo(() => {
+    if (!sortOption) return favorites;
+
+    const sorted = [...favorites];
+
+    switch (sortOption) {
+      case "ascending":
+        return sorted.sort((a, b) => {
+          const priceA = a.hotelDetails?.price?.[0]?.amount || 0;
+          const priceB = b.hotelDetails?.price?.[0]?.amount || 0;
+          return priceA - priceB;
+        });
+      case "descending":
+        return sorted.sort((a, b) => {
+          const priceA = a.hotelDetails?.price?.[0]?.amount || 0;
+          const priceB = b.hotelDetails?.price?.[0]?.amount || 0;
+          return priceB - priceA;
+        });
+      case "newest":
+        return sorted.sort((a, b) => {
+          const dateA = new Date(a.createdAt || 0);
+          const dateB = new Date(b.createdAt || 0);
+          return dateB.getTime() - dateA.getTime();
+        });
+      case "oldest":
+        return sorted.sort((a, b) => {
+          const dateA = new Date(a.createdAt || 0);
+          const dateB = new Date(b.createdAt || 0);
+          return dateA.getTime() - dateB.getTime();
+        });
+      default:
+        return sorted;
+    }
+  }, [favorites, sortOption]);
+
   if (loading) {
     return (
       <div className="container mx-auto p-8">
@@ -82,10 +144,72 @@ export default function FavoritesPage() {
 
   return (
     <div className="container mx-auto p-8 px-2">
-      <h1 className="text-[#262626] font-bold text-2xl">Favori İlanlar</h1>
-      <p className=" text-[#595959] text-sm mb-8">
-        {favorites.length} adet favori ilanınız var.
-      </p>
+      {/* Header with sorting - matching SortAndSaveFiltering design */}
+      <div className="justify-between items-start mb-8 px-5 hidden lg:flex">
+        <div>
+          <h1 className="text-[#262626] font-bold text-2xl">Favori İlanlar</h1>
+          <p className="text-[#595959] text-sm">
+            {favorites.length} adet favori ilanınız var.
+          </p>
+        </div>
+
+        <div className="flex flex-row items-center gap-2">
+          <div className="relative">
+            <button
+              onClick={() => setIsSortOpen(!isSortOpen)}
+              className="border bg-transparent flex flex-row items-center justify-between rounded-xl px-5 py-3 cursor-pointer min-w-[240px]"
+            >
+              <p className="text-sm text-gray-500 font-semibold mr-12">
+                {getSortDisplayText()}
+              </p>
+              <img
+                src="/chevron-down.png"
+                className={`w-6 h-6 transition-transform duration-200 ${
+                  isSortOpen ? "rotate-180" : ""
+                }`}
+                alt="arrow-down"
+              />
+            </button>
+
+            {isSortOpen && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white border rounded-xl shadow-lg z-10">
+                <div
+                  className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                  onClick={() => handleSortSelection("ascending")}
+                >
+                  <p className="text-sm">En Düşük Fiyat</p>
+                </div>
+                <div
+                  className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                  onClick={() => handleSortSelection("descending")}
+                >
+                  <p className="text-sm">En Yüksek Fiyat</p>
+                </div>
+                <div
+                  className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                  onClick={() => handleSortSelection("newest")}
+                >
+                  <p className="text-sm">Önce En Yeni İlan</p>
+                </div>
+                <div
+                  className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                  onClick={() => handleSortSelection("oldest")}
+                >
+                  <p className="text-sm">Önce En Eski İlan</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile header - without sorting for now */}
+      <div className="block lg:hidden mb-8">
+        <h1 className="text-[#262626] font-bold text-2xl">Favori İlanlar</h1>
+        <p className="text-[#595959] text-sm">
+          {favorites.length} adet favori ilanınız var.
+        </p>
+      </div>
 
       {favorites.length === 0 ? (
         <div className="bg-gray-100 p-8 rounded-lg text-center">
@@ -101,7 +225,7 @@ export default function FavoritesPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 -mx-3">
-          {favorites.map((favorite) => {
+          {sortedFavorites.map((favorite) => {
             const hotel = favorite.hotelDetails;
             if (!hotel) return null;
 

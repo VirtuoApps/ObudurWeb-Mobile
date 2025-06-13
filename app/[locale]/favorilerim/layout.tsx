@@ -22,7 +22,7 @@ export default function FavoritesLayout({
       <div className="min-h-screen flex flex-col">
         <SimpleHeader showBackButton />
 
-        <main className="flex-grow bg-gray-50">{children}</main>
+        <main className="flex-grow bg-[#FCFCFC]">{children}</main>
       </div>
       <Footer customMy="my-0" />
     </>
