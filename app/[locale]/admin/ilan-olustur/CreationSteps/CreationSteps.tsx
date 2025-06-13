@@ -27,6 +27,7 @@ export interface HotelData {
   country: MultilangText;
   city: MultilangText;
   state: MultilangText;
+  neighborhood?: MultilangText;
   street: MultilangText;
   buildingNo: string;
   apartmentNo: string;
@@ -146,6 +147,8 @@ type ListingFormContextType = {
   setCity: React.Dispatch<React.SetStateAction<MultilangText>>;
   state: MultilangText;
   setState: React.Dispatch<React.SetStateAction<MultilangText>>;
+  neighborhood: MultilangText;
+  setNeighborhood: React.Dispatch<React.SetStateAction<MultilangText>>;
   street: MultilangText;
   setStreet: React.Dispatch<React.SetStateAction<MultilangText>>;
   buildingNo: string;
@@ -264,6 +267,8 @@ export const ListingFormContext = createContext<ListingFormContextType>({
   setCity: () => {},
   state: { tr: "", en: "" },
   setState: () => {},
+  neighborhood: { tr: "", en: "" },
+  setNeighborhood: () => {},
   street: { tr: "", en: "" },
   setStreet: () => {},
   buildingNo: "",
@@ -376,6 +381,10 @@ export default function CreationSteps({
   const [country, setCountry] = useState<MultilangText>({ tr: "", en: "" });
   const [city, setCity] = useState<MultilangText>({ tr: "", en: "" });
   const [state, setState] = useState<MultilangText>({ tr: "", en: "" });
+  const [neighborhood, setNeighborhood] = useState<MultilangText>({
+    tr: "",
+    en: "",
+  });
   const [street, setStreet] = useState<MultilangText>({ tr: "", en: "" });
   const [buildingNo, setBuildingNo] = useState<string>("");
   const [apartmentNo, setApartmentNo] = useState<string>("");
@@ -506,6 +515,7 @@ export default function CreationSteps({
       setCountry(hotelData.country || { tr: "", en: "" });
       setCity(hotelData.city || { tr: "", en: "" });
       setState(hotelData.state || { tr: "", en: "" });
+      setNeighborhood(hotelData.neighborhood || { tr: "", en: "" });
       setStreet(hotelData.street || { tr: "", en: "" });
       setBuildingNo(hotelData.buildingNo || "");
       setApartmentNo(hotelData.apartmentNo || "");
@@ -608,6 +618,8 @@ export default function CreationSteps({
     setCity,
     state,
     setState,
+    neighborhood,
+    setNeighborhood,
     street,
     setStreet,
     buildingNo,

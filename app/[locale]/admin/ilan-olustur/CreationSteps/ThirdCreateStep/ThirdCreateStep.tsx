@@ -31,6 +31,8 @@ export default function ThirdCreateStep() {
     setCity,
     state,
     setState,
+    neighborhood,
+    setNeighborhood,
     street,
     setStreet,
     adaNo,
@@ -102,6 +104,17 @@ export default function ThirdCreateStep() {
       });
     },
     [setStreet]
+  );
+
+  // Handle neighborhood change
+  const handleNeighborhoodChange = useCallback(
+    (value: string) => {
+      setNeighborhood({
+        tr: value,
+        en: value,
+      });
+    },
+    [setNeighborhood]
   );
 
   // Auto-selection functions (don't clear dependent values)
@@ -534,6 +547,19 @@ export default function ThirdCreateStep() {
       });
     }
 
+    // Extract neighborhood
+    const neighborhoodComponent = addressComponents.find(
+      (component: { types: string[]; long_name: string }) =>
+        component.types.includes("sublocality") ||
+        component.types.includes("sublocality_level_1")
+    );
+    if (neighborhoodComponent) {
+      setNeighborhood({
+        tr: neighborhoodComponent.long_name,
+        en: neighborhoodComponent.long_name,
+      });
+    }
+
     // Extract street
     const streetComponent = addressComponents.find(
       (component: { types: string[]; long_name: string }) =>
@@ -629,6 +655,12 @@ export default function ThirdCreateStep() {
 
     if (!state || !state.tr || !state.en) {
       newErrors.push("Lütfen ilçe bilgisini Türkçe ve İngilizce olarak girin");
+    }
+
+    if (!neighborhood || !neighborhood.tr || !neighborhood.en) {
+      newErrors.push(
+        "Lütfen mahalle bilgisini Türkçe ve İngilizce olarak girin"
+      );
     }
 
     if (!street || !street.tr || !street.en) {
@@ -809,9 +841,9 @@ export default function ThirdCreateStep() {
               </div>
             </div>
 
-            {/* District and Street */}
+            {/* District, Neighborhood and Street */}
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <div className="w-full sm:w-1/2">
+              <div className="w-full sm:w-1/3">
                 <label
                   htmlFor="city"
                   className="font-semibold block mb-2 text-[#262626]"
@@ -826,12 +858,30 @@ export default function ThirdCreateStep() {
                     locale === "en" ? "Select District" : "İlçe Seçin"
                   }
                   extraClassName="w-full h-12 border border-gray-300"
-                  popoverMaxWidth="400"
+                  popoverMaxWidth="200"
                   maxHeight="200"
-                  popoverExtraClassName="w-auto max-w-[420px]"
+                  popoverExtraClassName="w-auto max-w-[280px]"
                 />
               </div>
-              <div className="w-full sm:w-1/2">
+
+              <div className="w-full sm:w-1/3">
+                <label
+                  htmlFor="neighborhood"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  {locale === "tr" ? "Mahalle" : "Neighborhood"}
+                </label>
+                <input
+                  type="text"
+                  id="neighborhood"
+                  value={neighborhood?.tr || ""}
+                  onChange={(e) => handleNeighborhoodChange(e.target.value)}
+                  className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                  placeholder={locale === "en" ? "Neighborhood" : "Mahalle"}
+                />
+              </div>
+
+              <div className="w-full sm:w-1/3">
                 <label
                   htmlFor="street"
                   className="font-semibold block mb-2 text-[#262626]"
