@@ -8,11 +8,24 @@ import ResidentBox from "@/app/HomePage/ListView/ResidentBox/ResidentBox";
 import { useRouter } from "@/app/utils/router";
 import { useTranslations } from "next-intl";
 import AuthPopup from "@/app/components/AuthPopup/AuthPopup";
+import axiosInstance from "@/axios";
+import { Hotel } from "@/types/hotel.type";
+import { formatAddress } from "@/app/utils/addressFormatter";
+import { getDisplayPrice, getNumericPrice } from "@/app/utils/priceFormatter";
+import { useLocale } from "next-intl";
+
+// Helper function to get localized text
+export const getLocalizedText = (textObj: any, selectedLanguage: string) => {
+  return textObj && textObj[selectedLanguage]
+    ? textObj[selectedLanguage]
+    : textObj?.en || "";
+};
 
 export default function FavoritesPage() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const t = useTranslations();
+  const selectedLanguage = useLocale();
   const user = useSelector((state: RootState) => state.user.user);
   const { favorites, loading, error } = useSelector(
     (state: RootState) => state.favorites
@@ -23,28 +36,65 @@ export default function FavoritesPage() {
     "ascending" | "descending" | "newest" | "oldest" | null
   >(null);
   const [isSortOpen, setIsSortOpen] = useState(false);
+  const [allHotels, setAllHotels] = useState<Hotel[]>([]);
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
 
+  // Get selected currency from localStorage
   useEffect(() => {
-    // Wait a moment to ensure Redux state is fully loaded
-    const timer = setTimeout(() => {
-      setCheckedAuth(true);
+    const storedCurrency = localStorage.getItem("selectedCurrency");
 
-      if (!user) {
-        setIsAuthPopupOpen(true);
-      } else {
-        // Fetch favorites when user is available
-        dispatch(fetchUserFavorites());
+    if (storedCurrency) {
+      setSelectedCurrency(storedCurrency);
+    }
+
+    // Setup listener for currency changes
+    const handleStorageChange = () => {
+      const currency = localStorage.getItem("selectedCurrency");
+
+      if (currency && currency !== selectedCurrency) {
+        setSelectedCurrency(currency);
       }
-    }, 500);
+    };
 
-    return () => clearTimeout(timer);
-  }, [dispatch, user]);
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, [selectedCurrency]);
 
-  // Update when user state changes
+  // Fetch all hotels for similar listings
   useEffect(() => {
-    if (user && checkedAuth) {
+    const fetchAllHotels = async () => {
+      try {
+        const hotelsResponse = await axiosInstance.get("/hotels");
+        setAllHotels(hotelsResponse.data as Hotel[]);
+      } catch (error) {
+        console.error("Error fetching hotels:", error);
+      }
+    };
+
+    fetchAllHotels();
+  }, []);
+
+  useEffect(() => {
+    // This effect is now streamlined to prevent double-fetching favorites.
+    // It waits 500ms to ensure the user's authentication state is settled
+    // before proceeding.
+
+    if (!checkedAuth) {
+      // On initial load, we wait before checking for the user.
+      const timer = setTimeout(() => {
+        setCheckedAuth(true);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+
+    // Once the initial check is done, this logic runs based on user state.
+    if (user) {
+      // If the user is logged in, close the auth popup and fetch favorites.
       setIsAuthPopupOpen(false);
       dispatch(fetchUserFavorites());
+    } else {
+      // If no user is found, open the auth popup.
+      setIsAuthPopupOpen(true);
     }
   }, [user, checkedAuth, dispatch]);
 
@@ -76,6 +126,14 @@ export default function FavoritesPage() {
       default:
         return "Sırala";
     }
+  };
+
+  // Function to get 4 random hotels from all hotels
+  const getRandomHotels = (count: number = 4): Hotel[] => {
+    if (allHotels.length === 0) return [];
+
+    const shuffled = [...allHotels].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
   };
 
   // Sort favorites based on selected option
@@ -114,6 +172,9 @@ export default function FavoritesPage() {
     }
   }, [favorites, sortOption]);
 
+  // Get 4 random hotels for similar listings
+  const similarHotels = React.useMemo(() => getRandomHotels(4), [allHotels]);
+
   if (loading) {
     return (
       <div className="container mx-auto p-8">
@@ -143,9 +204,9 @@ export default function FavoritesPage() {
   }
 
   return (
-    <div className="container mx-auto p-8 px-2">
+    <div className="container mx-auto p-8 pb-0 px-2">
       {/* Header with sorting - matching SortAndSaveFiltering design */}
-      <div className="justify-between items-start mb-8 px-5 hidden lg:flex">
+      <div className="justify-between items-start mb-8 hidden lg:flex">
         <div>
           <h1 className="text-[#262626] font-bold text-2xl">Favori İlanlar</h1>
           <p className="text-[#595959] text-sm">
@@ -268,6 +329,46 @@ export default function FavoritesPage() {
               />
             );
           })}
+        </div>
+      )}
+
+      {/* Similar Listings Section - Always shown */}
+      {similarHotels.length > 0 && (
+        <div className="w-full mt-16 mb-8 -mx-5">
+          <h2 className="text-start text-[#262626] font-bold text-[24px] mb-8 ml-6">
+            Benzer İlanlar
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 bg-white px-2">
+            {similarHotels.map((hotel) => (
+              <ResidentBox
+                key={hotel._id}
+                hotelId={hotel._id}
+                slug={hotel.slug}
+                type={getLocalizedText(hotel.listingType, selectedLanguage)}
+                isOptinable={false}
+                residentTypeName={getLocalizedText(
+                  hotel.housingType,
+                  selectedLanguage
+                )}
+                title={getLocalizedText(hotel.title, selectedLanguage)}
+                price={getDisplayPrice(hotel.price, selectedCurrency)}
+                bedCount={hotel.bedRoomCount.toString()}
+                floorCount={"2"}
+                area={`${hotel.projectArea}m2`}
+                locationText={formatAddress(hotel, selectedLanguage)}
+                image={hotel.images[0]}
+                images={hotel.images}
+                isFavorite={false}
+                roomAsText={hotel.roomAsText}
+                isListView={true}
+                roomCount={hotel.roomCount || 0}
+                entranceType={hotel.entranceType}
+                priceAsNumber={hotel.price[0].amount}
+                areaAsNumber={+hotel.projectArea}
+              />
+            ))}
+          </div>
         </div>
       )}
 
