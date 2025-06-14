@@ -1,9 +1,9 @@
+import { Feature } from "@/types/feature.type";
+import { FilterOptions } from "@/types/filter-options.type";
 import HomePage from "../HomePage/HomePage";
+import { Hotel } from "@/types/hotel.type";
 import axiosInstance from "../../axios";
 import { unstable_noStore as noStore } from "next/cache";
-import { Feature } from "@/types/feature.type";
-import { Hotel } from "@/types/hotel.type";
-import { FilterOptions } from "@/types/filter-options.type";
 
 export default async function Home() {
   // Disable caching at the page level

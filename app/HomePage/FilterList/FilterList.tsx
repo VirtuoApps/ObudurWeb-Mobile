@@ -17,6 +17,7 @@ import {
   MdPool,
 } from "react-icons/md";
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocale, useTranslations } from "next-intl";
 
 import { Feature } from "@/types/feature.type";
@@ -29,6 +30,9 @@ import { LuSettings2 } from "react-icons/lu";
 import NewFilterItem from "./NewFilterItem/NewFilterItem";
 import SizeFilterItem from "./SizeFilterItem/SizeFilterıtem";
 import { TbSquarePlus } from "react-icons/tb";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import axiosInstance from "@/axios";
+import { setIsFilterApplied } from "@/app/store/favoritesSlice";
 
 const iconClassName = "text-xl";
 const iconColor = "rgba(0,0,0,0.6)";
@@ -82,6 +86,10 @@ export default function FilterList({
   searchRadius,
   isFilterPopupOpen,
   setIsFilterPopupOpen,
+  setIsSaveFilterPopupOpen,
+  sortOption,
+  setSortOption,
+  resultCount,
 }: {
   onChangeCurrentView: () => void;
   currentView: "map" | "list";
@@ -131,12 +139,27 @@ export default function FilterList({
   searchRadius: number;
   isFilterPopupOpen: boolean;
   setIsFilterPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsSaveFilterPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  sortOption: "ascending" | "descending" | "newest" | "oldest" | null;
+  setSortOption: React.Dispatch<
+    React.SetStateAction<
+      "ascending" | "descending" | "newest" | "oldest" | null
+    >
+  >;
+  resultCount: number;
 }) {
+  const dispatch = useDispatch();
+  const isFilterApplied = useSelector(
+    (state: any) => state.favorites.isFilterApplied
+  ); // Adjust state path
   const t = useTranslations("filterList");
   const locale = useLocale();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(false);
+  const [selectedSortOption, setSelectedSortOption] = useState<
+    "ascending" | "descending" | "newest" | "oldest" | null
+  >(sortOption);
 
   const handleFilterClick = (featureItem: Feature) => {
     setSelectedFeatures(
@@ -218,6 +241,37 @@ export default function FilterList({
     );
   };
 
+  const countActiveFilters = () => {
+    let count = 0;
+
+    if (selectedFeatures.length > 0) count += selectedFeatures.length;
+    if (selectedLocation !== null) count += 1;
+    if (selectedPropertyType !== null) count += 1;
+    if (selectedCategory !== null) count += 1;
+    if (minPrice !== "" || maxPrice !== "") count += 1;
+    if (minArea !== "" || maxArea !== "") count += 1;
+    if (roomCount !== "") count += 1;
+    if (bathroomCount !== "") count += 1;
+    if (selectedExteriorFeatures.length > 0)
+      count += selectedExteriorFeatures.length;
+    if (interiorFeatures.length > 0) count += interiorFeatures.length;
+    if (selectedAccessibilityFeatures.length > 0)
+      count += selectedAccessibilityFeatures.length;
+    if (selectedFaceFeatures.length > 0) count += selectedFaceFeatures.length;
+    if (filters?.isOnePlusOneSelected) count += 1;
+    if (filters?.isTwoPlusOneSelected) count += 1;
+    if (filters?.isThreePlusOneSelected) count += 1;
+    if (filters?.isNewSelected) count += 1;
+    return count;
+  };
+
+  const handleSortSelection = () =>
+    // option: "ascending" | "descending" | "newest" | "oldest"
+    {
+      setSortOption(selectedSortOption);
+      setIsSheetOpen(false);
+    };
+
   // Clear all filters
   const clearAllFilters = () => {
     setSelectedFeatures([]);
@@ -241,7 +295,461 @@ export default function FilterList({
       isThreePlusOneSelected: false,
       isNewSelected: false,
     });
+    dispatch(setIsFilterApplied(false));
   };
+  
+  const isMobile = useSelector((state: any) => state.favorites.isMobile);
+  const [isSaveFilterSheetOpen, setIsSaveFilterSheetOpen] = useState(false);
+
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [touchStartY, setTouchStartY] = useState<number | null>(null);
+  const [translateY, setTranslateY] = useState(0);
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (window.innerWidth >= 768) return;
+    setTouchStartY(e.touches[0].clientY);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (touchStartY === null || window.innerWidth >= 768) return;
+    const deltaY = e.touches[0].clientY - touchStartY;
+    if (deltaY > 0) {
+      setTranslateY(deltaY);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (window.innerWidth >= 768) return;
+    if (translateY > 120) {
+      setIsSheetOpen(false);
+    }
+    setTranslateY(0);
+    setTouchStartY(null);
+  };
+
+  const [searchName, setSearchName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleSave = async () => {
+    if (!searchName.trim()) return;
+
+    setIsLoading(true);
+    try {
+      // Prepare the data according to CreateSavedFilterDto
+      const filterData = {
+        filterName: searchName,
+        enableNotifications: false,
+        enableMailNotifications: false,
+        listingType: listingType || null,
+        state: filters?.state || null,
+        propertyType:
+          selectedPropertyType?.name || filters?.propertyType || null,
+        propertyTypeId: selectedPropertyType?._id || null,
+        roomAsText: filters?.roomAsText || null,
+        categoryId: selectedCategory?._id || null,
+        minPrice:
+          minPrice !== "" ? Number(minPrice) : filters?.minPrice || null,
+        maxPrice:
+          maxPrice !== "" ? Number(maxPrice) : filters?.maxPrice || null,
+        roomCount:
+          roomCount !== "" ? Number(roomCount) : filters?.roomCount || null,
+        bathroomCount:
+          bathroomCount !== ""
+            ? Number(bathroomCount)
+            : filters?.bathroomCount || null,
+        minProjectArea:
+          minArea !== "" ? Number(minArea) : filters?.minProjectArea || null,
+        maxProjectArea:
+          maxArea !== "" ? Number(maxArea) : filters?.maxProjectArea || null,
+        interiorFeatureIds:
+          interiorFeatures.map((f) => f._id).length > 0
+            ? interiorFeatures.map((f) => f._id)
+            : filters?.interiorFeatureIds || null,
+        exteriorFeatureIds:
+          selectedExteriorFeatures.map((f) => f._id).length > 0
+            ? selectedExteriorFeatures.map((f) => f._id)
+            : filters?.exteriorFeatureIds || null,
+        accessibilityFeatureIds:
+          selectedAccessibilityFeatures.map((f) => f._id).length > 0
+            ? selectedAccessibilityFeatures.map((f) => f._id)
+            : filters?.accessibilityFeatureIds || null,
+        faceFeatureIds:
+          selectedFaceFeatures.map((f) => f._id).length > 0
+            ? selectedFaceFeatures.map((f) => f._id)
+            : filters?.faceFeatureIds || null,
+        locationFeatureIds: null,
+        isNewSelected: filters?.isNewSelected || null,
+        isOnePlusOneSelected: filters?.isOnePlusOneSelected || null,
+        isTwoPlusOneSelected: filters?.isTwoPlusOneSelected || null,
+        isThreePlusOneSelected: filters?.isThreePlusOneSelected || null,
+        selectedFeatures:
+          selectedFeatures.length > 0
+            ? selectedFeatures.map((feature) => ({
+                _id: feature._id,
+                name:
+                  typeof feature.name === "string"
+                    ? feature.name
+                    : feature.name.tr || feature.name.en || "",
+                iconUrl: feature.iconUrl || "",
+                featureType: feature.featureType,
+                createdAt: feature.createdAt || new Date().toISOString(),
+                updatedAt: feature.updatedAt || new Date().toISOString(),
+                __v: feature.__v || 0,
+              }))
+            : undefined,
+        selectedLocation,
+        resultCount,
+      };
+
+      // Remove null values to send only set filters
+      const cleanedData = Object.entries(filterData).reduce(
+        (acc, [key, value]) => {
+          if (
+            value !== null &&
+            value !== undefined &&
+            (Array.isArray(value) ? value.length > 0 : true)
+          ) {
+            acc[key] = value;
+          }
+          return acc;
+        },
+        {} as any
+      );
+
+      // Send POST request to save filter
+      const response = await axiosInstance.post("/saved-filters/", cleanedData);
+
+      if (response.data) {
+        setIsSuccess(true);
+      }
+    } catch (error) {
+      console.error("Error saving filter:", error);
+      // You might want to show an error message to the user here
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isFilterApplied && isMobile) {
+    return (
+      <>
+        <FilterPopup
+          isOpen={isFilterPopupOpen}
+          onClose={() => setIsFilterPopupOpen(false)}
+          listingType={listingType}
+          setListingType={setListingType}
+          filterOptions={filterOptions}
+          selectedLocation={selectedLocation}
+          setSelectedLocation={setSelectedLocation}
+          selectedPropertyType={selectedPropertyType}
+          setSelectedPropertyType={setSelectedPropertyType}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          filters={filters}
+          setFilters={setFilters}
+          minPrice={minPrice}
+          setMinPrice={setMinPrice}
+          maxPrice={maxPrice}
+          setMaxPrice={setMaxPrice}
+          minArea={minArea}
+          setMinArea={setMinArea}
+          maxArea={maxArea}
+          setMaxArea={setMaxArea}
+          roomCount={roomCount}
+          setRoomCount={setRoomCount}
+          bathroomCount={bathroomCount}
+          setBathroomCount={setBathroomCount}
+          selectedFeatures={selectedFeatures}
+          setSelectedFeatures={setSelectedFeatures}
+          selectedExteriorFeatures={selectedExteriorFeatures}
+          setSelectedExteriorFeatures={setSelectedExteriorFeatures}
+          currencyCode={currencyCode}
+          setCurrencyCode={setCurrencyCode}
+          interiorFeatures={interiorFeatures}
+          setInteriorFeatures={setInteriorFeatures}
+          accessibilityFeatures={accessibilityFeatures}
+          setAccessibilityFeatures={setAccessibilityFeatures}
+          selectedAccessibilityFeatures={selectedAccessibilityFeatures}
+          setSelectedAccessibilityFeatures={setSelectedAccessibilityFeatures}
+          faceFeatures={faceFeatures}
+          setFaceFeatures={setFaceFeatures}
+          selectedFaceFeatures={selectedFaceFeatures}
+          setSelectedFaceFeatures={setSelectedFaceFeatures}
+          hotels={hotels}
+          selectedCurrency={selectedCurrency}
+          searchRadius={searchRadius}
+        />
+        <div
+          className={`bg-white flex flex-row transition-all duration-350 ease-in-out ${
+            currentView === "map"
+              ? "fixed lg:top-28 top-[71px] left-0 right-0 w-full lg:w-[924px] lg:shadow-lg"
+              : "mt-0 mb-7 relative w-full border-b border-[#F0F0F0]"
+          } z-20  mx-auto  lg:rounded-2xl lg:border-none border-y border-[#F0F0F0] `}
+        >
+          <div className="flex w-full h-[56px]">
+            <button
+              onClick={() => setIsFilterPopupOpen(true)}
+              className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-r border-[#F0F0F0]"
+            >
+              Filtreler ({countActiveFilters()})
+            </button>
+            <button
+              onClick={() => setIsSaveFilterSheetOpen(true)}
+              className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#262626]"
+            >
+              Aramayı Kaydet
+            </button>
+            <button
+              onClick={() => setIsSheetOpen(true)}
+              className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-l border-[#F0F0F0]"
+            >
+              <p className="text-sm text-gray-500 font-semibold">Sırala</p>
+            </button>
+
+            {isSaveFilterSheetOpen && (
+              <div className="fixed inset-0 z-[99999] flex items-end md:items-center justify-center lg:p-4 overflow-y-auto">
+                <div
+                  className="fixed inset-0"
+                  onClick={() => setIsSaveFilterSheetOpen(false)}
+                  style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+                ></div>
+
+                <div
+                  className="relative bg-white rounded-t-[24px] shadow-xl max-w-[600px] w-full mx-auto max-h-[calc(100vh-112px)] flex flex-col"
+                  style={{
+                    transform: `translateY(${translateY}px)`,
+                    transition: touchStartY
+                      ? "none"
+                      : "transform 0.3s ease-out",
+                  }}
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
+                >
+                  {isSuccess ? (
+                    <>
+                      <div className="flex justify-between items-start p-4">
+                        <h2 className="text-2xl font-bold text-[#262626]">
+                          Kaydedildi!
+                        </h2>
+                        <button
+                          onClick={() => {
+                            setSearchName("");
+                            setIsSuccess(false);
+                            setIsSaveFilterSheetOpen(false);
+                          }}
+                          className="w-6 h-6 flex items-center justify-center cursor-pointer "
+                        >
+                          <img
+                            src="/popup-close-icon.png"
+                            alt="close"
+                            className="w-6 h-6"
+                          />
+                        </button>
+                      </div>
+
+                      <div className="p-4 space-y-2">
+                        <h2 className="text-[#262626] font-kumbh font-bold text-base leading-[140%] tracking-[0%] align-start">
+                          Arama filtreleriniz başarılı bir şekilde kaydedildi.
+                        </h2>
+                        <p className="text-[#595959] font-kumbh font-medium text-base leading-[140%] tracking-[0%] align-start">
+                          Artık profilinizden kayıtlı aramalarınıza ulaşabilir,
+                          dilerseniz bildirim ayarlarını değiştirebilirsiniz.
+                        </p>
+
+                        <button
+                          onClick={() => {
+                            setSearchName("");
+                            setIsSuccess(false);
+                            setIsSaveFilterSheetOpen(false);
+                          }}
+                          className="mt-8 py-4 px-16 rounded-2xl w-full text-white font-medium 
+                         transition-colors cursor-pointer"
+                          style={{
+                            backgroundColor: "#5E5691",
+                          }}
+                        >
+                          Kapat
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="sticky top-0 bg-white z-10 px-4 py-[22px] rounded-t-[24px] relative">
+                        <div className="flex items-center justify-between">
+                          <h2 className="md:text-lg text-2xl font-bold text-[#262626]">
+                            Aramayı Kaydet
+                          </h2>
+                          <button
+                            onClick={() => {
+                              setSearchName("");
+                              setIsSuccess(false);
+                              setIsSaveFilterSheetOpen(false);
+                            }}
+                            className="w-6 h-6 flex items-center justify-center cursor-pointer "
+                          >
+                            <img
+                              src="/popup-close-icon.png"
+                              alt="close"
+                              className="w-6 h-6"
+                            />
+                          </button>
+                        </div>
+                        <span className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1.5 bg-gray-300 rounded-full md:hidden"></span>
+                      </div>
+
+                      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-[16px]">
+                        <div className="top-full left-0 right-0 mt-1 bg-white z-10 flex flex-col gap-[8px]">
+                          {/* Search Name Section */}
+                          <div className="mb-10">
+                            <label className="block text-lg font-bold text-[#262626] mb-2">
+                              Arama Adı
+                            </label>
+                            <input
+                              type="text"
+                              value={searchName}
+                              onChange={(e) => setSearchName(e.target.value)}
+                              placeholder="Yeni aramam"
+                              className="w-full px-6 py-4 bg-[#FCFCFC] border border-[#D9D9D9] rounded-2xl 
+                         text-[#8C8C8C] placeholder-[#8C8C8C] focus:outline-none focus:border-[#262626]
+                         focus:text-[#262626] transition-colors"
+                            />
+                          </div>
+
+                          <div className="flex gap-4">
+                            <button
+                              onClick={() => {
+                                setSearchName("");
+                                setIsSuccess(false);
+                                setIsSaveFilterSheetOpen(false);
+                              }}
+                              disabled={isLoading}
+                              className="flex-1 py-4 px-6 border-2 border-[#BFBFBF] rounded-2xl 
+                         text-[#262626] font-medium hover:bg-gray-50 transition-colors cursor-pointer
+                         disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              Vazgeç
+                            </button>
+                            <button
+                              onClick={handleSave}
+                              disabled={!searchName || isLoading}
+                              className={`flex-1 py-4 px-6 rounded-2xl font-medium transition-colors cursor-pointer ${
+                                searchName && !isLoading
+                                  ? "bg-[#5E5691] text-[#FCFCFC] hover:bg-[#5E5691]"
+                                  : "bg-[#F0F0F0] text-[#8C8C8C] cursor-not-allowed"
+                              }`}
+                            >
+                              {isLoading ? "Kaydediliyor..." : "Kaydet"}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {isSheetOpen && (
+              <div className="fixed inset-0 z-[99999] flex items-end md:items-center justify-center lg:p-4 overflow-y-auto">
+                <div
+                  className="fixed inset-0"
+                  onClick={() => setIsSheetOpen(false)}
+                  style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+                ></div>
+                <div
+                  className="relative bg-white rounded-t-[24px] shadow-xl max-w-[600px] w-full mx-auto max-h-[calc(100vh-112px)] flex flex-col"
+                  style={{
+                    transform: `translateY(${translateY}px)`,
+                    transition: touchStartY
+                      ? "none"
+                      : "transform 0.3s ease-out",
+                  }}
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
+                >
+                  {/* Header */}
+                  <div className="sticky top-0 bg-white z-10 p-4 pb-0 rounded-t-[24px] relative">
+                    <div className="flex items-center justify-between"></div>
+                    <span className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1.5 bg-gray-300 rounded-full md:hidden"></span>
+                  </div>
+
+                  {/* Scrollable content area */}
+                  <div className="flex-1 overflow-y-auto px-4 py-2 flex flex-col gap-[16px]">
+                    <div className="top-full left-0 right-0 mt-1 bg-white z-10 flex flex-col gap-[8px]">
+                      <div
+                        className={`px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold rounded-2xl flex items-center gap-2 outline ${
+                          selectedSortOption === "ascending"
+                            ? "outline-[#595959]"
+                            : "outline-[#F0F0F0]"
+                        }`}
+                        onClick={() => setSelectedSortOption("ascending")}
+                      >
+                        <div className="relative w-[16px] h-[16px] rounded-full border border-black flex items-center justify-center">
+                          {selectedSortOption === "ascending" && (
+                            <div className="w-[10px] h-[10px] rounded-full bg-[#362C75]"></div>
+                          )}
+                        </div>
+                        <p className="text-sm">Önce en düşük fiyat</p>
+                      </div>
+                      <div
+                        className={`px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold rounded-2xl flex items-center gap-2 outline ${
+                          selectedSortOption === "descending"
+                            ? "outline-[#595959]"
+                            : "outline-[#F0F0F0]"
+                        }`}
+                        onClick={() => setSelectedSortOption("descending")}
+                      >
+                        <div className="relative w-[16px] h-[16px] rounded-full border border-black flex items-center justify-center">
+                          {selectedSortOption === "descending" && (
+                            <div className="w-[10px] h-[10px] rounded-full bg-[#362C75]"></div>
+                          )}
+                        </div>
+                        <p className="text-sm">Önce en yüksek fiyat</p>
+                      </div>
+                      <div
+                        className={`px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold rounded-2xl flex items-center gap-2 outline ${
+                          selectedSortOption === "newest"
+                            ? "outline-[#595959]"
+                            : "outline-[#F0F0F0]"
+                        }`}
+                        onClick={() => setSelectedSortOption("newest")}
+                      >
+                        <div className="relative w-[16px] h-[16px] rounded-full border border-black flex items-center justify-center">
+                          {selectedSortOption === "newest" && (
+                            <div className="w-[10px] h-[10px] rounded-full bg-[#362C75]"></div>
+                          )}
+                        </div>
+                        <p className="text-sm">Önce en yeni ilan</p>
+                      </div>
+                      {/* <div
+                  className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                  onClick={() => setSelectedSortOption("oldest")}
+                >
+                  <p className="text-sm">Önce En Eski İlan</p>
+                </div> */}
+                    </div>
+
+                    <div className="border-b border-gray-200"></div>
+
+                    <button
+                      type="button"
+                      className={`mb-[16px] h-[54px] justify-center w-full inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer bg-[#5E5691] border-[0.5px] border-[#362C75] text-[#362C75]"}`}
+                      onClick={handleSortSelection}
+                    >
+                      Sırala
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -318,7 +826,9 @@ export default function FilterList({
 
         <div
           onClick={onChangeCurrentView}
-          className={`hidden lg:flex items-center justify-center border-r py-[10px] border-gray-200 cursor-pointer ${currentView === "map" ? "px-[10px]" : "px-[16px]"}`}
+          className={`hidden lg:flex items-center justify-center border-r py-[10px] border-gray-200 cursor-pointer ${
+            currentView === "map" ? "px-[10px]" : "px-[16px]"
+          }`}
         >
           <div className="ease-in-out  hover:bg-[#F5F5F5] transition-all duration-300 p-2 rounded-lg">
             {currentView === "map" && <ListViewIcon />}
@@ -331,9 +841,9 @@ export default function FilterList({
         {hasActiveFilters() && (
           <div
             onClick={clearAllFilters}
-            className="lg:hidden flex items-center justify-center cursor-pointer bg-[#262626] w-[40px] h-[40px] rounded-2xl mt-2 translate-x-3 mr-2 z-10"
+            className="lg:hidden flex items-center justify-center cursor-pointer w-[40px] h-[40px] rounded-2xl translate-x-3 z-10 h-[inherit] mr-2"
           >
-            <div className="ease-in-out hover:bg-[#F5F5F5] transition-all duration-300 p-2 rounded-lg">
+            <div className="ease-in-out hover:bg-[#F5F5F5] transition-all duration-300 p-2 rounded-lg bg-[#262626]">
               <img src="/trash-02.png" className="w-5 h-5" />
             </div>
           </div>

@@ -1,5 +1,7 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
 import axiosInstance from "../../axios";
+import { set } from "nprogress";
 
 interface Favorite {
   _id: string;
@@ -16,12 +18,16 @@ interface FavoritesState {
   favorites: Favorite[];
   loading: boolean;
   error: string | null;
+  isFilterApplied: boolean;
+  isMobile: boolean;
 }
 
 const initialState: FavoritesState = {
   favorites: [],
   loading: false,
   error: null,
+  isFilterApplied: false,
+  isMobile: false,
 };
 
 // Fetch user favorites
@@ -70,6 +76,12 @@ const favoritesSlice = createSlice({
     clearFavorites: (state) => {
       state.favorites = [];
     },
+    setIsFilterApplied: (state, action: PayloadAction<boolean>) => {
+      state.isFilterApplied = action.payload;
+    },
+    setIsMobile: (state, action: PayloadAction<boolean>) => {
+      state.isMobile = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -113,5 +125,5 @@ const favoritesSlice = createSlice({
   },
 });
 
-export const { clearFavorites } = favoritesSlice.actions;
+export const { clearFavorites, setIsFilterApplied, setIsMobile } = favoritesSlice.actions;
 export default favoritesSlice.reducer;

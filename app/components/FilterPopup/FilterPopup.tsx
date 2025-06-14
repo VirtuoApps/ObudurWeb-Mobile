@@ -1,60 +1,63 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
-import {
-  XMarkIcon,
-  ChevronUpIcon,
-  ChevronDownIcon,
-  PlusIcon,
-  MinusIcon,
-  MapPinIcon,
-} from "@heroicons/react/24/outline";
-import { RiWifiFill } from "react-icons/ri";
 import { AiFillSafetyCertificate, AiOutlineFire } from "react-icons/ai";
-import { BsTv, BsFillHouseFill } from "react-icons/bs";
-import { ImSpoonKnife } from "react-icons/im";
+import { BiHealth, BiStore, BiTrain } from "react-icons/bi";
+import { BsFillHouseFill, BsTv } from "react-icons/bs";
 import {
-  FaTemperatureHigh,
-  FaWarehouse,
-  FaSwimmingPool,
-  FaParking,
-} from "react-icons/fa";
-import {
-  GiWashingMachine,
-  GiClothes,
-  GiGardeningShears,
-  GiGate,
-} from "react-icons/gi";
-import {
-  MdKitchen,
-  MdWindow,
-  MdFireplace,
-  MdSecurity,
-  MdBalcony,
-  MdElevator,
-} from "react-icons/md";
-import { TbAirConditioning } from "react-icons/tb";
-import { IoSchool, IoRestaurantOutline } from "react-icons/io5";
-import { BiTrain, BiStore, BiHealth } from "react-icons/bi";
-import { currencyOptions } from "../LanguageSwitcher";
-import { useLocale, useTranslations } from "next-intl";
-import {
-  FilterOptions,
-  Feature,
-  HotelType,
-  HotelCategory,
-} from "@/types/filter-options.type";
-import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+  ChevronDownIcon,
+  ChevronUpIcon,
+  MapPinIcon,
+  MinusIcon,
+  PlusIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import {
   ChevronDownIcon as ChevronDownSolidIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
-import { HomeIcon } from "@heroicons/react/24/outline";
-import { TagIcon } from "@heroicons/react/24/outline";
-import axiosInstance from "@/axios";
-import { Hotel } from "@/types/hotel.type";
-import { filterHotelsByProximity } from "@/app/utils/geoUtils";
+import {
+  FaParking,
+  FaSwimmingPool,
+  FaTemperatureHigh,
+  FaWarehouse,
+} from "react-icons/fa";
+import {
+  Feature,
+  FilterOptions,
+  HotelCategory,
+  HotelType,
+} from "@/types/filter-options.type";
+import {
+  GiClothes,
+  GiGardeningShears,
+  GiGate,
+  GiWashingMachine,
+} from "react-icons/gi";
+import { IoRestaurantOutline, IoSchool } from "react-icons/io5";
+import {
+  MdBalcony,
+  MdElevator,
+  MdFireplace,
+  MdKitchen,
+  MdSecurity,
+  MdWindow,
+} from "react-icons/md";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+import React, { useEffect, useRef, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+
 import GeneralSelect from "../GeneralSelect/GeneralSelect";
+import { HomeIcon } from "@heroicons/react/24/outline";
+import { Hotel } from "@/types/hotel.type";
+import { ImSpoonKnife } from "react-icons/im";
+import { RiWifiFill } from "react-icons/ri";
+import { TagIcon } from "@heroicons/react/24/outline";
+import { TbAirConditioning } from "react-icons/tb";
+import axiosInstance from "@/axios";
+import { currencyOptions } from "../LanguageSwitcher";
+import { filterHotelsByProximity } from "@/app/utils/geoUtils";
+import { setIsFilterApplied } from "@/app/store/favoritesSlice";
+import { useDispatch } from "react-redux";
 
 type FilterPopupProps = {
   isOpen: boolean;
@@ -149,6 +152,7 @@ export default function FilterPopup({
   selectedCurrency,
   searchRadius,
 }: FilterPopupProps) {
+  const dispatch = useDispatch();
   const t = useTranslations("filter");
   const listingTypeTranslations = useTranslations("listingType");
 
@@ -1484,6 +1488,7 @@ export default function FilterPopup({
                     isThreePlusOneSelected: false,
                   });
 
+                  dispatch(setIsFilterApplied(false));
                   onClose && onClose();
                 }}
               >
@@ -1509,6 +1514,7 @@ export default function FilterPopup({
                   ),
                   faceFeatureIds: selectedFaceFeatures.map((f: any) => f._id),
                 });
+                dispatch(setIsFilterApplied(true));
                 onClose && onClose();
               }}
               disabled={hasActiveFilters() && resultsCount === 0}
