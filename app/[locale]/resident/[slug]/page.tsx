@@ -168,26 +168,33 @@ export default async function ResidentPage({
           <Images />
         </div>
         <div className="max-w-[1440px] mx-auto px-6 lg:px-0">
-          <div className="flex md:flex-row flex-col items-start mt-[80px] justify-between">
+          <div className="flex md:flex-row flex-col items-start mt-[16px] md:mt-[80px] justify-between">
             <div className="md:max-w-[952px] w-full pr-6 lg:pr-0">
               <GeneralInfo />
-              <div id="descriptions-section">
+              <div id="descriptions-section" className="my-[24px] md:my-[72px]">
                 <Descriptions />
               </div>
-              <div id="details-section">
+              <div className="border-b border-gray-200"></div>
+              <div id="details-section" className="my-[24px] md:my-[72px]">
                 <Details />
               </div>
+              <div className="border-b border-gray-200"></div>
               <div id="features-section">
                 <FeaturesEquipment />
               </div>
               {video && (
+                <>
+              <div className="border-b border-gray-200"></div>
                 <div id="panoramic-section">
                   <PanoramicView video={video} />
                 </div>
+                </>
               )}
+              <div className="border-b border-gray-200"></div>
               <div id="location-section">
                 <Location />
               </div>
+              <div className="border-b border-gray-200"></div>
               <div id="plans-section">
                 <PlansAndDocumentation
                   documents={hotelData.hotelDetails.documents}

@@ -1,6 +1,8 @@
 "use client";
 
+import { ArrowLeftIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import AuthBox from "./AuthBox/AuthBox";
 import { FaBars } from "react-icons/fa";
@@ -10,7 +12,9 @@ import Image from "next/image";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
 import MiddleSearchBox from "./MiddleSearchBox/MiddlesearchBox";
 import MobileSearchBox from "./MobileSearchBox/MobileSearchBox";
+import { setIsFilterApplied } from "@/app/store/favoritesSlice";
 import { useAppSelector } from "@/app/store/hooks";
+import { useDeviceDetection } from "@/app/store/useDeviceDetection";
 import { useTranslations } from "next-intl";
 
 export default function Header({
@@ -28,6 +32,7 @@ export default function Header({
   setSearchRadius,
   setIsFilterPopupOpen,
   setShowIsPersonalInformationFormPopup,
+  resetFilters,
 }: {
   setFilters: (filters: FilterType) => void;
   filterOptions: FilterOptions;
@@ -43,14 +48,52 @@ export default function Header({
   setSearchRadius?: (radius: number) => void;
   setIsFilterPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setShowIsPersonalInformationFormPopup: (show: boolean) => void;
+  resetFilters?: any;
 }) {
+  const dispatch = useDispatch();
   const t = useTranslations("header");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const isFilterApplied = useSelector((state: any) => state.favorites.isFilterApplied);
   const { user } = useAppSelector((state) => state.user);
+  const isMobile = useSelector((state: any) => state.favorites.isMobile);
+  useDeviceDetection();
+
+  if (isFilterApplied && isMobile) {
+      return ( <header className={`${isFilterApplied ? "applied": "not-applied"} relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-0 lg:py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex`}>
+      <div className="w-full flex items-center justify-between px-4 sm:px-6 gap-3">
+        <div className="xl:hidden flex items-center">
+    <button
+        type="button"
+        onClick={() => {
+          resetFilters();
+          dispatch(setIsFilterApplied(false));
+        }}
+        className="bg-white hover:bg-gray-50 text-[#262626] w-[32px] h-[32px] font-semibold  inline-flex items-center justify-center gap-2 transition hover:border-[#6656AD] cursor-pointer rounded-[16px]"
+      >
+        <ArrowLeftIcon className="h-5 w-5" />
+      </button>
+        </div>
+
+        <div className="xl:hidden flex items-center">
+          <Image
+            src="/obudur-logo.png"
+            alt="oBudur Logo"
+            width={108}
+            height={24}
+            priority
+          />
+        </div>
+
+        <div className="flex items-center xl:hidden">
+          <AuthBox />
+        </div>
+      </div>
+    </header>)
+  }
+
 
   return (
-    <header className="relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex">
+    <header className={`relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex`}>
       <div className="w-full flex items-center justify-between px-4 sm:px-6 gap-3">
         {/* Logo */}
         <div className="xl:flex hidden items-center">
@@ -114,6 +157,9 @@ export default function Header({
         {/* Hamburger Menu Button for Mobile */}
         <div className="flex items-center xl:hidden">
           <AuthBox />
+          <div className="hidden lg:flex">
+            <LanguageSwitcher />
+          </div>
         </div>
       </div>
 

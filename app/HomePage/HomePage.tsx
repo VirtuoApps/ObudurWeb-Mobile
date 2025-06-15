@@ -1,26 +1,28 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import axiosInstance from "@/axios";
-import Header from "./Header/Header";
-import FilterList from "./FilterList/FilterList";
-import { useTranslations } from "next-intl";
-import ViewSwitcher from "./ViewSwitcher/ViewSwitcher";
-import ListView from "./ListView/ListView";
-import { Feature } from "@/types/feature.type";
-import { Hotel } from "@/types/hotel.type";
-import { FilterType } from "@/types/filter.type";
-import { FilterOptions } from "@/types/filter-options.type";
-import { currencyOptions } from "@/app/components/LanguageSwitcher";
-import { filterHotelsByProximity } from "@/app/utils/geoUtils";
-import Footer from "../[locale]/resident/[slug]/Footer/Footer";
-import SaveFilterPopup from "./SaveFilterPopup/SaveFilterPopup";
-import NoResultFound from "./ListView/NoResultFound/NoResultFound";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
 import EmailVerifiedSuccessPopup from "../components/EmailVerifiedSuccessPopup/EmailVerifiedSuccessPopup";
+import { Feature } from "@/types/feature.type";
+import FilterList from "./FilterList/FilterList";
+import { FilterOptions } from "@/types/filter-options.type";
+import { FilterType } from "@/types/filter.type";
+import Footer from "../[locale]/resident/[slug]/Footer/Footer";
+import Header from "./Header/Header";
+import { Hotel } from "@/types/hotel.type";
+import ListView from "./ListView/ListView";
+import NoResultFound from "./ListView/NoResultFound/NoResultFound";
 import PersonalInformationFormPopup from "../components/PersonalInformationsFormPopup/PersonalInformationsFormPopup";
+import SaveFilterPopup from "./SaveFilterPopup/SaveFilterPopup";
 import SignupEmailVerifySendPopup from "../components/SignupEMailVerifySendPopup/SignupEmailVerifySendPopup";
+import ViewSwitcher from "./ViewSwitcher/ViewSwitcher";
+import axiosInstance from "@/axios";
+import { currencyOptions } from "@/app/components/LanguageSwitcher";
+import dynamic from "next/dynamic";
+import { filterHotelsByProximity } from "@/app/utils/geoUtils";
+import { useTranslations } from "next-intl";
+
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
   loading: () => {
@@ -295,6 +297,32 @@ export default function HomePage({
     }
   }, []);
 
+  const resetFilters = () => {
+    setMinPrice("");
+    setMaxPrice("");
+    setMinArea("");
+    setMaxArea("");
+    setRoomCount("");
+    setBathroomCount("");
+    setInteriorFeatures([]);
+    setSelectedExteriorFeatures([]);
+    setSelectedAccessibilityFeatures([]);
+    setSelectedFaceFeatures([]);
+    setSelectedLocation(null);
+    setSelectedPropertyType && setSelectedPropertyType(null);
+    setSelectedCategory && setSelectedCategory(null);
+    setSelectedFeatures([]);
+
+    setFilters({
+      listingType: null,
+      state: null,
+      propertyType: null,
+      roomAsText: null,
+      isOnePlusOneSelected: false,
+      isTwoPlusOneSelected: false,
+      isThreePlusOneSelected: false,
+    });
+  };
   // Handle view transitions
   const handleViewChange = (newView: "map" | "list") => {
     if (newView === currentView || isTransitioning) return;
@@ -593,6 +621,7 @@ export default function HomePage({
           setShowIsPersonalInformationFormPopup={
             setIsPersonalInformationFormPopupOpen
           }
+          resetFilters={resetFilters}
         />
         <FilterList
           features={features}
@@ -645,6 +674,10 @@ export default function HomePage({
           searchRadius={searchRadius}
           isFilterPopupOpen={isFilterPopupOpen}
           setIsFilterPopupOpen={setIsFilterPopupOpen}
+          setIsSaveFilterPopupOpen={setIsSaveFilterPopupOpen}
+          sortOption={sortOption}
+          setSortOption={setSortOption}
+          resultCount={filteredHotels.length}
         />
 
         {/* View Container with Transitions */}

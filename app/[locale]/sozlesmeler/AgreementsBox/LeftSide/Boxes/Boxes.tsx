@@ -1,7 +1,8 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+
+import { useSearchParams } from "next/navigation";
 
 interface AccordionItem {
   id: string;
@@ -93,8 +94,8 @@ export default function Boxes({
 }) {
   const [openSections, setOpenSections] = useState<string[]>([
     "sozlesmeler",
-    "kurallar",
-    "cerezler",
+    // "kurallar",
+    // "cerezler",
   ]);
 
   const searchParams = useSearchParams();
@@ -168,10 +169,10 @@ export default function Boxes({
         <div key={section.id}>
           {/* Section Header */}
           <div
-            className="h-12 bg-[#F5F5F5] rounded-2xl flex items-center justify-between px-3 cursor-pointer "
+            className={`h-12 flex items-center justify-between px-3 cursor-pointer ${openSections.includes(section.id) ? "bg-[#F5F5F5] rounded-2xl text-[#8C8C8C]" : "bg-white text-[#262626]"}`}
             onClick={() => toggleSection(section.id)}
           >
-            <span className="text-[#8C8C8C] text-sm font-medium">
+            <span className="text-sm font-medium">
               {section.title}
             </span>
             {openSections.includes(section.id) ? (
@@ -206,7 +207,7 @@ export default function Boxes({
                       {item.title}
                     </span>
                     {item.title === selectedItem?.title && (
-                      <div className="w-2 h-2 rounded-full bg-indigo-700" />
+                      <div className="w-2 h-2 rounded-full bg-[#362C75]" />
                     )}
                   </div>
                 </div>

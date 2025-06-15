@@ -367,23 +367,7 @@ export default function AuthBox({
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
                 <div className="flex flex-row items-center font-medium lg:font-normal">
-                  <svg
-                    width="24"
-                    height="25"
-                    viewBox="0 0 24 25"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-[24px] h-[24px] lg:w-[20px] lg:h-[20px] mr-3 lg:mr-2 "
-                  >
-                    <path
-                      d="M4.99983 11.5C4.99983 7.08172 8.58125 3.5 12.9992 3.5C17.4171 3.5 20.9985 7.08172 20.9985 11.5C20.9985 12.65 20.7558 13.7434 20.319 14.7316L21 19.4992L16.9146 18.4778C15.7572 19.1287 14.4215 19.5 12.9992 19.5M3.00095 16.5C3.00095 17.2188 3.15258 17.9021 3.4256 18.5198L3 21.4995L5.55315 20.8611C6.27643 21.268 7.11115 21.5 8.00005 21.5C10.761 21.5 12.9992 19.2614 12.9992 16.5C12.9992 13.7386 10.761 11.5 8.00005 11.5C5.23912 11.5 3.00095 13.7386 3.00095 16.5Z"
-                      stroke="#262626"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  İletişim Kanalları
+                  İletişim
                 </div>
                 <svg
                   width="24"
@@ -409,22 +393,6 @@ export default function AuthBox({
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
                 <div className="flex flex-row items-center font-medium lg:font-normal">
-                  <svg
-                    width="24"
-                    height="25"
-                    viewBox="0 0 24 25"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-[24px] h-[24px] lg:w-[20px] lg:h-[20px] mr-3 lg:mr-2"
-                  >
-                    <path
-                      d="M7.5 17.5625H16.5M11.3046 3.71117L3.50457 8.98603C3.18802 9.2001 3 9.54666 3 9.91605V19.7882C3 20.7336 3.80589 21.5 4.8 21.5H19.2C20.1941 21.5 21 20.7336 21 19.7882V9.91605C21 9.54665 20.812 9.2001 20.4954 8.98603L12.6954 3.71117C12.2791 3.42961 11.7209 3.42961 11.3046 3.71117Z"
-                      stroke="#262626"
-                      strokeWidth="1.5"
-                      strokeLinecap="square"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
                   Gayrimenkul Ofislerimiz
                 </div>
                 <svg
@@ -534,7 +502,7 @@ export default function AuthBox({
 
               <button
                 onClick={handleLogout}
-                className="block w-full text-left px-4 py-4 lg:py-2 text-[14px] lg:text-[12px] text-[#EF1A28] hover:bg-gray-100 cursor-pointer flex flex-row items-center justify-between mb-4"
+                className="block w-full text-left px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] text-[#EF1A28] hover:bg-gray-100 cursor-pointer flex flex-row items-center justify-between mb-4"
               >
                 <span>Çıkış Yap</span>
               </button>

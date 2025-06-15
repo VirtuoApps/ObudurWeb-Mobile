@@ -12,7 +12,7 @@ export default function Descriptions() {
   const currentLocale = locale as keyof LocalizedText;
 
   return (
-    <div id="descriptions-section" className="max-w-5xl mx-auto p-4 lg:p-0 mt-0 lg:mt-[48px]">
+    <div id="descriptions-section" className="max-w-5xl mx-auto">
       <p className="font-bold text-[#362C75] text-2xl">{t("descriptions")}</p>
 
       <div className="flex md:flex-row flex-col mt-8 gap-6">

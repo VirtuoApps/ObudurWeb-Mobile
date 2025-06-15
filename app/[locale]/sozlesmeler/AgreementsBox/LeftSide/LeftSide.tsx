@@ -1,5 +1,5 @@
-import React from "react";
 import Boxes from "./Boxes/Boxes";
+import React from "react";
 
 export default function LeftSide({
   handleItemClick,
@@ -9,7 +9,7 @@ export default function LeftSide({
   selectedItem: { title: string; mdText: string } | null;
 }) {
   return (
-    <div className="sm:w-[32%] w-full h-full p-8 pt-6 border-r border-[#F0F0F0]">
+    <div className="sm:w-[32%] w-full h-full p-8 pt-6">
       <p className="text-[#362C75] font-bold text-[24px]">
         Kullanıcı Sözleşmeleri
       </p>

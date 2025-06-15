@@ -65,7 +65,7 @@ export default function GoogleMapView({
     }
   }, [selectedLocation, initialCenter]);
 
-  // Calculate the center based on selectedLocation first, then average of all coordinates
+  // Calculate the center based on selectedLocation first, then handle filtered results
   const center = useMemo(() => {
     if (
       selectedHotel &&
@@ -110,7 +110,16 @@ export default function GoogleMapView({
       return { lat: 36.855, lng: 30.805 }; // Default center if no valid coordinates
     }
 
-    // Calculate average of coordinates
+    // If there are filters active (hotels count is different from total), show random hotel
+    if (hotels.length !== totalHotelsCount && validHotels.length > 0) {
+      const randomHotel = validHotels[Math.floor(Math.random() * validHotels.length)];
+      return {
+        lat: randomHotel.location.coordinates[1],
+        lng: randomHotel.location.coordinates[0],
+      };
+    }
+
+    // Calculate average of coordinates when no filters are active
     // Note: hotel.location.coordinates is [longitude, latitude]
     const sum = validHotels.reduce(
       (acc, hotel) => {
@@ -126,7 +135,7 @@ export default function GoogleMapView({
       lat: sum.lat / validHotels.length,
       lng: sum.lng / validHotels.length,
     };
-  }, [hotels, selectedLocation, selectedHotel, initialCenter]);
+  }, [hotels, selectedLocation, selectedHotel, initialCenter, totalHotelsCount]);
 
   const onLoad = useCallback(function callback(map: google.maps.Map) {
     setMapInstance(map);
@@ -139,7 +148,6 @@ export default function GoogleMapView({
   useEffect(() => {
     if (mapInstance) {
       // If selectedLocation is provided, center on it with appropriate zoom
-
       if (
         selectedLocation &&
         selectedLocation.coordinates &&
@@ -175,16 +183,9 @@ export default function GoogleMapView({
           mapInstance.setCenter(position);
           mapInstance.setZoom(15);
         } else {
-          const bounds = new window.google.maps.LatLngBounds();
-          validHotels.forEach((hotel) => {
-            bounds.extend(
-              new window.google.maps.LatLng(
-                hotel.location.coordinates[1],
-                hotel.location.coordinates[0]
-              )
-            );
-          });
-          mapInstance.fitBounds(bounds);
+          // For multiple filtered hotels, center on random hotel (already calculated in center)
+          mapInstance.setCenter(center);
+          mapInstance.setZoom(13); // Good zoom level to see the centered hotel and surrounding area
         }
       } else {
         // No effective filter, or all hotels are shown. Use default view.

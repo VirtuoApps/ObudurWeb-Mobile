@@ -1,13 +1,15 @@
-import { NextIntlClientProvider } from "next-intl";
-import { Geist_Mono, Kumbh_Sans } from "next/font/google";
 import "../globals.css";
-import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
-import { ReduxProvider } from "../providers/ReduxProvider";
-import FavoritesProvider from "../providers/FavoritesProvider";
 import "../components/nprogress/nprogress.css";
-import { NProgressProvider } from "../components/nprogress";
+
+import { Geist_Mono, Kumbh_Sans } from "next/font/google";
+
+import FavoritesProvider from "../providers/FavoritesProvider";
 import { GoogleMapsProvider } from "../contexts/GoogleMapsContext";
+import { NProgressProvider } from "../components/nprogress";
+import { NextIntlClientProvider } from "next-intl";
+import { ReduxProvider } from "../providers/ReduxProvider";
+import { getTranslations } from "next-intl/server";
+import { notFound } from "next/navigation";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
