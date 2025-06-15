@@ -162,11 +162,36 @@ export default function FilterList({
   >(sortOption);
 
   const handleFilterClick = (featureItem: Feature) => {
+    const isCurrentlySelected = selectedFeatures.some((sf) => sf._id === featureItem._id);
+    
+    // Update selectedFeatures (quick filters)
     setSelectedFeatures(
-      selectedFeatures.some((sf) => sf._id === featureItem._id)
+      isCurrentlySelected
         ? selectedFeatures.filter((sf) => sf._id !== featureItem._id)
         : [...selectedFeatures, featureItem]
     );
+    
+    // Check if this feature is an interior or exterior feature and update accordingly
+    const isInteriorFeature = filterOptions.interiorFeatures.some((f) => f._id === featureItem._id);
+    const isExteriorFeature = filterOptions.outsideFeatures.some((f) => f._id === featureItem._id);
+    
+    if (isInteriorFeature) {
+      // Update interior features
+      setInteriorFeatures((prev) =>
+        isCurrentlySelected
+          ? prev.filter((f) => f._id !== featureItem._id)
+          : [...prev, featureItem]
+      );
+    }
+    
+    if (isExteriorFeature) {
+      // Update exterior features
+      setSelectedExteriorFeatures((prev) =>
+        isCurrentlySelected
+          ? prev.filter((f) => f._id !== featureItem._id)
+          : [...prev, featureItem]
+      );
+    }
   };
 
   const checkArrows = () => {

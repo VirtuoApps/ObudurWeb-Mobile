@@ -317,19 +317,55 @@ export default function FilterPopup({
   };
 
   const toggleFeature = (feature: any) => {
+    const isCurrentlySelected = interiorFeatures.some((f: any) => f._id === feature._id);
+    
     setInteriorFeatures((prev: any[]) =>
-      prev.some((f: any) => f._id === feature._id)
+      isCurrentlySelected
         ? prev.filter((f: any) => f._id !== feature._id)
         : [...prev, feature]
     );
+    
+    // Also update selectedFeatures (quick filters) if this feature exists in quick filters
+    setSelectedFeatures((prev: any[]) => {
+      const featureExistsInQuickFilters = prev.some((f: any) => f._id === feature._id);
+      
+      if (isCurrentlySelected) {
+        // Remove from quick filters if it exists
+        return prev.filter((f: any) => f._id !== feature._id);
+      } else {
+        // Add to quick filters if it doesn't exist and feature has the required properties
+        if (!featureExistsInQuickFilters) {
+          return [...prev, feature];
+        }
+        return prev;
+      }
+    });
   };
 
   const toggleExteriorFeature = (feature: any) => {
+    const isCurrentlySelected = selectedExteriorFeatures.some((f: any) => f._id === feature._id);
+    
     setSelectedExteriorFeatures((prev: any[]) =>
-      prev.some((f: any) => f._id === feature._id)
+      isCurrentlySelected
         ? prev.filter((f: any) => f._id !== feature._id)
         : [...prev, feature]
     );
+    
+    // Also update selectedFeatures (quick filters) if this feature exists in quick filters
+    setSelectedFeatures((prev: any[]) => {
+      const featureExistsInQuickFilters = prev.some((f: any) => f._id === feature._id);
+      
+      if (isCurrentlySelected) {
+        // Remove from quick filters if it exists
+        return prev.filter((f: any) => f._id !== feature._id);
+      } else {
+        // Add to quick filters if it doesn't exist and feature has the required properties
+        if (!featureExistsInQuickFilters) {
+          return [...prev, feature];
+        }
+        return prev;
+      }
+    });
   };
 
   const toggleAccessibilityFeature = (feature: Feature) => {
