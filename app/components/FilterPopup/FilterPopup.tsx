@@ -158,6 +158,23 @@ export default function FilterPopup({
 
   const locale = useLocale();
 
+  // Temporary states for popup (only applied when "Apply" is clicked)
+  const [tempListingType, setTempListingType] = useState<"For Sale" | "For Rent">(listingType);
+  const [tempSelectedLocation, setTempSelectedLocation] = useState<any>(selectedLocation);
+  const [tempSelectedPropertyType, setTempSelectedPropertyType] = useState<any>(selectedPropertyType);
+  const [tempSelectedCategory, setTempSelectedCategory] = useState<any>(selectedCategory);
+  const [tempFilters, setTempFilters] = useState<any>(filters);
+  const [tempMinPrice, setTempMinPrice] = useState<number | "">(minPrice);
+  const [tempMaxPrice, setTempMaxPrice] = useState<number | "">(maxPrice);
+  const [tempMinArea, setTempMinArea] = useState<number | "">(minArea);
+  const [tempMaxArea, setTempMaxArea] = useState<number | "">(maxArea);
+  const [tempRoomCount, setTempRoomCount] = useState<string>(roomCount);
+  const [tempBathroomCount, setTempBathroomCount] = useState<string>(bathroomCount);
+  const [tempSelectedExteriorFeatures, setTempSelectedExteriorFeatures] = useState<any[]>(selectedExteriorFeatures);
+  const [tempInteriorFeatures, setTempInteriorFeatures] = useState<any[]>(interiorFeatures);
+  const [tempSelectedAccessibilityFeatures, setTempSelectedAccessibilityFeatures] = useState<any[]>(selectedAccessibilityFeatures);
+  const [tempSelectedFaceFeatures, setTempSelectedFaceFeatures] = useState<any[]>(selectedFaceFeatures);
+
   // Location search state variables - similar to LocationSelect.tsx
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
@@ -195,6 +212,27 @@ export default function FilterPopup({
     setTranslateY(0);
     setTouchStartY(null);
   };
+
+  // Initialize temporary states when popup opens
+  useEffect(() => {
+    if (isOpen) {
+      setTempListingType(listingType);
+      setTempSelectedLocation(selectedLocation);
+      setTempSelectedPropertyType(selectedPropertyType);
+      setTempSelectedCategory(selectedCategory);
+      setTempFilters(filters);
+      setTempMinPrice(minPrice);
+      setTempMaxPrice(maxPrice);
+      setTempMinArea(minArea);
+      setTempMaxArea(maxArea);
+      setTempRoomCount(roomCount);
+      setTempBathroomCount(bathroomCount);
+      setTempSelectedExteriorFeatures(selectedExteriorFeatures);
+      setTempInteriorFeatures(interiorFeatures);
+      setTempSelectedAccessibilityFeatures(selectedAccessibilityFeatures);
+      setTempSelectedFaceFeatures(selectedFaceFeatures);
+    }
+  }, [isOpen, listingType, selectedLocation, selectedPropertyType, selectedCategory, filters, minPrice, maxPrice, minArea, maxArea, roomCount, bathroomCount, selectedExteriorFeatures, interiorFeatures, selectedAccessibilityFeatures, selectedFaceFeatures]);
 
   // Fetch hotel types from API
   useEffect(() => {
@@ -317,59 +355,27 @@ export default function FilterPopup({
   };
 
   const toggleFeature = (feature: any) => {
-    const isCurrentlySelected = interiorFeatures.some((f: any) => f._id === feature._id);
+    const isCurrentlySelected = tempInteriorFeatures.some((f: any) => f._id === feature._id);
     
-    setInteriorFeatures((prev: any[]) =>
+    setTempInteriorFeatures((prev: any[]) =>
       isCurrentlySelected
         ? prev.filter((f: any) => f._id !== feature._id)
         : [...prev, feature]
     );
-    
-    // Also update selectedFeatures (quick filters) if this feature exists in quick filters
-    setSelectedFeatures((prev: any[]) => {
-      const featureExistsInQuickFilters = prev.some((f: any) => f._id === feature._id);
-      
-      if (isCurrentlySelected) {
-        // Remove from quick filters if it exists
-        return prev.filter((f: any) => f._id !== feature._id);
-      } else {
-        // Add to quick filters if it doesn't exist and feature has the required properties
-        if (!featureExistsInQuickFilters) {
-          return [...prev, feature];
-        }
-        return prev;
-      }
-    });
   };
 
   const toggleExteriorFeature = (feature: any) => {
-    const isCurrentlySelected = selectedExteriorFeatures.some((f: any) => f._id === feature._id);
+    const isCurrentlySelected = tempSelectedExteriorFeatures.some((f: any) => f._id === feature._id);
     
-    setSelectedExteriorFeatures((prev: any[]) =>
+    setTempSelectedExteriorFeatures((prev: any[]) =>
       isCurrentlySelected
         ? prev.filter((f: any) => f._id !== feature._id)
         : [...prev, feature]
     );
-    
-    // Also update selectedFeatures (quick filters) if this feature exists in quick filters
-    setSelectedFeatures((prev: any[]) => {
-      const featureExistsInQuickFilters = prev.some((f: any) => f._id === feature._id);
-      
-      if (isCurrentlySelected) {
-        // Remove from quick filters if it exists
-        return prev.filter((f: any) => f._id !== feature._id);
-      } else {
-        // Add to quick filters if it doesn't exist and feature has the required properties
-        if (!featureExistsInQuickFilters) {
-          return [...prev, feature];
-        }
-        return prev;
-      }
-    });
   };
 
   const toggleAccessibilityFeature = (feature: Feature) => {
-    setSelectedAccessibilityFeatures((prev: any[]) =>
+    setTempSelectedAccessibilityFeatures((prev: any[]) =>
       prev.some((f: any) => f._id === feature._id)
         ? prev.filter((f: any) => f._id !== feature._id)
         : [...prev, feature]
@@ -377,7 +383,7 @@ export default function FilterPopup({
   };
 
   const toggleFaceFeature = (feature: Feature) => {
-    setSelectedFaceFeatures((prev: any[]) =>
+    setTempSelectedFaceFeatures((prev: any[]) =>
       prev.some((f: any) => f._id === feature._id)
         ? prev.filter((f: any) => f._id !== feature._id)
         : [...prev, feature]
@@ -417,15 +423,15 @@ export default function FilterPopup({
     let filteredHotels = hotels;
 
     // Filter by listing type
-    if (listingType) {
+    if (tempListingType) {
       filteredHotels = filteredHotels.filter((hotel) =>
-        Object.values(hotel.listingType).some((value) => value === listingType)
+        Object.values(hotel.listingType).some((value) => value === tempListingType)
       );
     }
 
     // Filter by location proximity
-    if (selectedLocation && selectedLocation.coordinates) {
-      const [targetLon, targetLat] = selectedLocation.coordinates;
+    if (tempSelectedLocation && tempSelectedLocation.coordinates) {
+      const [targetLon, targetLat] = tempSelectedLocation.coordinates;
       filteredHotels = filterHotelsByProximity(
         filteredHotels,
         targetLat,
@@ -435,158 +441,158 @@ export default function FilterPopup({
     }
 
     // Create a temporary filters object for consistent filtering
-    const tempFilters = {
-      propertyType: selectedPropertyType?.name || null,
-      roomAsText: selectedCategory?.name || null,
-      minPrice: minPrice !== "" ? minPrice : null,
-      maxPrice: maxPrice !== "" ? maxPrice : null,
-      roomCount: roomCount !== "" ? parseInt(roomCount) : null,
-      bathroomCount: bathroomCount !== "" ? parseInt(bathroomCount) : null,
-      minProjectArea: minArea !== "" ? Number(minArea) : null,
-      maxProjectArea: maxArea !== "" ? Number(maxArea) : null,
+    const filtersForCount = {
+      propertyType: tempSelectedPropertyType?.name || null,
+      roomAsText: tempSelectedCategory?.name || null,
+      minPrice: tempMinPrice !== "" ? tempMinPrice : null,
+      maxPrice: tempMaxPrice !== "" ? tempMaxPrice : null,
+      roomCount: tempRoomCount !== "" ? parseInt(tempRoomCount) : null,
+      bathroomCount: tempBathroomCount !== "" ? parseInt(tempBathroomCount) : null,
+      minProjectArea: tempMinArea !== "" ? Number(tempMinArea) : null,
+      maxProjectArea: tempMaxArea !== "" ? Number(tempMaxArea) : null,
       interiorFeatureIds:
-        interiorFeatures.length > 0
-          ? interiorFeatures.map((f: any) => f._id)
+        tempInteriorFeatures.length > 0
+          ? tempInteriorFeatures.map((f: any) => f._id)
           : null,
       exteriorFeatureIds:
-        selectedExteriorFeatures.length > 0
-          ? selectedExteriorFeatures.map((f: any) => f._id)
+        tempSelectedExteriorFeatures.length > 0
+          ? tempSelectedExteriorFeatures.map((f: any) => f._id)
           : null,
       accessibilityFeatureIds:
-        selectedAccessibilityFeatures.length > 0
-          ? selectedAccessibilityFeatures.map((f: any) => f._id)
+        tempSelectedAccessibilityFeatures.length > 0
+          ? tempSelectedAccessibilityFeatures.map((f: any) => f._id)
           : null,
       faceFeatureIds:
-        selectedFaceFeatures.length > 0
-          ? selectedFaceFeatures.map((f: any) => f._id)
+        tempSelectedFaceFeatures.length > 0
+          ? tempSelectedFaceFeatures.map((f: any) => f._id)
           : null,
-      isNewSelected: filters?.isNewSelected || false,
-      isOnePlusOneSelected: filters?.isOnePlusOneSelected || false,
-      isTwoPlusOneSelected: filters?.isTwoPlusOneSelected || false,
-      isThreePlusOneSelected: filters?.isThreePlusOneSelected || false,
+      isNewSelected: tempFilters?.isNewSelected || false,
+      isOnePlusOneSelected: tempFilters?.isOnePlusOneSelected || false,
+      isTwoPlusOneSelected: tempFilters?.isTwoPlusOneSelected || false,
+      isThreePlusOneSelected: tempFilters?.isThreePlusOneSelected || false,
     };
 
     // Apply filters using HomePage logic
-    if (tempFilters.propertyType) {
+    if (filtersForCount.propertyType) {
       filteredHotels = filteredHotels.filter((hotel) =>
         Object.values(hotel.entranceType).some(
-          (value) => value === tempFilters.propertyType
+          (value) => value === filtersForCount.propertyType
         )
       );
     }
 
-    if (tempFilters.roomAsText) {
+    if (filtersForCount.roomAsText) {
       filteredHotels = filteredHotels.filter((hotel) =>
         Object.values(hotel.housingType).some(
-          (value) => value === tempFilters.roomAsText
+          (value) => value === filtersForCount.roomAsText
         )
       );
     }
 
-    if (tempFilters.minPrice !== undefined && tempFilters.minPrice !== null) {
+    if (filtersForCount.minPrice !== undefined && filtersForCount.minPrice !== null) {
       filteredHotels = filteredHotels.filter((hotel) => {
         const priceInSelectedCurrency = hotel.price.find(
           (price) => price.currency === selectedCurrency
         );
         return priceInSelectedCurrency
-          ? priceInSelectedCurrency.amount >= tempFilters.minPrice!
+          ? priceInSelectedCurrency.amount >= filtersForCount.minPrice!
           : true;
       });
     }
 
-    if (tempFilters.maxPrice !== undefined && tempFilters.maxPrice !== null) {
+    if (filtersForCount.maxPrice !== undefined && filtersForCount.maxPrice !== null) {
       filteredHotels = filteredHotels.filter((hotel) => {
         const priceInSelectedCurrency = hotel.price.find(
           (price) => price.currency === selectedCurrency
         );
         return priceInSelectedCurrency
-          ? priceInSelectedCurrency.amount <= tempFilters.maxPrice!
+          ? priceInSelectedCurrency.amount <= filtersForCount.maxPrice!
           : true;
       });
     }
 
     if (
-      tempFilters.roomCount !== undefined &&
-      tempFilters.roomCount !== null &&
-      tempFilters.roomCount > 0
+      filtersForCount.roomCount !== undefined &&
+      filtersForCount.roomCount !== null &&
+      filtersForCount.roomCount > 0
     ) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return hotel.roomCount === tempFilters.roomCount;
+        return hotel.roomCount === filtersForCount.roomCount;
       });
     }
 
     if (
-      tempFilters.bathroomCount !== undefined &&
-      tempFilters.bathroomCount !== null &&
-      tempFilters.bathroomCount > 0
+      filtersForCount.bathroomCount !== undefined &&
+      filtersForCount.bathroomCount !== null &&
+      filtersForCount.bathroomCount > 0
     ) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return hotel.bathroomCount === tempFilters.bathroomCount;
+        return hotel.bathroomCount === filtersForCount.bathroomCount;
       });
     }
 
     if (
-      tempFilters.minProjectArea !== undefined &&
-      tempFilters.minProjectArea !== null &&
-      tempFilters.minProjectArea > 0
+      filtersForCount.minProjectArea !== undefined &&
+      filtersForCount.minProjectArea !== null &&
+      filtersForCount.minProjectArea > 0
     ) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return hotel.projectArea >= tempFilters.minProjectArea!;
+        return hotel.projectArea >= filtersForCount.minProjectArea!;
       });
     }
 
     if (
-      tempFilters.maxProjectArea !== undefined &&
-      tempFilters.maxProjectArea !== null &&
-      tempFilters.maxProjectArea > 0
+      filtersForCount.maxProjectArea !== undefined &&
+      filtersForCount.maxProjectArea !== null &&
+      filtersForCount.maxProjectArea > 0
     ) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return hotel.projectArea <= tempFilters.maxProjectArea!;
+        return hotel.projectArea <= filtersForCount.maxProjectArea!;
       });
     }
 
     if (
-      tempFilters.interiorFeatureIds &&
-      tempFilters.interiorFeatureIds.length > 0
+      filtersForCount.interiorFeatureIds &&
+      filtersForCount.interiorFeatureIds.length > 0
     ) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return tempFilters.interiorFeatureIds!.every((featureId) =>
+        return filtersForCount.interiorFeatureIds!.every((featureId: string) =>
           hotel.featureIds.includes(featureId)
         );
       });
     }
 
     if (
-      tempFilters.exteriorFeatureIds &&
-      tempFilters.exteriorFeatureIds.length > 0
+      filtersForCount.exteriorFeatureIds &&
+      filtersForCount.exteriorFeatureIds.length > 0
     ) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return tempFilters.exteriorFeatureIds!.every((featureId) =>
+        return filtersForCount.exteriorFeatureIds!.every((featureId: string) =>
           hotel.featureIds.includes(featureId)
         );
       });
     }
 
     if (
-      tempFilters.accessibilityFeatureIds &&
-      tempFilters.accessibilityFeatureIds.length > 0
+      filtersForCount.accessibilityFeatureIds &&
+      filtersForCount.accessibilityFeatureIds.length > 0
     ) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return tempFilters.accessibilityFeatureIds!.every((featureId: string) =>
+        return filtersForCount.accessibilityFeatureIds!.every((featureId: string) =>
           hotel.featureIds.includes(featureId)
         );
       });
     }
 
-    if (tempFilters.faceFeatureIds && tempFilters.faceFeatureIds.length > 0) {
+    if (filtersForCount.faceFeatureIds && filtersForCount.faceFeatureIds.length > 0) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return tempFilters.faceFeatureIds!.some(
+        return filtersForCount.faceFeatureIds!.some(
           (featureId: string) => hotel.face === featureId
         );
       });
     }
 
-    if (tempFilters.isNewSelected) {
+    if (filtersForCount.isNewSelected) {
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
@@ -597,14 +603,14 @@ export default function FilterPopup({
     }
 
     if (
-      tempFilters.isOnePlusOneSelected ||
-      tempFilters.isTwoPlusOneSelected ||
-      tempFilters.isThreePlusOneSelected
+      filtersForCount.isOnePlusOneSelected ||
+      filtersForCount.isTwoPlusOneSelected ||
+      filtersForCount.isThreePlusOneSelected
     ) {
       const selectedRoomTypes: string[] = [];
-      if (tempFilters.isOnePlusOneSelected) selectedRoomTypes.push("1+1");
-      if (tempFilters.isTwoPlusOneSelected) selectedRoomTypes.push("2+1");
-      if (tempFilters.isThreePlusOneSelected) selectedRoomTypes.push("3+1");
+      if (filtersForCount.isOnePlusOneSelected) selectedRoomTypes.push("1+1");
+      if (filtersForCount.isTwoPlusOneSelected) selectedRoomTypes.push("2+1");
+      if (filtersForCount.isThreePlusOneSelected) selectedRoomTypes.push("3+1");
 
       filteredHotels = filteredHotels.filter((hotel) => {
         return selectedRoomTypes.includes(hotel.roomAsText);
@@ -634,29 +640,84 @@ export default function FilterPopup({
 
   const resultsCount = getFilteredResultsCount();
 
-  // Check if any filters are selected
+  // Check if any filters are selected (using temporary states)
   const hasActiveFilters = () => {
     return (
-      minPrice !== "" ||
-      maxPrice !== "" ||
-      minArea !== "" ||
-      maxArea !== "" ||
-      roomCount !== "" ||
-      bathroomCount !== "" ||
-      interiorFeatures.length > 0 ||
-      selectedExteriorFeatures.length > 0 ||
-      selectedAccessibilityFeatures.length > 0 ||
-      selectedFaceFeatures.length > 0 ||
-      selectedLocation ||
-      selectedPropertyType ||
-      selectedCategory ||
-      selectedFeatures.length > 0 ||
-      (filters &&
-        (filters.isOnePlusOneSelected ||
-          filters.isTwoPlusOneSelected ||
-          filters.isThreePlusOneSelected ||
-          filters.isNewSelected))
+      tempMinPrice !== "" ||
+      tempMaxPrice !== "" ||
+      tempMinArea !== "" ||
+      tempMaxArea !== "" ||
+      tempRoomCount !== "" ||
+      tempBathroomCount !== "" ||
+      tempInteriorFeatures.length > 0 ||
+      tempSelectedExteriorFeatures.length > 0 ||
+      tempSelectedAccessibilityFeatures.length > 0 ||
+      tempSelectedFaceFeatures.length > 0 ||
+      tempSelectedLocation ||
+      tempSelectedPropertyType ||
+      tempSelectedCategory ||
+      (tempFilters &&
+        (tempFilters.isOnePlusOneSelected ||
+          tempFilters.isTwoPlusOneSelected ||
+          tempFilters.isThreePlusOneSelected ||
+          tempFilters.isNewSelected))
     );
+  };
+
+  // Apply temporary filters to actual filters
+  const applyFilters = () => {
+    setListingType(tempListingType);
+    setSelectedLocation(tempSelectedLocation);
+    setSelectedPropertyType && setSelectedPropertyType(tempSelectedPropertyType);
+    setSelectedCategory && setSelectedCategory(tempSelectedCategory);
+    setFilters(tempFilters);
+    setMinPrice(tempMinPrice);
+    setMaxPrice(tempMaxPrice);
+    setMinArea(tempMinArea);
+    setMaxArea(tempMaxArea);
+    setRoomCount(tempRoomCount);
+    setBathroomCount(tempBathroomCount);
+    setSelectedExteriorFeatures(tempSelectedExteriorFeatures);
+    setInteriorFeatures(tempInteriorFeatures);
+    setSelectedAccessibilityFeatures(tempSelectedAccessibilityFeatures);
+    setSelectedFaceFeatures(tempSelectedFaceFeatures);
+    
+    // Update quick filters (selectedFeatures) based on interior and exterior features
+    const newSelectedFeatures = [
+      ...tempInteriorFeatures.filter((f: any) => selectedFeatures.some((sf: any) => sf._id === f._id)),
+      ...tempSelectedExteriorFeatures.filter((f: any) => selectedFeatures.some((sf: any) => sf._id === f._id))
+    ];
+    setSelectedFeatures(newSelectedFeatures);
+    
+    dispatch(setIsFilterApplied(true));
+    onClose && onClose();
+  };
+
+  // Clear all temporary filters
+  const clearAllTempFilters = () => {
+    setTempMinPrice("");
+    setTempMaxPrice("");
+    setTempMinArea("");
+    setTempMaxArea("");
+    setTempRoomCount("");
+    setTempBathroomCount("");
+    setTempInteriorFeatures([]);
+    setTempSelectedExteriorFeatures([]);
+    setTempSelectedAccessibilityFeatures([]);
+    setTempSelectedFaceFeatures([]);
+    setTempSelectedLocation(null);
+    setTempSelectedPropertyType(null);
+    setTempSelectedCategory(null);
+    setTempFilters({
+      listingType: null,
+      state: null,
+      propertyType: null,
+      roomAsText: null,
+      isOnePlusOneSelected: false,
+      isTwoPlusOneSelected: false,
+      isThreePlusOneSelected: false,
+      isNewSelected: false,
+    });
   };
 
   if (!isOpen) return null;
@@ -702,7 +763,7 @@ export default function FilterPopup({
             {/* Sliding Background */}
             <div
               className={`absolute w-[calc(50%-4px)] bg-[#362C75] rounded-[12px] transition-all duration-500 ease-in-out shadow-md h-[48px] ${
-                listingType === "For Sale"
+                tempListingType === "For Sale"
                   ? "translate-x-[4px]"
                   : "translate-x-[calc(100%+4px)]"
               }`}
@@ -711,12 +772,12 @@ export default function FilterPopup({
             {/* For Sale Toggle Button */}
             <button
               className={`relative z-10 py-3 px-4 text-sm font-medium transition-all duration-500 ease-in-out cursor-pointer rounded-[12px] h-[56px] flex-1 flex items-center justify-center ${
-                listingType === "For Sale"
+                tempListingType === "For Sale"
                   ? "text-white"
                   : "text-gray-700 hover:text-gray-800"
               }`}
-              onClick={() => setListingType("For Sale")}
-              aria-pressed={listingType === "For Sale"}
+              onClick={() => setTempListingType("For Sale")}
+              aria-pressed={tempListingType === "For Sale"}
               role="switch"
             >
               <span className="transition-all duration-200 ease-in-out relative z-10">
@@ -727,12 +788,12 @@ export default function FilterPopup({
             {/* For Rent Toggle Button */}
             <button
               className={`relative z-10 py-3 px-4 text-sm font-medium transition-all duration-500 ease-in-out cursor-pointer rounded-[12px] h-[56px] flex-1 flex items-center justify-center ${
-                listingType === "For Rent"
+                tempListingType === "For Rent"
                   ? "text-white"
                   : "text-gray-700 hover:text-gray-800"
               }`}
-              onClick={() => setListingType("For Rent")}
-              aria-pressed={listingType === "For Rent"}
+              onClick={() => setTempListingType("For Rent")}
+              aria-pressed={tempListingType === "For Rent"}
               role="switch"
             >
               <span className="transition-all duration-200 ease-in-out relative z-10">
@@ -803,7 +864,7 @@ export default function FilterPopup({
                       };
                     }
 
-                    setSelectedLocation(locationWithCoordinates);
+                    setTempSelectedLocation(locationWithCoordinates);
                     setShowSearch(false);
                     setIsOpen(false);
                     setSuggestions([]);
@@ -873,8 +934,8 @@ export default function FilterPopup({
                                 className="h-6 w-6 mr-1 flex-shrink-0"
                               />
                               <span className="truncate">
-                                {selectedLocation
-                                  ? `${selectedLocation.name}`
+                                {tempSelectedLocation
+                                  ? `${tempSelectedLocation.name}`
                                   : t("selectLocation") || "Select Location"}
                               </span>
                             </>
@@ -946,12 +1007,11 @@ export default function FilterPopup({
             <div className="w-1/2">
               <div className="mt-3">
                 <GeneralSelect
-                  selectedItem={selectedPropertyType}
+                  selectedItem={tempSelectedPropertyType}
                   onSelect={(propertyType) => {
-                    setSelectedPropertyType &&
-                      setSelectedPropertyType(propertyType);
+                    setTempSelectedPropertyType(propertyType);
                     // Reset category when property type changes
-                    setSelectedCategory && setSelectedCategory(null);
+                    setTempSelectedCategory(null);
                   }}
                   options={hotelTypes.map((hotelType) => ({
                     _id: hotelType._id,
@@ -970,16 +1030,16 @@ export default function FilterPopup({
             <div className="w-1/2">
               <div className="mt-3">
                 <GeneralSelect
-                  selectedItem={selectedCategory}
+                  selectedItem={tempSelectedCategory}
                   onSelect={(category) => {
                     // Only allow selection if property type is selected and has categories
-                    if (selectedPropertyType?.originalData?.categories) {
-                      setSelectedCategory && setSelectedCategory(category);
+                    if (tempSelectedPropertyType?.originalData?.categories) {
+                      setTempSelectedCategory(category);
                     }
                   }}
                   options={
-                    selectedPropertyType?.originalData?.categories
-                      ? selectedPropertyType.originalData.categories.map(
+                    tempSelectedPropertyType?.originalData?.categories
+                      ? tempSelectedPropertyType.originalData.categories.map(
                           (category: HotelCategory) => ({
                             _id: category._id,
                             name:
@@ -1011,8 +1071,8 @@ export default function FilterPopup({
               <button
                 className="text-sm text-[#8c8c8c] hover:underline cursor-pointer"
                 onClick={() => {
-                  setMinPrice("");
-                  setMaxPrice("");
+                  setTempMinPrice("");
+                  setTempMaxPrice("");
                 }}
               >
                 {t("reset")}
@@ -1022,12 +1082,12 @@ export default function FilterPopup({
               <div className="relative flex items-center">
                 <input
                   type="text"
-                  value={minPrice}
+                  value={tempMinPrice}
                   onChange={(e) => {
                     const value = e.target.value;
                     // Only allow numbers
                     if (value === "" || /^\d+$/.test(value)) {
-                      setMinPrice(value === "" ? "" : Number(value));
+                      setTempMinPrice(value === "" ? "" : Number(value));
                     }
                   }}
                   onKeyDown={(e) => {
@@ -1072,12 +1132,12 @@ export default function FilterPopup({
               <div className="relative flex items-center">
                 <input
                   type="text"
-                  value={maxPrice}
+                  value={tempMaxPrice}
                   onChange={(e) => {
                     const value = e.target.value;
                     // Only allow numbers
                     if (value === "" || /^\d+$/.test(value)) {
-                      setMaxPrice(value === "" ? "" : Number(value));
+                      setTempMaxPrice(value === "" ? "" : Number(value));
                     }
                   }}
                   onKeyDown={(e) => {
@@ -1132,9 +1192,9 @@ export default function FilterPopup({
               </div>
               <div className="mt-3">
                 <GeneralSelect
-                  selectedItem={roomCount ? { name: roomCount } : null}
+                  selectedItem={tempRoomCount ? { name: tempRoomCount } : null}
                   onSelect={(room) => {
-                    setRoomCount(room.name);
+                    setTempRoomCount(room.name);
                   }}
                   options={filterOptions.roomCount.map((room) => ({
                     name: room,
@@ -1156,9 +1216,9 @@ export default function FilterPopup({
               </div>
               <div className="mt-3">
                 <GeneralSelect
-                  selectedItem={bathroomCount ? { name: bathroomCount } : null}
+                  selectedItem={tempBathroomCount ? { name: tempBathroomCount } : null}
                   onSelect={(bathroom) => {
-                    setBathroomCount(bathroom.name);
+                    setTempBathroomCount(bathroom.name);
                   }}
                   options={filterOptions.bathroomCount.map(
                     (bathroom: number) => ({
@@ -1183,8 +1243,8 @@ export default function FilterPopup({
               <button
                 className="text-sm text-[#8c8c8c] hover:underline cursor-pointer"
                 onClick={() => {
-                  setMinArea("");
-                  setMaxArea("");
+                  setTempMinArea("");
+                  setTempMaxArea("");
                 }}
               >
                 {t("reset")}
@@ -1194,12 +1254,12 @@ export default function FilterPopup({
               <div className="relative flex items-center">
                 <input
                   type="text"
-                  value={minArea}
+                  value={tempMinArea}
                   onChange={(e) => {
                     const value = e.target.value;
                     // Only allow numbers
                     if (value === "" || /^\d+$/.test(value)) {
-                      setMinArea(value === "" ? "" : Number(value));
+                      setTempMinArea(value === "" ? "" : Number(value));
                     }
                   }}
                   onKeyDown={(e) => {
@@ -1244,12 +1304,12 @@ export default function FilterPopup({
               <div className="relative flex items-center">
                 <input
                   type="text"
-                  value={maxArea}
+                  value={tempMaxArea}
                   onChange={(e) => {
                     const value = e.target.value;
                     // Only allow numbers
                     if (value === "" || /^\d+$/.test(value)) {
-                      setMaxArea(value === "" ? "" : Number(value));
+                      setTempMaxArea(value === "" ? "" : Number(value));
                     }
                   }}
                   onKeyDown={(e) => {
@@ -1306,9 +1366,9 @@ export default function FilterPopup({
                 >
                   <h3 className="text-base font-semibold text-gray-700">
                     {t("faceFeatures") || "Cephe"}{" "}
-                    {selectedFaceFeatures.length > 0 ? (
+                    {tempSelectedFaceFeatures.length > 0 ? (
                       <span className="text-sm font-normal text-[#595959]">
-                        ({selectedFaceFeatures.length})
+                        ({tempSelectedFaceFeatures.length})
                       </span>
                     ) : null}
                   </h3>
@@ -1325,7 +1385,7 @@ export default function FilterPopup({
                   <div className="mt-3 ">
                     <div className="flex flex-wrap gap-2">
                       {(filterOptions.faceFeatures || []).map((feature) => {
-                        const isSelected = selectedFaceFeatures.find(
+                        const isSelected = tempSelectedFaceFeatures.find(
                           (f: any) => f._id === feature._id
                         );
 
@@ -1365,9 +1425,9 @@ export default function FilterPopup({
             >
               <h3 className="text-base font-semibold text-gray-700">
                 {t("interiorFeatures")}{" "}
-                {interiorFeatures.length > 0 ? (
+                {tempInteriorFeatures.length > 0 ? (
                   <span className="text-sm font-normal text-[#595959]">
-                    ({interiorFeatures.length})
+                    ({tempInteriorFeatures.length})
                   </span>
                 ) : null}
               </h3>
@@ -1384,7 +1444,7 @@ export default function FilterPopup({
               <div className="mt-3 ">
                 <div className="flex flex-wrap gap-2 ">
                   {filterOptions.interiorFeatures.map((feature) => {
-                    const isSelected = interiorFeatures.find(
+                    const isSelected = tempInteriorFeatures.find(
                       (f: any) => f._id === feature._id
                     );
 
@@ -1421,9 +1481,9 @@ export default function FilterPopup({
             >
               <h3 className="text-base font-semibold text-gray-700">
                 {t("exteriorFeatures") || "Dış Özellikler"}{" "}
-                {selectedExteriorFeatures.length > 0 ? (
+                {tempSelectedExteriorFeatures.length > 0 ? (
                   <span className="text-sm font-normal text-[#595959]">
-                    ({selectedExteriorFeatures.length})
+                    ({tempSelectedExteriorFeatures.length})
                   </span>
                 ) : null}
               </h3>
@@ -1440,7 +1500,7 @@ export default function FilterPopup({
               <div className="mt-3 ">
                 <div className="flex flex-wrap gap-2">
                   {filterOptions.outsideFeatures.map((feature) => {
-                    const isSelected = selectedExteriorFeatures.find(
+                    const isSelected = tempSelectedExteriorFeatures.find(
                       (f: any) => f._id === feature._id
                     );
 
@@ -1482,9 +1542,9 @@ export default function FilterPopup({
                   <h3 className="text-base font-semibold text-gray-700">
                     {t("accessibilityFeatures") ||
                       "Engelliye ve Yaşlıya Yönelik Özellikler"}{" "}
-                    {selectedAccessibilityFeatures.length > 0 ? (
+                    {tempSelectedAccessibilityFeatures.length > 0 ? (
                       <span className="text-sm font-normal text-[#595959]">
-                        ({selectedAccessibilityFeatures.length})
+                        ({tempSelectedAccessibilityFeatures.length})
                       </span>
                     ) : null}
                   </h3>
@@ -1502,7 +1562,7 @@ export default function FilterPopup({
                     <div className="flex flex-wrap gap-2">
                       {(filterOptions.accessibilityFeatures || []).map(
                         (feature) => {
-                          const isSelected = selectedAccessibilityFeatures.find(
+                          const isSelected = tempSelectedAccessibilityFeatures.find(
                             (f: any) => f._id === feature._id
                           );
 
@@ -1544,109 +1604,23 @@ export default function FilterPopup({
         {/* Footer Buttons - Fixed at bottom */}
         <div className="sticky bottom-0 left-0 right-0 bg-white z-10 p-6 border-t border-gray-100 rounded-b-2xl">
           <div className="grid grid-cols-2 gap-4">
-            {(minPrice !== "" ||
-              maxPrice !== "" ||
-              minArea !== "" ||
-              maxArea !== "" ||
-              roomCount !== "" ||
-              bathroomCount !== "" ||
-              interiorFeatures.length > 0 ||
-              selectedExteriorFeatures.length > 0 ||
-              selectedAccessibilityFeatures.length > 0 ||
-              selectedFaceFeatures.length > 0 ||
-              selectedLocation ||
-              selectedPropertyType ||
-              selectedCategory ||
-              selectedFeatures.length > 0 ||
-              (filters &&
-                (filters.isOnePlusOneSelected ||
-                  filters.isTwoPlusOneSelected ||
-                  filters.isThreePlusOneSelected ||
-                  filters.isNewSelected))) && (
+            {hasActiveFilters() && (
               <button
                 className="w-full h-[56px] text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-[16px] hover:bg-gray-50"
-                onClick={() => {
-                  setMinPrice("");
-                  setMaxPrice("");
-                  setMinArea("");
-                  setMaxArea("");
-                  setRoomCount("");
-                  setBathroomCount("");
-                  setInteriorFeatures([]);
-                  setSelectedExteriorFeatures([]);
-                  setSelectedAccessibilityFeatures([]);
-                  setSelectedFaceFeatures([]);
-                  setSelectedLocation(null);
-                  setSelectedPropertyType && setSelectedPropertyType(null);
-                  setSelectedCategory && setSelectedCategory(null);
-                  setSelectedFeatures([]);
-
-                  setFilters({
-                    listingType: null,
-                    state: null,
-                    propertyType: null,
-                    roomAsText: null,
-                    isOnePlusOneSelected: false,
-                    isTwoPlusOneSelected: false,
-                    isThreePlusOneSelected: false,
-                  });
-
-                  dispatch(setIsFilterApplied(false));
-                  onClose && onClose();
-                }}
+                onClick={clearAllTempFilters}
               >
                 {t("clearAll")}
               </button>
             )}
             <button
-              onClick={() => {
-                setFilters({
-                  listingType: listingType ? listingType : null,
-                  propertyType: selectedPropertyType?.name || null,
-                  roomAsText: selectedCategory?.name || null,
-                  roomCount: roomCount,
-                  bathroomCount: bathroomCount,
-                  minProjectArea: minArea,
-                  maxProjectArea: maxArea,
-                  interiorFeatureIds: interiorFeatures.map((f: any) => f._id),
-                  exteriorFeatureIds: selectedExteriorFeatures.map(
-                    (f: any) => f._id
-                  ),
-                  accessibilityFeatureIds: selectedAccessibilityFeatures.map(
-                    (f: any) => f._id
-                  ),
-                  faceFeatureIds: selectedFaceFeatures.map((f: any) => f._id),
-                });
-                dispatch(setIsFilterApplied(true));
-                onClose && onClose();
-              }}
+              onClick={applyFilters}
               disabled={hasActiveFilters() && resultsCount === 0}
               className={`w-full h-[56px] text-sm font-medium text-white rounded-[16px] cursor-pointer ${
                 hasActiveFilters() && resultsCount === 0
                   ? "bg-gray-300 cursor-not-allowed"
                   : "bg-[#5E5691] hover:bg-[#4a4574]"
               } ${
-                minPrice !== "" ||
-                maxPrice !== "" ||
-                minArea !== "" ||
-                maxArea !== "" ||
-                roomCount !== "" ||
-                bathroomCount !== "" ||
-                interiorFeatures.length > 0 ||
-                selectedExteriorFeatures.length > 0 ||
-                selectedAccessibilityFeatures.length > 0 ||
-                selectedFaceFeatures.length > 0 ||
-                selectedLocation ||
-                selectedPropertyType ||
-                selectedCategory ||
-                selectedFeatures.length > 0 ||
-                (filters &&
-                  (filters.isOnePlusOneSelected ||
-                    filters.isTwoPlusOneSelected ||
-                    filters.isThreePlusOneSelected ||
-                    filters.isNewSelected))
-                  ? "col-span-1"
-                  : "col-span-2"
+                hasActiveFilters() ? "col-span-1" : "col-span-2"
               }`}
             >
               {hasActiveFilters() && resultsCount === 0
