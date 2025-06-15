@@ -376,7 +376,7 @@ export default function FilterPopup({
     useState(true);
   const [faceFeaturesCollapsed, setFaceFeaturesCollapsed] = useState(true);
 
-  // Calculate filtered results count
+  // Calculate filtered results count - Updated to match HomePage.tsx logic
   const getFilteredResultsCount = () => {
     let filteredHotels = hotels;
 
@@ -398,109 +398,166 @@ export default function FilterPopup({
       );
     }
 
-    // Filter by property type
-    if (selectedPropertyType?.name) {
+    // Create a temporary filters object for consistent filtering
+    const tempFilters = {
+      propertyType: selectedPropertyType?.name || null,
+      roomAsText: selectedCategory?.name || null,
+      minPrice: minPrice !== "" ? minPrice : null,
+      maxPrice: maxPrice !== "" ? maxPrice : null,
+      roomCount: roomCount !== "" ? parseInt(roomCount) : null,
+      bathroomCount: bathroomCount !== "" ? parseInt(bathroomCount) : null,
+      minProjectArea: minArea !== "" ? Number(minArea) : null,
+      maxProjectArea: maxArea !== "" ? Number(maxArea) : null,
+      interiorFeatureIds: interiorFeatures.length > 0 ? interiorFeatures.map((f: any) => f._id) : null,
+      exteriorFeatureIds: selectedExteriorFeatures.length > 0 ? selectedExteriorFeatures.map((f: any) => f._id) : null,
+      accessibilityFeatureIds: selectedAccessibilityFeatures.length > 0 ? selectedAccessibilityFeatures.map((f: any) => f._id) : null,
+      faceFeatureIds: selectedFaceFeatures.length > 0 ? selectedFaceFeatures.map((f: any) => f._id) : null,
+      isNewSelected: filters?.isNewSelected || false,
+      isOnePlusOneSelected: filters?.isOnePlusOneSelected || false,
+      isTwoPlusOneSelected: filters?.isTwoPlusOneSelected || false,
+      isThreePlusOneSelected: filters?.isThreePlusOneSelected || false,
+    };
+
+    // Apply filters using HomePage logic
+    if (tempFilters.propertyType) {
       filteredHotels = filteredHotels.filter((hotel) =>
         Object.values(hotel.entranceType).some(
-          (value) => value === selectedPropertyType.name
+          (value) => value === tempFilters.propertyType
         )
       );
     }
 
-    // Filter by category (room type)
-    if (selectedCategory?.name) {
-      filteredHotels = filteredHotels.filter(
-        (hotel) => hotel.roomAsText === selectedCategory.name
+    if (tempFilters.roomAsText) {
+      filteredHotels = filteredHotels.filter((hotel) =>
+        Object.values(hotel.housingType).some(
+          (value) => value === tempFilters.roomAsText
+        )
       );
     }
 
-    // Filter by price
-    if (minPrice !== "") {
+    if (tempFilters.minPrice !== undefined && tempFilters.minPrice !== null) {
       filteredHotels = filteredHotels.filter((hotel) => {
         const priceInSelectedCurrency = hotel.price.find(
           (price) => price.currency === selectedCurrency
         );
         return priceInSelectedCurrency
-          ? priceInSelectedCurrency.amount >= Number(minPrice)
+          ? priceInSelectedCurrency.amount >= tempFilters.minPrice!
           : true;
       });
     }
 
-    if (maxPrice !== "") {
+    if (tempFilters.maxPrice !== undefined && tempFilters.maxPrice !== null) {
       filteredHotels = filteredHotels.filter((hotel) => {
         const priceInSelectedCurrency = hotel.price.find(
           (price) => price.currency === selectedCurrency
         );
         return priceInSelectedCurrency
-          ? priceInSelectedCurrency.amount <= Number(maxPrice)
+          ? priceInSelectedCurrency.amount <= tempFilters.maxPrice!
           : true;
       });
     }
 
-    // Filter by room count
-    if (roomCount !== "") {
+    if (
+      tempFilters.roomCount !== undefined &&
+      tempFilters.roomCount !== null &&
+      tempFilters.roomCount > 0
+    ) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return hotel.roomCount === parseInt(roomCount);
+        return hotel.roomCount === tempFilters.roomCount;
       });
     }
 
-    // Filter by bathroom count
-    if (bathroomCount !== "") {
+    if (
+      tempFilters.bathroomCount !== undefined &&
+      tempFilters.bathroomCount !== null &&
+      tempFilters.bathroomCount > 0
+    ) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return hotel.bathroomCount === parseInt(bathroomCount);
+        return hotel.bathroomCount === tempFilters.bathroomCount;
       });
     }
 
-    // Filter by area
-    if (minArea !== "") {
+    if (
+      tempFilters.minProjectArea !== undefined &&
+      tempFilters.minProjectArea !== null &&
+      tempFilters.minProjectArea > 0
+    ) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return hotel.projectArea >= Number(minArea);
+        return hotel.projectArea >= tempFilters.minProjectArea!;
       });
     }
 
-    if (maxArea !== "") {
+    if (
+      tempFilters.maxProjectArea !== undefined &&
+      tempFilters.maxProjectArea !== null &&
+      tempFilters.maxProjectArea > 0
+    ) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return hotel.projectArea <= Number(maxArea);
+        return hotel.projectArea <= tempFilters.maxProjectArea!;
       });
     }
 
-    // Filter by interior features
-    if (interiorFeatures.length > 0) {
+    if (tempFilters.interiorFeatureIds && tempFilters.interiorFeatureIds.length > 0) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return interiorFeatures.every((feature) =>
-          hotel.featureIds.includes(feature._id)
+        return tempFilters.interiorFeatureIds!.every((featureId) =>
+          hotel.featureIds.includes(featureId)
         );
       });
     }
 
-    // Filter by exterior features
-    if (selectedExteriorFeatures.length > 0) {
+    if (tempFilters.exteriorFeatureIds && tempFilters.exteriorFeatureIds.length > 0) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return selectedExteriorFeatures.every((feature) =>
-          hotel.featureIds.includes(feature._id)
+        return tempFilters.exteriorFeatureIds!.every((featureId) =>
+          hotel.featureIds.includes(featureId)
         );
       });
     }
 
-    // Filter by accessibility features
-    if (selectedAccessibilityFeatures.length > 0) {
+    if (
+      tempFilters.accessibilityFeatureIds &&
+      tempFilters.accessibilityFeatureIds.length > 0
+    ) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return selectedAccessibilityFeatures.every((feature) =>
-          hotel.featureIds.includes(feature._id)
+        return tempFilters.accessibilityFeatureIds!.every((featureId: string) =>
+          hotel.featureIds.includes(featureId)
         );
       });
     }
 
-    // Filter by face features
-    if (selectedFaceFeatures.length > 0) {
+    if (tempFilters.faceFeatureIds && tempFilters.faceFeatureIds.length > 0) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return selectedFaceFeatures.some(
-          (feature) => hotel.face === feature._id
+        return tempFilters.faceFeatureIds!.some(
+          (featureId: string) => hotel.face === featureId
         );
       });
     }
 
-    // Filter by selected features (quick filters)
+    if (tempFilters.isNewSelected) {
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+      filteredHotels = filteredHotels.filter((hotel) => {
+        const hotelCreatedAt = new Date(hotel.createdAt);
+        return hotelCreatedAt >= sevenDaysAgo;
+      });
+    }
+
+    if (
+      tempFilters.isOnePlusOneSelected ||
+      tempFilters.isTwoPlusOneSelected ||
+      tempFilters.isThreePlusOneSelected
+    ) {
+      const selectedRoomTypes: string[] = [];
+      if (tempFilters.isOnePlusOneSelected) selectedRoomTypes.push("1+1");
+      if (tempFilters.isTwoPlusOneSelected) selectedRoomTypes.push("2+1");
+      if (tempFilters.isThreePlusOneSelected) selectedRoomTypes.push("3+1");
+
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return selectedRoomTypes.includes(hotel.roomAsText);
+      });
+    }
+
+    // Filter by selected features (quick filters) - matching HomePage logic
     if (selectedFeatures.length > 0) {
       filteredHotels = filteredHotels.filter((hotel) =>
         selectedFeatures.every((selectedFeature) =>
@@ -516,34 +573,6 @@ export default function FilterPopup({
           })
         )
       );
-    }
-
-    // Filter by room size quick filters
-    if (filters) {
-      if (
-        filters.isOnePlusOneSelected ||
-        filters.isTwoPlusOneSelected ||
-        filters.isThreePlusOneSelected
-      ) {
-        const selectedRoomTypes: string[] = [];
-        if (filters.isOnePlusOneSelected) selectedRoomTypes.push("1+1");
-        if (filters.isTwoPlusOneSelected) selectedRoomTypes.push("2+1");
-        if (filters.isThreePlusOneSelected) selectedRoomTypes.push("3+1");
-
-        filteredHotels = filteredHotels.filter((hotel) => {
-          return selectedRoomTypes.includes(hotel.roomAsText);
-        });
-      }
-
-      if (filters.isNewSelected) {
-        const sevenDaysAgo = new Date();
-        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-        filteredHotels = filteredHotels.filter((hotel) => {
-          const hotelCreatedAt = new Date(hotel.createdAt);
-          return hotelCreatedAt >= sevenDaysAgo;
-        });
-      }
     }
 
     return filteredHotels.length;
