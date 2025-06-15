@@ -56,17 +56,14 @@ export default function ThirdCreateStep() {
   );
   const [selectedStateId, setSelectedStateId] = useState<number | null>(null);
   const [selectedCityId, setSelectedCityId] = useState<number | null>(null);
-  const [selectedNeighborhoodId, setSelectedNeighborhoodId] = useState<number | null>(null);
   const [countriesList, setCountriesList] = useState<any[]>([]);
   const [statesList, setStatesList] = useState<any[]>([]);
   const [citiesList, setCitiesList] = useState<any[]>([]);
-  const [neighborhoodsList, setNeighborhoodsList] = useState<any[]>([]);
 
   // State for pending auto-selection from Google Places
   const [pendingCountryName, setPendingCountryName] = useState<string>("");
   const [pendingStateName, setPendingStateName] = useState<string>("");
   const [pendingCityName, setPendingCityName] = useState<string>("");
-  const [pendingNeighborhoodName, setPendingNeighborhoodName] = useState<string>("");
 
   // Google Maps settings
   const containerStyle = {
@@ -109,6 +106,16 @@ export default function ThirdCreateStep() {
     [setStreet]
   );
 
+  // Handle neighborhood change
+  const handleNeighborhoodChange = useCallback(
+    (value: string) => {
+      setNeighborhood({
+        tr: value,
+        en: value,
+      });
+    },
+    [setNeighborhood]
+  );
 
   // Auto-selection functions (don't clear dependent values)
   const autoSelectCountry = useCallback(
@@ -142,20 +149,8 @@ export default function ThirdCreateStep() {
         tr: selectedCity.name,
         en: selectedCity.name,
       });
-      // Don't clear dependent selections for auto-selection
     },
     [setCity]
-  );
-
-  const autoSelectNeighborhood = useCallback(
-    (selectedNeighborhood: any) => {
-      setSelectedNeighborhoodId(selectedNeighborhood.id);
-      setNeighborhood({
-        tr: selectedNeighborhood.name,
-        en: selectedNeighborhood.name,
-      });
-    },
-    [setNeighborhood]
   );
 
   // Handle functions for user interactions (clear dependent selections)
@@ -169,12 +164,10 @@ export default function ThirdCreateStep() {
       // Clear dependent selections
       setSelectedStateId(null);
       setSelectedCityId(null);
-      setSelectedNeighborhoodId(null);
       setState({ tr: "", en: "" });
       setCity({ tr: "", en: "" });
-      setNeighborhood({ tr: "", en: "" });
     },
-    [setCountry, setState, setCity, setNeighborhood]
+    [setCountry, setState, setCity]
   );
 
   const handleStateSelect = useCallback(
@@ -186,11 +179,9 @@ export default function ThirdCreateStep() {
       });
       // Clear dependent selections
       setSelectedCityId(null);
-      setSelectedNeighborhoodId(null);
       setCity({ tr: "", en: "" });
-      setNeighborhood({ tr: "", en: "" });
     },
-    [setState, setCity, setNeighborhood]
+    [setState, setCity]
   );
 
   const handleCitySelect = useCallback(
@@ -200,22 +191,8 @@ export default function ThirdCreateStep() {
         tr: selectedCity.name,
         en: selectedCity.name,
       });
-      // Clear dependent selections
-      setSelectedNeighborhoodId(null);
-      setNeighborhood({ tr: "", en: "" });
     },
-    [setCity, setNeighborhood]
-  );
-
-  const handleNeighborhoodSelect = useCallback(
-    (selectedNeighborhood: any) => {
-      setSelectedNeighborhoodId(selectedNeighborhood.id);
-      setNeighborhood({
-        tr: selectedNeighborhood.name,
-        en: selectedNeighborhood.name,
-      });
-    },
-    [setNeighborhood]
+    [setCity]
   );
 
   // Load countries on component mount
@@ -237,14 +214,12 @@ export default function ThirdCreateStep() {
       GetState(selectedCountryId).then((result) => {
         setStatesList(result);
         setCitiesList([]); // Clear cities when country changes
-        setNeighborhoodsList([]); // Clear neighborhoods when country changes
         // Don't clear selectedStateId and selectedCityId here - it interferes with auto-selection
         // These are cleared by user interactions in handleCountrySelect when needed
       });
     } else {
       setStatesList([]);
       setCitiesList([]);
-      setNeighborhoodsList([]);
     }
   }, [selectedCountryId]);
 
@@ -262,37 +237,13 @@ export default function ThirdCreateStep() {
         } else {
           setCitiesList(result);
         }
-        setNeighborhoodsList([]); // Clear neighborhoods when state changes
         // Don't clear selectedCityId here - it interferes with auto-selection
         // This is cleared by user interactions in handleStateSelect when needed
       });
     } else {
       setCitiesList([]);
-      setNeighborhoodsList([]);
     }
   }, [selectedCountryId, selectedStateId, statesList]);
-
-  // Load neighborhoods when city changes (mock data for now since react-country-state-city doesn't support neighborhoods)
-  useEffect(() => {
-    if (selectedCountryId && selectedStateId && selectedCityId) {
-      // Since react-country-state-city doesn't provide neighborhoods, we'll create a mock neighborhood list
-      // In a real application, you would fetch this from your own API or a service that provides neighborhood data
-      const selectedCity = citiesList.find((c) => c.id === selectedCityId);
-      if (selectedCity) {
-        // Create mock neighborhoods based on the city name
-        const mockNeighborhoods = [
-          { id: 1, name: `${selectedCity.name} Merkez` },
-          { id: 2, name: `${selectedCity.name} 1. Mahalle` },
-          { id: 3, name: `${selectedCity.name} 2. Mahalle` },
-          { id: 4, name: `${selectedCity.name} 3. Mahalle` },
-          { id: 5, name: `${selectedCity.name} 4. Mahalle` },
-        ];
-        setNeighborhoodsList(mockNeighborhoods);
-      }
-    } else {
-      setNeighborhoodsList([]);
-    }
-  }, [selectedCountryId, selectedStateId, selectedCityId, citiesList]);
 
   // Auto-select country when countries list is loaded and we have a pending country
   useEffect(() => {
@@ -334,19 +285,6 @@ export default function ThirdCreateStep() {
       }
     }
   }, [citiesList, pendingCityName, autoSelectCity]);
-
-  // Auto-select neighborhood when neighborhoods list is loaded and we have a pending neighborhood
-  useEffect(() => {
-    if (neighborhoodsList.length > 0 && pendingNeighborhoodName) {
-      const matchingNeighborhood = neighborhoodsList.find(
-        (n) => n.name.toLowerCase() === pendingNeighborhoodName.toLowerCase()
-      );
-      if (matchingNeighborhood) {
-        autoSelectNeighborhood(matchingNeighborhood);
-        setPendingNeighborhoodName("");
-      }
-    }
-  }, [neighborhoodsList, pendingNeighborhoodName, autoSelectNeighborhood]);
 
   // Auto-select existing country on mount/update
   useEffect(() => {
@@ -401,25 +339,6 @@ export default function ThirdCreateStep() {
       }
     }
   }, [citiesList, city, selectedCityId, selectedStateId, autoSelectCity]);
-
-  // Auto-select existing neighborhood on mount/update
-  useEffect(() => {
-    if (
-      neighborhoodsList.length > 0 &&
-      neighborhood?.tr &&
-      !selectedNeighborhoodId &&
-      selectedCityId
-    ) {
-      const matchingNeighborhood = neighborhoodsList.find(
-        (n) =>
-          n.name.toLowerCase() === neighborhood.tr.toLowerCase() ||
-          n.name.toLowerCase() === neighborhood.en.toLowerCase()
-      );
-      if (matchingNeighborhood) {
-        autoSelectNeighborhood(matchingNeighborhood);
-      }
-    }
-  }, [neighborhoodsList, neighborhood, selectedNeighborhoodId, selectedCityId, autoSelectNeighborhood]);
 
   // Default to Turkey if no country is selected
   useEffect(() => {
@@ -635,7 +554,6 @@ export default function ThirdCreateStep() {
         component.types.includes("sublocality_level_1")
     );
     if (neighborhoodComponent) {
-      setPendingNeighborhoodName(neighborhoodComponent.long_name);
       setNeighborhood({
         tr: neighborhoodComponent.long_name,
         en: neighborhoodComponent.long_name,
@@ -831,12 +749,6 @@ export default function ThirdCreateStep() {
     return citiesList.find((c) => c.id === selectedCityId) || null;
   };
 
-  // Get current selected neighborhood object
-  const getSelectedNeighborhood = () => {
-    if (!selectedNeighborhoodId) return null;
-    return neighborhoodsList.find((n) => n.id === selectedNeighborhoodId) || null;
-  };
-
   return (
     <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start p-4">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">
@@ -959,17 +871,13 @@ export default function ThirdCreateStep() {
                 >
                   {locale === "tr" ? "Mahalle" : "Neighborhood"}
                 </label>
-                <GeneralSelect
-                  selectedItem={getSelectedNeighborhood()}
-                  onSelect={handleNeighborhoodSelect}
-                  options={neighborhoodsList}
-                  defaultText={
-                    locale === "en" ? "Select Neighborhood" : "Mahalle Seçin"
-                  }
-                  extraClassName="w-full h-12 border border-gray-300"
-                  popoverMaxWidth="200"
-                  maxHeight="200"
-                  popoverExtraClassName="w-auto max-w-[280px]"
+                <input
+                  type="text"
+                  id="neighborhood"
+                  value={neighborhood?.tr || ""}
+                  onChange={(e) => handleNeighborhoodChange(e.target.value)}
+                  className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                  placeholder={locale === "en" ? "Neighborhood" : "Mahalle"}
                 />
               </div>
 
