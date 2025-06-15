@@ -52,6 +52,7 @@ export default function SimpleHeader({
             alt="oBudur Logo"
             width={144}
             height={32}
+            className="w-[28px] h-[32px] md:w-[144px] md:h-[32px]"
             priority
           />
         </div>
