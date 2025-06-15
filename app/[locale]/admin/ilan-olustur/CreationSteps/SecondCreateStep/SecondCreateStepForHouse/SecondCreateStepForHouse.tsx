@@ -8,6 +8,7 @@ import {
 import { useListingForm } from "../../CreationSteps";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import GoBackButton from "../../../GoBackButton/GoBackButton";
+import { formatInputPrice, parseInputPrice } from "@/app/utils/priceFormatter";
 
 // Custom Select component that matches the design
 interface SelectOption {
@@ -150,18 +151,10 @@ export default function SecondCreateStepForHouse() {
     setCurrentStep,
   } = useListingForm();
 
-  // Handle amount change for a specific currency
-  const handlePriceChange = (currency: string, amount: string) => {
-    // Only allow numbers and decimal point
-    const numericValue = amount.replace(/[^0-9.]/g, "");
-    // Prevent multiple decimal points
-    const parts = numericValue.split(".");
-    const validValue =
-      parts.length > 2
-        ? parts[0] + "." + parts.slice(1).join("")
-        : numericValue;
-
-    const numericAmount = validValue === "" ? 0 : parseFloat(validValue);
+  // Handle amount change for a specific currency with formatting
+  const handlePriceChange = (currency: string, inputValue: string) => {
+    // Parse the input value to get numeric amount
+    const numericAmount = parseInputPrice(inputValue, currency);
 
     setPrice((prevPrice) => {
       // Check if this currency already exists
@@ -187,25 +180,18 @@ export default function SecondCreateStepForHouse() {
     });
   };
 
-  // Get price for a specific currency
-  const getPriceForCurrency = (currency: string): number => {
-    if (!price) return 0;
+  // Get formatted price for display in input field
+  const getPriceForCurrency = (currency: string): string => {
+    if (!price) return "";
     const currencyPrice = price.find((p) => p.currency === currency);
-    return currencyPrice ? currencyPrice.amount : 0;
+    if (!currencyPrice || currencyPrice.amount === 0) return "";
+    return formatInputPrice(currencyPrice.amount, currency);
   };
 
-  // Handle dues change for a specific currency
-  const handleDuesChange = (currency: string, amount: string) => {
-    // Only allow numbers and decimal point
-    const numericValue = amount.replace(/[^0-9.]/g, "");
-    // Prevent multiple decimal points
-    const parts = numericValue.split(".");
-    const validValue =
-      parts.length > 2
-        ? parts[0] + "." + parts.slice(1).join("")
-        : numericValue;
-
-    const numericAmount = validValue === "" ? 0 : parseFloat(validValue);
+  // Handle dues change for a specific currency with formatting
+  const handleDuesChange = (currency: string, inputValue: string) => {
+    // Parse the input value to get numeric amount
+    const numericAmount = parseInputPrice(inputValue, currency);
 
     setDues((prevDues) => {
       // Check if this currency already exists
@@ -231,11 +217,12 @@ export default function SecondCreateStepForHouse() {
     });
   };
 
-  // Get dues for a specific currency
-  const getDuesForCurrency = (currency: string): number => {
-    if (!dues) return 0;
+  // Get formatted dues for display in input field
+  const getDuesForCurrency = (currency: string): string => {
+    if (!dues) return "";
     const currencyDues = dues.find((d) => d.currency === currency);
-    return currencyDues ? currencyDues.amount : 0;
+    if (!currencyDues || currencyDues.amount === 0) return "";
+    return formatInputPrice(currencyDues.amount, currency);
   };
 
   // Kitchen type options
