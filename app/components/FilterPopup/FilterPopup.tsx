@@ -408,10 +408,22 @@ export default function FilterPopup({
       bathroomCount: bathroomCount !== "" ? parseInt(bathroomCount) : null,
       minProjectArea: minArea !== "" ? Number(minArea) : null,
       maxProjectArea: maxArea !== "" ? Number(maxArea) : null,
-      interiorFeatureIds: interiorFeatures.length > 0 ? interiorFeatures.map((f: any) => f._id) : null,
-      exteriorFeatureIds: selectedExteriorFeatures.length > 0 ? selectedExteriorFeatures.map((f: any) => f._id) : null,
-      accessibilityFeatureIds: selectedAccessibilityFeatures.length > 0 ? selectedAccessibilityFeatures.map((f: any) => f._id) : null,
-      faceFeatureIds: selectedFaceFeatures.length > 0 ? selectedFaceFeatures.map((f: any) => f._id) : null,
+      interiorFeatureIds:
+        interiorFeatures.length > 0
+          ? interiorFeatures.map((f: any) => f._id)
+          : null,
+      exteriorFeatureIds:
+        selectedExteriorFeatures.length > 0
+          ? selectedExteriorFeatures.map((f: any) => f._id)
+          : null,
+      accessibilityFeatureIds:
+        selectedAccessibilityFeatures.length > 0
+          ? selectedAccessibilityFeatures.map((f: any) => f._id)
+          : null,
+      faceFeatureIds:
+        selectedFaceFeatures.length > 0
+          ? selectedFaceFeatures.map((f: any) => f._id)
+          : null,
       isNewSelected: filters?.isNewSelected || false,
       isOnePlusOneSelected: filters?.isOnePlusOneSelected || false,
       isTwoPlusOneSelected: filters?.isTwoPlusOneSelected || false,
@@ -497,7 +509,10 @@ export default function FilterPopup({
       });
     }
 
-    if (tempFilters.interiorFeatureIds && tempFilters.interiorFeatureIds.length > 0) {
+    if (
+      tempFilters.interiorFeatureIds &&
+      tempFilters.interiorFeatureIds.length > 0
+    ) {
       filteredHotels = filteredHotels.filter((hotel) => {
         return tempFilters.interiorFeatureIds!.every((featureId) =>
           hotel.featureIds.includes(featureId)
@@ -505,7 +520,10 @@ export default function FilterPopup({
       });
     }
 
-    if (tempFilters.exteriorFeatureIds && tempFilters.exteriorFeatureIds.length > 0) {
+    if (
+      tempFilters.exteriorFeatureIds &&
+      tempFilters.exteriorFeatureIds.length > 0
+    ) {
       filteredHotels = filteredHotels.filter((hotel) => {
         return tempFilters.exteriorFeatureIds!.every((featureId) =>
           hotel.featureIds.includes(featureId)
@@ -644,22 +662,22 @@ export default function FilterPopup({
 
         {/* Scrollable content area */}
         <div className="flex-1 overflow-y-auto p-6 pt-3">
-          <div className={`flex rounded-md  w-full `}>
+          <div className={`flex rounded-md  w-full bg-[#f0f0f0]`}>
             <button
-              className={`px-4 py-3 text-sm font-medium transition-colors duration-200 cursor-pointer rounded-2xl w-1/2 ${
+              className={`px-4 py-3 text-sm font-medium transition-colors duration-200 cursor-pointer rounded-[14px] w-1/2 ${
                 listingType === "For Sale"
                   ? "bg-[#362C75] text-white"
-                  : "bg-gray-50 text-gray-700"
+                  : " text-gray-700"
               }`}
               onClick={() => setListingType("For Sale")}
             >
               {listingTypeTranslations("forSale")}
             </button>
             <button
-              className={`px-4 py-3 text-sm font-medium transition-colors duration-200 cursor-pointer rounded-2xl w-1/2 ${
+              className={`px-4 py-3 text-sm font-medium transition-colors duration-200 cursor-pointer rounded-[14px] w-1/2 ${
                 listingType === "For Rent"
                   ? "bg-[#362C75] text-white"
-                  : "bg-gray-50 text-gray-700"
+                  : " text-gray-700"
               }`}
               onClick={() => setListingType("For Rent")}
             >
