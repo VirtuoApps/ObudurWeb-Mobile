@@ -202,7 +202,7 @@ export default async function ResidentPage({
               </div>
             </div>
 
-            <div className="md:max-w-[362px] w-full pl-6 lg:pl-0 mt-8 md:mt-0 sticky top-[104px]">
+            <div className="md:max-w-[362px] w-full pl-6 lg:pl-0 mt-8 md:mt-0 sticky top-[104px] z-20">
               <ContactBox hotelData={hotelData} />
             </div>
           </div>
