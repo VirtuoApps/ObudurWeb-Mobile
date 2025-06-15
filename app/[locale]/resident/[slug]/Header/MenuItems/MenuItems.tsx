@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { useHotelData } from "../../hotelContext";
 
@@ -43,6 +43,9 @@ export default function MenuItems() {
     });
   }
 
+  // Refs to each menu item for horizontal scrolling
+  const menuRefs = useRef<(HTMLDivElement | null)[]>([]);
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 100; // Add offset for header
@@ -76,6 +79,21 @@ export default function MenuItems() {
     }
   };
 
+  // Automatically scroll the horizontal menu to keep the active item in view
+  useEffect(() => {
+    const index = menuItems.findIndex(
+      (item) => item.sectionId === activeSection
+    );
+    const target = menuRefs.current[index];
+    if (target) {
+      target.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
+    }
+  }, [activeSection]);
+
   return (
     <>
       <style jsx>{`
@@ -88,9 +106,12 @@ export default function MenuItems() {
         }
       `}</style>
       <div className="flex flex-row w-full items-center gap-4 md:gap-10 mb-5 md:mb-0 overflow-x-auto flex-nowrap px-4 md:px-0 hide-scrollbar pt-4 sm:pt-0">
-        {menuItems.map((item) => (
+        {menuItems.map((item, index) => (
           <div
             key={item.key}
+            ref={(el) => {
+              menuRefs.current[index] = el;
+            }}
             className={`text-sm font-medium cursor-pointer transition-all duration-200 overflow-hidden h-5 relative group whitespace-nowrap flex-shrink-0 ${
               activeSection === item.sectionId
                 ? "text-[#362C75]"
