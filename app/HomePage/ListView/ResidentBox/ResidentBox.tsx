@@ -10,7 +10,6 @@ import {
 import { MdFavoriteBorder } from "react-icons/md";
 import { MdOutlineFavorite } from "react-icons/md";
 import LikeIcon from "@/app/svgIcons/likeIcon";
-import BedIcon from "@/app/svgIcons/BedIcon";
 import FloorCountIcon from "@/app/svgIcons/FloorCountIcon";
 import AreaIcon from "@/app/svgIcons/AreaIcon";
 import { useTranslations } from "next-intl";
@@ -222,7 +221,21 @@ export default function ResidentBox({
           {entranceType.tr === "Konut" && (
             <div className="flex justify-between items-center mb-4 text-sm text-[#595959] font-semibold">
               <div className="flex items-center space-x-1">
-                <BedIcon />
+                <svg
+                  width={25}
+                  height={24}
+                  viewBox="0 0 25 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M22.2 11.0909V2H2.19995V11.0909M22.2 11.0909H17.6545M22.2 11.0909V22H11.2909M11.2909 22H2.19995V11.0909M11.2909 22V20.1818M11.2909 11.0909H13.109M11.2909 11.0909H8.56359M11.2909 11.0909V15.6364M2.19995 11.0909H4.01813"
+                    stroke="#595959"
+                    strokeWidth="1.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
                 <span>{roomAsText}</span>
               </div>
 
