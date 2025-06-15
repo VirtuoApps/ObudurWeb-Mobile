@@ -207,13 +207,9 @@ export default async function ResidentPage({
             </div>
           </div>
         </div>
-        <Footer
-          customMaxWidth="max-w-[1472px]"
-          customPadding="md:px-10 px-6"
-          fullWidthTopBorder={true}
-          fullWidthBottomBorder={true}
-          fullWidthStripe={true}
-        />
+        <div className="hidden md:block">
+          <Footer />
+        </div>
       </div>
     </ClientWrapper>
   );

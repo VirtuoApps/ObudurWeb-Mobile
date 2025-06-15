@@ -68,7 +68,7 @@ export default function PlansAndDocumentation({
   return (
     <section
       id="plans-section"
-      className="max-w-5xl mx-auto my-[24px] md:my-[72px]"
+      className="max-w-5xl mx-auto my-[24px] md:my-[72px] mb-24 md:mb-[72px]"
     >
       <h2 className="text-[#31286A] font-semibold tracking-tight text-3xl md:text-2xl">
         {t("floorPlans")}
