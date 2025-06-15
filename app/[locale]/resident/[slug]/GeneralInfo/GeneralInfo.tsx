@@ -360,7 +360,7 @@ export default function GeneralInfo() {
 
       {/* Features Icons Row - Scrollable on mobile */}
       {iconsToDisplay.length >= 6 && (
-        <div className="flex overflow-x-auto py-3 sm:py-4 justify-between no-scrollbar">
+        <div className="flex overflow-x-auto mt-6 justify-between no-scrollbar">
           <div
             className={`flex ${
               entranceType.tr === "Arsa" ? "gap-12" : "justify-between gap-4"
