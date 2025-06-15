@@ -235,7 +235,7 @@ export default function OfficesSection() {
                             </a>
                           </div>
                           <div className="flex flex-row justify-between gap-2">
-                            <span className="text-[#262626] text-sm max-w-[350px] break-words">
+                            <span className="text-[#262626] text-sm max-w-[200px] sm:max-w-[350px] break-words">
                               {contact.address}
                             </span>
                             <div
@@ -363,7 +363,7 @@ export default function OfficesSection() {
                             </a>
                           </div>
                           <div className="flex flex-row justify-between gap-2">
-                            <span className="text-[#262626] text-sm max-w-[350px] break-words">
+                            <span className="text-[#262626] text-sm max-w-[200px] sm:max-w-[350px] break-words">
                               {contact.address}
                             </span>
                             <div

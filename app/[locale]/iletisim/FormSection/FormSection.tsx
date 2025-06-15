@@ -94,10 +94,10 @@ export default function FormSection() {
     <>
       <div className="bg-white p-8 md:p-[80px] rounded-2xl flex md:flex-row flex-col">
         <div className="w-full md:w-1/2">
-          <p className="text-[#262626] text-4xl font-extrabold mb-4 ">
+          <p className="text-[#262626] text-2xl sm:text-4xl font-extrabold mb-4 ">
             İletişim Formu
           </p>
-          <p className="text-[#595959] text-base mb-6 font-normal max-w-[500px]">
+          <p className="text-[#595959] text-sm sm:text-base mb-6 font-normal max-w-[500px]">
             Purus metus integer luctus sed. Ultricies eget ut egestas curabitur
             nullam posuere vitae. Tristique adipiscing sit sollicitudin eget
             pellentesque eget massa amet. Sed suspendisse curabitur et eu quis
