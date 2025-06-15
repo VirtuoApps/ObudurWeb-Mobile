@@ -112,7 +112,8 @@ export default function GoogleMapView({
 
     // If there are filters active (hotels count is different from total), show random hotel
     if (hotels.length !== totalHotelsCount && validHotels.length > 0) {
-      const randomHotel = validHotels[Math.floor(Math.random() * validHotels.length)];
+      const randomHotel =
+        validHotels[Math.floor(Math.random() * validHotels.length)];
       return {
         lat: randomHotel.location.coordinates[1],
         lng: randomHotel.location.coordinates[0],
@@ -135,7 +136,13 @@ export default function GoogleMapView({
       lat: sum.lat / validHotels.length,
       lng: sum.lng / validHotels.length,
     };
-  }, [hotels, selectedLocation, selectedHotel, initialCenter, totalHotelsCount]);
+  }, [
+    hotels,
+    selectedLocation,
+    selectedHotel,
+    initialCenter,
+    totalHotelsCount,
+  ]);
 
   const onLoad = useCallback(function callback(map: google.maps.Map) {
     setMapInstance(map);
@@ -146,7 +153,8 @@ export default function GoogleMapView({
   }, []);
 
   useEffect(() => {
-    if (mapInstance) {
+    if (mapInstance && !selectedHotel) {
+      // Only run this effect when no hotel is selected
       // If selectedLocation is provided, center on it with appropriate zoom
       if (
         selectedLocation &&
@@ -193,7 +201,14 @@ export default function GoogleMapView({
         mapInstance.setZoom(11); // Default overview zoom for all hotels
       }
     }
-  }, [mapInstance, hotels, center, totalHotelsCount, selectedLocation]);
+  }, [
+    mapInstance,
+    hotels,
+    center,
+    totalHotelsCount,
+    selectedLocation,
+    selectedHotel,
+  ]);
 
   useEffect(() => {
     if (
@@ -202,23 +217,14 @@ export default function GoogleMapView({
       selectedHotel.location &&
       !hideSelectedHotel
     ) {
-      // When a hotel is selected, pan to it with an offset to avoid top bar overlap
+      // When a hotel is selected, only pan to it without any zoom changes
       const position = {
         lat: selectedHotel.location.coordinates[1] + 0.004, // Balanced offset to avoid top bar but stay close to marker
         lng: selectedHotel.location.coordinates[0],
       };
 
-      // Use smooth pan animation without zoom changes
-      // This provides consistent, gentle movement for all hotel selections
+      // Use smooth pan animation without any zoom changes
       mapInstance.panTo(position);
-
-      // Only set zoom once if it's too low, without animation
-      // const currentZoom = mapInstance.getZoom();
-      // if (currentZoom !== undefined && currentZoom < 14) {
-      //   setTimeout(() => {
-      //     mapInstance.setZoom(15);
-      //   }, 300); // Delay zoom until pan is complete
-      // }
     }
   }, [selectedHotel, mapInstance, hideSelectedHotel]);
 
@@ -354,7 +360,7 @@ export default function GoogleMapView({
           }}
         >
           <div
-            className="max-w-[356px] p-0 m-0"
+            className="w-[356px] h-[356px] p-0 m-0"
             style={{
               background: "white",
               borderRadius: "12px",
