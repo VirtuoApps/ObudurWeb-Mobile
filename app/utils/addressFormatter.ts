@@ -19,14 +19,18 @@ export const formatAddress = (
   language: string = "en"
 ) => {
   const parts = [];
+  console.log(hotel);
 
   // Helper function to get localized text
   const getLocalizedText = (textObj: any) => {
     return textObj && textObj[language] ? textObj[language] : textObj?.en || "";
   };
 
-  if (hotel.city) parts.push(getLocalizedText(hotel.city));
+  // il
   if (hotel.state) parts.push(getLocalizedText(hotel.state));
+  // ilce
+  if (hotel.city) parts.push(getLocalizedText(hotel.city));
+  // sokak
   if (hotel.street) parts.push(getLocalizedText(hotel.street));
 
   return parts.filter(Boolean).join(", ");
