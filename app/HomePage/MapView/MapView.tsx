@@ -219,7 +219,7 @@ export default function GoogleMapView({
     ) {
       // When a hotel is selected, only pan to it without any zoom changes
       const position = {
-        lat: selectedHotel.location.coordinates[1] + 0.004, // Balanced offset to avoid top bar but stay close to marker
+        lat: selectedHotel.location.coordinates[1] + 0.008, // Balanced offset to avoid top bar but stay close to marker
         lng: selectedHotel.location.coordinates[0],
       };
 
