@@ -401,7 +401,7 @@ export default function FilterPopup({
     // Filter by property type
     if (selectedPropertyType?.name) {
       filteredHotels = filteredHotels.filter((hotel) =>
-        Object.values(hotel.housingType).some(
+        Object.values(hotel.entranceType).some(
           (value) => value === selectedPropertyType.name
         )
       );
