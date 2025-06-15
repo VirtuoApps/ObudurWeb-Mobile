@@ -311,12 +311,18 @@ export default function GeneralInfo() {
   // Format price with currency
   const mainPrice = price[0]?.amount || 0;
   const currency = price[0]?.currency || "USD";
-  const formattedPrice = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currency,
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(mainPrice);
+  
+  let formattedPrice = "";
+  if (currency === "TRY") {
+    formattedPrice = `${mainPrice.toLocaleString("tr-TR")} ₺`;
+  } else {
+    formattedPrice = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: currency,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(mainPrice);
+  }
 
   return (
     <div className="max-w-5xl mx-auto font-sans">
@@ -500,10 +506,7 @@ export default function GeneralInfo() {
               </svg>
 
               <span>
-                {(price[0]?.amount / projectArea)
-                  .toFixed(2)
-                  .split(".")
-                  .join(",")}{" "}
+                {Math.round(price[0]?.amount / projectArea).toLocaleString("tr-TR")}{" "}
                 ₺/m²
               </span>
             </div>
@@ -586,10 +589,7 @@ export default function GeneralInfo() {
               </svg>
 
               <span>
-                {(price[0]?.amount / projectArea)
-                  .toFixed(2)
-                  .split(".")
-                  .join(",")}{" "}
+                {Math.round(price[0]?.amount / projectArea).toLocaleString("tr-TR")}{" "}
                 ₺/m²
               </span>
             </div>

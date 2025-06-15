@@ -307,7 +307,7 @@ export default function ResidentBox({
                 </svg>
 
                 <span>
-                  {+(priceAsNumber / areaAsNumber).toFixed(0).toLocaleString()}{" "}
+                  {Math.round(priceAsNumber / areaAsNumber).toLocaleString("tr-TR")}{" "}
                   ₺/m²
                 </span>
               </div>
