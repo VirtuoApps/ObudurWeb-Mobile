@@ -306,6 +306,22 @@ export default function SecondCreateStep() {
     return options;
   };
 
+  const generateRoomCountOptions = (): SelectOption[] => {
+    return [
+      { value: 0, label: "Stüdyo" },
+      { value: 1, label: "1+1" },
+      { value: 2, label: "2+1" },
+      { value: 3, label: "3+1" },
+      { value: 4, label: "4+1" },
+      { value: 5, label: "5+1" },
+      { value: 6, label: "6+1" },
+      { value: 7, label: "7+1" },
+      { value: 8, label: "8+1" },
+      { value: 9, label: "9+1" },
+      { value: 10, label: "10 Üzeri" },
+    ];
+  };
+
   // Validate all required fields
   const validateFields = () => {
     const newErrors: string[] = [];
@@ -576,7 +592,7 @@ export default function SecondCreateStep() {
                   Oda Sayısı
                 </label>
                 <CustomSelect
-                  options={generateNumberOptions(0, 10)}
+                  options={generateRoomCountOptions()}
                   value={roomCount || 0}
                   onChange={(value) => setRoomCount(parseInt(value))}
                   placeholder="Seçiniz"
