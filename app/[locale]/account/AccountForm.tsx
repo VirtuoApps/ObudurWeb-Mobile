@@ -338,27 +338,6 @@ export default function AccountForm({ user }: AccountFormProps) {
             Profil Detayları
           </h1>
         </div>
-        <div className="flex gap-3 mt-4 lg:mt-0">
-          <button
-            onClick={handleDeleteAccount}
-            className="h-[56px] px-4 rounded-2xl bg-white  text-sm lg:text-base font-medium hover:border-gray-400 transition-colors cursor-pointer"
-            style={{ color: "#262626" }}
-          >
-            Hesabı Sil
-          </button>
-          <button
-            onClick={handleLogout}
-            className="px-4 rounded-2xl bg-white   gap-2 text-sm lg:text-base font-medium  transition-colors h-[56px] w-[148px] flex items-center justify-center cursor-pointer"
-            style={{ color: "#F24853" }}
-          >
-            <img
-              src="/logout-icon.png"
-              alt="logout-icon"
-              className="w-[18px]"
-            />
-            Çıkış Yap
-          </button>
-        </div>
       </header>
 
       {/* Success/Error Messages */}
@@ -679,6 +658,31 @@ export default function AccountForm({ user }: AccountFormProps) {
                   ? "Güncelleniyor..."
                   : "Parolamı Güncelle"}
               </button>
+            </div>
+
+            {/* Account Actions */}
+            <div className="pt-6 border-t border-gray-200 mt-6">
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={handleDeleteAccount}
+                  className="h-[56px] px-4 rounded-2xl bg-white border border-gray-300 text-sm lg:text-base font-medium hover:border-gray-400 transition-colors cursor-pointer"
+                  style={{ color: "#262626" }}
+                >
+                  Hesabı Sil
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="px-4 rounded-2xl bg-white border border-gray-300 gap-2 text-sm lg:text-base font-medium transition-colors h-[56px] flex items-center justify-center cursor-pointer"
+                  style={{ color: "#F24853" }}
+                >
+                  <img
+                    src="/logout-icon.png"
+                    alt="logout-icon"
+                    className="w-[18px]"
+                  />
+                  Çıkış Yap
+                </button>
+              </div>
             </div>
           </form>
         </div>
