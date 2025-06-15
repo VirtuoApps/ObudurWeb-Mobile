@@ -183,7 +183,7 @@ export default function SaveFilterPopup({
         backgroundColor: "rgba(0, 0, 0, 0.5)",
       }}
     >
-      <div className="bg-white rounded-3xl w-[416px] p-10 relative">
+      <div className="bg-white rounded-3xl w-[416px] py-6 px-4 relative">
         {isSuccess ? (
           // Success view
           <>
@@ -226,38 +226,39 @@ export default function SaveFilterPopup({
           // Form view
           <>
             {/* Header */}
-            <div className="flex justify-between items-start mb-10">
-              <h2 className="text-2xl font-bold text-[#262626]">
-                Aramayı Kaydet
-              </h2>
-              <button
-                onClick={handleClosePopup}
-                className="w-6 h-6 flex items-center justify-center cursor-pointer "
-              >
-                <img
-                  src="/popup-close-icon.png"
-                  alt="close"
-                  className="w-6 h-6"
-                />
-              </button>
-            </div>
+            <div className="px-4">
+              <div className="flex justify-between items-start mb-10">
+                <h2 className="text-2xl font-bold text-[#262626]">
+                  Aramayı Kaydet
+                </h2>
+                <button
+                  onClick={handleClosePopup}
+                  className="w-6 h-6 flex items-center justify-center cursor-pointer "
+                >
+                  <img
+                    src="/popup-close-icon.png"
+                    alt="close"
+                    className="w-6 h-6"
+                  />
+                </button>
+              </div>
 
-            {/* Search Name Section */}
-            <div className="mb-10">
-              <label className="block text-lg font-bold text-[#262626] mb-1">
-                Arama Adı
-              </label>
-              <input
-                type="text"
-                value={searchName}
-                onChange={(e) => setSearchName(e.target.value)}
-                placeholder="Yeni aramam"
-                className="w-full px-6 py-4 bg-[#FCFCFC] border border-[#D9D9D9] rounded-2xl 
+              {/* Search Name Section */}
+              <div className="mb-10">
+                <label className="block text-lg font-bold text-[#262626] mb-1">
+                  Arama Adı
+                </label>
+                <input
+                  type="text"
+                  value={searchName}
+                  onChange={(e) => setSearchName(e.target.value)}
+                  placeholder="Yeni aramam"
+                  className="w-full px-6 py-4 bg-[#FCFCFC] border border-[#D9D9D9] rounded-2xl 
                          text-[#8C8C8C] placeholder-[#8C8C8C] focus:outline-none focus:border-[#262626]
                          focus:text-[#262626] transition-colors"
-              />
+                />
+              </div>
             </div>
-
             {/* Notifications Section */}
             {/* <div className="mb-12">
               <h3 className="text-lg font-bold text-[#262626]">Bildirimler</h3>
@@ -328,7 +329,7 @@ export default function SaveFilterPopup({
               <button
                 onClick={handleClosePopup}
                 disabled={isLoading}
-                className="flex-1 py-4 px-6 border-2 border-[#BFBFBF] rounded-2xl 
+                className="flex-1 py-4 px-6 border-2 border-[#BFBFBF] rounded-2xl  h-[54px]
                          text-[#262626] font-medium hover:bg-gray-50 transition-colors cursor-pointer
                          disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -337,7 +338,7 @@ export default function SaveFilterPopup({
               <button
                 onClick={handleSave}
                 disabled={!searchName || isLoading}
-                className={`flex-1 py-4 px-6 rounded-2xl font-medium transition-colors cursor-pointer ${
+                className={`flex-1 py-4 px-6 rounded-2xl font-medium transition-colors cursor-pointer h-[54px] ${
                   searchName && !isLoading
                     ? "bg-[#5E5691] text-[#FCFCFC] hover:bg-[#5E5691]"
                     : "bg-[#F0F0F0] text-[#8C8C8C] cursor-not-allowed"
