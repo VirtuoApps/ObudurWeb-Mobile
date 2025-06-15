@@ -191,7 +191,7 @@ export default function MobileSearchBox({
         }}
       >
         <p
-          className="text-sm text-[#5E5691] font-bold"
+          className="text-sm text-[#5E5691] font-bold shrink-0"
           onClick={(e) => {
             e.stopPropagation();
             setIsListingTypePopupOpen(true);
@@ -200,7 +200,7 @@ export default function MobileSearchBox({
           {listingType === "For Sale" ? "Satılık" : "Kiralık"}
         </p>
 
-        <div className="flex-1 bg-transparent outline-none text-[#8C8C8C]  text-sm pl-4 pr-3">
+        <div className="flex-1 bg-transparent outline-none text-[#8C8C8C] text-sm pl-4 pr-3 min-w-0">
           <p className="truncate">Konum, Kategori, Fiyat...</p>
         </div>
 
@@ -228,7 +228,7 @@ export default function MobileSearchBox({
         <img
           src="/header-search-icon.png"
           alt="search"
-          className="w-[14px] h-[14px] mr-4"
+          className="w-[14px] h-[14px] mr-4 shrink-0"
         />
       </div>
 
