@@ -33,6 +33,7 @@ import { TbSquarePlus } from "react-icons/tb";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import axiosInstance from "@/axios";
 import { setIsFilterApplied } from "@/app/store/favoritesSlice";
+import { useScrollDirection } from "../../hooks/useScrollDirection";
 
 const iconClassName = "text-xl";
 const iconColor = "rgba(0,0,0,0.6)";
@@ -160,6 +161,7 @@ export default function FilterList({
   const [selectedSortOption, setSelectedSortOption] = useState<
     "ascending" | "descending" | "newest" | "oldest" | null
   >(sortOption);
+  const { scrollDirection, isScrolled } = useScrollDirection();
 
   const handleFilterClick = (featureItem: Feature) => {
     const isCurrentlySelected = selectedFeatures.some((sf) => sf._id === featureItem._id);
@@ -508,7 +510,7 @@ export default function FilterList({
         <div
           className={`bg-white flex flex-row transition-all duration-350 ease-in-out ${
             currentView === "map"
-              ? "fixed lg:top-28 top-[71px] left-0 right-0 w-full lg:w-[924px] lg:shadow-lg"
+              ? `fixed lg:top-28 ${isScrolled && isMobile ? 'top-[72px]' : 'top-[71px]'} left-0 right-0 w-full lg:w-[924px] lg:shadow-lg ${scrollDirection === 'down' && isScrolled && isMobile ? 'transform -translate-y-full opacity-0' : 'transform translate-y-0 opacity-100'}`
               : "mt-0 mb-7 relative w-full border-b border-[#F0F0F0]"
           } z-20  mx-auto  lg:rounded-2xl lg:border-none border-y border-[#F0F0F0] `}
         >
@@ -827,7 +829,7 @@ export default function FilterList({
       <div
         className={`bg-white flex flex-row transition-all duration-350 ease-in-out ${
           currentView === "map"
-            ? "fixed lg:top-28 top-[71px] left-0 right-0 w-full lg:w-[924px] lg:shadow-lg"
+            ? `fixed lg:top-28 ${isScrolled ? 'top-[72px]' : 'top-[71px]'} left-0 right-0 w-full lg:w-[924px] lg:shadow-lg ${scrollDirection === 'down' && isScrolled ? 'transform -translate-y-full opacity-0' : 'transform translate-y-0 opacity-100'}`
             : "mt-0 mb-7 relative w-full border-b border-[#F0F0F0]"
         } z-20  mx-auto  lg:rounded-2xl lg:border-none border-b border-[#F0F0F0] `}
       >

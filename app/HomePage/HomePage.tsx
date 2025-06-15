@@ -22,6 +22,8 @@ import { currencyOptions } from "@/app/components/LanguageSwitcher";
 import dynamic from "next/dynamic";
 import { filterHotelsByProximity } from "@/app/utils/geoUtils";
 import { useTranslations } from "next-intl";
+import { useScrollDirection } from "../hooks/useScrollDirection";
+import { useSelector } from "react-redux";
 
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
@@ -63,6 +65,8 @@ export default function HomePage({
   const router = useRouter();
   const pathname = usePathname();
   const [currentView, setCurrentView] = useState<"map" | "list">("map");
+  const { isScrolled } = useScrollDirection();
+  const isMobile = useSelector((state: any) => state.favorites.isMobile);
   const [filters, setFilters] = useState<FilterType | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
   const [sortOption, setSortOption] = useState<
@@ -603,7 +607,7 @@ export default function HomePage({
         selectedFaceFeatures={selectedFaceFeatures}
         resultCount={filteredHotels.length}
       />
-      <div className="bg-white ">
+      <div className={`bg-white ${isScrolled && isMobile ? 'pt-[72px]' : ''} transition-all duration-300`}>
         <Header
           setFilters={setFilters}
           filterOptions={filterOptions}

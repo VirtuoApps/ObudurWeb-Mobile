@@ -16,6 +16,7 @@ import { setIsFilterApplied } from "@/app/store/favoritesSlice";
 import { useAppSelector } from "@/app/store/hooks";
 import { useDeviceDetection } from "@/app/store/useDeviceDetection";
 import { useTranslations } from "next-intl";
+import { useScrollDirection } from "../../hooks/useScrollDirection";
 
 export default function Header({
   setFilters,
@@ -56,10 +57,11 @@ export default function Header({
   const isFilterApplied = useSelector((state: any) => state.favorites.isFilterApplied);
   const { user } = useAppSelector((state) => state.user);
   const isMobile = useSelector((state: any) => state.favorites.isMobile);
+  const { scrollDirection, isScrolled } = useScrollDirection();
   useDeviceDetection();
 
   if (isFilterApplied && isMobile) {
-      return ( <header className={`${isFilterApplied ? "applied": "not-applied"} relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-0 lg:py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex`}>
+      return ( <header className={`${isFilterApplied ? "applied": "not-applied"} ${isScrolled && isMobile ? 'fixed top-0 left-0 right-0 z-50 shadow-md' : 'relative'} border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-0 lg:py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex transition-all duration-300`}>
       <div className="w-full flex items-center justify-between px-4 sm:px-6 gap-3">
         <div className="xl:hidden flex items-center">
     <button
@@ -93,7 +95,7 @@ export default function Header({
 
 
   return (
-    <header className={`relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex`}>
+    <header className={`${isScrolled && isMobile ? 'fixed top-0 left-0 right-0 z-50 shadow-md' : 'relative'} border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex transition-all duration-300`}>
       <div className="w-full flex items-center justify-between px-4 sm:px-6 gap-3">
         {/* Logo */}
         <div className="xl:flex hidden items-center">
