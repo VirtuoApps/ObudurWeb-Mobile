@@ -160,7 +160,7 @@ export default async function ResidentPage({
       <div className="w-full block md:hidden">
         <SimpleHeader showBackButton />
       </div>
-      <div className="block md:hidden w-full sticky top-0 bg-white z-10">
+      <div className="block md:hidden w-full sticky top-0 bg-white z-10 py-3">
         <MenuItems />
       </div>
       <div className="md:pt-[80px]">
@@ -184,10 +184,10 @@ export default async function ResidentPage({
               </div>
               {video && (
                 <>
-              <div className="border-b border-gray-200"></div>
-                <div id="panoramic-section">
-                  <PanoramicView video={video} />
-                </div>
+                  <div className="border-b border-gray-200"></div>
+                  <div id="panoramic-section">
+                    <PanoramicView video={video} />
+                  </div>
                 </>
               )}
               <div className="border-b border-gray-200"></div>

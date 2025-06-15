@@ -539,9 +539,9 @@ export default function GeneralInfo() {
                 <path
                   d="M22 11.0909V2H2V11.0909M22 11.0909H17.4545M22 11.0909V22H11.0909M11.0909 22H2V11.0909M11.0909 22V20.1818M11.0909 11.0909H12.9091M11.0909 11.0909H8.36364M11.0909 11.0909V15.6364M2 11.0909H3.81818"
                   stroke="#262626"
-                  stroke-width="1.2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
 
