@@ -662,26 +662,46 @@ export default function FilterPopup({
 
         {/* Scrollable content area */}
         <div className="flex-1 overflow-y-auto p-6 pt-3">
-          <div className={`flex rounded-md  w-full bg-[#f0f0f0]`}>
-            <button
-              className={`px-4 py-3 text-sm font-medium transition-colors duration-200 cursor-pointer rounded-[14px] w-1/2 ${
+          <div className="relative flex rounded-[12px] bg-[#f0f0f0]   w-full h-[56px] items-center">
+            {/* Sliding Background */}
+            <div
+              className={`absolute w-[calc(50%-4px)] bg-[#362C75] rounded-[12px] transition-all duration-500 ease-in-out shadow-md h-[48px] ${
                 listingType === "For Sale"
-                  ? "bg-[#362C75] text-white"
-                  : " text-gray-700"
+                  ? "translate-x-[4px]"
+                  : "translate-x-[calc(100%+4px)]"
+              }`}
+            />
+
+            {/* For Sale Toggle Button */}
+            <button
+              className={`relative z-10 py-3 px-4 text-sm font-medium transition-all duration-500 ease-in-out cursor-pointer rounded-[12px] h-[56px] flex-1 flex items-center justify-center ${
+                listingType === "For Sale"
+                  ? "text-white"
+                  : "text-gray-700 hover:text-gray-800"
               }`}
               onClick={() => setListingType("For Sale")}
+              aria-pressed={listingType === "For Sale"}
+              role="switch"
             >
-              {listingTypeTranslations("forSale")}
+              <span className="transition-all duration-200 ease-in-out relative z-10">
+                {listingTypeTranslations("forSale")}
+              </span>
             </button>
+
+            {/* For Rent Toggle Button */}
             <button
-              className={`px-4 py-3 text-sm font-medium transition-colors duration-200 cursor-pointer rounded-[14px] w-1/2 ${
+              className={`relative z-10 py-3 px-4 text-sm font-medium transition-all duration-500 ease-in-out cursor-pointer rounded-[12px] h-[56px] flex-1 flex items-center justify-center ${
                 listingType === "For Rent"
-                  ? "bg-[#362C75] text-white"
-                  : " text-gray-700"
+                  ? "text-white"
+                  : "text-gray-700 hover:text-gray-800"
               }`}
               onClick={() => setListingType("For Rent")}
+              aria-pressed={listingType === "For Rent"}
+              role="switch"
             >
-              {listingTypeTranslations("forRent")}
+              <span className="transition-all duration-200 ease-in-out relative z-10">
+                {listingTypeTranslations("forRent")}
+              </span>
             </button>
           </div>
 
