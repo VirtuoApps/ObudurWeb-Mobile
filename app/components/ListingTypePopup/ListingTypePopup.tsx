@@ -77,10 +77,10 @@ export default function ListingTypePopup({
         onTouchEnd={handleTouchEnd}
       >
         {/* Drag handle */}
-        <span className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1.5 bg-gray-300 rounded-full" />
+        <span className="absolute top-2 left-1/2 -translate-x-1/2 w-8 h-1.5 bg-gray-300 rounded-full" />
 
         {/* Options */}
-        <div className="mt-6 space-y-4">
+        <div className="">
           <label
             className={`flex items-center gap-3 p-4 rounded-2xl border transition-colors duration-200 cursor-pointer ${
               selectedType === "For Sale"
@@ -134,7 +134,7 @@ export default function ListingTypePopup({
           </label>
 
           <label
-            className={`flex items-center gap-3 p-4 rounded-2xl border transition-colors duration-200 cursor-pointer ${
+            className={`flex items-center gap-3 p-4 rounded-2xl border transition-colors duration-200 cursor-pointer mt-2 ${
               selectedType === "For Rent"
                 ? "border-[#362C75] bg-[#F5F3FF]"
                 : "border-gray-200"
