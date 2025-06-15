@@ -286,16 +286,18 @@ export default function FilterPopup({
       const data = await response.json();
 
       if (data.status === "OK" && data.predictions) {
-        const newSuggestions = data.predictions.map((prediction: any) => ({
-          name: prediction.description.split(",")[0],
-          description: prediction.description
-            .split(",")
-            .slice(1)
-            .join(",")
-            .trim(),
-          href: "#",
-          place_id: prediction.place_id,
-        }));
+        const newSuggestions = data.predictions.map((prediction: any) => {
+          const parts = prediction.description.split(",");
+          const name = parts[0].trim(); // Get main part of description
+          const description = parts.slice(1).join(",").trim(); // Get secondary part (province, country etc.)
+          
+          return {
+            name,
+            description,
+            href: "#",
+            place_id: prediction.place_id,
+          };
+        });
         setSuggestions(newSuggestions);
         setShowSuggestions(true);
       } else {
@@ -872,10 +874,24 @@ export default function FilterPopup({
                     buttonRef.current?.click();
                   };
 
+                  // Convert suggestions to the expected format (same as LocationSelect.tsx)
+                  const searchResults = suggestions.map((suggestion) => {
+                    const parts = suggestion.description ? [suggestion.name, suggestion.description] : [suggestion.name];
+                    const name = parts[0].trim(); // Get main part of description
+                    const description = parts.slice(1).join(",").trim(); // Get secondary part (province, country etc.)
+
+                    return {
+                      name,
+                      description,
+                      href: "#",
+                      place_id: suggestion.place_id,
+                    };
+                  });
+
                   // Combine suggestions with filtered locations for display
                   const displayLocations =
-                    showSuggestions && suggestions.length > 0
-                      ? suggestions
+                    showSuggestions && searchResults.length > 0
+                      ? searchResults
                       : [];
 
                   return (
@@ -976,10 +992,15 @@ export default function FilterPopup({
                                       handleLocationSelect(location)
                                     }
                                   >
-                                    <div>
-                                      <div className="font-normal text-[#595959]">
+                                    <div className="flex-1">
+                                      <div className="font-normal text-[#595959] flex items-center">
                                         {location.name}
                                       </div>
+                                      {location.description && (
+                                        <div className="text-xs text-gray-400 mt-1">
+                                          {location.description}
+                                        </div>
+                                      )}
                                     </div>
                                   </div>
                                 )
