@@ -29,7 +29,6 @@ export default function Header({ customRedirectUrl }: HeaderProps) {
             alt="oBudur Logo"
             width={120}
             height={40}
-            className="w-[28px] h-[32px] md:w-[120px] md:h-[40px]"
             priority
           />
         </div>
