@@ -72,10 +72,12 @@ export default function AuthBox({
   showLikeButton = false,
   hideCreateListingButton = false,
   setShowIsPersonalInformationFormPopup,
+  hideProfileIcon = false,
 }: {
   showLikeButton?: boolean;
   hideCreateListingButton?: boolean;
   setShowIsPersonalInformationFormPopup?: (show: boolean) => void;
+  hideProfileIcon?: boolean;
 }) {
   const t = useTranslations("header");
   const [isOpen, setIsOpen] = useState(false);
@@ -173,13 +175,13 @@ export default function AuthBox({
               />
             )}
 
-            {!user.profilePicture && (
+            {!hideProfileIcon && !user.profilePicture && (
               <div className="bg-gray-100 rounded-lg flex items-center justify-center py-3 px-3 h-[48px] w-[48px]">
                 <img src={"/user-profile-03.png"} className="w-6 h-6" />
               </div>
             )}
 
-            {user.profilePicture && (
+            {!hideProfileIcon && user.profilePicture && (
               <img
                 src={user.profilePicture}
                 className="w-[48px] h-[48px] rounded-md"
