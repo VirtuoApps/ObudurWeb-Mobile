@@ -646,9 +646,7 @@ export default function HomePage({
         resultCount={filteredHotels.length}
       />
       <div
-        className={`bg-white ${
-          isScrolled && isMobile ? "pt-[72px]" : ""
-        } transition-all duration-300`}
+        className={`bg-white ${isScrolled && isMobile ? "pt-[72px]" : ""} transition-all duration-300`}
       >
         <Header
           setFilters={setFilters}
