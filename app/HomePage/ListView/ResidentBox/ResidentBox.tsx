@@ -209,12 +209,21 @@ export default function ResidentBox({
             {residentTypeName}
           </p>
 
-          <div className="flex flex-row items-center justify-between mb-4">
+          <div className="flex flex-row items-start justify-between mb-4">
             {/* Title */}
-            <h3 className="text-base font-bold text-[#262626] ">{title}</h3>
+            <h3
+              className="text-base font-bold text-[#262626] max-w-[150px] "
+              style={{
+                wordBreak: "break-word",
+              }}
+            >
+              {title}
+            </h3>
 
             {/* Price */}
-            <p className="text-base font-bold text-[#362C75]">{price}</p>
+            <p className="text-base font-bold text-[#362C75] w-[200px] text-right">
+              {price}
+            </p>
           </div>
 
           {/* Features */}
@@ -320,7 +329,9 @@ export default function ResidentBox({
                 </svg>
 
                 <span>
-                  {Math.round(priceAsNumber / areaAsNumber).toLocaleString("tr-TR")}{" "}
+                  {Math.round(priceAsNumber / areaAsNumber).toLocaleString(
+                    "tr-TR"
+                  )}{" "}
                   ₺/m²
                 </span>
               </div>
