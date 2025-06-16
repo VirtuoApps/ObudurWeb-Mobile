@@ -200,8 +200,8 @@ export default function FifthCreateStep() {
     if (!event.target.files) return;
 
     const files = Array.from(event.target.files);
-    if (selectedImages.length + files.length > 5) {
-      setErrors(["Maksimum 5 görsel yükleyebilirsiniz."]);
+    if (selectedImages.length + files.length > 15) {
+      setErrors(["Maksimum 15 görsel yükleyebilirsiniz."]);
       setTimeout(() => {
         setErrors([]);
       }, 3000);
@@ -255,8 +255,8 @@ export default function FifthCreateStep() {
       file.type.startsWith("image/")
     );
 
-    if (selectedImages.length + files.length > 5) {
-      setErrors(["Maksimum 5 görsel yükleyebilirsiniz."]);
+    if (selectedImages.length + files.length > 15) {
+      setErrors(["Maksimum 15 görsel yükleyebilirsiniz."]);
       return;
     }
 
@@ -338,9 +338,9 @@ export default function FifthCreateStep() {
       newErrors.push("Lütfen en az 3 görsel yükleyin.");
     }
 
-    // Check maximum image requirement (5 images)
-    if (selectedImages.length > 5 || images.length > 5) {
-      newErrors.push("Maksimum 5 görsel yükleyebilirsiniz.");
+    // Check maximum image requirement (15 images)
+    if (selectedImages.length > 15 || images.length > 15) {
+      newErrors.push("Maksimum 15 görsel yükleyebilirsiniz.");
     }
 
     // Check if there are no images at all (neither in selectedImages nor in context)
@@ -451,7 +451,7 @@ export default function FifthCreateStep() {
                 Görseller
               </h2>
               <p className="text-sm text-gray-500 mb-4">
-                En az 3, en fazla 5 görsel yükleyebilirsiniz. (JPG, PNG)
+                En az 3, en fazla 15 görsel yükleyebilirsiniz. (JPG, PNG)
               </p>
 
               {/* Drag and drop area for images */}
