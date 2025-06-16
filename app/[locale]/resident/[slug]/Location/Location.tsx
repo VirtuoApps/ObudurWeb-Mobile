@@ -94,18 +94,18 @@ export default function Location() {
           <h3 className="mt-14 mb-6 text-lg font-semibold text-gray-900">
             {t("distancesTitle")}
           </h3>
-          <ul role="list" className="flex flex-wrap justify-between  gap-y-5">
+          <ul role="list" className="flex flex-wrap gap-5 md:gap-8">
             {hotelData.populatedData.distances.map((distance) => (
               <li
                 key={distance._id}
-                className="flex items-center gap-3 w-1/2 md:w-1/3 lg:w-1/5 pr-4 sm:min-w-[220px]"
+                className="flex items-center gap-2 md:gap-3 text-[#595959] min-w-0"
               >
                 <img
-                  className="w-6 h-6"
+                  className="w-6 h-6 flex-shrink-0"
                   src={distance.iconUrl}
                   alt={distance.name[currentLocale]}
                 />
-                <span className="text-gray-700 font-medium text-sm">
+                <span className="text-[#595959] text-sm md:text-base font-medium truncate">
                   {distance.name[currentLocale]}{" "}
                   <span className="text-gray-500 font-normal">
                     {distance.value} km

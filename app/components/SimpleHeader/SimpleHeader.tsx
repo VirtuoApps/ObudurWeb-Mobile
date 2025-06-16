@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-
+import { usePathname } from "next/navigation";
 import AuthBox from "@/app/HomePage/Header/AuthBox/AuthBox";
 import { FaBars } from "react-icons/fa";
 import Image from "next/image";
@@ -22,8 +22,9 @@ export default function SimpleHeader({
   customMaxWidth,
 }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const router = useRouter();
+  const pathname = usePathname();
+  const isDetailPage = pathname?.includes('/resident/');
 
   return (
         <header className="relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex">
@@ -67,6 +68,7 @@ export default function SimpleHeader({
         {/* Mobile Right Side - Sabit genişlik */}
         <div className="md:hidden flex items-center shrink-0">
           <AuthBox />
+
         </div>
       </div>
 

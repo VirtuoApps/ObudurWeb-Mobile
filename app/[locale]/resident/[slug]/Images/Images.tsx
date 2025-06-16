@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaRegImages } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
@@ -12,6 +12,8 @@ import { useTranslations } from "next-intl";
 export default function Images() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [touchStartX, setTouchStartX] = useState(0);
+  const [touchEndX, setTouchEndX] = useState(0);
   const t = useTranslations("residentMenu");
 
   const { hotelData, locale } = useHotelData();
@@ -47,6 +49,49 @@ export default function Images() {
       prevIndex === 0 ? originalImageCount - 1 : prevIndex - 1
     );
   };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEndX(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX || !touchEndX) return;
+    
+    const distance = touchStartX - touchEndX;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe && originalImageCount > 1) {
+      goToNextImage();
+    }
+    if (isRightSwipe && originalImageCount > 1) {
+      goToPrevImage();
+    }
+  };
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (!isModalOpen) return;
+      
+      if (event.key === 'ArrowLeft') {
+        goToPrevImage();
+      } else if (event.key === 'ArrowRight') {
+        goToNextImage();
+      } else if (event.key === 'Escape') {
+        closeModal();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [isModalOpen]);
 
   // Render different layouts based on image count
   const renderImageGrid = () => {
@@ -107,7 +152,7 @@ export default function Images() {
 
           {/* Mobile Layout */}
           <div className="md:hidden p-1 w-full">
-            {/* Main large image */}
+            {/* Single main image with counter */}
             <div
               className="relative w-full h-[240px] mb-2 overflow-hidden rounded-lg shadow-md cursor-pointer"
               onClick={() => openModal(0)}
@@ -119,43 +164,9 @@ export default function Images() {
                 className="object-cover"
                 priority
               />
-            </div>
-
-            {/* Grid of smaller images */}
-            <div className="grid grid-cols-2 gap-2">
-              <div
-                className="relative w-full h-[120px] overflow-hidden rounded-lg shadow-md cursor-pointer"
-                onClick={() => openModal(1)}
-              >
-                <Image
-                  src={images[1]}
-                  alt="Property image 2"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div
-                className="relative w-full h-[120px] overflow-hidden rounded-lg shadow-md cursor-pointer"
-                onClick={() => openModal(2)}
-              >
-                <Image
-                  src={images[2]}
-                  alt="Property image 3"
-                  fill
-                  className="object-cover"
-                />
-                {/* View all button for mobile */}
-                <div className="absolute inset-0 bg-black/20">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      openModal(0);
-                    }}
-                    className="absolute bottom-2 right-2 px-3 py-1 bg-white text-[#5E5691] text-sm rounded shadow"
-                  >
-                    {t("viewAll")}
-                  </button>
-                </div>
+              {/* Image counter box */}
+              <div className="absolute bottom-2 right-2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded">
+                1 / {originalImageCount}
               </div>
             </div>
           </div>
@@ -231,7 +242,7 @@ export default function Images() {
 
           {/* Mobile Layout */}
           <div className="md:hidden p-1 w-full">
-            {/* Main large image */}
+            {/* Single main image with counter */}
             <div
               className="relative w-full h-[240px] mb-2 overflow-hidden rounded-lg shadow-md cursor-pointer"
               onClick={() => openModal(0)}
@@ -243,54 +254,9 @@ export default function Images() {
                 className="object-cover"
                 priority
               />
-            </div>
-
-            {/* Grid of smaller images */}
-            <div className="grid grid-cols-3 gap-2">
-              <div
-                className="relative w-full h-[100px] overflow-hidden rounded-lg shadow-md cursor-pointer"
-                onClick={() => openModal(1)}
-              >
-                <Image
-                  src={images[1]}
-                  alt="Property image 2"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div
-                className="relative w-full h-[100px] overflow-hidden rounded-lg shadow-md cursor-pointer"
-                onClick={() => openModal(2)}
-              >
-                <Image
-                  src={images[2]}
-                  alt="Property image 3"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div
-                className="relative w-full h-[100px] overflow-hidden rounded-lg shadow-md cursor-pointer"
-                onClick={() => openModal(3)}
-              >
-                <Image
-                  src={images[3]}
-                  alt="Property image 4"
-                  fill
-                  className="object-cover"
-                />
-                {/* View all button for mobile */}
-                <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      openModal(0);
-                    }}
-                    className="px-3 py-1 bg-white text-[#5E5691] text-sm rounded shadow"
-                  >
-                    {t("viewAll")}
-                  </button>
-                </div>
+              {/* Image counter box */}
+              <div className="absolute bottom-2 right-2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded">
+                1 / {originalImageCount}
               </div>
             </div>
           </div>
@@ -375,78 +341,34 @@ export default function Images() {
         </div>
 
         {/* Mobile Layout */}
-        <div className="md:hidden p-1 w-full">
-          {/* Main large image */}
+        <div className="md:hidden w-full">
           <div
-            className="relative w-full h-[240px] mb-2 overflow-hidden rounded-lg shadow-md cursor-pointer"
-            onClick={() => openModal(0)}
+            className="relative w-full h-[240px] overflow-hidden cursor-pointer flex items-center justify-center"
+            onClick={() => openModal(currentImageIndex)}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            style={{ margin: 0, padding: 0 }}
           >
             <Image
-              src={images[0]}
+              src={images[currentImageIndex]}
               alt="Property main image"
               fill
-              className="object-cover"
+              className="object-cover w-full h-full"
               priority
             />
-          </div>
-
-          {/* Grid of smaller images */}
-          <div className="grid grid-cols-2 gap-2">
+            {/* Counter */}
             <div
-              className="relative w-full h-[120px] overflow-hidden rounded-lg shadow-md cursor-pointer"
-              onClick={() => openModal(1)}
+              className="absolute bottom-2 right-2 bg-[#FCFCFC] text-[#262626] px-2 py-1 rounded"
+              style={{
+                fontFamily: 'Kumbh Sans',
+                fontSize: '14px',
+                fontWeight: 400,
+                lineHeight: '140%',
+                letterSpacing: '0%',
+              }}
             >
-              <Image
-                src={images[1]}
-                alt="Property image 2"
-                fill
-                className="object-cover"
-              />
-            </div>
-            <div
-              className="relative w-full h-[120px] overflow-hidden rounded-lg shadow-md cursor-pointer"
-              onClick={() => openModal(2)}
-            >
-              <Image
-                src={images[2]}
-                alt="Property image 3"
-                fill
-                className="object-cover"
-              />
-            </div>
-            <div
-              className="relative w-full h-[120px] overflow-hidden rounded-lg shadow-md cursor-pointer"
-              onClick={() => openModal(3)}
-            >
-              <Image
-                src={images[3]}
-                alt="Property image 4"
-                fill
-                className="object-cover"
-              />
-            </div>
-            <div
-              className="relative w-full h-[120px] overflow-hidden rounded-lg shadow-md cursor-pointer"
-              onClick={() => openModal(4)}
-            >
-              <Image
-                src={images[4]}
-                alt="Property image 5"
-                fill
-                className="object-cover"
-              />
-              {/* View all button for mobile */}
-              <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    openModal(0);
-                  }}
-                  className="px-3 py-1 bg-white text-[#5E5691] text-sm rounded shadow"
-                >
-                  {t("viewAll")}
-                </button>
-              </div>
+              {currentImageIndex + 1} / {originalImageCount}
             </div>
           </div>
         </div>
@@ -462,47 +384,57 @@ export default function Images() {
       {/* Full-screen modal/slider */}
       {isModalOpen && (
         <div
-          className="fixed inset-0 z-50 bg-black/80 flex justify-center items-center transition-opacity duration-300"
+          className="fixed inset-0 z-50 bg-black flex justify-center items-center transition-opacity duration-300"
+          style={{ backgroundColor: '#000' }}
           onClick={closeModal}
         >
+          {/* X butonu */}
           <button
             onClick={closeModal}
-            className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white text-white flex items-center justify-center cursor-pointer"
+            className="absolute top-6 right-4 z-10 w-8 h-8 rounded-xl bg-[#FCFCFC] flex items-center justify-center cursor-pointer shadow"
+            style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}
           >
-            <IoMdClose size={24} color="#5E5691" />
+            <IoMdClose size={20} color="#595959" />
           </button>
           <div
-            className="relative w-full max-w-7xl max-h-[90vh] px-4"
+            className="relative w-full h-full flex flex-col justify-center items-center"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Image container */}
-            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg">
+            {/* Image container - Desktop */}
+            <div className="relative aspect-[16/9] w-full overflow-hidden hidden md:block">
               <Image
                 src={hotelData.hotelDetails.images[currentImageIndex]}
                 alt={`Property image ${currentImageIndex + 1}`}
                 fill
-                className="object-contain"
+                className="object-contain w-full h-auto"
               />
             </div>
-
-            {/* Navigation arrows */}
-            <button
-              onClick={goToPrevImage}
-              className="absolute top-1/2 md:-left-12 left-2 -translate-y-1/2 w-12 h-12 rounded-full bg-white text-white flex items-center justify-center cursor-pointer"
+            {/* Image container - Mobile */}
+            <div
+              className="w-full flex items-center justify-center md:hidden"
+              onClick={() => openModal(currentImageIndex)}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
             >
-              <IoIosArrowBack size={24} color="#5E5691" />
-            </button>
-            <button
-              onClick={goToNextImage}
-              className="absolute top-1/2 md:-right-12 right-2 -translate-y-1/2 w-12 h-12 rounded-full bg-white text-white flex items-center justify-center cursor-pointer"
-            >
-              <IoIosArrowForward size={24} color="#5E5691" />
-            </button>
-
-            {/* Image counter */}
-            <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 bg-white text-black px-4 py-2 rounded-full">
-              {currentImageIndex + 1} / {originalImageCount}
+              <img
+                src={hotelData.hotelDetails.images[currentImageIndex]}
+                alt={`Property image ${currentImageIndex + 1}`}
+                className="w-full h-auto object-contain select-none"
+                style={{ display: 'block' }}
+              />
             </div>
+          </div>
+          {/* Counter - tam ekran alt ortada */}
+          <div className="fixed left-1/2 bottom-6 -translate-x-1/2 bg-[#FCFCFC] text-[#262626] px-4 py-2 rounded-full z-50"
+            style={{
+              fontFamily: 'Kumbh Sans',
+              fontSize: '14px',
+              fontWeight: 400,
+              lineHeight: '140%',
+              letterSpacing: '0%'
+            }}>
+            {currentImageIndex + 1} / {originalImageCount}
           </div>
         </div>
       )}

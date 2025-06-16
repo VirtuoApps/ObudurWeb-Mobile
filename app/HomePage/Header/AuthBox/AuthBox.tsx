@@ -72,10 +72,12 @@ export default function AuthBox({
   showLikeButton = false,
   hideCreateListingButton = false,
   setShowIsPersonalInformationFormPopup,
+  hideProfileIcon = false,
 }: {
   showLikeButton?: boolean;
   hideCreateListingButton?: boolean;
   setShowIsPersonalInformationFormPopup?: (show: boolean) => void;
+  hideProfileIcon?: boolean;
 }) {
   const t = useTranslations("header");
   const [isOpen, setIsOpen] = useState(false);
@@ -117,6 +119,25 @@ export default function AuthBox({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  // Prevent body scrolling when dropdown is open on mobile
+  useEffect(() => {
+    if (dropdownOpen || guestDropdownOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    };
+  }, [dropdownOpen, guestDropdownOpen]);
 
   const handleLogout = () => {
     // Clear token from localStorage
@@ -173,13 +194,13 @@ export default function AuthBox({
               />
             )}
 
-            {!user.profilePicture && (
+            {!hideProfileIcon && !user.profilePicture && (
               <div className="bg-gray-100 rounded-lg flex items-center justify-center py-3 px-3 h-[48px] w-[48px]">
                 <img src={"/user-profile-03.png"} className="w-6 h-6" />
               </div>
             )}
 
-            {user.profilePicture && (
+            {!hideProfileIcon && user.profilePicture && (
               <img
                 src={user.profilePicture}
                 className="w-[48px] h-[48px] rounded-md"
@@ -187,9 +208,9 @@ export default function AuthBox({
             )}
           </div>
 
-          {/* Dropdown Menu */}
-          {dropdownOpen && (
-            <div className="fixed lg:absolute inset-0 lg:inset-auto lg:-right-4 lg:right-0 lg:mt-2 lg:min-w-[320px] bg-white lg:rounded-[16px] lg:shadow-lg z-50 lg:border lg:border-[#D9D9D9] flex flex-col">
+                  {/* Dropdown Menu */}
+        {dropdownOpen && (
+          <div className="fixed lg:absolute inset-0 lg:inset-auto lg:-right-4 lg:right-0 lg:mt-2 lg:min-w-[320px] bg-white lg:rounded-[16px] lg:shadow-lg z-50 lg:border lg:border-[#D9D9D9] flex flex-col overflow-y-auto lg:overflow-visible">
               {/* Mobile Close Button */}
 
               {/* Mobile Header */}
@@ -506,7 +527,7 @@ export default function AuthBox({
               >
                 <span>Çıkış Yap</span>
               </button>
-            </div>
+          </div>
           )}
         </div>
       </>
@@ -543,7 +564,7 @@ export default function AuthBox({
 
         {/* Guest Dropdown Menu */}
         {guestDropdownOpen && (
-          <div className="fixed lg:absolute inset-0 lg:inset-auto lg:-right-4 lg:right-0 lg:mt-2 lg:min-w-[320px] bg-white lg:rounded-[16px] lg:shadow-lg z-50 lg:border lg:border-[#D9D9D9] flex flex-col">
+          <div className="fixed lg:absolute inset-0 lg:inset-auto lg:-right-4 lg:right-0 lg:mt-2 lg:min-w-[320px] bg-white lg:rounded-[16px] lg:shadow-lg z-50 lg:border lg:border-[#D9D9D9] flex flex-col overflow-y-auto lg:overflow-visible">
             {/* Mobile Close Button */}
             <div className="lg:hidden px-4 pb-6 flex flex-row items-center justify-between mt-5">
               <div>

@@ -16,6 +16,7 @@ import { setIsFilterApplied } from "@/app/store/favoritesSlice";
 import { useAppSelector } from "@/app/store/hooks";
 import { useDeviceDetection } from "@/app/store/useDeviceDetection";
 import { useTranslations } from "next-intl";
+import { useScrollDirection } from "../../hooks/useScrollDirection";
 
 export default function Header({
   setFilters,
@@ -56,12 +57,14 @@ export default function Header({
   const isFilterApplied = useSelector((state: any) => state.favorites.isFilterApplied);
   const { user } = useAppSelector((state) => state.user);
   const isMobile = useSelector((state: any) => state.favorites.isMobile);
+  const { scrollDirection, isScrolled } = useScrollDirection();
   useDeviceDetection();
 
   if (isFilterApplied && isMobile) {
       return ( <header className={`${isFilterApplied ? "applied": "not-applied"} relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-0 lg:py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex`}>
       <div className="w-full flex items-center px-4 sm:px-6 gap-3">
         <div className="xl:hidden flex items-center shrink-0 w-[32px]">
+
     <button
         type="button"
         onClick={() => {
@@ -97,6 +100,7 @@ export default function Header({
       <div className="w-full flex items-center px-4 sm:px-6 gap-3">
         {/* Logo - Sabit genişlik */}
         <div className="xl:flex hidden items-center shrink-0 w-[144px]">
+
           <Image
             src="/obudur-logo.png"
             alt="oBudur Logo"
