@@ -120,6 +120,25 @@ export default function AuthBox({
     };
   }, []);
 
+  // Prevent body scrolling when dropdown is open on mobile
+  useEffect(() => {
+    if (dropdownOpen || guestDropdownOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    };
+  }, [dropdownOpen, guestDropdownOpen]);
+
   const handleLogout = () => {
     // Clear token from localStorage
     localStorage.removeItem("accessToken");
@@ -189,9 +208,9 @@ export default function AuthBox({
             )}
           </div>
 
-          {/* Dropdown Menu */}
-          {dropdownOpen && (
-            <div className="fixed lg:absolute inset-0 lg:inset-auto lg:-right-4 lg:right-0 lg:mt-2 lg:min-w-[320px] bg-white lg:rounded-[16px] lg:shadow-lg z-50 lg:border lg:border-[#D9D9D9] flex flex-col">
+                  {/* Dropdown Menu */}
+        {dropdownOpen && (
+          <div className="fixed lg:absolute inset-0 lg:inset-auto lg:-right-4 lg:right-0 lg:mt-2 lg:min-w-[320px] bg-white lg:rounded-[16px] lg:shadow-lg z-50 lg:border lg:border-[#D9D9D9] flex flex-col overflow-y-auto lg:overflow-visible">
               {/* Mobile Close Button */}
 
               {/* Mobile Header */}
@@ -508,7 +527,7 @@ export default function AuthBox({
               >
                 <span>Çıkış Yap</span>
               </button>
-            </div>
+          </div>
           )}
         </div>
       </>
@@ -545,7 +564,7 @@ export default function AuthBox({
 
         {/* Guest Dropdown Menu */}
         {guestDropdownOpen && (
-          <div className="fixed lg:absolute inset-0 lg:inset-auto lg:-right-4 lg:right-0 lg:mt-2 lg:min-w-[320px] bg-white lg:rounded-[16px] lg:shadow-lg z-50 lg:border lg:border-[#D9D9D9] flex flex-col">
+          <div className="fixed lg:absolute inset-0 lg:inset-auto lg:-right-4 lg:right-0 lg:mt-2 lg:min-w-[320px] bg-white lg:rounded-[16px] lg:shadow-lg z-50 lg:border lg:border-[#D9D9D9] flex flex-col overflow-y-auto lg:overflow-visible">
             {/* Mobile Close Button */}
             <div className="lg:hidden px-4 pb-6 flex flex-row items-center justify-between mt-5">
               <div>
