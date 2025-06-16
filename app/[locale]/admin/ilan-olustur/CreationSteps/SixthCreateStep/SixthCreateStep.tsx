@@ -400,7 +400,7 @@ export default function SixthCreateStep() {
           {/* Right Form Panel - 70% width on desktop */}
           <div
             ref={formPanelRef}
-            className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh] 2xl:h-[73vh] overflow-auto"
+            className="w-full md:w-[70%] md:pl-6 md:h-[80vh]  overflow-y-auto overflow-x-hidden"
           >
             {/* Errors display */}
             {errors.length > 0 && (
