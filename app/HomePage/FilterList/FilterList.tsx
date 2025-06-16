@@ -164,19 +164,25 @@ export default function FilterList({
   const { scrollDirection, isScrolled } = useScrollDirection();
 
   const handleFilterClick = (featureItem: Feature) => {
-    const isCurrentlySelected = selectedFeatures.some((sf) => sf._id === featureItem._id);
-    
+    const isCurrentlySelected = selectedFeatures.some(
+      (sf) => sf._id === featureItem._id
+    );
+
     // Update selectedFeatures (quick filters)
     setSelectedFeatures(
       isCurrentlySelected
         ? selectedFeatures.filter((sf) => sf._id !== featureItem._id)
         : [...selectedFeatures, featureItem]
     );
-    
+
     // Check if this feature is an interior or exterior feature and update accordingly
-    const isInteriorFeature = filterOptions.interiorFeatures.some((f) => f._id === featureItem._id);
-    const isExteriorFeature = filterOptions.outsideFeatures.some((f) => f._id === featureItem._id);
-    
+    const isInteriorFeature = filterOptions.interiorFeatures.some(
+      (f) => f._id === featureItem._id
+    );
+    const isExteriorFeature = filterOptions.outsideFeatures.some(
+      (f) => f._id === featureItem._id
+    );
+
     if (isInteriorFeature) {
       // Update interior features
       setInteriorFeatures((prev) =>
@@ -185,7 +191,7 @@ export default function FilterList({
           : [...prev, featureItem]
       );
     }
-    
+
     if (isExteriorFeature) {
       // Update exterior features
       setSelectedExteriorFeatures((prev) =>
@@ -273,46 +279,50 @@ export default function FilterList({
 
     // Quick filters (hızlı filtreler)
     if (selectedFeatures.length > 0) count += selectedFeatures.length;
-    
+
     // Location, Property Type, Category
     if (selectedLocation !== null) count += 1;
     if (selectedPropertyType !== null) count += 1;
     if (selectedCategory !== null) count += 1;
-    
+
     // Price range
     if (minPrice !== "" || maxPrice !== "") count += 1;
-    
+
     // Area range
     if (minArea !== "" || maxArea !== "") count += 1;
-    
+
     // Room and bathroom counts
     if (roomCount !== "") count += 1;
     if (bathroomCount !== "") count += 1;
-    
+
     // Room type filters (1+1, 2+1, 3+1)
     if (filters?.isOnePlusOneSelected) count += 1;
     if (filters?.isTwoPlusOneSelected) count += 1;
     if (filters?.isThreePlusOneSelected) count += 1;
     if (filters?.isNewSelected) count += 1;
-    
+
     // Features - Sadece hızlı filtrelerde olmayan özellikleri say
     const quickFilterIds = selectedFeatures.map((f: any) => f._id);
-    
+
     // Interior features (hızlı filtrelerde olmayanları say)
-    const uniqueInteriorFeatures = interiorFeatures.filter((f: any) => !quickFilterIds.includes(f._id));
+    const uniqueInteriorFeatures = interiorFeatures.filter(
+      (f: any) => !quickFilterIds.includes(f._id)
+    );
     count += uniqueInteriorFeatures.length;
-    
+
     // Exterior features (hızlı filtrelerde olmayanları say)
-    const uniqueExteriorFeatures = selectedExteriorFeatures.filter((f: any) => !quickFilterIds.includes(f._id));
+    const uniqueExteriorFeatures = selectedExteriorFeatures.filter(
+      (f: any) => !quickFilterIds.includes(f._id)
+    );
     count += uniqueExteriorFeatures.length;
-    
+
     // Accessibility features
     if (selectedAccessibilityFeatures.length > 0)
       count += selectedAccessibilityFeatures.length;
-    
+
     // Face features
     if (selectedFaceFeatures.length > 0) count += selectedFaceFeatures.length;
-    
+
     return count;
   };
 
@@ -348,7 +358,7 @@ export default function FilterList({
     });
     dispatch(setIsFilterApplied(false));
   };
-  
+
   const isMobile = useSelector((state: any) => state.favorites.isMobile);
   const [isSaveFilterSheetOpen, setIsSaveFilterSheetOpen] = useState(false);
 
@@ -534,7 +544,13 @@ export default function FilterList({
         <div
           className={`bg-white flex flex-row transition-all duration-350 ease-in-out ${
             currentView === "map"
-              ? `fixed lg:top-28 ${isScrolled && isMobile ? 'top-[72px]' : 'top-[71px]'} left-0 right-0 w-full lg:w-[924px] lg:shadow-lg ${scrollDirection === 'down' && isScrolled && isMobile ? 'transform -translate-y-full opacity-0' : 'transform translate-y-0 opacity-100'}`
+              ? `fixed lg:top-28 ${
+                  isScrolled && isMobile ? "top-[72px]" : "top-[71px]"
+                } left-0 right-0 w-full lg:w-[924px] lg:shadow-lg ${
+                  scrollDirection === "down" && isScrolled && isMobile
+                    ? "transform -translate-y-full opacity-0"
+                    : "transform translate-y-0 opacity-100"
+                }`
               : "mt-0 mb-7 relative w-full border-b border-[#F0F0F0]"
           } z-20  mx-auto  lg:rounded-2xl lg:border-none border-y border-[#F0F0F0] `}
         >
@@ -557,150 +573,6 @@ export default function FilterList({
             >
               <p className="text-sm text-gray-500 font-semibold">Sırala</p>
             </button>
-
-            {isSaveFilterSheetOpen && (
-              <div className="fixed inset-0 z-[99999] flex items-end md:items-center justify-center lg:p-4 overflow-y-auto">
-                <div
-                  className="fixed inset-0"
-                  onClick={() => setIsSaveFilterSheetOpen(false)}
-                  style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
-                ></div>
-
-                <div
-                  className="relative bg-white rounded-t-[24px] shadow-xl max-w-[600px] w-full mx-auto max-h-[calc(100vh-112px)] flex flex-col"
-                  style={{
-                    transform: `translateY(${translateY}px)`,
-                    transition: touchStartY
-                      ? "none"
-                      : "transform 0.3s ease-out",
-                  }}
-                  onTouchStart={handleTouchStart}
-                  onTouchMove={handleTouchMove}
-                  onTouchEnd={handleTouchEnd}
-                >
-                  {isSuccess ? (
-                    <>
-                      <div className="flex justify-between items-start p-4">
-                        <h2 className="text-2xl font-bold text-[#262626]">
-                          Kaydedildi!
-                        </h2>
-                        <button
-                          onClick={() => {
-                            setSearchName("");
-                            setIsSuccess(false);
-                            setIsSaveFilterSheetOpen(false);
-                          }}
-                          className="w-6 h-6 flex items-center justify-center cursor-pointer "
-                        >
-                          <img
-                            src="/popup-close-icon.png"
-                            alt="close"
-                            className="w-6 h-6"
-                          />
-                        </button>
-                      </div>
-
-                      <div className="p-4 space-y-2">
-                        <h2 className="text-[#262626] font-kumbh font-bold text-base leading-[140%] tracking-[0%] align-start">
-                          Arama filtreleriniz başarılı bir şekilde kaydedildi.
-                        </h2>
-                        <p className="text-[#595959] font-kumbh font-medium text-base leading-[140%] tracking-[0%] align-start">
-                          Artık profilinizden kayıtlı aramalarınıza ulaşabilir,
-                          dilerseniz bildirim ayarlarını değiştirebilirsiniz.
-                        </p>
-
-                        <button
-                          onClick={() => {
-                            setSearchName("");
-                            setIsSuccess(false);
-                            setIsSaveFilterSheetOpen(false);
-                          }}
-                          className="mt-8 py-4 px-16 rounded-2xl w-full text-white font-medium 
-                         transition-colors cursor-pointer"
-                          style={{
-                            backgroundColor: "#5E5691",
-                          }}
-                        >
-                          Kapat
-                        </button>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="sticky top-0 bg-white z-10 px-4 py-[22px] rounded-t-[24px] relative">
-                        <div className="flex items-center justify-between">
-                          <h2 className="md:text-lg text-2xl font-bold text-[#262626]">
-                            Aramayı Kaydet
-                          </h2>
-                          <button
-                            onClick={() => {
-                              setSearchName("");
-                              setIsSuccess(false);
-                              setIsSaveFilterSheetOpen(false);
-                            }}
-                            className="w-6 h-6 flex items-center justify-center cursor-pointer "
-                          >
-                            <img
-                              src="/popup-close-icon.png"
-                              alt="close"
-                              className="w-6 h-6"
-                            />
-                          </button>
-                        </div>
-                        <span className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1.5 bg-gray-300 rounded-full md:hidden"></span>
-                      </div>
-
-                      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-[16px]">
-                        <div className="top-full left-0 right-0 mt-1 bg-white z-10 flex flex-col gap-[8px]">
-                          {/* Search Name Section */}
-                          <div className="mb-10">
-                            <label className="block text-lg font-bold text-[#262626] mb-2">
-                              Arama Adı
-                            </label>
-                            <input
-                              type="text"
-                              value={searchName}
-                              onChange={(e) => setSearchName(e.target.value)}
-                              placeholder="Yeni aramam"
-                              className="w-full px-6 py-4 bg-[#FCFCFC] border border-[#D9D9D9] rounded-2xl 
-                         text-[#8C8C8C] placeholder-[#8C8C8C] focus:outline-none focus:border-[#262626]
-                         focus:text-[#262626] transition-colors"
-                            />
-                          </div>
-
-                          <div className="flex gap-4">
-                            <button
-                              onClick={() => {
-                                setSearchName("");
-                                setIsSuccess(false);
-                                setIsSaveFilterSheetOpen(false);
-                              }}
-                              disabled={isLoading}
-                              className="flex-1 py-4 px-6 border-2 border-[#BFBFBF] rounded-2xl 
-                         text-[#262626] font-medium hover:bg-gray-50 transition-colors cursor-pointer
-                         disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                              Vazgeç
-                            </button>
-                            <button
-                              onClick={handleSave}
-                              disabled={!searchName || isLoading}
-                              className={`flex-1 py-4 px-6 rounded-2xl font-medium transition-colors cursor-pointer ${
-                                searchName && !isLoading
-                                  ? "bg-[#5E5691] text-[#FCFCFC] hover:bg-[#5E5691]"
-                                  : "bg-[#F0F0F0] text-[#8C8C8C] cursor-not-allowed"
-                              }`}
-                            >
-                              {isLoading ? "Kaydediliyor..." : "Kaydet"}
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
-            )}
 
             {isSheetOpen && (
               <div className="fixed inset-0 z-[99999] flex items-end md:items-center justify-center lg:p-4 overflow-y-auto">
@@ -798,6 +670,148 @@ export default function FilterList({
             )}
           </div>
         </div>
+
+        {isSaveFilterSheetOpen && (
+          <div className="fixed bottom-0 left-0 inset-0 z-[99999] flex items-end md:items-center justify-center lg:p-4 overflow-y-auto">
+            <div
+              className="fixed inset-0"
+              onClick={() => setIsSaveFilterSheetOpen(false)}
+              style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+            ></div>
+
+            <div
+              className="relative bg-white rounded-t-[24px] shadow-xl max-w-[600px] w-full mx-auto max-h-[calc(100vh-112px)] flex flex-col"
+              style={{
+                transform: `translateY(${translateY}px)`,
+                transition: touchStartY ? "none" : "transform 0.3s ease-out",
+              }}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              {isSuccess ? (
+                <>
+                  <div className="flex justify-between items-start p-4">
+                    <h2 className="text-2xl font-bold text-[#262626]">
+                      Kaydedildi!
+                    </h2>
+                    <button
+                      onClick={() => {
+                        setSearchName("");
+                        setIsSuccess(false);
+                        setIsSaveFilterSheetOpen(false);
+                      }}
+                      className="w-6 h-6 flex items-center justify-center cursor-pointer "
+                    >
+                      <img
+                        src="/popup-close-icon.png"
+                        alt="close"
+                        className="w-6 h-6"
+                      />
+                    </button>
+                  </div>
+
+                  <div className="p-4 space-y-2">
+                    <h2 className="text-[#262626] font-kumbh font-bold text-base leading-[140%] tracking-[0%] align-start">
+                      Arama filtreleriniz başarılı bir şekilde kaydedildi.
+                    </h2>
+                    <p className="text-[#595959] font-kumbh font-medium text-base leading-[140%] tracking-[0%] align-start">
+                      Artık profilinizden kayıtlı aramalarınıza ulaşabilir,
+                      dilerseniz bildirim ayarlarını değiştirebilirsiniz.
+                    </p>
+
+                    <button
+                      onClick={() => {
+                        setSearchName("");
+                        setIsSuccess(false);
+                        setIsSaveFilterSheetOpen(false);
+                      }}
+                      className="mt-8 py-4 px-16 rounded-2xl w-full text-white font-medium 
+                         transition-colors cursor-pointer"
+                      style={{
+                        backgroundColor: "#5E5691",
+                      }}
+                    >
+                      Kapat
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="sticky top-0 bg-white z-10 px-4 py-[22px] rounded-t-[24px] relative">
+                    <div className="flex items-center justify-between">
+                      <h2 className="md:text-lg text-2xl font-bold text-[#262626]">
+                        Aramayı Kaydet
+                      </h2>
+                      <button
+                        onClick={() => {
+                          setSearchName("");
+                          setIsSuccess(false);
+                          setIsSaveFilterSheetOpen(false);
+                        }}
+                        className="w-6 h-6 flex items-center justify-center cursor-pointer "
+                      >
+                        <img
+                          src="/popup-close-icon.png"
+                          alt="close"
+                          className="w-6 h-6"
+                        />
+                      </button>
+                    </div>
+                    <span className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1.5 bg-gray-300 rounded-full md:hidden"></span>
+                  </div>
+
+                  <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-[16px]">
+                    <div className="top-full left-0 right-0 mt-1 bg-white z-10 flex flex-col gap-[8px]">
+                      {/* Search Name Section */}
+                      <div className="mb-10">
+                        <label className="block text-lg font-bold text-[#262626] mb-2">
+                          Arama Adı
+                        </label>
+                        <input
+                          type="text"
+                          value={searchName}
+                          onChange={(e) => setSearchName(e.target.value)}
+                          placeholder="Yeni aramam"
+                          className="w-full px-6 py-4 bg-[#FCFCFC] border border-[#D9D9D9] rounded-2xl 
+                         text-[#8C8C8C] placeholder-[#8C8C8C] focus:outline-none focus:border-[#262626]
+                         focus:text-[#262626] transition-colors"
+                        />
+                      </div>
+
+                      <div className="flex gap-4">
+                        <button
+                          onClick={() => {
+                            setSearchName("");
+                            setIsSuccess(false);
+                            setIsSaveFilterSheetOpen(false);
+                          }}
+                          disabled={isLoading}
+                          className="flex-1 py-4 px-6 border-2 border-[#BFBFBF] rounded-2xl 
+                         text-[#262626] font-medium hover:bg-gray-50 transition-colors cursor-pointer
+                         disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          Vazgeç
+                        </button>
+                        <button
+                          onClick={handleSave}
+                          disabled={!searchName || isLoading}
+                          className={`flex-1 py-4 px-6 rounded-2xl font-medium transition-colors cursor-pointer ${
+                            searchName && !isLoading
+                              ? "bg-[#5E5691] text-[#FCFCFC] hover:bg-[#5E5691]"
+                              : "bg-[#F0F0F0] text-[#8C8C8C] cursor-not-allowed"
+                          }`}
+                        >
+                          {isLoading ? "Kaydediliyor..." : "Kaydet"}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        )}
       </>
     );
   }
@@ -853,10 +867,15 @@ export default function FilterList({
       <div
         className={`bg-white flex flex-row transition-all duration-350 ease-in-out ${
           currentView === "map"
-            ? `fixed lg:top-28 ${isScrolled ? 'top-[72px]' : 'top-[71px]'} left-0 right-0 w-full lg:w-[924px] lg:shadow-lg ${scrollDirection === 'down' && isScrolled ? 'transform -translate-y-full opacity-0' : 'transform translate-y-0 opacity-100'}`
+            ? `fixed lg:top-28 ${
+                isScrolled ? "top-[72px]" : "top-[71px]"
+              } left-0 right-0 w-full lg:w-[924px] lg:shadow-lg ${
+                scrollDirection === "down" && isScrolled
+                  ? "transform -translate-y-full opacity-0"
+                  : "transform translate-y-0 opacity-100"
+              }`
             : "mt-0 mb-7 relative w-full border-b border-[#F0F0F0]"
         } z-20  mx-auto  lg:rounded-2xl lg:border-none border-b border-[#F0F0F0] `}
-
       >
         {showRightArrow && (
           <button
@@ -977,7 +996,8 @@ export default function FilterList({
           onClick={() => setIsFilterPopupOpen(true)}
         >
           <p className="text-xs font-bold   text-gray-600 whitespace-nowrap hover:bg-[#F5F5F5] transition-all duration-300 p-2 rounded-lg ml-3 mr-3">
-            {t("allFilters")} {countActiveFilters() > 0 && `(${countActiveFilters()})`}
+            {t("allFilters")}{" "}
+            {countActiveFilters() > 0 && `(${countActiveFilters()})`}
           </p>
         </div>
       </div>
