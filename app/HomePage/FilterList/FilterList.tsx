@@ -832,6 +832,7 @@ export default function FilterList({
             ? `fixed lg:top-28 ${isScrolled ? 'top-[72px]' : 'top-[71px]'} left-0 right-0 w-full lg:w-[924px] lg:shadow-lg ${scrollDirection === 'down' && isScrolled ? 'transform -translate-y-full opacity-0' : 'transform translate-y-0 opacity-100'}`
             : "mt-0 mb-7 relative w-full border-b border-[#F0F0F0]"
         } z-20  mx-auto  lg:rounded-2xl lg:border-none border-b border-[#F0F0F0] `}
+
       >
         {showRightArrow && (
           <button

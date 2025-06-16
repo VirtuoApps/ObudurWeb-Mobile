@@ -76,6 +76,7 @@ export default function HomePage({
   // Transition states
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [nextView, setNextView] = useState<"map" | "list" | null>(null);
+  const [isPinSelected, setIsPinSelected] = useState(false);
 
   // States moved from FilterPopup component
   const [minPrice, setMinPrice] = useState<number | "">("");
@@ -346,6 +347,11 @@ export default function HomePage({
     }, 300);
   };
 
+  // Handle pin selection change from MapView
+  const handlePinSelectionChange = (isSelected: boolean) => {
+    setIsPinSelected(isSelected);
+  };
+
   if (listingType) {
     hotels = hotels.filter((hotel) =>
       Object.values(hotel.listingType).some((value) => value === listingType)
@@ -574,7 +580,9 @@ export default function HomePage({
         />
       )}
       <div
-        className="fixed bottom-4 left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-10 px-3 h-[40px] rounded-lg shadow-lg"
+        className={`fixed left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-50 px-3 h-[40px] rounded-lg shadow-lg transition-all duration-300 ${
+          isPinSelected && currentView === "map" ? "bottom-44" : "bottom-4"
+        }`}
         onClick={() => handleViewChange(currentView === "map" ? "list" : "map")}
       >
         <img
@@ -750,6 +758,7 @@ export default function HomePage({
                     totalHotelsCount={hotels.length}
                     selectedLocation={selectedLocation}
                     searchRadius={searchRadius}
+                    onPinSelectionChange={handlePinSelectionChange}
                   />
                 </div>
               ) : (

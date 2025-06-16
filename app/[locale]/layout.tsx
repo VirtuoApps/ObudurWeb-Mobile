@@ -35,6 +35,11 @@ export async function generateMetadata({ params }: Props) {
   return {
     title: t("title"),
     description: "Multi-language property search",
+    viewport: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no",
+    other: {
+      'format-detection': 'telephone=no',
+      'msapplication-tap-highlight': 'no',
+    }
   };
 }
 
