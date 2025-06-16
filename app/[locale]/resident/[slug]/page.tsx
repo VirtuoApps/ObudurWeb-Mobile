@@ -207,6 +207,9 @@ export default async function ResidentPage({
             </div>
           </div>
         </div>
+        <div className="block md:hidden pb-24">
+          <Footer />
+        </div>
         <div className="hidden md:block">
           <Footer />
         </div>

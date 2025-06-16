@@ -8,8 +8,6 @@ import GoBackButton from "../../GoBackButton/GoBackButton";
 // Predefined document types
 const DOCUMENT_TYPES = [
   { tr: "Kat Planı", en: "Floor Plan" },
-  { tr: "Enerji Sertifikası", en: "Energy Certificate" },
-  { tr: "Ekspertiz Raporu", en: "Expert Report" },
   { tr: "Teklif Formu", en: "Offer Form" },
 ];
 
