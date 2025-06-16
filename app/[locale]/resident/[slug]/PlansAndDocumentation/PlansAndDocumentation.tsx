@@ -33,20 +33,6 @@ export default function PlansAndDocumentation({
     },
     {
       name: {
-        tr: "Enerji Sertifikası",
-        en: "Energy Certificate",
-      },
-      key: "enerji-sertifikasi",
-    },
-    {
-      name: {
-        tr: "Eskertiz Raporu",
-        en: "Expertise Report",
-      },
-      key: "eskertiz-raporu",
-    },
-    {
-      name: {
         tr: "Teklif Formu",
         en: "Offer Form",
       },
