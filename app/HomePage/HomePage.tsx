@@ -360,15 +360,44 @@ export default function HomePage({
 
   let filteredHotels = hotels;
 
-  if (selectedLocation && selectedLocation.coordinates) {
-    // Filter hotels by proximity to selected location using the selected radius
-    const [targetLon, targetLat] = selectedLocation.coordinates;
-    filteredHotels = filterHotelsByProximity(
-      filteredHotels,
-      targetLat,
-      targetLon,
-      searchRadius
-    );
+  if (selectedLocation) {
+    const isCity = selectedLocation.types?.includes("locality");
+    const isState =
+      selectedLocation.types?.includes("administrative_area_level_2") ||
+      selectedLocation.types?.includes("administrative_area_level_1");
+
+    if (isCity) {
+      const cityComponent = selectedLocation.address_components?.find(
+        (comp: any) => comp.types.includes("locality")
+      );
+      const cityName = cityComponent?.long_name;
+      if (cityName) {
+        filteredHotels = filteredHotels.filter(
+          (hotel) => hotel.city?.tr === cityName
+        );
+      }
+    } else if (isState) {
+      const stateComponent = selectedLocation.address_components?.find(
+        (comp: any) =>
+          comp.types.includes("administrative_area_level_2") ||
+          comp.types.includes("administrative_area_level_1")
+      );
+      const stateName = stateComponent?.long_name;
+      if (stateName) {
+        filteredHotels = filteredHotels.filter(
+          (hotel) => hotel.state?.tr === stateName
+        );
+      }
+    } else if (selectedLocation.coordinates) {
+      // Filter hotels by proximity to selected location using the selected radius
+      const [targetLon, targetLat] = selectedLocation.coordinates;
+      filteredHotels = filterHotelsByProximity(
+        filteredHotels,
+        targetLat,
+        targetLon,
+        searchRadius
+      );
+    }
   }
 
   if (filters) {

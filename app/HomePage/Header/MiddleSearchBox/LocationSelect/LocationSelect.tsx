@@ -22,12 +22,14 @@ interface PlaceSuggestion {
   placeId: string;
 }
 
-interface LocationWithCoordinates {
+interface LocationWithDetails {
   name: string;
   description: string;
   href: string;
   place_id: string;
   coordinates?: [number, number]; // [longitude, latitude]
+  types?: string[];
+  address_components?: any[];
 }
 
 export default function LocationSelect({
@@ -119,9 +121,7 @@ export default function LocationSelect({
   });
 
   // Fetch coordinates for selected location
-  const fetchLocationCoordinates = async (
-    placeId: string
-  ): Promise<[number, number] | null> => {
+  const fetchLocationDetails = async (placeId: string): Promise<any | null> => {
     try {
       setIsFetchingCoordinates(true);
       const response = await fetch(
@@ -134,20 +134,18 @@ export default function LocationSelect({
 
       console.log("Place details API response:", data); // Debug log
 
-      if (data.status === "OK" && data.result?.geometry?.location) {
-        const { lat, lng } = data.result.geometry.location;
-        console.log("Coordinates found:", { lat, lng }); // Debug log
-        return [lng, lat]; // Return as [longitude, latitude] to match GeoJSON format
+      if (data.status === "OK" && data.result) {
+        return data.result;
       }
 
       console.error(
-        "Failed to get coordinates:",
+        "Failed to get place details:",
         data.status,
         data.error_message
       ); // Better error logging
       return null;
     } catch (error) {
-      console.error("Error fetching location coordinates:", error);
+      console.error("Error fetching location details:", error);
       return null;
     } finally {
       setIsFetchingCoordinates(false);
@@ -156,15 +154,21 @@ export default function LocationSelect({
 
   const handleLocationSelect = async (location: any) => {
     // Fetch coordinates for the selected location
-    const coordinates = await fetchLocationCoordinates(location.place_id);
+    const details = await fetchLocationDetails(location.place_id);
 
-    // Create location object with coordinates
-    const locationWithCoordinates: LocationWithCoordinates = {
-      ...location,
-      coordinates,
-    };
+    if (details) {
+      const locationWithDetails: LocationWithDetails = {
+        ...location,
+        coordinates:
+          details.geometry?.location && details.geometry.location.lat
+            ? [details.geometry.location.lng, details.geometry.location.lat]
+            : undefined,
+        types: details.types,
+        address_components: details.address_components,
+      };
+      setSelectedLocation(locationWithDetails);
+    }
 
-    setSelectedLocation(locationWithCoordinates);
     setShowSearch(false);
     setIsOpen(false);
     setSuggestions([]);
