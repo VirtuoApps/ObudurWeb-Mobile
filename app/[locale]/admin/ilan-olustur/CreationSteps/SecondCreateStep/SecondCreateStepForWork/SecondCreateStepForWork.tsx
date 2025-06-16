@@ -22,6 +22,7 @@ interface CustomSelectProps {
   onChange: (value: string | number | boolean) => void;
   placeholder?: string;
   openUpward?: boolean;
+  hasError?: boolean;
 }
 
 export const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -30,6 +31,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
   onChange,
   placeholder = "Select option",
   openUpward = false,
+  hasError = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -58,7 +60,11 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
     <div className="relative" ref={dropdownRef}>
       <button
         type="button"
-        className="w-full h-12 rounded-lg border border-[#E2E2E2] bg-white px-4 flex items-center justify-between text-[#262626] focus:outline-none focus:border-[#5D568D] hover:border-[#5D568D] transition-colors"
+        className={`w-full h-12 rounded-lg border bg-white px-4 flex items-center justify-between text-[#262626] focus:outline-none transition-colors ${
+          hasError
+            ? "border-[#EF1A28] focus:border-[#EF1A28]"
+            : "border-[#E2E2E2] focus:border-[#5D568D] hover:border-[#5D568D]"
+        }`}
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className="truncate text-left">
@@ -107,8 +113,10 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
 
 export default function SecondCreateStepForWork() {
   const [errors, setErrors] = useState<string[]>([]);
+  const [errorFields, setErrorFields] = useState<Set<string>>(new Set());
   const [selectedDuesCurrency, setSelectedDuesCurrency] =
     useState<string>("TRY");
+  const formPanelRef = useRef<HTMLDivElement>(null);
 
   // Use context for form state and navigation
   const {
@@ -313,9 +321,24 @@ export default function SecondCreateStepForWork() {
     { tr: "20+", en: "20+" },
   ];
 
+  // Helper function to get error styling for fields
+  const getFieldErrorClass = (fieldName: string): string => {
+    return errorFields.has(fieldName)
+      ? "border-[#EF1A28] focus:border-[#EF1A28] focus:ring-[#EF1A28]/40"
+      : "border-gray-300 focus:border-[#6656AD] focus:ring-[#6656AD]/40";
+  };
+
+  // Helper function to get error styling for selects
+  const getSelectErrorClass = (fieldName: string): string => {
+    return errorFields.has(fieldName)
+      ? "border-[#EF1A28] focus:border-[#EF1A28]"
+      : "border-[#E2E2E2] focus:border-[#5D568D] hover:border-[#5D568D]";
+  };
+
   // Validate all required fields
   const validateFields = () => {
     const newErrors: string[] = [];
+    const newErrorFields = new Set<string>();
 
     // Check if prices for all currencies are provided
     const usdPrice = price?.find((p) => p.currency === "USD");
@@ -323,43 +346,58 @@ export default function SecondCreateStepForWork() {
 
     if (!usdPrice || usdPrice.amount <= 0) {
       newErrors.push("Lütfen USD para biriminde fiyat belirtin");
+      newErrorFields.add("price-usd");
     }
 
     if (!tryPrice || tryPrice.amount <= 0) {
       newErrors.push("Lütfen TRY para biriminde fiyat belirtin");
+      newErrorFields.add("price-try");
     }
 
     // Check area fields
     if (!projectArea || projectArea <= 0) {
       newErrors.push("Lütfen metrekare değerini girin");
+      newErrorFields.add("projectArea");
     }
 
     // Validate room counts for real estate (may not apply to land)
     if (!roomCount && roomCount !== 0) {
       newErrors.push("Lütfen bölüm / oda sayısını seçin");
+      newErrorFields.add("roomCount");
     }
 
     if (!floorCount && floorCount !== 0) {
       newErrors.push("Lütfen kat sayısını seçin");
+      newErrorFields.add("floorCount");
     }
 
     if (!buildingAge && buildingAge !== 0) {
       newErrors.push("Lütfen bina yaşını seçin");
+      newErrorFields.add("buildingAge");
     }
 
     if (!heatingType || heatingType.tr === "" || heatingType.en === "") {
       newErrors.push("Lütfen ısıtma tipini seçin");
+      newErrorFields.add("heatingType");
     }
 
     if (!source || source.tr === "" || source.en === "") {
       newErrors.push("Lütfen kimden bilgisini seçin");
+      newErrorFields.add("source");
     }
 
     if (!usageStatus || !usageStatus.get("tr") || !usageStatus.get("en")) {
       newErrors.push("Lütfen kullanım durumunu seçin");
+      newErrorFields.add("usageStatus");
+    }
+
+    if (!floorPosition || floorPosition.tr === "" || floorPosition.en === "") {
+      newErrors.push("Lütfen bulunduğu katı seçin");
+      newErrorFields.add("floorPosition");
     }
 
     setErrors(newErrors);
+    setErrorFields(newErrorFields);
     return newErrors.length === 0;
   };
 
@@ -367,6 +405,7 @@ export default function SecondCreateStepForWork() {
   const handleContinue = () => {
     // Clear previous errors
     setErrors([]);
+    setErrorFields(new Set());
 
     // Validate all fields
     const isValid = validateFields();
@@ -377,8 +416,10 @@ export default function SecondCreateStepForWork() {
       // Move to the next step
       setCurrentStep(3);
     } else {
-      // Scroll to top to see errors
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      // Scroll form panel to top to see errors
+      if (formPanelRef.current) {
+        formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
     }
   };
 
@@ -407,7 +448,7 @@ export default function SecondCreateStepForWork() {
           </div>
 
           {/* Right Form Panel */}
-          <div className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
+          <div ref={formPanelRef} className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
             {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
@@ -453,7 +494,7 @@ export default function SecondCreateStepForWork() {
                       type="text"
                       value={getPriceForCurrency("TRY") || ""}
                       onChange={(e) => handlePriceChange("TRY", e.target.value)}
-                      className="w-full h-12 rounded-lg border border-gray-300 pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                      className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("price-try")}`}
                       placeholder="Fiyat yazın"
                     />
                   </div>
@@ -471,7 +512,7 @@ export default function SecondCreateStepForWork() {
                       type="text"
                       value={getPriceForCurrency("USD") || ""}
                       onChange={(e) => handlePriceChange("USD", e.target.value)}
-                      className="w-full h-12 rounded-lg border border-gray-300 pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                      className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("price-usd")}`}
                       placeholder="Fiyat yazın"
                     />
                   </div>

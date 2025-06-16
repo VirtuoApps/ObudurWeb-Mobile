@@ -65,6 +65,7 @@ interface OrientationOption {
 }
 
 export default function FourthCreateStep() {
+  const formPanelRef = useRef<HTMLDivElement>(null);
   const [features, setFeatures] = useState<Feature[]>([]);
   const [distanceTypes, setDistanceTypes] = useState<DistanceType[]>([]);
   const [orientationOptions, setOrientationOptions] = useState<
@@ -338,6 +339,11 @@ export default function FourthCreateStep() {
 
       // Move to the next step
       setCurrentStep(5);
+    } else {
+      // Scroll form panel to top to see errors
+      if (formPanelRef.current) {
+        formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
     }
   };
 
@@ -416,7 +422,7 @@ export default function FourthCreateStep() {
           </div>
 
           {/* Right Form Panel */}
-          <div className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
+          <div ref={formPanelRef} className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
             {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">

@@ -22,6 +22,7 @@ interface CustomSelectProps {
   onChange: (value: string) => void;
   placeholder?: string;
   openUpward?: boolean;
+  hasError?: boolean;
 }
 
 export const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -30,6 +31,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
   onChange,
   placeholder = "Select option",
   openUpward = false,
+  hasError = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -62,7 +64,11 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
     <div className="relative" ref={dropdownRef}>
       <button
         type="button"
-        className="w-full h-12 rounded-lg border border-[#E2E2E2] bg-white px-4 flex items-center justify-between text-[#262626] focus:outline-none focus:border-[#5D568D] hover:border-[#5D568D] transition-colors"
+        className={`w-full h-12 rounded-lg border bg-white px-4 flex items-center justify-between text-[#262626] focus:outline-none transition-colors ${
+          hasError
+            ? "border-[#EF1A28] focus:border-[#EF1A28]"
+            : "border-[#E2E2E2] focus:border-[#5D568D] hover:border-[#5D568D]"
+        }`}
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className="truncate text-left">
@@ -111,6 +117,8 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
 
 export default function SecondCreateStepForLand() {
   const [errors, setErrors] = useState<string[]>([]);
+  const [errorFields, setErrorFields] = useState<Set<string>>(new Set());
+  const formPanelRef = useRef<HTMLDivElement>(null);
 
   // Use context for form state and navigation
   const {
@@ -263,9 +271,17 @@ export default function SecondCreateStepForLand() {
     { value: "false", label: "Hayır" },
   ];
 
+  // Helper function to get error styling for fields
+  const getFieldErrorClass = (fieldName: string): string => {
+    return errorFields.has(fieldName)
+      ? "border-[#EF1A28] focus:border-[#EF1A28] focus:ring-[#EF1A28]/40"
+      : "border-gray-300 focus:border-[#6656AD] focus:ring-[#6656AD]/40";
+  };
+
   // Validate all required fields
   const validateFields = () => {
     const newErrors: string[] = [];
+    const newErrorFields = new Set<string>();
 
     // Check if prices for all currencies are provided
     const usdPrice = price?.find((p: any) => p.currency === "USD");
@@ -273,15 +289,18 @@ export default function SecondCreateStepForLand() {
 
     if (!usdPrice || usdPrice.amount <= 0) {
       newErrors.push("Lütfen USD para biriminde fiyat belirtin");
+      newErrorFields.add("price-usd");
     }
 
     if (!tryPrice || tryPrice.amount <= 0) {
       newErrors.push("Lütfen TRY para biriminde fiyat belirtin");
+      newErrorFields.add("price-try");
     }
 
     // Check area fields
     if (!projectArea || projectArea <= 0) {
       newErrors.push("Lütfen metrekare değerini girin");
+      newErrorFields.add("projectArea");
     }
 
     if (
@@ -290,25 +309,31 @@ export default function SecondCreateStepForLand() {
       !generalFeatures.get("en")
     ) {
       newErrors.push("Lütfen genel özellikleri seçin");
+      newErrorFields.add("generalFeatures");
     }
 
     if (typeof creditEligible === "undefined") {
       newErrors.push("Lütfen krediye uygunluk durumunu seçin");
+      newErrorFields.add("creditEligible");
     }
 
     if (!source || source.tr === "" || source.en === "") {
       newErrors.push("Lütfen kimden bilgisini seçin");
+      newErrorFields.add("source");
     }
 
     if (!zoningStatus || !zoningStatus.get("tr") || !zoningStatus.get("en")) {
       newErrors.push("Lütfen imar durumunu seçin");
+      newErrorFields.add("zoningStatus");
     }
 
     if (!deedStatus || !deedStatus.get("tr") || !deedStatus.get("en")) {
       newErrors.push("Lütfen tapu durumunu seçin");
+      newErrorFields.add("deedStatus");
     }
 
     setErrors(newErrors);
+    setErrorFields(newErrorFields);
     return newErrors.length === 0;
   };
 
@@ -316,6 +341,7 @@ export default function SecondCreateStepForLand() {
   const handleContinue = () => {
     // Clear previous errors
     setErrors([]);
+    setErrorFields(new Set());
 
     // Validate all fields
     const isValid = validateFields();
@@ -326,8 +352,10 @@ export default function SecondCreateStepForLand() {
       // Move to the next step
       setCurrentStep(3);
     } else {
-      // Scroll to top to see errors
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      // Scroll form panel to top to see errors
+      if (formPanelRef.current) {
+        formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
     }
   };
 
@@ -355,7 +383,7 @@ export default function SecondCreateStepForLand() {
           </div>
 
           {/* Right Form Panel */}
-          <div className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
+          <div ref={formPanelRef} className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
             {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
@@ -400,7 +428,7 @@ export default function SecondCreateStepForLand() {
                       type="text"
                       value={getPriceForCurrency("TRY") || ""}
                       onChange={(e) => handlePriceChange("TRY", e.target.value)}
-                      className="w-full h-12 rounded-lg border border-gray-300 pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                      className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("price-try")}`}
                       placeholder="Fiyat yazın"
                     />
                   </div>
@@ -418,7 +446,7 @@ export default function SecondCreateStepForLand() {
                       type="text"
                       value={getPriceForCurrency("USD") || ""}
                       onChange={(e) => handlePriceChange("USD", e.target.value)}
-                      className="w-full h-12 rounded-lg border border-gray-300 pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                      className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("price-usd")}`}
                       placeholder="Fiyat yazın"
                     />
                   </div>
@@ -447,7 +475,7 @@ export default function SecondCreateStepForLand() {
                       : numericValue;
                   setProjectArea(parseFloat(validValue) || 0);
                 }}
-                className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("projectArea")}`}
                 placeholder="m²"
               />
             </div>
@@ -465,6 +493,7 @@ export default function SecondCreateStepForLand() {
                   value={creditEligible}
                   onChange={(value) => setCreditEligible(value)}
                   placeholder="Seçiniz"
+                  hasError={errorFields.has("creditEligible")}
                 />
               </div>
               <div className="w-full sm:w-1/2">
@@ -498,6 +527,7 @@ export default function SecondCreateStepForLand() {
                     }
                   }}
                   placeholder="Seçiniz"
+                  hasError={errorFields.has("source")}
                 />
               </div>
             </div>
@@ -532,6 +562,7 @@ export default function SecondCreateStepForLand() {
                     }
                   }}
                   placeholder="Seçiniz"
+                  hasError={errorFields.has("zoningStatus")}
                 />
               </div>
               <div className="w-full sm:w-1/2">
@@ -562,6 +593,7 @@ export default function SecondCreateStepForLand() {
                     }
                   }}
                   placeholder="Seçiniz"
+                  hasError={errorFields.has("deedStatus")}
                 />
               </div>
             </div>
@@ -597,6 +629,7 @@ export default function SecondCreateStepForLand() {
                   }}
                   placeholder="Seçiniz"
                   openUpward={true}
+                  hasError={errorFields.has("generalFeatures")}
                 />
               </div>
               <div className="w-full sm:w-1/2">

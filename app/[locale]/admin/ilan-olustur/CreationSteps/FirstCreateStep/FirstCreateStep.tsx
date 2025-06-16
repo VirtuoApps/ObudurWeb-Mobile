@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useListingForm, MultilangText } from "../CreationSteps";
 import axiosInstance from "@/axios";
@@ -42,6 +42,8 @@ export default function FirstCreateStep() {
   const [propertyTypes, setPropertyTypes] = useState<PropertyType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errors, setErrors] = useState<string[]>([]);
+  const [errorFields, setErrorFields] = useState<Set<string>>(new Set());
+  const formPanelRef = useRef<HTMLDivElement>(null);
 
   // Use context instead of local state
   const {
@@ -150,44 +152,60 @@ export default function FirstCreateStep() {
     }
   };
 
+  // Helper function to get error styling for fields
+  const getFieldErrorClass = (fieldName: string): string => {
+    return errorFields.has(fieldName)
+      ? "border-[#EF1A28] focus:border-[#EF1A28] focus:ring-[#EF1A28]/40"
+      : "border-gray-300 focus:border-[#6656AD] focus:ring-[#6656AD]/40";
+  };
+
   // Validate all required fields
   const validateFields = () => {
     const newErrors: string[] = [];
+    const newErrorFields = new Set<string>();
 
     // Check if listing type is selected
     if (!listingType || Object.keys(listingType).length === 0) {
       newErrors.push("Lütfen ilan tipini seçin (Satılık veya Kiralık)");
+      newErrorFields.add("listingType");
     }
 
     // Check if entrance type is selected
     if (!entranceType || Object.keys(entranceType).length === 0) {
       newErrors.push("Lütfen emlak tipini seçin");
+      newErrorFields.add("entranceType");
     }
 
     // Check if housing type is selected
     if (!housingType || Object.keys(housingType).length === 0) {
       newErrors.push("Lütfen kategori seçin");
+      newErrorFields.add("housingType");
     }
 
     // Check titles in both languages
     if (!title?.tr || title.tr.trim() === "") {
       newErrors.push("İlan başlığını (Türkçe) dilinde doldurun");
+      newErrorFields.add("title-tr");
     }
 
     if (!title?.en || title.en.trim() === "") {
       newErrors.push("İlan başlığını (English) dilinde doldurun");
+      newErrorFields.add("title-en");
     }
 
     // Check descriptions in both languages
     if (!description?.tr || description.tr.trim() === "") {
       newErrors.push("İlan açıklamasını (Türkçe) dilinde doldurun");
+      newErrorFields.add("description-tr");
     }
 
     if (!description?.en || description.en.trim() === "") {
       newErrors.push("İlan açıklamasını (English) dilinde doldurun");
+      newErrorFields.add("description-en");
     }
 
     setErrors(newErrors);
+    setErrorFields(newErrorFields);
     return newErrors.length === 0;
   };
 
@@ -195,6 +213,7 @@ export default function FirstCreateStep() {
   const handleContinue = () => {
     // Clear previous errors
     setErrors([]);
+    setErrorFields(new Set());
 
     // Validate all fields
     const isValid = validateFields();
@@ -212,8 +231,10 @@ export default function FirstCreateStep() {
       // Move to the next step
       setCurrentStep(2);
     } else {
-      // Scroll to top to see errors
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      // Scroll form panel to top to see errors
+      if (formPanelRef.current) {
+        formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
     }
   };
 
@@ -227,25 +248,14 @@ export default function FirstCreateStep() {
         ? "w-full h-12 rounded-lg border "
         : "w-full min-h-[112px] resize-y rounded-lg border ";
 
-    const hasError = errors.some((e) => {
-      if (fieldType === "title") {
-        return (
-          e.includes("başlığını") &&
-          e.includes(language === "en" ? "English" : "Türkçe")
-        );
-      } else {
-        return (
-          e.includes("açıklamasını") &&
-          e.includes(language === "en" ? "English" : "Türkçe")
-        );
-      }
-    });
+    const fieldKey = `${fieldType}-${language}`;
+    const hasError = errorFields.has(fieldKey);
 
     return hasError
       ? baseClasses +
-          "border-red-300 px-4 " +
+          "border-[#EF1A28] px-4 " +
           (fieldType === "description" ? "py-3 " : "") +
-          "placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 text-[#262626]"
+          "placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#EF1A28]/40 text-[#262626]"
       : baseClasses +
           "border-gray-300 px-4 " +
           (fieldType === "description" ? "py-3 " : "") +
@@ -300,7 +310,7 @@ export default function FirstCreateStep() {
           </div>
 
           {/* Right Form Panel - 70% width on desktop */}
-          <div className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
+          <div ref={formPanelRef} className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
             {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
@@ -345,7 +355,7 @@ export default function FirstCreateStep() {
                     }}
                     options={listingTypeOptions}
                     defaultText="İlan Tipi Seçin"
-                    extraClassName="w-full text-[#595959] bg-white border border-[#E0E0E0]"
+                    extraClassName={`w-full text-[#595959] bg-white border ${errorFields.has("listingType") ? "border-[#EF1A28]" : "border-[#E0E0E0]"}`}
                     maxHeight="200"
                     customTextColor={true}
                   />
@@ -360,7 +370,7 @@ export default function FirstCreateStep() {
                     }}
                     options={listingType ? propertyTypeOptions : []}
                     defaultText={listingType ? "Emlak Tipi Seçin" : "Önce ilan tipi seçin"}
-                    extraClassName="w-full text-[#595959] bg-white border border-[#E0E0E0]"
+                    extraClassName={`w-full text-[#595959] bg-white border ${errorFields.has("entranceType") ? "border-[#EF1A28]" : "border-[#E0E0E0]"}`}
                     maxHeight="200"
                     customTextColor={true}
                   />
@@ -375,7 +385,7 @@ export default function FirstCreateStep() {
                     }}
                     options={entranceType ? filteredCategoryOptions : []}
                     defaultText={entranceType ? "Kategori Seçin" : "Önce emlak tipi seçin"}
-                    extraClassName="w-full text-[#595959] bg-white border border-[#E0E0E0]"
+                    extraClassName={`w-full text-[#595959] bg-white border ${errorFields.has("housingType") ? "border-[#EF1A28]" : "border-[#E0E0E0]"}`}
                     maxHeight="200"
                     customTextColor={true}
                   />

@@ -21,6 +21,8 @@ interface PlaceSuggestion {
 export default function ThirdCreateStep() {
   const locale = useLocale();
   const [errors, setErrors] = useState<string[]>([]);
+  const [errorFields, setErrorFields] = useState<Set<string>>(new Set());
+  const formPanelRef = useRef<HTMLDivElement>(null);
 
   // Use context for form state and navigation
   const {
@@ -668,30 +670,43 @@ export default function ThirdCreateStep() {
     }
   };
 
+  // Helper function to get error styling for fields
+  const getFieldErrorClass = (fieldName: string): string => {
+    return errorFields.has(fieldName)
+      ? "border-[#EF1A28] focus:border-[#EF1A28] focus:ring-[#EF1A28]/40"
+      : "border-gray-300 focus:border-[#6656AD] focus:ring-[#6656AD]/40";
+  };
+
   // Validate all required fields
   const validateFields = () => {
     const newErrors: string[] = [];
+    const newErrorFields = new Set<string>();
 
     if (!country || !country.tr || !country.en) {
       newErrors.push("Lütfen ülke bilgisini Türkçe ve İngilizce olarak girin");
+      newErrorFields.add("country");
     }
 
     if (!city || !city.tr || !city.en) {
       newErrors.push("Lütfen şehir bilgisini Türkçe ve İngilizce olarak girin");
+      newErrorFields.add("city");
     }
 
     if (!state || !state.tr || !state.en) {
       newErrors.push("Lütfen ilçe bilgisini Türkçe ve İngilizce olarak girin");
+      newErrorFields.add("state");
     }
 
     if (!neighborhood || !neighborhood.tr || !neighborhood.en) {
       newErrors.push(
         "Lütfen mahalle bilgisini Türkçe ve İngilizce olarak girin"
       );
+      newErrorFields.add("neighborhood");
     }
 
     if (!street || !street.tr || !street.en) {
       newErrors.push("Lütfen sokak bilgisini Türkçe ve İngilizce olarak girin");
+      newErrorFields.add("street");
     }
 
     // Conditional validation based on entrance type
@@ -699,26 +714,32 @@ export default function ThirdCreateStep() {
       // For land, require adaNo and parselNo
       if (!adaNo) {
         newErrors.push("Lütfen ada numarasını girin");
+        newErrorFields.add("adaNo");
       }
       if (!parselNo) {
         newErrors.push("Lütfen parsel numarasını girin");
+        newErrorFields.add("parselNo");
       }
     } else {
       // For other types, require buildingNo and postalCode
       if (!buildingNo) {
         newErrors.push("Lütfen bina numarasını girin");
+        newErrorFields.add("buildingNo");
       }
 
       if (!postalCode) {
         newErrors.push("Lütfen posta kodunu girin");
+        newErrorFields.add("postalCode");
       }
     }
 
     if (!coordinates || coordinates.length !== 2) {
       newErrors.push("Lütfen haritadan konum seçin");
+      newErrorFields.add("coordinates");
     }
 
     setErrors(newErrors);
+    setErrorFields(newErrorFields);
     return newErrors.length === 0;
   };
 
@@ -726,6 +747,7 @@ export default function ThirdCreateStep() {
   const handleContinue = () => {
     // Clear previous errors
     setErrors([]);
+    setErrorFields(new Set());
 
     // Validate all fields
     const isValid = validateFields();
@@ -748,8 +770,10 @@ export default function ThirdCreateStep() {
       // Move to the next step
       setCurrentStep(4);
     } else {
-      // Scroll to top to see errors
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      // Scroll form panel to top to see errors
+      if (formPanelRef.current) {
+        formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
     }
   };
 
@@ -796,7 +820,7 @@ export default function ThirdCreateStep() {
           </div>
 
           {/* Right Form Panel */}
-          <div className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
+          <div ref={formPanelRef} className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
             {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
@@ -893,7 +917,7 @@ export default function ThirdCreateStep() {
                   defaultText={
                     locale === "en" ? "Select Country" : "Ülke Seçin"
                   }
-                  extraClassName="w-full h-12 border border-gray-300"
+                  extraClassName={`w-full h-12 border ${errorFields.has("country") ? "border-[#EF1A28]" : "border-gray-300"}`}
                   popoverMaxWidth="400"
                   maxHeight="200"
                   popoverExtraClassName="w-auto max-w-[420px]"
@@ -957,7 +981,7 @@ export default function ThirdCreateStep() {
                   id="neighborhood"
                   value={neighborhood?.tr || ""}
                   onChange={(e) => handleNeighborhoodChange(e.target.value)}
-                  className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                  className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("neighborhood")}`}
                   placeholder={locale === "en" ? "Neighborhood" : "Mahalle"}
                 />
               </div>
@@ -974,7 +998,7 @@ export default function ThirdCreateStep() {
                   id="street"
                   value={street?.tr || ""}
                   onChange={(e) => handleStreetChange(e.target.value)}
-                  className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                  className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("street")}`}
                   placeholder={locale === "en" ? "Street" : "Sokak"}
                 />
               </div>
@@ -995,7 +1019,7 @@ export default function ThirdCreateStep() {
                     id="adaNo"
                     value={adaNo}
                     onChange={(e) => setAdaNo(e.target.value)}
-                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                    className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("adaNo")}`}
                     placeholder="Ada No"
                   />
                 </div>
@@ -1011,7 +1035,7 @@ export default function ThirdCreateStep() {
                     id="parselNo"
                     value={parselNo}
                     onChange={(e) => setParselNo(e.target.value)}
-                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                    className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("parselNo")}`}
                     placeholder="Parsel No"
                   />
                 </div>
@@ -1030,7 +1054,7 @@ export default function ThirdCreateStep() {
                     id="buildingNo"
                     value={buildingNo}
                     onChange={(e) => setBuildingNo(e.target.value)}
-                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                    className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("buildingNo")}`}
                     placeholder="Bina No"
                   />
                 </div>
@@ -1062,7 +1086,7 @@ export default function ThirdCreateStep() {
                     id="postalCode"
                     value={postalCode}
                     onChange={(e) => setPostalCode(e.target.value)}
-                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                    className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("postalCode")}`}
                     placeholder="Posta Kodu"
                   />
                 </div>
