@@ -79,16 +79,16 @@ export default function DilParaBirimiPage() {
 
   return (
     <div className="lg:hidden flex flex-col h-screen bg-white">
-      <header className="p-4 mb-[35px]">
+      <header className="p-4 mb-2">
         <button onClick={() => router.back()}>
           <img src="/arrow-left.png" alt="Back" className="w-6 h-6" />
         </button>
       </header>
 
-      <hr className="border-t-[1px] mx-4" style={{ borderColor: "#FCFCFC" }} />
+      <hr className="border-t-[1px] mx-4" style={{ borderColor: "#F0F0F0" }} />
 
       <main className="flex-grow px-4 pb-4">
-        <h1 className="text-3xl font-bold text-[#262626] mt-[35px] mb-8">
+        <h1 className="text-3xl font-bold text-[#262626] mt-4 mb-8">
           Dil ve Para Birimi
         </h1>
         <div className="space-y-8">
@@ -116,7 +116,7 @@ export default function DilParaBirimiPage() {
           </div>
         </div>
 
-        <hr className="border-t-[1px] my-8" style={{ borderColor: "#FCFCFC" }} />
+        <hr className="border-t-[1px] my-8" style={{ borderColor: "#F0F0F0" }} />
 
         <div>
           <div className="flex justify-between items-center mb-4">
