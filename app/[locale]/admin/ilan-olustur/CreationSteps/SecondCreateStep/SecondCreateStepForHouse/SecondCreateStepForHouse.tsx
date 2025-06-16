@@ -559,9 +559,9 @@ export default function SecondCreateStepForHouse() {
               </div> */}
             </div>
 
-            {/* Areas - Side by side */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <div className="w-full sm:w-1/2">
+            {/* Metrekare (Brüt) - Metrekare (Net) - Oda Sayısı */}
+            <div className="flex flex-col lg:flex-row gap-4 mb-6">
+              <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="projectArea"
                   className="font-semibold block mb-2 text-[#262626]"
@@ -582,10 +582,10 @@ export default function SecondCreateStepForHouse() {
                     setProjectArea(parseFloat(validValue) || 0);
                   }}
                   className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                  placeholder="Brüt m²"
+                  placeholder="Buraya yazın"
                 />
               </div>
-              <div className="w-full sm:w-1/2">
+              <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="totalSize"
                   className="font-semibold block mb-2 text-[#262626]"
@@ -606,14 +606,10 @@ export default function SecondCreateStepForHouse() {
                     setTotalSize(parseFloat(validValue) || 0);
                   }}
                   className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                  placeholder="Net m²"
+                  placeholder="Buraya yazın"
                 />
               </div>
-            </div>
-
-            {/* Room and Bathroom Counts - Side by side */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <div className="w-full sm:w-1/2">
+              <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="roomCount"
                   className="font-semibold block mb-2 text-[#262626]"
@@ -624,10 +620,14 @@ export default function SecondCreateStepForHouse() {
                   options={generateRoomCountOptions()}
                   value={roomCount || 0}
                   onChange={(value) => setRoomCount(parseInt(value))}
-                  placeholder="Seçiniz"
+                  placeholder="Seçin"
                 />
               </div>
-              <div className="w-full sm:w-1/2">
+            </div>
+
+            {/* Banyo Sayısı - Kat Sayısı - Bulunduğu Kat */}
+            <div className="flex flex-col lg:flex-row gap-4 mb-6">
+              <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="bathroomCount"
                   className="font-semibold block mb-2 text-[#262626]"
@@ -638,28 +638,10 @@ export default function SecondCreateStepForHouse() {
                   options={generateNumberOptions(0, 5)}
                   value={bathroomCount || 0}
                   onChange={(value) => setBathroomCount(parseInt(value))}
-                  placeholder="Seçiniz"
+                  placeholder="Seçin"
                 />
               </div>
-            </div>
-
-            {/* Bedroom and Floor Counts */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <div className="w-full sm:w-1/2">
-                <label
-                  htmlFor="bedRoomCount"
-                  className="font-semibold block mb-2 text-[#262626]"
-                >
-                  Balkon Sayısı
-                </label>
-                <CustomSelect
-                  options={generateNumberOptions(0, 5)}
-                  value={bedRoomCount || 0}
-                  onChange={(value) => setBedRoomCount(parseInt(value))}
-                  placeholder="Seçiniz"
-                />
-              </div>
-              <div className="w-full sm:w-1/2">
+              <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="floorCount"
                   className="font-semibold block mb-2 text-[#262626]"
@@ -670,45 +652,55 @@ export default function SecondCreateStepForHouse() {
                   options={generateNumberOptions(0, 5)}
                   value={floorCount || 0}
                   onChange={(value) => setFloorCount(parseInt(value))}
-                  placeholder="Seçiniz"
+                  placeholder="Seçin"
+                />
+              </div>
+              <div className="w-full lg:w-1/3">
+                <label
+                  htmlFor="floorPosition"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  Bulunduğu Kat
+                </label>
+                <CustomSelect
+                  options={floorPositionOptions.map((option) => ({
+                    value: option.tr,
+                    label: option.tr,
+                  }))}
+                  value={floorPosition?.tr || ""}
+                  onChange={(value) => {
+                    const selected = floorPositionOptions.find(
+                      (option) => option.tr === value
+                    );
+                    if (selected) {
+                      setFloorPosition({
+                        tr: selected.tr,
+                        en: selected.en,
+                      });
+                    }
+                  }}
+                  placeholder="Seçin"
                 />
               </div>
             </div>
 
-            {/* Bulunduğu Kat */}
-            <div className="mb-6">
-              <label
-                htmlFor="floorPosition"
-                className="font-semibold block mb-2 text-[#262626]"
-              >
-                Bulunduğu Kat
-              </label>
-              <CustomSelect
-                options={floorPositionOptions.map((option) => ({
-                  value: option.tr,
-                  label: option.tr,
-                }))}
-                value={floorPosition?.tr || ""}
-                onChange={(value) => {
-                  const selected = floorPositionOptions.find(
-                    (option) => option.tr === value
-                  );
-                  if (selected) {
-                    setFloorPosition({
-                      tr: selected.tr,
-                      en: selected.en,
-                    });
-                  }
-                }}
-                placeholder="Seçiniz"
-              />
-            </div>
-
-            {/* Build Year */}
-
-            {/* Mutfak Tipi - Isıtma */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <div className="w-full sm:w-1/2">
+            {/* Balkon Sayısı - Mutfak Tipi - Isıtma */}
+            <div className="flex flex-col lg:flex-row gap-4 mb-6">
+              <div className="w-full lg:w-1/3">
+                <label
+                  htmlFor="bedRoomCount"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  Balkon Sayısı
+                </label>
+                <CustomSelect
+                  options={generateNumberOptions(0, 5)}
+                  value={bedRoomCount || 0}
+                  onChange={(value) => setBedRoomCount(parseInt(value))}
+                  placeholder="Seçin"
+                />
+              </div>
+              <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="kitchenType"
                   className="font-semibold block mb-2 text-[#262626]"
@@ -746,10 +738,10 @@ export default function SecondCreateStepForHouse() {
                       });
                     }
                   }}
-                  placeholder="Seçiniz"
+                  placeholder="Seçin"
                 />
               </div>
-              <div className="w-full sm:w-1/2">
+              <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="heatingType"
                   className="font-semibold block mb-2 text-[#262626]"
@@ -793,14 +785,14 @@ export default function SecondCreateStepForHouse() {
                       });
                     }
                   }}
-                  placeholder="Seçiniz"
+                  placeholder="Seçin"
                 />
               </div>
             </div>
 
-            {/* Kimden - Takaslı */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <div className="w-full sm:w-1/2">
+            {/* Kimden - Takaslı - Eşyalı */}
+            <div className="flex flex-col lg:flex-row gap-4 mb-6">
+              <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="source"
                   className="font-semibold block mb-2 text-[#262626]"
@@ -834,10 +826,10 @@ export default function SecondCreateStepForHouse() {
                       });
                     }
                   }}
-                  placeholder="Seçiniz"
+                  placeholder="Seçin"
                 />
               </div>
-              <div className="w-full sm:w-1/2">
+              <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="exchangeable"
                   className="font-semibold block mb-2 text-[#262626]"
@@ -848,46 +840,10 @@ export default function SecondCreateStepForHouse() {
                   options={booleanOptions}
                   value={exchangeable ? "true" : "false"}
                   onChange={(value) => setExchangeable(value === "true")}
-                  placeholder="Seçiniz"
+                  placeholder="Seçin"
                 />
               </div>
-            </div>
-
-            {/* Krediye Uygunluk - Bina Yaşı */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <div className="w-full sm:w-1/2">
-                <label
-                  htmlFor="creditEligible"
-                  className="font-semibold block mb-2 text-[#262626]"
-                >
-                  Krediye Uygunluk
-                </label>
-                <CustomSelect
-                  options={booleanOptions}
-                  value={creditEligible ? "true" : "false"}
-                  onChange={(value) => setCreditEligible(value as any)}
-                  placeholder="Seçiniz"
-                />
-              </div>
-              <div className="w-full sm:w-1/2">
-                <label
-                  htmlFor="buildingAge"
-                  className="font-semibold block mb-2 text-[#262626]"
-                >
-                  Bina Yaşı
-                </label>
-                <CustomSelect
-                  options={buildingAgeOptions}
-                  value={buildingAge || 0}
-                  onChange={(value) => setBuildingAge(parseInt(value))}
-                  placeholder="Seçiniz"
-                />
-              </div>
-            </div>
-
-            {/* Eşyalı - Aidat */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <div className="w-full sm:w-1/2">
+              <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="isFurnished"
                   className="font-semibold block mb-2 text-[#262626]"
@@ -898,23 +854,55 @@ export default function SecondCreateStepForHouse() {
                   options={booleanOptions}
                   value={isFurnished ? "true" : "false"}
                   onChange={(value) => setIsFurnished(value === "true")}
-                  placeholder="Seçiniz"
+                  placeholder="Seçin"
                 />
               </div>
-              <div className="w-full sm:w-1/2">
+            </div>
+
+            {/* Krediye Uygunluk - Bina Yaşı - Aidat */}
+            <div className="flex flex-col lg:flex-row gap-4 mb-6">
+              <div className="w-full lg:w-1/3">
+                <label
+                  htmlFor="creditEligible"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  Krediye Uygunluk
+                </label>
+                <CustomSelect
+                  options={booleanOptions}
+                  value={creditEligible ? "true" : "false"}
+                  onChange={(value) => setCreditEligible(value as any)}
+                  placeholder="Seçin"
+                />
+              </div>
+              <div className="w-full lg:w-1/3">
+                <label
+                  htmlFor="buildingAge"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  Bina Yaşı
+                </label>
+                <CustomSelect
+                  options={buildingAgeOptions}
+                  value={buildingAge || 0}
+                  onChange={(value) => setBuildingAge(parseInt(value))}
+                  placeholder="Seçin"
+                />
+              </div>
+              <div className="w-full lg:w-1/3">
                 <label className="font-semibold block mb-2 text-[#262626]">
                   Aidat
                 </label>
                 <div className="flex gap-2">
-                  <div className="w-24">
+                  <div className="w-20">
                     <CustomSelect
                       options={[
-                        { value: "TRY", label: "TRY" },
-                        { value: "USD", label: "USD" },
+                        { value: "TRY", label: "₺" },
+                        { value: "USD", label: "$" },
                       ]}
                       value={selectedDuesCurrency}
                       onChange={(value) => setSelectedDuesCurrency(value)}
-                      placeholder="TRY"
+                      placeholder="₺"
                     />
                   </div>
                   <div className="flex-1">
@@ -932,9 +920,9 @@ export default function SecondCreateStepForHouse() {
               </div>
             </div>
 
-            {/* Kullanım Durumu - Tapu Durumu */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <div className="w-full sm:w-1/2">
+            {/* Kullanım Durumu - Tapu Durumu - Krediye Uygunluk */}
+            <div className="flex flex-col lg:flex-row gap-4 mb-6">
+              <div className="w-full lg:w-1/2">
                 <label
                   htmlFor="usageStatus"
                   className="font-semibold block mb-2 text-[#262626]"
@@ -970,11 +958,10 @@ export default function SecondCreateStepForHouse() {
                       setUsageStatus(usageMap);
                     }
                   }}
-                  placeholder="Seçiniz"
-                  openUpward={true}
+                  placeholder="Seçin"
                 />
               </div>
-              <div className="w-full sm:w-1/2">
+              <div className="w-full lg:w-1/2">
                 <label
                   htmlFor="deedStatus"
                   className="font-semibold block mb-2 text-[#262626]"
@@ -1022,8 +1009,7 @@ export default function SecondCreateStepForHouse() {
                       setDeedStatus(deedMap);
                     }
                   }}
-                  placeholder="Seçiniz"
-                  openUpward={true}
+                  placeholder="Seçin"
                 />
               </div>
             </div>
