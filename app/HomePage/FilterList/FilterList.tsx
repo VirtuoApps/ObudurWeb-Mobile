@@ -828,8 +828,8 @@ export default function FilterList({
         className={`bg-white flex flex-row transition-all duration-350 ease-in-out ${
           currentView === "map"
             ? "fixed lg:top-28 top-[71px] left-0 right-0 w-full lg:w-[924px] lg:shadow-lg"
-            : "mt-0 mb-7 relative w-full border-b border-[#F0F0F0]"
-        } z-20  mx-auto  lg:rounded-2xl lg:border-none border-b border-[#F0F0F0] `}
+            : "mt-0 mb-7 relative w-full border-b border-[#F0F0F0] lg:border-b lg:border-[#F0F0F0]"
+        } z-20  mx-auto  lg:rounded-2xl `}
       >
         {showRightArrow && (
           <button
