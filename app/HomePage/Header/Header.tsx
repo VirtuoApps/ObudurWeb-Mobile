@@ -54,54 +54,60 @@ export default function Header({
   const dispatch = useDispatch();
   const t = useTranslations("header");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isFilterApplied = useSelector((state: any) => state.favorites.isFilterApplied);
+  const isFilterApplied = useSelector(
+    (state: any) => state.favorites.isFilterApplied
+  );
   const { user } = useAppSelector((state) => state.user);
   const isMobile = useSelector((state: any) => state.favorites.isMobile);
   const { scrollDirection, isScrolled } = useScrollDirection();
   useDeviceDetection();
 
   if (isFilterApplied && isMobile) {
-      return ( <header className={`${isFilterApplied ? "applied": "not-applied"} relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-0 lg:py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex`}>
-      <div className="w-full flex items-center px-4 sm:px-6 gap-3">
-        <div className="xl:hidden flex items-center shrink-0 w-[32px]">
-
-    <button
-        type="button"
-        onClick={() => {
-          resetFilters();
-          dispatch(setIsFilterApplied(false));
-        }}
-        className="bg-white hover:bg-gray-50 text-[#262626] w-[32px] h-[32px] font-semibold  inline-flex items-center justify-center gap-2 transition hover:border-[#6656AD] cursor-pointer rounded-[16px]"
+    return (
+      <header
+        className={`${
+          isFilterApplied ? "applied" : "not-applied"
+        } relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-0 lg:py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex`}
       >
-        <ArrowLeftIcon className="h-5 w-5" />
-      </button>
-        </div>
+        <div className="w-full flex items-center px-4 sm:px-6 gap-3">
+          <div className="xl:hidden flex items-center shrink-0 w-[32px]">
+            <button
+              type="button"
+              onClick={() => {
+                resetFilters();
+                dispatch(setIsFilterApplied(false));
+              }}
+              className="bg-white hover:bg-gray-50 text-[#262626] w-[32px] h-[32px] font-semibold  inline-flex items-center justify-center gap-2 transition hover:border-[#6656AD] cursor-pointer rounded-[16px]"
+            >
+              <ArrowLeftIcon className="h-5 w-5" />
+            </button>
+          </div>
 
-        <div className="xl:hidden flex items-center justify-center flex-1 min-w-0">
-          <Image
-            src="/obudur-logo.png"
-            alt="oBudur Logo"
-            width={108}
-            height={24}
-            className="w-[28px] h-[32px] md:w-[108px] md:h-[24px]"
-            priority
-          />
-        </div>
+          <div className="xl:hidden flex items-center justify-center flex-1 min-w-0">
+            <Image
+              src="/obudur-logo.png"
+              alt="oBudur Logo"
+              width={108}
+              height={24}
+              priority
+            />
+          </div>
 
-        <div className="flex items-center xl:hidden shrink-0">
-          <AuthBox />
+          <div className="flex items-center xl:hidden shrink-0">
+            <AuthBox />
+          </div>
         </div>
-      </div>
-    </header>)
+      </header>
+    );
   }
 
-
   return (
-    <header className={`relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex`}>
+    <header
+      className={`relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex`}
+    >
       <div className="w-full flex items-center px-4 sm:px-6 gap-3">
         {/* Logo - Sabit genişlik */}
         <div className="xl:flex hidden items-center shrink-0 w-[144px]">
-
           <Image
             src="/obudur-logo.png"
             alt="oBudur Logo"
