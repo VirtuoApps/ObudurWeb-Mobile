@@ -28,11 +28,11 @@ export default function SimpleHeader({
 
   return (
         <header className="relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex">
-      <div className="w-full flex flex-wrap items-center justify-between px-4 sm:px-6">
+      <div className="w-full flex items-center px-4 sm:px-6 gap-3">
         {showBackButton && (
           <div
             onClick={() => router.push(backUrl || "/")}
-            className="block md:hidden"
+            className="block md:hidden shrink-0 w-[28px]"
           >
             <img
               src="/left-icon.png"
@@ -43,9 +43,9 @@ export default function SimpleHeader({
           </div>
         )}
 
-        {/* Logo */}
+        {/* Logo - Sabit genişlik */}
         <div
-          className="flex items-center cursor-pointer"
+          className="flex items-center cursor-pointer flex-1 justify-center md:justify-start md:flex-initial md:shrink-0 md:w-[144px]"
           onClick={() => router.push("/")}
         >
           <Image
@@ -57,17 +57,18 @@ export default function SimpleHeader({
           />
         </div>
 
-        {/* Center Navigation - Hidden on mobile, shown on md and larger */}
+        {/* Center Navigation - Burada search alanı olsaydı buraya gelirdi */}
 
-        {/* Right Side Items for Desktop */}
-        <div className="hidden md:flex items-center gap-4">
+        {/* Right Side Items - Sabit genişlik */}
+        <div className="hidden md:flex items-center gap-4 shrink-0">
           <AuthBox />
           <LanguageSwitcher />
         </div>
 
-        {/* Hamburger Menu Button for Mobile */}
-        <div className="md:hidden flex items-center">
-          <AuthBox showLikeButton={isDetailPage} hideProfileIcon={isDetailPage} />
+        {/* Mobile Right Side - Sabit genişlik */}
+        <div className="md:hidden flex items-center shrink-0">
+          <AuthBox />
+
         </div>
       </div>
 

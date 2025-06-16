@@ -110,7 +110,7 @@ export default function GeneralSelect({
               ref={buttonRef}
               className={`${
                 isOpen ? "bg-[#F5F5F5]" : ""
-              } flex items-center justify-between  px-3 py-3 text-sm ${extraClassName} ${
+              } flex items-center justify-between shrink-0 px-3 py-3 text-sm ${extraClassName} ${
                 !customTextColor ? "text-gray-700" : ""
               } cursor-pointer rounded-[8px] outline-none `}
             >

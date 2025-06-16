@@ -58,7 +58,7 @@ export default function MiddleSearchBox({
         ${
           isMobileMenu
             ? "flex flex-col w-full gap-3"
-            : "flex items-center gap-2 border border-gray-100 px-[10px]  rounded-lg"
+            : "flex items-center gap-2 border border-gray-100 px-[10px] rounded-lg min-w-0"
         }
       `}
     >
@@ -92,7 +92,7 @@ export default function MiddleSearchBox({
       </div> */}
       
 <div
-  className={`relative flex rounded-md bg-gray-100 p-1 h-[36px] items-center ${
+  className={`relative flex rounded-md bg-gray-100 p-1 h-[36px] items-center shrink-0 ${
     isMobileMenu ? "w-full" : ""
   }`}
 >
@@ -169,7 +169,7 @@ export default function MiddleSearchBox({
 
       {/* Search Button */}
       <button
-        className={`bg-[#5E5691] text-white flex items-center justify-center
+        className={`bg-[#5E5691] text-white flex items-center justify-center shrink-0
           text-center px-6 py-1.5 rounded-md text-sm font-medium cursor-pointer h-[36px] w-[80px] ${
             isMobileMenu ? "w-full" : ""
           }`}

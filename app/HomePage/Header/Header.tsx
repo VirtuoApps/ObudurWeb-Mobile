@@ -61,9 +61,10 @@ export default function Header({
   useDeviceDetection();
 
   if (isFilterApplied && isMobile) {
-      return ( <header className={`${isFilterApplied ? "applied": "not-applied"} ${isScrolled && isMobile ? 'fixed top-0 left-0 right-0 z-50 shadow-md' : 'relative'} border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-0 lg:py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex transition-all duration-300`}>
-      <div className="w-full flex items-center justify-between px-4 sm:px-6 gap-3">
-        <div className="xl:hidden flex items-center">
+      return ( <header className={`${isFilterApplied ? "applied": "not-applied"} relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-0 lg:py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex`}>
+      <div className="w-full flex items-center px-4 sm:px-6 gap-3">
+        <div className="xl:hidden flex items-center shrink-0 w-[32px]">
+
     <button
         type="button"
         onClick={() => {
@@ -76,7 +77,7 @@ export default function Header({
       </button>
         </div>
 
-        <div className="xl:hidden flex items-center">
+        <div className="xl:hidden flex items-center justify-center flex-1 min-w-0">
           <Image
             src="/obudur-logo.png"
             alt="oBudur Logo"
@@ -86,7 +87,7 @@ export default function Header({
           />
         </div>
 
-        <div className="flex items-center xl:hidden">
+        <div className="flex items-center xl:hidden shrink-0">
           <AuthBox />
         </div>
       </div>
@@ -95,10 +96,11 @@ export default function Header({
 
 
   return (
-    <header className={`${isScrolled && isMobile ? 'fixed top-0 left-0 right-0 z-50 shadow-md' : 'relative'} border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex transition-all duration-300`}>
-      <div className="w-full flex items-center justify-between px-4 sm:px-6 gap-3">
-        {/* Logo */}
-        <div className="xl:flex hidden items-center">
+    <header className={`relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex`}>
+      <div className="w-full flex items-center px-4 sm:px-6 gap-3">
+        {/* Logo - Sabit genişlik */}
+        <div className="xl:flex hidden items-center shrink-0 w-[144px]">
+
           <Image
             src="/obudur-logo.png"
             alt="oBudur Logo"
@@ -108,7 +110,7 @@ export default function Header({
           />
         </div>
 
-        <div className="xl:hidden flex items-center">
+        <div className="xl:hidden flex items-center shrink-0 w-[28px]">
           <Image
             src="/obudur-icon.png"
             alt="oBudur Logo"
@@ -118,25 +120,27 @@ export default function Header({
           />
         </div>
 
-        {/* Center Navigation - Hidden on mobile, shown on md and larger */}
-        <div className="hidden xl:flex flex-1 justify-center px-4">
-          <MiddleSearchBox
-            setFilters={setFilters}
-            filterOptions={filterOptions}
-            selectedLocation={selectedLocation}
-            selectedPropertyType={selectedPropertyType}
-            selectedCategory={selectedCategory}
-            listingType={listingType}
-            setListingType={setListingType}
-            setSelectedPropertyType={setSelectedPropertyType}
-            setSelectedCategory={setSelectedCategory}
-            setSelectedLocation={setSelectedLocation}
-            searchRadius={searchRadius}
-            setSearchRadius={setSearchRadius}
-          />
+        {/* Center Navigation - Search alanı dinamik genişlik */}
+        <div className="hidden xl:flex flex-1 justify-center min-w-0">
+          <div className="w-full max-w-3xl">
+            <MiddleSearchBox
+              setFilters={setFilters}
+              filterOptions={filterOptions}
+              selectedLocation={selectedLocation}
+              selectedPropertyType={selectedPropertyType}
+              selectedCategory={selectedCategory}
+              listingType={listingType}
+              setListingType={setListingType}
+              setSelectedPropertyType={setSelectedPropertyType}
+              setSelectedCategory={setSelectedCategory}
+              setSelectedLocation={setSelectedLocation}
+              searchRadius={searchRadius}
+              setSearchRadius={setSearchRadius}
+            />
+          </div>
         </div>
 
-        <div className="xl:hidden flex-1 items-center">
+        <div className="xl:hidden flex-1 min-w-0 mx-3">
           <MobileSearchBox
             selectedLocation={selectedLocation}
             setSelectedLocation={setSelectedLocation}
@@ -146,8 +150,8 @@ export default function Header({
           />
         </div>
 
-        {/* Right Side Items for Desktop */}
-        <div className="hidden xl:flex items-center gap-3">
+        {/* Right Side Items - Sabit genişlik */}
+        <div className="hidden xl:flex items-center gap-3 shrink-0">
           <AuthBox
             setShowIsPersonalInformationFormPopup={
               setShowIsPersonalInformationFormPopup
@@ -156,10 +160,10 @@ export default function Header({
           <LanguageSwitcher />
         </div>
 
-        {/* Hamburger Menu Button for Mobile */}
-        <div className="flex items-center xl:hidden">
+        {/* Mobile Right Side - Sabit genişlik */}
+        <div className="flex items-center xl:hidden shrink-0">
           <AuthBox />
-          <div className="hidden lg:flex">
+          <div className="hidden lg:flex ml-2">
             <LanguageSwitcher />
           </div>
         </div>
