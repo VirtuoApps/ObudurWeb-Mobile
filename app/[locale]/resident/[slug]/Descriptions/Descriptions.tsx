@@ -17,7 +17,7 @@ export default function Descriptions() {
 
       <div className="flex md:flex-row flex-col mt-8 gap-6">
         <div className="md:w-1/2 w-full">
-          <p className="text-[#262626] text-base">
+          <p className="text-[#262626] text-base wrap-break-word">
             {hotelData.hotelDetails.description[currentLocale]}
           </p>
         </div>

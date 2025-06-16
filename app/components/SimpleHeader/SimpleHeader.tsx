@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { usePathname } from "next/navigation";
+
 import AuthBox from "@/app/HomePage/Header/AuthBox/AuthBox";
 import { FaBars } from "react-icons/fa";
 import Image from "next/image";
@@ -22,17 +22,16 @@ export default function SimpleHeader({
   customMaxWidth,
 }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const router = useRouter();
-  const pathname = usePathname();
-  const isDetailPage = pathname?.includes('/resident/');
 
   return (
-        <header className="relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex">
-      <div className="w-full flex items-center px-4 sm:px-6 gap-3">
+    <header className="relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex">
+      <div className="w-full flex flex-wrap items-center justify-between px-4 sm:px-6">
         {showBackButton && (
           <div
             onClick={() => router.push(backUrl || "/")}
-            className="block md:hidden shrink-0 w-[28px]"
+            className="block md:hidden"
           >
             <img
               src="/left-icon.png"
@@ -43,9 +42,9 @@ export default function SimpleHeader({
           </div>
         )}
 
-        {/* Logo - Sabit genişlik */}
+        {/* Logo */}
         <div
-          className="flex items-center cursor-pointer flex-1 justify-center md:justify-start md:flex-initial md:shrink-0 md:w-[144px]"
+          className="flex items-center cursor-pointer"
           onClick={() => router.push("/")}
         >
           <Image
@@ -53,23 +52,21 @@ export default function SimpleHeader({
             alt="oBudur Logo"
             width={144}
             height={32}
-            className="w-[28px] h-[32px] md:w-[144px] md:h-[32px]"
             priority
           />
         </div>
 
-        {/* Center Navigation - Burada search alanı olsaydı buraya gelirdi */}
+        {/* Center Navigation - Hidden on mobile, shown on md and larger */}
 
-        {/* Right Side Items - Sabit genişlik */}
-        <div className="hidden md:flex items-center gap-4 shrink-0">
+        {/* Right Side Items for Desktop */}
+        <div className="hidden md:flex items-center gap-4">
           <AuthBox />
           <LanguageSwitcher />
         </div>
 
-        {/* Mobile Right Side - Sabit genişlik */}
-        <div className="md:hidden flex items-center shrink-0">
+        {/* Hamburger Menu Button for Mobile */}
+        <div className="md:hidden flex items-center">
           <AuthBox />
-
         </div>
       </div>
 

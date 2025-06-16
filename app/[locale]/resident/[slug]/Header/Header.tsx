@@ -52,7 +52,6 @@ export default function Header() {
             alt="oBudur Logo"
             width={30}
             height={20}
-            className="w-[28px] h-[32px] md:w-[30px] md:h-[20px]"
           />
         </div>
 
