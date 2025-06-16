@@ -135,6 +135,8 @@ export default function SecondCreateStepForWork() {
     source,
     setSource,
     setCurrentStep,
+    floorPosition,
+    setFloorPosition,
   } = useListingForm();
 
   // Handle amount change for a specific currency with formatting
@@ -275,6 +277,40 @@ export default function SecondCreateStepForWork() {
     { value: 5, label: "5" },
     { value: 10, label: "10" },
     { value: 11, label: "10+" },
+  ];
+
+  // Floor position options
+  const floorPositionOptions = [
+    { tr: "Kot 4", en: "Level 4 Basement" },
+    { tr: "Kot 3", en: "Level 3 Basement" },
+    { tr: "Kot 2", en: "Level 2 Basement" },
+    { tr: "Kot 1", en: "Level 1 Basement" },
+    { tr: "Zemin Kat", en: "Ground Floor" },
+    { tr: "Bodrum Kat", en: "Basement Floor" },
+    { tr: "Bahçe Katı", en: "Garden Floor" },
+    { tr: "Giriş", en: "Entrance" },
+    { tr: "Yüksek Giriş", en: "High Entrance" },
+    { tr: "Çatı Katı", en: "Roof Floor" },
+    { tr: "1", en: "1" },
+    { tr: "2", en: "2" },
+    { tr: "3", en: "3" },
+    { tr: "4", en: "4" },
+    { tr: "5", en: "5" },
+    { tr: "6", en: "6" },
+    { tr: "7", en: "7" },
+    { tr: "8", en: "8" },
+    { tr: "9", en: "9" },
+    { tr: "10", en: "10" },
+    { tr: "11", en: "11" },
+    { tr: "12", en: "12" },
+    { tr: "13", en: "13" },
+    { tr: "14", en: "14" },
+    { tr: "15", en: "15" },
+    { tr: "16", en: "16" },
+    { tr: "17", en: "17" },
+    { tr: "18", en: "18" },
+    { tr: "19", en: "19" },
+    { tr: "20+", en: "20+" },
   ];
 
   // Validate all required fields
@@ -460,9 +496,9 @@ export default function SecondCreateStepForWork() {
               </div> */}
             </div>
 
-            {/* Metrekare - Bölüm / Oda Sayısı */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <div className="w-full sm:w-1/2">
+            {/* Metrekare - Bölüm / Oda Sayısı - Kat Sayısı */}
+            <div className="flex flex-col lg:flex-row gap-4 mb-6">
+              <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="projectArea"
                   className="font-semibold block mb-2 text-[#262626]"
@@ -486,7 +522,7 @@ export default function SecondCreateStepForWork() {
                   placeholder="m²"
                 />
               </div>
-              <div className="w-full sm:w-1/2">
+              <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="roomCount"
                   className="font-semibold block mb-2 text-[#262626]"
@@ -500,11 +536,7 @@ export default function SecondCreateStepForWork() {
                   placeholder="Seçiniz"
                 />
               </div>
-            </div>
-
-            {/* Kat Sayısı - Bina Yaşı */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <div className="w-full sm:w-1/2">
+              <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="floorCount"
                   className="font-semibold block mb-2 text-[#262626]"
@@ -520,27 +552,93 @@ export default function SecondCreateStepForWork() {
                   placeholder="Seçiniz"
                 />
               </div>
-              <div className="w-full sm:w-1/2">
+            </div>
+
+            {/* Bulunduğu Kat - Kimden - Takaslı */}
+            <div className="flex flex-col lg:flex-row gap-4 mb-6">
+              <div className="w-full lg:w-1/3">
                 <label
-                  htmlFor="buildingAge"
+                  htmlFor="floorPosition"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Bina Yaşı
+                  Bulunduğu Kat
                 </label>
                 <CustomSelect
-                  options={buildingAgeOptions}
-                  value={buildingAge || 0}
-                  onChange={(value) =>
-                    setBuildingAge(parseInt(value.toString()))
+                  options={floorPositionOptions.map((option) => ({
+                    value: option.tr,
+                    label: option.tr,
+                  }))}
+                  value={floorPosition?.tr || ""}
+                  onChange={(value) => {
+                    const selected = floorPositionOptions.find(
+                      (option) => option.tr === value
+                    );
+                    if (selected) {
+                      setFloorPosition({
+                        tr: selected.tr,
+                        en: selected.en,
+                      });
+                    }
+                  }}
+                  placeholder="Seçiniz"
+                />
+              </div>
+              <div className="w-full lg:w-1/3">
+                <label
+                  htmlFor="source"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  Kimden
+                </label>
+                <CustomSelect
+                  options={sourceOptions}
+                  value={
+                    source?.tr
+                      ? sourceOptions.find(
+                          (option) => option.label === source.tr
+                        )?.value || ""
+                      : ""
                   }
+                  onChange={(value) => {
+                    const selected = sourceOptions.find(
+                      (option) => option.value === value
+                    );
+                    if (selected) {
+                      setSource({
+                        tr: selected.label,
+                        en:
+                          selected.value === "fromOwner"
+                            ? "From Owner"
+                            : selected.value === "fromRealEstate"
+                            ? "From Real Estate Office"
+                            : selected.value === "fromConstruction"
+                            ? "From Construction Company"
+                            : "",
+                      });
+                    }
+                  }}
+                  placeholder="Seçiniz"
+                />
+              </div>
+              <div className="w-full lg:w-1/3">
+                <label
+                  htmlFor="exchangeable"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  Takaslı
+                </label>
+                <CustomSelect
+                  options={booleanOptions}
+                  value={exchangeable ? true : false}
+                  onChange={(value) => setExchangeable(value as any)}
                   placeholder="Seçiniz"
                 />
               </div>
             </div>
 
-            {/* Isıtma - Kimden */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <div className="w-full sm:w-1/2">
+            {/* Isıtma - Kullanım Durumu - Bina Yaşı */}
+            <div className="flex flex-col lg:flex-row gap-4 mb-6">
+              <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="heatingType"
                   className="font-semibold block mb-2 text-[#262626]"
@@ -587,80 +685,7 @@ export default function SecondCreateStepForWork() {
                   placeholder="Seçiniz"
                 />
               </div>
-              <div className="w-full sm:w-1/2">
-                <label
-                  htmlFor="source"
-                  className="font-semibold block mb-2 text-[#262626]"
-                >
-                  Kimden
-                </label>
-                <CustomSelect
-                  options={sourceOptions}
-                  value={
-                    source?.tr
-                      ? sourceOptions.find(
-                          (option) => option.label === source.tr
-                        )?.value || ""
-                      : ""
-                  }
-                  onChange={(value) => {
-                    const selected = sourceOptions.find(
-                      (option) => option.value === value
-                    );
-                    if (selected) {
-                      setSource({
-                        tr: selected.label,
-                        en:
-                          selected.value === "fromOwner"
-                            ? "From Owner"
-                            : selected.value === "fromRealEstate"
-                            ? "From Real Estate Office"
-                            : selected.value === "fromConstruction"
-                            ? "From Construction Company"
-                            : "",
-                      });
-                    }
-                  }}
-                  placeholder="Seçiniz"
-                />
-              </div>
-            </div>
-
-            {/* Takaslı - Krediye Uygunluk */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <div className="w-full sm:w-1/2">
-                <label
-                  htmlFor="exchangeable"
-                  className="font-semibold block mb-2 text-[#262626]"
-                >
-                  Takaslı
-                </label>
-                <CustomSelect
-                  options={booleanOptions}
-                  value={exchangeable ? true : false}
-                  onChange={(value) => setExchangeable(value as any)}
-                  placeholder="Seçiniz"
-                />
-              </div>
-              <div className="w-full sm:w-1/2">
-                <label
-                  htmlFor="creditEligible"
-                  className="font-semibold block mb-2 text-[#262626]"
-                >
-                  Krediye Uygunluk
-                </label>
-                <CustomSelect
-                  options={booleanOptions}
-                  value={creditEligible ? true : false}
-                  onChange={(value) => setCreditEligible(value as any)}
-                  placeholder="Seçiniz"
-                />
-              </div>
-            </div>
-
-            {/* Kullanım Durumu - Aidat */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <div className="w-full sm:w-1/2">
+              <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="usageStatus"
                   className="font-semibold block mb-2 text-[#262626]"
@@ -697,10 +722,44 @@ export default function SecondCreateStepForWork() {
                     }
                   }}
                   placeholder="Seçiniz"
+                />
+              </div>
+              <div className="w-full lg:w-1/3">
+                <label
+                  htmlFor="buildingAge"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  Bina Yaşı
+                </label>
+                <CustomSelect
+                  options={buildingAgeOptions}
+                  value={buildingAge || 0}
+                  onChange={(value) =>
+                    setBuildingAge(parseInt(value.toString()))
+                  }
+                  placeholder="Seçiniz"
+                />
+              </div>
+            </div>
+
+            {/* Krediye Uygunluk - Aidat */}
+            <div className="flex flex-col lg:flex-row gap-4 mb-6">
+              <div className="w-full lg:w-1/2">
+                <label
+                  htmlFor="creditEligible"
+                  className="font-semibold block mb-2 text-[#262626]"
+                >
+                  Krediye Uygunluk
+                </label>
+                <CustomSelect
+                  options={booleanOptions}
+                  value={creditEligible ? true : false}
+                  onChange={(value) => setCreditEligible(value as any)}
+                  placeholder="Seçiniz"
                   openUpward={true}
                 />
               </div>
-              <div className="w-full sm:w-1/2">
+              <div className="w-full lg:w-1/2">
                 <label className="font-semibold block mb-2 text-[#262626]">
                   Aidat
                 </label>
@@ -716,6 +775,7 @@ export default function SecondCreateStepForWork() {
                         setSelectedDuesCurrency(value as string)
                       }
                       placeholder="TRY"
+                      openUpward={true}
                     />
                   </div>
                   <div className="flex-1">

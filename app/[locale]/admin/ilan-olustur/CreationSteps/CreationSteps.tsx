@@ -72,6 +72,8 @@ export interface HotelData {
   // Land specific fields
   adaNo?: string;
   parselNo?: string;
+  // Floor position
+  floorPosition?: MultilangText;
 }
 
 // Define the context type
@@ -191,6 +193,9 @@ type ListingFormContextType = {
   setAdaNo: React.Dispatch<React.SetStateAction<string>>;
   parselNo: string;
   setParselNo: React.Dispatch<React.SetStateAction<string>>;
+  // Floor position
+  floorPosition: MultilangText;
+  setFloorPosition: React.Dispatch<React.SetStateAction<MultilangText>>;
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   // Update mode
@@ -307,6 +312,9 @@ export const ListingFormContext = createContext<ListingFormContextType>({
   setAdaNo: () => {},
   parselNo: "",
   setParselNo: () => {},
+  // Floor position default
+  floorPosition: { tr: "", en: "" },
+  setFloorPosition: () => {},
   currentStep: 1,
   setCurrentStep: () => {},
   // Update mode defaults
@@ -439,6 +447,9 @@ export default function CreationSteps({
   const [adaNo, setAdaNo] = useState<string>(hotelData?.adaNo || "");
   const [parselNo, setParselNo] = useState<string>(hotelData?.parselNo || "");
 
+  // Floor position state
+  const [floorPosition, setFloorPosition] = useState<MultilangText>(hotelData?.floorPosition || { tr: "", en: "" });
+
   // Set hotelId from hotelData if in update mode
   const hotelId = isUpdate && hotelData ? hotelData._id : null;
 
@@ -532,6 +543,11 @@ export default function CreationSteps({
       }
       if (hotelData.parselNo) {
         setParselNo(hotelData.parselNo);
+      }
+
+      // Floor position
+      if (hotelData.floorPosition) {
+        setFloorPosition(hotelData.floorPosition);
       }
 
       // Fourth step data
@@ -658,6 +674,9 @@ export default function CreationSteps({
     setAdaNo,
     parselNo,
     setParselNo,
+    // Floor position
+    floorPosition,
+    setFloorPosition,
     currentStep,
     setCurrentStep,
     // Update mode
