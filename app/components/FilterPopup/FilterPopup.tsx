@@ -725,7 +725,7 @@ export default function FilterPopup({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[99999] flex items-end md:items-center justify-center lg:p-4 overflow-y-auto">
+    <div className="fixed inset-0 z-[99999] flex items-start pt-32 md:items-center justify-center lg:p-4 overflow-y-auto">
       <div
         className="fixed inset-0"
         onClick={onClose}
@@ -733,7 +733,7 @@ export default function FilterPopup({
       ></div>
 
       <div
-        className="relative bg-white rounded-t-2xl md:rounded-2xl shadow-xl max-w-[600px] w-full mx-auto h-[90vh] md:h-auto md:max-h-[90vh] flex flex-col"
+        className="relative bg-white rounded-t-2xl md:rounded-2xl shadow-xl max-w-[600px] w-full mx-auto h-[90vh] md:h-auto md:max-h-[90vh] flex flex-col md:mt-0"
         style={{
           transform: `translateY(${translateY}px)`,
           transition: touchStartY ? "none" : "transform 0.3s ease-out",
