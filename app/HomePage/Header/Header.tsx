@@ -83,6 +83,7 @@ export default function Header({
             alt="oBudur Logo"
             width={108}
             height={24}
+            className="w-[28px] h-[32px] md:w-[108px] md:h-[24px]"
             priority
           />
         </div>
@@ -116,6 +117,7 @@ export default function Header({
             alt="oBudur Logo"
             width={28}
             height={28}
+            className="w-[28px] h-[32px] md:w-[28px] md:h-[28px]"
             priority
           />
         </div>
