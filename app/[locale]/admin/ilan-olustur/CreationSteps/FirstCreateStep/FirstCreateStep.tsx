@@ -3,6 +3,7 @@ import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useListingForm, MultilangText } from "../CreationSteps";
 import axiosInstance from "@/axios";
 import { XCircleIcon } from "@heroicons/react/24/solid";
+import GeneralSelect from "@/app/components/GeneralSelect/GeneralSelect";
 
 interface Language {
   _id: string;
@@ -259,6 +260,24 @@ export default function FirstCreateStep() {
     },
   };
 
+  // Dropdown için options hazırlama
+  const listingTypeOptions = [
+    { name: "Satılık", value: { tr: "Satılık", en: "For Sale" } },
+    { name: "Kiralık", value: { tr: "Kiralık", en: "For Rent" } },
+  ];
+
+  const propertyTypeOptions = propertyTypes.map((type) => ({
+    name: type.name.tr,
+    value: type,
+  }));
+
+  const filteredCategoryOptions = entranceType
+    ? (propertyTypes.find((type) => type.name.tr === entranceType.tr)?.categories || []).map((cat) => ({
+        name: cat.name.tr,
+        value: cat,
+      }))
+    : [];
+
   return (
     <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start p-4">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">
@@ -308,90 +327,60 @@ export default function FirstCreateStep() {
               </div>
             )}
 
-            {/* Sale or Rent */}
+            {/* Sale or Rent - Dropdown, Property Type - Dropdown, Category - Dropdown: Tek satırda yan yana */}
             <div className="mb-6">
-              <h2 className="font-semibold mb-2 text-[#262626] text-2xl">
-                Satılık mı, kiralık mı?
+              <h2 className="font-semibold mb-4 text-[#262626] text-2xl">
+                İlan Kategorileri
               </h2>
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer  ${
-                    listingType && listingType.tr === "Satılık"
-                      ? "bg-[#EBEAF180] border-[0.5px]  border-[#362C75] text-[#362C75]"
-                      : "bg-transparent border-[0.5px] border-[#BFBFBF] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
-                  }`}
-                  onClick={() =>
-                    setListingType(optionTranslations.listingType["Satılık"])
-                  }
-                >
-                  Satılık
-                </button>
-                <button
-                  type="button"
-                  className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer  ${
-                    listingType && listingType.tr === "Kiralık"
-                      ? "bg-[#EBEAF180] border-[0.5px]  border-[#362C75] text-[#362C75]"
-                      : "bg-transparent border-[0.5px] border-[#BFBFBF] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
-                  }`}
-                  onClick={() =>
-                    setListingType(optionTranslations.listingType["Kiralık"])
-                  }
-                >
-                  Kiralık
-                </button>
+              <div className="flex flex-col md:flex-row gap-4 w-full">
+                {/* İlan Tipi */}
+                <div className="flex-1 min-w-[180px]">
+                  <span className="block font-semibold mb-2 text-[#262626] text-base">İlan Tipi</span>
+                  <GeneralSelect
+                    selectedItem={listingType ? { name: listingType.tr, value: listingType } : null}
+                    onSelect={(item) => {
+                      setListingType(item.value);
+                      setEntranceType(null);
+                      setHousingType(null);
+                    }}
+                    options={listingTypeOptions}
+                    defaultText="İlan Tipi Seçin"
+                    extraClassName="w-full text-[#595959] bg-white border border-[#E0E0E0]"
+                    maxHeight="200"
+                    customTextColor={true}
+                  />
+                </div>
+                {/* Emlak Tipi */}
+                <div className="flex-1 min-w-[180px]">
+                  <span className="block font-semibold mb-2 text-[#262626] text-base">Emlak Tipi</span>
+                  <GeneralSelect
+                    selectedItem={entranceType ? { name: entranceType.tr, value: entranceType } : null}
+                    onSelect={(item) => {
+                      handlePropertyTypeSelect(item.value);
+                    }}
+                    options={listingType ? propertyTypeOptions : []}
+                    defaultText={listingType ? "Emlak Tipi Seçin" : "Önce ilan tipi seçin"}
+                    extraClassName="w-full text-[#595959] bg-white border border-[#E0E0E0]"
+                    maxHeight="200"
+                    customTextColor={true}
+                  />
+                </div>
+                {/* Kategori */}
+                <div className="flex-1 min-w-[180px]">
+                  <span className="block font-semibold mb-2 text-[#262626] text-base">Kategori</span>
+                  <GeneralSelect
+                    selectedItem={housingType ? { name: housingType.tr, value: housingType } : null}
+                    onSelect={(item) => {
+                      handleCategorySelect(item.value);
+                    }}
+                    options={entranceType ? filteredCategoryOptions : []}
+                    defaultText={entranceType ? "Kategori Seçin" : "Önce emlak tipi seçin"}
+                    extraClassName="w-full text-[#595959] bg-white border border-[#E0E0E0]"
+                    maxHeight="200"
+                    customTextColor={true}
+                  />
+                </div>
               </div>
-            </div>
-
-            {/* Property Type */}
-            <div className="mt-6">
-              <h2 className="font-semibold mb-2 text-[#262626] text-2xl">
-                Emlak Tipi Seçin
-              </h2>
-              <div className="flex flex-wrap gap-2">
-                {propertyTypes.map((type) => (
-                  <button
-                    key={type._id}
-                    type="button"
-                    className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer ${
-                      entranceType && entranceType.tr === type.name.tr
-                        ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
-                        : "bg-transparent border-[0.5px] border-[#BFBFBF] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
-                    }`}
-                    onClick={() => handlePropertyTypeSelect(type)}
-                  >
-                    {type.name.tr}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Category */}
-            <div className="mt-6">
-              <h2 className="font-semibold mb-2 text-[#262626] text-2xl">
-                Kategori Seçin
-              </h2>
-              <div className="flex flex-wrap gap-2">
-                {getFilteredCategories().map((cat) => (
-                  <button
-                    key={cat._id}
-                    type="button"
-                    className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer ${
-                      housingType && housingType.tr === cat.name.tr
-                        ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
-                        : "bg-transparent border-[0.5px] border-[#BFBFBF] text-[#595959] transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
-                    }`}
-                    onClick={() => handleCategorySelect(cat)}
-                  >
-                    {cat.name.tr}
-                  </button>
-                ))}
-              </div>
-              {getFilteredCategories().length === 0 && (
-                <p className="text-gray-500 text-sm mt-2">
-                  Bu emlak tipi için kategori bulunamadı.
-                </p>
-              )}
             </div>
 
             {/* Listing Title */}
