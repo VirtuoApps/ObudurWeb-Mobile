@@ -542,6 +542,7 @@ export default function HomePage({
   useEffect(() => {
     // Disable scroll on body
     if ((currentView === "map" && !noResultFound) || isFilterPopupOpen) {
+      console.log("disable scroll");
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -581,7 +582,7 @@ export default function HomePage({
       )}
       <div
         className={`fixed left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-50 px-3 h-[40px] rounded-lg shadow-lg transition-all duration-300 ${
-          isPinSelected && currentView === "map" ? "bottom-44" : "bottom-16"
+          isPinSelected && currentView === "map" ? "bottom-40" : "bottom-4"
         }`}
         onClick={() => handleViewChange(currentView === "map" ? "list" : "map")}
       >
@@ -615,7 +616,11 @@ export default function HomePage({
         selectedFaceFeatures={selectedFaceFeatures}
         resultCount={filteredHotels.length}
       />
-      <div className={`bg-white ${isScrolled && isMobile ? 'pt-[72px]' : ''} transition-all duration-300`}>
+      <div
+        className={`bg-white ${
+          isScrolled && isMobile ? "pt-[72px]" : ""
+        } transition-all duration-300`}
+      >
         <Header
           setFilters={setFilters}
           filterOptions={filterOptions}

@@ -13,7 +13,7 @@ import { useRouter } from "@/app/utils/router";
 
 const containerStyle = {
   width: "100%",
-  height: "calc(100vh - 80px)",
+  height: "calc(100vh - 150px)",
 };
 
 export default function GoogleMapView({
@@ -50,9 +50,9 @@ export default function GoogleMapView({
     };
 
     checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
+    window.addEventListener("resize", checkScreenSize);
 
-    return () => window.removeEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
   // Get selected currency from localStorage
@@ -257,7 +257,17 @@ export default function GoogleMapView({
   return (
     <>
       <GoogleMap
-        mapContainerStyle={containerStyle}
+        mapContainerStyle={
+          isMobile
+            ? {
+                width: "100%",
+                height: "calc(100vh - 150px)",
+              }
+            : {
+                width: "100%",
+                height: "calc(100vh - 80px)",
+              }
+        }
         center={center}
         zoom={11}
         options={{
@@ -371,60 +381,63 @@ export default function GoogleMapView({
           </>
         )} */}
 
-        {!isMobile && selectedHotel && selectedHotel.location && !hideSelectedHotel && (
-          <InfoWindow
-            position={{
-              lat: selectedHotel.location.coordinates[1] + 0.001, // Minimal offset to keep InfoWindow close to marker
-              lng: selectedHotel.location.coordinates[0],
-            }}
-            onCloseClick={() => setSelectedHotel(null)}
-            options={{
-              disableAutoPan: false,
-              pixelOffset: new window.google.maps.Size(0, 4), // Balanced offset - not too far from marker
-              maxWidth: 356,
-            }}
-          >
-            <div
-              className="w-[356px] h-[356px] p-0 m-0"
-              style={{
-                background: "white",
-                borderRadius: "12px",
-                boxShadow: "0 8px 32px rgba(0, 0, 0, 0.12)",
-                border: "none",
-                padding: "0",
-                margin: "0",
+        {!isMobile &&
+          selectedHotel &&
+          selectedHotel.location &&
+          !hideSelectedHotel && (
+            <InfoWindow
+              position={{
+                lat: selectedHotel.location.coordinates[1] + 0.001, // Minimal offset to keep InfoWindow close to marker
+                lng: selectedHotel.location.coordinates[0],
+              }}
+              onCloseClick={() => setSelectedHotel(null)}
+              options={{
+                disableAutoPan: false,
+                pixelOffset: new window.google.maps.Size(0, 4), // Balanced offset - not too far from marker
+                maxWidth: 356,
               }}
             >
-              <ResidentBox
-                key={selectedHotel._id}
-                hotelId={selectedHotel._id}
-                slug={selectedHotel.slug}
-                type={getLocalizedText(selectedHotel.listingType, "en")}
-                isOptinable={false}
-                residentTypeName={getLocalizedText(
-                  selectedHotel.housingType,
-                  "en"
-                )}
-                title={getLocalizedText(selectedHotel.title, "en")}
-                price={getDisplayPrice(selectedHotel.price, selectedCurrency)}
-                bedCount={selectedHotel.bedRoomCount.toString()}
-                floorCount={"2"}
-                area={`${selectedHotel.projectArea}m2`}
-                locationText={formatAddress(selectedHotel, "en ")}
-                image={selectedHotel.images[0]}
-                images={selectedHotel.images}
-                isFavorite={false}
-                roomAsText={selectedHotel.roomAsText}
-                roomCount={selectedHotel.roomCount || 0}
-                entranceType={selectedHotel.entranceType}
-                priceAsNumber={selectedHotel.price[0].amount}
-                areaAsNumber={+selectedHotel.projectArea}
-              />
-            </div>
-          </InfoWindow>
-        )}
+              <div
+                className="w-[356px] h-[356px] p-0 m-0"
+                style={{
+                  background: "white",
+                  borderRadius: "12px",
+                  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.12)",
+                  border: "none",
+                  padding: "0",
+                  margin: "0",
+                }}
+              >
+                <ResidentBox
+                  key={selectedHotel._id}
+                  hotelId={selectedHotel._id}
+                  slug={selectedHotel.slug}
+                  type={getLocalizedText(selectedHotel.listingType, "en")}
+                  isOptinable={false}
+                  residentTypeName={getLocalizedText(
+                    selectedHotel.housingType,
+                    "en"
+                  )}
+                  title={getLocalizedText(selectedHotel.title, "en")}
+                  price={getDisplayPrice(selectedHotel.price, selectedCurrency)}
+                  bedCount={selectedHotel.bedRoomCount.toString()}
+                  floorCount={"2"}
+                  area={`${selectedHotel.projectArea}m2`}
+                  locationText={formatAddress(selectedHotel, "en ")}
+                  image={selectedHotel.images[0]}
+                  images={selectedHotel.images}
+                  isFavorite={false}
+                  roomAsText={selectedHotel.roomAsText}
+                  roomCount={selectedHotel.roomCount || 0}
+                  entranceType={selectedHotel.entranceType}
+                  priceAsNumber={selectedHotel.price[0].amount}
+                  areaAsNumber={+selectedHotel.projectArea}
+                />
+              </div>
+            </InfoWindow>
+          )}
       </GoogleMap>
-      
+
       {/* Mobile Floating Card */}
       {isMobile && selectedHotel && (
         <MapPropertyFloatingCard
@@ -435,10 +448,7 @@ export default function GoogleMapView({
           slug={selectedHotel.slug}
           type={getLocalizedText(selectedHotel.listingType, "en")}
           isOptinable={false}
-          residentTypeName={getLocalizedText(
-            selectedHotel.housingType,
-            "en"
-          )}
+          residentTypeName={getLocalizedText(selectedHotel.housingType, "en")}
           title={getLocalizedText(selectedHotel.title, "en")}
           price={getDisplayPrice(selectedHotel.price, selectedCurrency)}
           bedCount={selectedHotel.bedRoomCount.toString()}

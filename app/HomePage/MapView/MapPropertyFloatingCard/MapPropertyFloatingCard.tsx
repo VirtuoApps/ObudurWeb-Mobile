@@ -116,7 +116,7 @@ export default function MapPropertyFloatingCard({
         className={`fixed bottom-4 left-4 right-4 bg-white rounded-lg shadow-lg transform transition-all duration-300 ease-out z-30 ${
           isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
         }`}
-        style={{ height: 'auto', minHeight: '136px' }}
+        style={{ height: "auto", minHeight: "136px" }}
         onClick={handleCardClick}
       >
         {/* Content */}
@@ -129,7 +129,7 @@ export default function MapPropertyFloatingCard({
                 alt={title}
                 className="w-[120px] h-[120px] object-cover rounded-xl"
               />
-              
+
               {/* Favorite button */}
               <button
                 onClick={(e) => {
@@ -158,7 +158,9 @@ export default function MapPropertyFloatingCard({
               </h3>
 
               {/* Price */}
-              <p className="text-sm font-bold text-[#362C75] leading-[1.4] mb-3">{price}</p>
+              <p className="text-sm font-bold text-[#362C75] leading-[1.4] mb-3">
+                {price}
+              </p>
 
               {/* Features */}
               {entranceType.tr === "Konut" && (
@@ -250,7 +252,9 @@ export default function MapPropertyFloatingCard({
                       />
                     </svg>
                     <span>
-                      {Math.round(priceAsNumber / areaAsNumber).toLocaleString("tr-TR")}{" "}
+                      {Math.round(priceAsNumber / areaAsNumber).toLocaleString(
+                        "tr-TR"
+                      )}{" "}
                       ₺/m²
                     </span>
                   </div>
@@ -268,4 +272,4 @@ export default function MapPropertyFloatingCard({
       />
     </>
   );
-} 
+}
