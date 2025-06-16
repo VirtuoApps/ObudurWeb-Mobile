@@ -494,6 +494,11 @@ export default function ThirdCreateStep() {
 
   // Update the updateAddressFromComponents function
   const updateAddressFromComponents = (addressComponents: any[]) => {
+    // Debug: Log address components to see what types we get
+    console.log("Address components:", addressComponents.map(comp => ({
+      name: comp.long_name,
+      types: comp.types
+    })));
     // Extract country
     const countryComponent = addressComponents.find(
       (component: { types: string[]; long_name: string }) =>
@@ -519,25 +524,25 @@ export default function ThirdCreateStep() {
       }
     }
 
-    // Extract state/district
-    const districtComponent = addressComponents.find(
+    // Extract state/province (Şehir) - Türkiye için administrative_area_level_1 kullanılır
+    const stateComponent = addressComponents.find(
       (component: { types: string[]; long_name: string }) =>
-        component.types.includes("administrative_area_level_1") ||
-        component.types.includes("administrative_area_level_2")
+        component.types.includes("administrative_area_level_1")
     );
-    if (districtComponent) {
-      setPendingStateName(districtComponent.long_name);
+    if (stateComponent) {
+      setPendingStateName(stateComponent.long_name);
       setState({
-        tr: districtComponent.long_name,
-        en: districtComponent.long_name,
+        tr: stateComponent.long_name,
+        en: stateComponent.long_name,
       });
     }
 
-    // Extract city
+    // Extract city/district (İlçe) - Türkiye için administrative_area_level_2 veya locality kullanılır
     const cityComponent = addressComponents.find(
       (component: { types: string[]; long_name: string }) =>
+        component.types.includes("administrative_area_level_2") ||
         component.types.includes("locality") ||
-        component.types.includes("administrative_area_level_3")
+        component.types.includes("sublocality_level_1")
     );
     if (cityComponent) {
       setPendingCityName(cityComponent.long_name);
@@ -547,11 +552,13 @@ export default function ThirdCreateStep() {
       });
     }
 
-    // Extract neighborhood
+    // Extract neighborhood - Türkiye için çeşitli sublocality türleri denenecek
     const neighborhoodComponent = addressComponents.find(
       (component: { types: string[]; long_name: string }) =>
         component.types.includes("sublocality") ||
-        component.types.includes("sublocality_level_1")
+        component.types.includes("sublocality_level_1") ||
+        component.types.includes("sublocality_level_2") ||
+        component.types.includes("neighborhood")
     );
     if (neighborhoodComponent) {
       setNeighborhood({
@@ -633,11 +640,31 @@ export default function ThirdCreateStep() {
   };
 
   // Handle marker position change
-  const handleMapClick = (e: google.maps.MapMouseEvent) => {
+  const handleMapClick = async (e: google.maps.MapMouseEvent) => {
     if (e.latLng) {
       const lat = e.latLng.lat();
       const lng = e.latLng.lng();
       setCoordinates([lng, lat]);
+      
+      // Perform reverse geocoding to get address details
+      try {
+        const response = await fetch(
+          `/api/places/geocode?latlng=${lat},${lng}`
+        );
+        
+        const data = await response.json();
+        
+        if (data.status === "OK" && data.results && data.results.length > 0) {
+          const result = data.results[0];
+          
+          // Update address components from reverse geocoding result
+          if (result.address_components) {
+            updateAddressFromComponents(result.address_components);
+          }
+        }
+      } catch (error) {
+        console.error("Error reverse geocoding location:", error);
+      }
     }
   };
 
@@ -795,6 +822,60 @@ export default function ThirdCreateStep() {
                 </div>
               </div>
             )}
+
+            <label className="font-semibold block mb-2 text-[#262626]">
+              Haritada Konum Seçin
+            </label>
+            <p className="text-sm text-gray-500 mb-2">
+              Konumu bulmak için arama yapabilir veya harita üzerinde tıklayarak
+              tam konumu belirleyebilirsiniz.
+            </p>
+
+            {/* Search Input with Autocomplete */}
+            <div className="relative mb-6 ">
+              <div className="flex">
+                <div className="relative flex-grow" ref={searchInputRef}>
+                  <input
+                    type="text"
+                    placeholder="Adres ara..."
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    className="w-full h-12 pl-10 pr-4 rounded-lg border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        searchLocation();
+                      }
+                    }}
+                    onFocus={() => {
+                      if (suggestions.length > 0) {
+                        setShowSuggestions(true);
+                      }
+                    }}
+                  />
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+                  </div>
+
+                  {/* Suggestions Dropdown */}
+                  {showSuggestions && suggestions.length > 0 && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
+                      {suggestions.map((suggestion, index) => (
+                        <div
+                          key={index}
+                          className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-800"
+                          onClick={() =>
+                            handleSelectSuggestion(suggestion.placeId)
+                          }
+                        >
+                          {suggestion.description}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
 
             {/* Country and Province */}
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -992,67 +1073,6 @@ export default function ThirdCreateStep() {
               <div className="space-y-8">
                 {/* Map Section */}
                 <div>
-                  <label className="font-semibold block mb-2 text-[#262626]">
-                    Haritada Konum Seçin
-                  </label>
-                  <p className="text-sm text-gray-500 mb-2">
-                    Konumu bulmak için arama yapabilir veya harita üzerinde
-                    tıklayarak tam konumu belirleyebilirsiniz.
-                  </p>
-
-                  {/* Search Input with Autocomplete */}
-                  <div className="relative mb-2">
-                    <div className="flex">
-                      <div className="relative flex-grow" ref={searchInputRef}>
-                        <input
-                          type="text"
-                          placeholder="Adres ara..."
-                          value={searchInput}
-                          onChange={(e) => setSearchInput(e.target.value)}
-                          className="w-full h-12 pl-10 pr-4 rounded-l-lg border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                              e.preventDefault();
-                              searchLocation();
-                            }
-                          }}
-                          onFocus={() => {
-                            if (suggestions.length > 0) {
-                              setShowSuggestions(true);
-                            }
-                          }}
-                        />
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
-                        </div>
-
-                        {/* Suggestions Dropdown */}
-                        {showSuggestions && suggestions.length > 0 && (
-                          <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
-                            {suggestions.map((suggestion, index) => (
-                              <div
-                                key={index}
-                                className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-800"
-                                onClick={() =>
-                                  handleSelectSuggestion(suggestion.placeId)
-                                }
-                              >
-                                {suggestion.description}
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                      <button
-                        onClick={searchLocation}
-                        disabled={isSearching}
-                        className="h-12 px-4 bg-[#6656AD] text-white rounded-r-lg hover:bg-[#5349a0] transition"
-                      >
-                        {isSearching ? "Aranıyor..." : "Ara"}
-                      </button>
-                    </div>
-                  </div>
-
                   <div className="h-[400px] w-full rounded-lg overflow-hidden border border-gray-300">
                     <GoogleMap
                       mapContainerStyle={containerStyle}
@@ -1069,11 +1089,31 @@ export default function ThirdCreateStep() {
                       <Marker
                         position={{ lat: coordinates[1], lng: coordinates[0] }}
                         draggable={true}
-                        onDragEnd={(e) => {
+                        onDragEnd={async (e) => {
                           if (e.latLng) {
                             const lat = e.latLng.lat();
                             const lng = e.latLng.lng();
                             setCoordinates([lng, lat]);
+                            
+                            // Perform reverse geocoding to get address details
+                            try {
+                              const response = await fetch(
+                                `/api/places/geocode?latlng=${lat},${lng}`
+                              );
+                              
+                              const data = await response.json();
+                              
+                              if (data.status === "OK" && data.results && data.results.length > 0) {
+                                const result = data.results[0];
+                                
+                                // Update address components from reverse geocoding result
+                                if (result.address_components) {
+                                  updateAddressFromComponents(result.address_components);
+                                }
+                              }
+                            } catch (error) {
+                              console.error("Error reverse geocoding location:", error);
+                            }
                           }
                         }}
                       />
