@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useTranslations, useLocale } from "next-intl";
@@ -13,18 +13,25 @@ type PropertyTypeProps = {
   setSelectedCategory?: (category: any) => void;
 };
 
-export default function PropertyType({
-  selectedPropertyType = null,
-  setSelectedPropertyType = () => {},
-  filterOptions,
-  setSelectedCategory = () => {},
-}: PropertyTypeProps) {
+const PropertyType = forwardRef(function PropertyType(
+  {
+    selectedPropertyType = null,
+    setSelectedPropertyType = () => {},
+    filterOptions,
+    setSelectedCategory = () => {},
+  }: PropertyTypeProps,
+  ref
+) {
   const [isOpen, setIsOpen] = useState(false);
   const [hotelTypes, setHotelTypes] = useState<HotelType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const locale = useLocale();
+
+  useImperativeHandle(ref, () => ({
+    openPopover: () => setIsOpen(true),
+  }));
 
   useEffect(() => {
     const fetchHotelTypes = async () => {
@@ -72,6 +79,11 @@ export default function PropertyType({
       extraClassName="min-w-[150px] text-[#8c8c8c] hover:text-[#595959] transition-all duration-300"
       popoverExtraClassName="max-w-[250px]"
       customTextColor={true}
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+      buttonRef={buttonRef}
     />
   );
-}
+});
+
+export default PropertyType;

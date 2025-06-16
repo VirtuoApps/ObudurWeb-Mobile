@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import CategorySelect from "./CategorySelect/CategorySelect";
 import { FilterOptions } from "@/types/filter-options.type";
@@ -40,6 +40,7 @@ export default function MiddleSearchBox({
 }: MiddleSearchBoxProps) {
   const t = useTranslations("listingType");
   const filterT = useTranslations("filter");
+  const propertyTypeRef = useRef<any>(null);
 
   const onApplyFilters = () => {
     setFilters({
@@ -50,6 +51,21 @@ export default function MiddleSearchBox({
       roomAsText: selectedCategory?.name || null,
       categoryId: selectedCategory?._id || null,
     });
+  };
+
+  // Emlak Tipi sıfırlanınca Kategori'yi de sıfırla
+  const handlePropertyTypeSelect = (propertyType: any) => {
+    setSelectedPropertyType(propertyType);
+    if (!propertyType) {
+      setSelectedCategory(null);
+    }
+  };
+
+  // Kategoriye tıklanınca Emlak Tipi seçili değilse önce onu aç
+  const handleCategoryButtonClick = () => {
+    if (!selectedPropertyType && propertyTypeRef.current) {
+      propertyTypeRef.current.openPopover?.();
+    }
   };
 
   return (
@@ -150,8 +166,9 @@ export default function MiddleSearchBox({
 
       {/* Emlak Tipi */}
       <PropertyType
+        ref={propertyTypeRef}
         selectedPropertyType={selectedPropertyType}
-        setSelectedPropertyType={setSelectedPropertyType}
+        setSelectedPropertyType={handlePropertyTypeSelect}
         filterOptions={filterOptions}
         setSelectedCategory={setSelectedCategory}
       />
@@ -159,13 +176,15 @@ export default function MiddleSearchBox({
       <div className="bg-[#D9D9D9] w-[1px] h-[24px] flex-shrink-0"></div>
 
       {/* Kategori */}
-      <CategorySelect
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-        filterOptions={filterOptions}
-        selectedPropertyType={selectedPropertyType}
-        setSelectedPropertyType={setSelectedPropertyType}
-      />
+      <div onClick={handleCategoryButtonClick} style={{ width: '100%' }}>
+        <CategorySelect
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          filterOptions={filterOptions}
+          selectedPropertyType={selectedPropertyType}
+          setSelectedPropertyType={setSelectedPropertyType}
+        />
+      </div>
 
       {/* Search Button */}
       <button

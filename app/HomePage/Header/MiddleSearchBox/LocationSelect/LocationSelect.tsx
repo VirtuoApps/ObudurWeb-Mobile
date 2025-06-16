@@ -4,7 +4,7 @@ import {
   ChevronDownIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
-import { MapPinIcon } from "@heroicons/react/24/outline";
+import { MapPinIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useTranslations, useLocale } from "next-intl";
 import { FilterOptions } from "@/types/filter-options.type";
 
@@ -49,6 +49,7 @@ export default function LocationSelect({
   const [isFetchingCoordinates, setIsFetchingCoordinates] = useState(false);
   const locale = useLocale();
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   const t = useTranslations("locations");
 
@@ -209,10 +210,10 @@ export default function LocationSelect({
                   ? "w-full border rounded-md border-gray-200 justify-between"
                   : "w-[150px] shrink-0"
               }`}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
             >
-              <div
-                className={`flex items-center ${isMobileMenu ? "flex-1" : ""}`}
-              >
+              <div className={`flex items-center ${isMobileMenu ? "flex-1" : ""}`}>
                 {isOpen && showSearch ? (
                   <>
                     <MagnifyingGlassIcon className="h-4 w-4 mr-1 text-gray-500 flex-shrink-0" />
@@ -258,11 +259,19 @@ export default function LocationSelect({
                         ? `${selectedLocation.name}`
                         : t("location")}
                     </span>
-                    {/* {selectedLocation && searchRadius && (
-                      <span className="ml-1 text-xs text-gray-500">
-                        ({searchRadius}km)
-                      </span>
-                    )} */}
+                    {selectedLocation && !isMobileMenu && isHovered && (
+                      <button
+                        type="button"
+                        className="ml-2 p-1 rounded hover:bg-gray-100 transition"
+                        onClick={e => {
+                          e.stopPropagation();
+                          setSelectedLocation(null);
+                        }}
+                        tabIndex={-1}
+                      >
+                        <XMarkIcon className="w-4 h-4 text-[#8C8C8C]" />
+                      </button>
+                    )}
                   </>
                 )}
               </div>

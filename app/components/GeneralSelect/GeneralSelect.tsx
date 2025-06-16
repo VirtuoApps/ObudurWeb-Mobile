@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { useTranslations } from "next-intl";
 
 type GeneralSelectProps = {
@@ -14,6 +14,7 @@ type GeneralSelectProps = {
   maxHeight?: string;
   customTextColor?: boolean;
   popoverExtraClassName?: string;
+  disabled?: boolean;
 };
 
 export default function GeneralSelect({
@@ -27,6 +28,7 @@ export default function GeneralSelect({
   maxHeight,
   customTextColor,
   popoverExtraClassName,
+  disabled = false,
 }: GeneralSelectProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -95,34 +97,54 @@ export default function GeneralSelect({
     };
   }, [isOpen, options]);
 
+  const handleSelect = (option: any) => {
+    buttonRef.current?.click();
+    onSelect(option);
+  };
+
   return (
     <Popover className="relative">
       {({ open }) => {
         useEffect(() => {
-          if (open !== isOpen) {
-            setIsOpen(open);
-          }
-        }, [open, isOpen]);
-
+          setIsOpen(open);
+        }, [open]);
         return (
           <>
             <PopoverButton
               ref={buttonRef}
               className={`${
-                isOpen ? "bg-[#F5F5F5]" : ""
+                open ? "bg-[#F5F5F5]" : ""
               } flex items-center justify-between shrink-0 px-3 py-3 text-sm ${extraClassName} ${
                 !customTextColor ? "text-gray-700" : ""
-              } cursor-pointer rounded-[8px] outline-none `}
+              } cursor-pointer rounded-[8px] outline-none ${disabled ? 'cursor-not-allowed opacity-60' : ''}`}
+              disabled={disabled}
+              onClick={disabled ? (e) => e.preventDefault() : undefined}
+              tabIndex={disabled ? -1 : 0}
             >
               <div className="flex items-center">
                 <span className="truncate">
                   {selectedItem ? selectedItem.name : defaultText}
                 </span>
               </div>
-              <img
-                src="/chevron-down.png"
-                className={`w-[24px] h-[24px] ${isOpen ? "rotate-180" : ""}`}
-              />
+              {selectedItem && !popoverExtraClassName?.includes('mobile') ? (
+                <button
+                  type="button"
+                  className="ml-2 p-1 rounded hover:bg-gray-100 transition"
+                  onClick={e => {
+                    e.stopPropagation();
+                    handleSelect(null);
+                  }}
+                  tabIndex={-1}
+                  disabled={disabled}
+                >
+                  <XMarkIcon className="w-5 h-5 text-[#8C8C8C]" />
+                </button>
+              ) : (
+                <img
+                  src="/chevron-down.png"
+                  className={`w-[24px] h-[24px] ${open ? "rotate-180" : ""} ${disabled ? 'opacity-60' : ''}`}
+                />
+              )}
             </PopoverButton>
 
             <PopoverPanel
@@ -144,10 +166,7 @@ export default function GeneralSelect({
                       className={`group relative flex items-center gap-x-6 rounded-lg p-4 py-3 cursor-pointer ${
                         index === highlightedIndex ? "bg-gray-50" : ""
                       }`}
-                      onClick={() => {
-                        buttonRef.current?.click();
-                        onSelect(option);
-                      }}
+                      onClick={() => handleSelect(option)}
                       onMouseEnter={() => setHighlightedIndex(index)}
                     >
                       <div>
