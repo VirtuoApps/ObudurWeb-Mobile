@@ -62,6 +62,7 @@ export default function FifthCreateStep() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
+  const formPanelRef = useRef<HTMLDivElement>(null);
 
   // Initialize selectedImages with existing images when in update mode
   useEffect(() => {
@@ -372,7 +373,9 @@ export default function FifthCreateStep() {
     } else {
       setErrors(newErrors);
       // Scroll to top to see errors
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (formPanelRef.current) {
+        formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
     }
   };
 
@@ -400,7 +403,10 @@ export default function FifthCreateStep() {
           </div>
 
           {/* Right Form Panel */}
-          <div className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
+          <div
+            ref={formPanelRef}
+            className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]"
+          >
             {/* Error display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">

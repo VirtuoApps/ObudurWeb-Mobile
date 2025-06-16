@@ -80,6 +80,7 @@ export default function SixthCreateStep() {
   }>({});
   const [dragActive, setDragActive] = useState<{ [key: string]: boolean }>({});
   const fileInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
+  const formPanelRef = useRef<HTMLDivElement>(null);
 
   // Initialize document links from existing documents
   useEffect(() => {
@@ -359,6 +360,9 @@ export default function SixthCreateStep() {
     );
     if (hasUploadingDocs) {
       setErrors(["Yüklenmekte olan dökümanlar var, lütfen bekleyin."]);
+      if (formPanelRef.current) {
+        formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
       return;
     }
 
@@ -394,7 +398,10 @@ export default function SixthCreateStep() {
           </div>
 
           {/* Right Form Panel - 70% width on desktop */}
-          <div className="w-full md:w-[70%] md:pl-6">
+          <div
+            ref={formPanelRef}
+            className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh] 2xl:h-[73vh] overflow-auto"
+          >
             {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
