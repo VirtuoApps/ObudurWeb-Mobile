@@ -22,10 +22,10 @@ export default function Images() {
   let images = hotelData.hotelDetails.images;
   const originalImageCount = images.length;
 
-  // Pad images if less than 5
-  if (images.length < 5) {
+  // Pad images if less than 15
+  if (images.length < 15) {
     const paddedImages = [...images];
-    while (paddedImages.length < 5) {
+    while (paddedImages.length < 15) {
       paddedImages.push(images[0]); // Use first image as fallback
     }
     images = paddedImages;

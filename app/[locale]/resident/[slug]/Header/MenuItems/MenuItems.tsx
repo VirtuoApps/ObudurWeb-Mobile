@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { useHotelData } from "../../hotelContext";
 
@@ -10,52 +10,101 @@ export default function MenuItems() {
 
   const { hotelData, locale } = useHotelData();
 
-  const menuItems = [
-    { key: "photos", label: t("photos"), sectionId: "images-section" },
-    {
-      key: "descriptions",
-      label: t("descriptions"),
-      sectionId: "descriptions-section",
-    },
-    { key: "details", label: t("details"), sectionId: "details-section" },
-    { key: "features", label: t("features"), sectionId: "features-section" },
-
-    // { key: "floorPlans", label: t("floorPlans"), sectionId: "plans-section" },
-  ];
-
-  if (hotelData.hotelDetails.video) {
-    menuItems.push({
-      key: "virtualTour",
-      label: t("virtualTour"),
-      sectionId: "panoramic-section",
-    });
-
-    menuItems.push({
+  // useMemo ile menuItems'ı optimize et
+  const menuItems = useMemo(() => {
+    const items = [
+      { key: "photos", label: t("photos"), sectionId: "images-section" },
+      {
+        key: "descriptions",
+        label: t("descriptions"),
+        sectionId: "descriptions-section",
+      },
+      { key: "details", label: t("details"), sectionId: "details-section" },
+      { key: "features", label: t("features"), sectionId: "features-section" },
+    ];
+    
+    // Video varsa virtual tour ekle
+    if (hotelData.hotelDetails.video) {
+      items.push({
+        key: "virtualTour",
+        label: t("virtualTour"),
+        sectionId: "panoramic-section",
+      });
+    }
+    
+    // Location ekle
+    items.push({
       key: "location",
       label: t("location"),
       sectionId: "location-section",
     });
-  } else {
-    menuItems.push({
-      key: "location",
-      label: t("location"),
-      sectionId: "location-section",
+    
+    // Floor plans en sonda
+    items.push({
+      key: "floorPlans", 
+      label: t("floorPlans"), 
+      sectionId: "plans-section"
     });
-  }
+
+    return items;
+  }, [hotelData.hotelDetails.video, t]);
 
   // Refs to each menu item for horizontal scrolling
   const menuRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + 100; // Add offset for header
+      const scrollPosition = window.scrollY + 150; // Increased offset for better detection
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
 
-      // Find the section that is currently in view
+      // Check if we're near the bottom of the page (within 200px) - more generous
+      if (scrollPosition + windowHeight >= documentHeight - 200) {
+        setActiveSection(menuItems[menuItems.length - 1].sectionId);
+        return;
+      }
+
+      // Find the section that is currently in view with better logic
+      let closestSection = null;
+      let closestDistance = Infinity;
+
+      for (let i = 0; i < menuItems.length; i++) {
+        const section = document.getElementById(menuItems[i].sectionId);
+        if (section) {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.offsetHeight;
+          const sectionCenter = sectionTop + (sectionHeight / 2);
+          
+          // Calculate distance from current scroll position to section center
+          const distance = Math.abs(scrollPosition - sectionCenter);
+          
+          // If this section is visible in viewport
+          if (sectionTop <= scrollPosition + windowHeight && 
+              sectionTop + sectionHeight >= scrollPosition) {
+            if (distance < closestDistance) {
+              closestDistance = distance;
+              closestSection = menuItems[i].sectionId;
+            }
+          }
+        }
+      }
+
+      // If we found a section in viewport, use it
+      if (closestSection) {
+        setActiveSection(closestSection);
+        return;
+      }
+
+      // Fallback: use traditional logic with adjusted thresholds
       for (let i = menuItems.length - 1; i >= 0; i--) {
         const section = document.getElementById(menuItems[i].sectionId);
-        if (section && section.offsetTop <= scrollPosition) {
-          setActiveSection(menuItems[i].sectionId);
-          break;
+        if (section) {
+          // More generous threshold for last section
+          const threshold = i === menuItems.length - 1 ? 300 : 50;
+          if (section.offsetTop <= scrollPosition + threshold) {
+            setActiveSection(menuItems[i].sectionId);
+            break;
+          }
         }
       }
     };
@@ -92,7 +141,7 @@ export default function MenuItems() {
         block: "nearest",
       });
     }
-  }, [activeSection]);
+  }, [activeSection, menuItems]);
 
   return (
     <>
