@@ -158,7 +158,7 @@ export default async function ResidentPage({
     <ClientWrapper hotelData={hotelData} locale={currentLocale}>
       <Header />
       <div className="w-full block md:hidden">
-        <SimpleHeader showBackButton />
+        <SimpleHeader showBackButton showFavoriteButton />
       </div>
       <div className="block md:hidden w-full sticky top-0 bg-white z-10 py-3">
         <MenuItems />
