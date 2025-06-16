@@ -148,6 +148,8 @@ export default function SecondCreateStepForHouse() {
     setHeatingType,
     source,
     setSource,
+    floorPosition,
+    setFloorPosition,
     setCurrentStep,
   } = useListingForm();
 
@@ -292,6 +294,40 @@ export default function SecondCreateStepForHouse() {
     { value: "false", label: "Hayır" },
   ];
 
+  // Floor position options
+  const floorPositionOptions = [
+    { tr: "Kot 4", en: "Level 4 Basement" },
+    { tr: "Kot 3", en: "Level 3 Basement" },
+    { tr: "Kot 2", en: "Level 2 Basement" },
+    { tr: "Kot 1", en: "Level 1 Basement" },
+    { tr: "Zemin Kat", en: "Ground Floor" },
+    { tr: "Bodrum Kat", en: "Basement Floor" },
+    { tr: "Bahçe Katı", en: "Garden Floor" },
+    { tr: "Giriş", en: "Entrance" },
+    { tr: "Yüksek Giriş", en: "High Entrance" },
+    { tr: "Çatı Katı", en: "Roof Floor" },
+    { tr: "1", en: "1" },
+    { tr: "2", en: "2" },
+    { tr: "3", en: "3" },
+    { tr: "4", en: "4" },
+    { tr: "5", en: "5" },
+    { tr: "6", en: "6" },
+    { tr: "7", en: "7" },
+    { tr: "8", en: "8" },
+    { tr: "9", en: "9" },
+    { tr: "10", en: "10" },
+    { tr: "11", en: "11" },
+    { tr: "12", en: "12" },
+    { tr: "13", en: "13" },
+    { tr: "14", en: "14" },
+    { tr: "15", en: "15" },
+    { tr: "16", en: "16" },
+    { tr: "17", en: "17" },
+    { tr: "18", en: "18" },
+    { tr: "19", en: "19" },
+    { tr: "20+", en: "20+" },
+  ];
+
   // Generate options for number-based selects
   const generateNumberOptions = (min: number, max: number): SelectOption[] => {
     const options: SelectOption[] = [];
@@ -381,6 +417,10 @@ export default function SecondCreateStepForHouse() {
 
     if (!deedStatus || !deedStatus.get("tr") || !deedStatus.get("en")) {
       newErrors.push("Lütfen tapu durumunu seçin");
+    }
+
+    if (!floorPosition || floorPosition.tr === "" || floorPosition.en === "") {
+      newErrors.push("Lütfen bulunduğu katı seçin");
     }
 
     setErrors(newErrors);
@@ -633,6 +673,35 @@ export default function SecondCreateStepForHouse() {
                   placeholder="Seçiniz"
                 />
               </div>
+            </div>
+
+            {/* Bulunduğu Kat */}
+            <div className="mb-6">
+              <label
+                htmlFor="floorPosition"
+                className="font-semibold block mb-2 text-[#262626]"
+              >
+                Bulunduğu Kat
+              </label>
+              <CustomSelect
+                options={floorPositionOptions.map((option) => ({
+                  value: option.tr,
+                  label: option.tr,
+                }))}
+                value={floorPosition?.tr || ""}
+                onChange={(value) => {
+                  const selected = floorPositionOptions.find(
+                    (option) => option.tr === value
+                  );
+                  if (selected) {
+                    setFloorPosition({
+                      tr: selected.tr,
+                      en: selected.en,
+                    });
+                  }
+                }}
+                placeholder="Seçiniz"
+              />
             </div>
 
             {/* Build Year */}
