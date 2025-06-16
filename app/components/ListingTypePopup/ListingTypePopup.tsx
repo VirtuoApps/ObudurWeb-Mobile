@@ -67,7 +67,7 @@ export default function ListingTypePopup({
 
       {/* Bottom sheet */}
       <div
-        className="relative w-full max-w-md bg-white rounded-t-2xl p-6 pb-8 shadow-xl"
+        className="relative w-full max-w-md bg-white rounded-t-[32px] pt-[24px] px-[16px] pb-[32px] shadow-xl"
         style={{
           transform: `translateY(${translateY}px)`,
           transition: touchStartY ? "none" : "transform 0.3s ease-out",
@@ -82,7 +82,7 @@ export default function ListingTypePopup({
         {/* Options */}
         <div className="">
           <label
-            className={`flex items-center gap-3 p-4 rounded-2xl border transition-colors duration-200 cursor-pointer ${
+            className={`flex items-center gap-3 h-[56px] px-[16px] rounded-2xl border transition-colors duration-200 cursor-pointer ${
               selectedType === "For Sale"
                 ? "border-[#362C75] bg-[#F5F3FF]"
                 : "border-gray-200"
@@ -134,7 +134,7 @@ export default function ListingTypePopup({
           </label>
 
           <label
-            className={`flex items-center gap-3 p-4 rounded-2xl border transition-colors duration-200 cursor-pointer mt-2 ${
+            className={`flex items-center gap-3 h-[56px] px-[16px] rounded-2xl border transition-colors duration-200 cursor-pointer mt-[16px] ${
               selectedType === "For Rent"
                 ? "border-[#362C75] bg-[#F5F3FF]"
                 : "border-gray-200"
@@ -188,7 +188,7 @@ export default function ListingTypePopup({
 
         {/* Confirm button */}
         <button
-          className="mt-6 w-full bg-[#5E5691] text-white h-[54px] rounded-2xl font-semibold text-center"
+          className="mt-[32px] w-full bg-[#5E5691] text-white h-[56px] rounded-2xl font-semibold text-center"
           onClick={handleUpdate}
         >
           {"Güncelle"}
