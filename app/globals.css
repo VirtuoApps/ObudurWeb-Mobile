@@ -83,7 +83,7 @@ body {
   border: none;
   background: #f9fafb;
   padding: 8px 12px;
-  font-size: 14px;
+  font-size: 16px;
   color: #374151;
 }
 
@@ -92,7 +92,7 @@ body {
   outline: none;
   flex: 1;
   padding: 8px 12px;
-  font-size: 14px;
+  font-size: 16px;
   color: #374151;
   background: white;
 }
