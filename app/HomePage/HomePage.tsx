@@ -24,6 +24,8 @@ import { filterHotelsByProximity } from "@/app/utils/geoUtils";
 import { useTranslations } from "next-intl";
 import { useScrollDirection } from "../hooks/useScrollDirection";
 import { useSelector } from "react-redux";
+import cities from "./cities";
+import { states } from "./states";
 
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
@@ -361,10 +363,16 @@ export default function HomePage({
   let filteredHotels = hotels;
 
   if (selectedLocation) {
-    const isCity = selectedLocation.types?.includes("locality");
-    const isState =
-      selectedLocation.types?.includes("administrative_area_level_2") ||
-      selectedLocation.types?.includes("administrative_area_level_1");
+    const isCity = cities.includes(selectedLocation.name);
+    let isState = false;
+
+    Object.keys(states).forEach((state) => {
+      if (
+        states[state as keyof typeof states].includes(selectedLocation.name)
+      ) {
+        isState = true;
+      }
+    });
 
     if (isCity) {
       const cityComponent = selectedLocation.address_components?.find(
