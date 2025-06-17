@@ -1,10 +1,11 @@
 "use client";
 
-import LanguageSwitcher from "@/app/components/LanguageSwitcher";
-import AuthBox from "@/app/HomePage/Header/AuthBox/AuthBox";
-import Image from "next/image";
 import React, { useState } from "react";
+
+import AuthBox from "@/app/HomePage/Header/AuthBox/AuthBox";
 import { FaBars } from "react-icons/fa";
+import Image from "next/image";
+import LanguageSwitcher from "@/app/components/LanguageSwitcher";
 import { useRouter } from "@/app/utils/router";
 
 interface HeaderProps {
@@ -17,8 +18,8 @@ export default function Header({ customRedirectUrl }: HeaderProps) {
   const router = useRouter();
 
   return (
-    <header className="relative border-b border-[#F0F0F0] py-4 bg-white h-[80px] w-full px-4 md:px-0">
-      <div className=" mx-auto flex flex-wrap items-center justify-between px-5">
+    <header className="relative border-b border-[#F0F0F0] py-4 bg-white h-[80px] w-full">
+      <div className=" mx-auto flex flex-wrap items-center justify-between px-5 h-full">
         {/* Logo */}
         <div
           className="flex items-center cursor-pointer"
