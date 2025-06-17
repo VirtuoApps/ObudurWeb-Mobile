@@ -1,17 +1,18 @@
+import { AppDispatch, RootState } from "@/app/store/store";
 import React, { useState } from "react";
-import { useTranslations } from "next-intl";
-import { useRouter } from "@/app/utils/router";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "@/app/store/store";
-import LikeIcon from "@/app/svgIcons/likeIcon";
-import BedIcon from "@/app/svgIcons/BedIcon";
-import FloorCountIcon from "@/app/svgIcons/FloorCountIcon";
-import AreaIcon from "@/app/svgIcons/AreaIcon";
-import AuthPopup from "@/app/components/AuthPopup/AuthPopup";
 import {
   addToFavorites,
   removeFromFavorites,
 } from "@/app/store/favoritesSlice";
+import { useDispatch, useSelector } from "react-redux";
+
+import AreaIcon from "@/app/svgIcons/AreaIcon";
+import AuthPopup from "@/app/components/AuthPopup/AuthPopup";
+import BedIcon from "@/app/svgIcons/BedIcon";
+import FloorCountIcon from "@/app/svgIcons/FloorCountIcon";
+import LikeIcon from "@/app/svgIcons/likeIcon";
+import { useRouter } from "@/app/utils/router";
+import { useTranslations } from "next-intl";
 
 interface MapPropertyFloatingCardProps {
   isVisible: boolean;
@@ -121,7 +122,7 @@ export default function MapPropertyFloatingCard({
       >
         {/* Content */}
         <div className="p-2">
-          <div className="flex gap-[10px]">
+          <div className="flex gap-[4px]">
             {/* Image */}
             <div className="relative flex-shrink-0">
               <img
@@ -146,9 +147,9 @@ export default function MapPropertyFloatingCard({
             </div>
 
             {/* Details */}
-            <div className="flex-1 min-w-0 ml-3">
+            <div className="flex-1 min-w-0 p-[10px]">
               {/* Property type */}
-              <div className="flex flex-row items-center justify-between mt-[12px]">
+              <div className="flex flex-row items-center justify-between">
                 <p className="text-sm text-[#8C8C8C] font-normal leading-[1.4] mb-1 ">
                   {residentTypeName}
                 </p>
@@ -159,7 +160,7 @@ export default function MapPropertyFloatingCard({
               </div>
 
               {/* Title */}
-              <h3 className="text-sm font-bold text-[#262626] leading-[1.4] mb-1 line-clamp-2 mt-1">
+              <h3 className="text-sm font-bold text-[#262626] leading-[1.4] mb-[16px] line-clamp-2 mt-1 overflow-hidden">
                 {title}
               </h3>
 
@@ -167,7 +168,7 @@ export default function MapPropertyFloatingCard({
 
               {/* Features */}
               {entranceType.tr === "Konut" && (
-                <div className="flex items-center gap-3 text-xs text-[#595959] font-medium leading-[1.4]">
+                <div className="flex items-center gap-3 text-xs text-[#595959] font-medium leading-[1.4] text-[12px] justify-between">
                   <div className="flex items-center space-x-1">
                     <BedIcon />
                     <span>{roomAsText}</span>
@@ -182,7 +183,7 @@ export default function MapPropertyFloatingCard({
 
                   <div className="w-px h-4 bg-[#D9D9D9]"></div>
 
-                  <div className="flex items-center space-x-1">
+                  <div className="flex items-center space-x-1 text-[14px]">
                     <AreaIcon />
                     <span>{area}</span>
                   </div>
@@ -190,7 +191,7 @@ export default function MapPropertyFloatingCard({
               )}
 
               {entranceType.tr === "İş Yeri" && (
-                <div className="flex items-center gap-3 text-xs text-[#595959] font-medium leading-[1.4]">
+                <div className="flex items-center gap-3 text-xs text-[#595959] font-medium leading-[1.4] text-[12px] justify-between">
                   <div className="flex items-center space-x-1">
                     <svg
                       width="20"
@@ -209,7 +210,6 @@ export default function MapPropertyFloatingCard({
                     </svg>
                     <span>
                       {roomCount}
-                      <span> Bölüm</span>
                     </span>
                   </div>
 
@@ -222,7 +222,7 @@ export default function MapPropertyFloatingCard({
 
                   <div className="w-px h-4 bg-[#D9D9D9]"></div>
 
-                  <div className="flex items-center space-x-1">
+                  <div className="flex items-center space-x-1 text-[14px]">
                     <AreaIcon />
                     <span>{area}</span>
                   </div>
@@ -230,7 +230,7 @@ export default function MapPropertyFloatingCard({
               )}
 
               {entranceType.tr === "Arsa" && (
-                <div className="flex items-center gap-3 text-xs text-[#595959] font-medium leading-[1.4]">
+                <div className="flex items-center gap-3 text-xs text-[#595959] font-medium leading-[1.4] text-[12px] justify-between">
                   <div className="flex items-center space-x-1">
                     <AreaIcon />
                     <span>{area}</span>
