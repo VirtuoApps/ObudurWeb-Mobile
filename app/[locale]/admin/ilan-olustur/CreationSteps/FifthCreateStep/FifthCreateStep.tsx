@@ -1,13 +1,14 @@
-import React, { useState, useRef, useEffect } from "react";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   XCircleIcon,
 } from "@heroicons/react/24/solid";
-import { useListingForm } from "../CreationSteps";
-import axiosInstance from "@/axios";
-import { useRouter } from "@/app/utils/router";
+import React, { useEffect, useRef, useState } from "react";
+
 import GoBackButton from "../../GoBackButton/GoBackButton";
+import axiosInstance from "@/axios";
+import { useListingForm } from "../CreationSteps";
+import { useRouter } from "@/app/utils/router";
 
 export default function FifthCreateStep() {
   const router = useRouter();
@@ -405,7 +406,7 @@ export default function FifthCreateStep() {
           {/* Right Form Panel */}
           <div
             ref={formPanelRef}
-            className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]"
+            className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-none md:border-l md:border-[#F0F0F0]"
           >
             {/* Error display */}
             {errors.length > 0 && (

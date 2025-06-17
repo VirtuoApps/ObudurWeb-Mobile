@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import { MultilangText, useListingForm } from "../CreationSteps";
+import React, { useEffect, useRef, useState } from "react";
+
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
-import { useListingForm, MultilangText } from "../CreationSteps";
-import axiosInstance from "@/axios";
-import { XCircleIcon } from "@heroicons/react/24/solid";
 import GeneralSelect from "@/app/components/GeneralSelect/GeneralSelect";
+import { XCircleIcon } from "@heroicons/react/24/solid";
+import axiosInstance from "@/axios";
 
 interface Language {
   _id: string;
@@ -310,7 +311,7 @@ export default function FirstCreateStep() {
           </div>
 
           {/* Right Form Panel - 70% width on desktop */}
-          <div ref={formPanelRef} className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
+          <div ref={formPanelRef} className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-none md:border-l md:border-[#F0F0F0]">
             {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">

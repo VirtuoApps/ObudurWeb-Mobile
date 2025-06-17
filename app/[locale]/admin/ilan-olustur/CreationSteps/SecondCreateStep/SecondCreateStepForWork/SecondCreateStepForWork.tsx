@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
 import {
-  ChevronRightIcon,
-  ChevronLeftIcon,
   ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
   ChevronUpIcon,
 } from "@heroicons/react/24/solid";
-import { useListingForm } from "../../CreationSteps";
-import { XCircleIcon } from "@heroicons/react/24/solid";
-import GoBackButton from "../../../GoBackButton/GoBackButton";
+import React, { useEffect, useRef, useState } from "react";
 import { formatInputPrice, parseInputPrice } from "@/app/utils/priceFormatter";
+
+import GoBackButton from "../../../GoBackButton/GoBackButton";
+import { XCircleIcon } from "@heroicons/react/24/solid";
+import { useListingForm } from "../../CreationSteps";
 
 // Custom Select component that matches the design
 interface SelectOption {
@@ -448,7 +449,7 @@ export default function SecondCreateStepForWork() {
           </div>
 
           {/* Right Form Panel */}
-          <div ref={formPanelRef} className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
+          <div ref={formPanelRef} className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-none md:border-l md:border-[#F0F0F0]">
             {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">

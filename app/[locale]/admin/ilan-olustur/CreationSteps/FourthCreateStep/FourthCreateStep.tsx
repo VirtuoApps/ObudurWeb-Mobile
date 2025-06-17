@@ -1,19 +1,20 @@
-import React, { useEffect, useState, useRef } from "react";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
-import { useListingForm } from "../CreationSteps";
-import axiosInstance from "@/axios";
 import {
-  XCircleIcon,
+  CheckIcon,
+  PencilIcon,
   PlusIcon,
   TrashIcon,
-  PencilIcon,
-  CheckIcon,
+  XCircleIcon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
-import Image from "next/image";
-import GoBackButton from "../../GoBackButton/GoBackButton";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import React, { useEffect, useRef, useState } from "react";
+
 import { CustomSelect } from "../SecondCreateStep/SecondCreateStep";
+import GoBackButton from "../../GoBackButton/GoBackButton";
+import Image from "next/image";
+import axiosInstance from "@/axios";
 import { infrastructureFeatures } from "../../../../../utils/infrastructureFeatures";
+import { useListingForm } from "../CreationSteps";
 import { views } from "../../../../../utils/views";
 
 interface Feature {
@@ -424,7 +425,7 @@ export default function FourthCreateStep() {
           {/* Right Form Panel */}
           <div
             ref={formPanelRef}
-            className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]"
+            className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-none md:border-l md:border-[#F0F0F0]"
           >
             {/* Errors display */}
             {errors.length > 0 && (

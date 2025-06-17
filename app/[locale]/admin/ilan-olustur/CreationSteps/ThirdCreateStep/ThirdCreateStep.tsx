@@ -1,16 +1,17 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
 import {
-  ChevronRightIcon,
   ChevronLeftIcon,
-  XCircleIcon,
+  ChevronRightIcon,
   MagnifyingGlassIcon,
+  XCircleIcon,
 } from "@heroicons/react/24/solid";
-import { useListingForm } from "../CreationSteps";
+import { GetCity, GetCountries, GetState } from "react-country-state-city";
 import { GoogleMap, Marker } from "@react-google-maps/api";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+
+import GeneralSelect from "../../../../../components/GeneralSelect/GeneralSelect";
 import GoBackButton from "../../GoBackButton/GoBackButton";
 import { useGoogleMaps } from "../../../../../contexts/GoogleMapsContext";
-import { GetCountries, GetState, GetCity } from "react-country-state-city";
-import GeneralSelect from "../../../../../components/GeneralSelect/GeneralSelect";
+import { useListingForm } from "../CreationSteps";
 import { useLocale } from "next-intl";
 
 interface PlaceSuggestion {
@@ -820,7 +821,7 @@ export default function ThirdCreateStep() {
           </div>
 
           {/* Right Form Panel */}
-          <div ref={formPanelRef} className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-l border-[#F0F0F0]">
+          <div ref={formPanelRef} className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-none md:border-l md:border-[#F0F0F0]">
             {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
