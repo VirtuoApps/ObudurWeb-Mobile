@@ -156,20 +156,22 @@ export default async function ResidentPage({
 
   return (
     <ClientWrapper hotelData={hotelData} locale={currentLocale}>
+      <div className="hidden min-[1240px]:block">
       <Header />
-      <div className="w-full block md:hidden">
+      </div>
+      <div className="w-full block min-[1240px]:hidden">
         <SimpleHeader showBackButton showFavoriteButton />
       </div>
-      <div className="block md:hidden w-full sticky top-0 bg-white z-10 py-3">
+      <div className="block min-[1240px]:hidden w-full sticky top-0 bg-white z-10 py-3 md:px-4">
         <MenuItems />
       </div>
-      <div className="md:pt-[80px]">
+      <div className="min-[1240px]:pt-[80px]">
         <div id="images-section">
           <Images />
         </div>
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-0">
-          <div className="flex md:flex-row flex-col items-start mt-[16px] md:mt-[80px] justify-between">
-            <div className="md:max-w-[952px] w-full pr-6 lg:pr-0">
+        <div className="max-w-[1472px] mx-auto">
+          <div className="flex md:flex-row flex-col items-start mt-[16px] md:mt-[80px] justify-between px-4 gap-[32px]">
+            <div className="min-[1240px]:max-w-[952px] w-full">
               <GeneralInfo />
               <div id="descriptions-section" className="my-[24px] md:my-[72px]">
                 <Descriptions />
@@ -202,7 +204,7 @@ export default async function ResidentPage({
               </div>
             </div>
 
-            <div className="md:max-w-[362px] w-full pl-6 lg:pl-0 mt-8 md:mt-0 sticky top-[104px] z-20">
+            <div className="md:max-w-[362px] w-full mt-8 md:mt-0 sticky top-[104px] z-20 hidden min-[1240px]:flex">
               <ContactBox hotelData={hotelData} />
             </div>
           </div>

@@ -552,7 +552,7 @@ export default function FilterList({
                     : "transform translate-y-0 opacity-100"
                 }`
               : "mt-0 mb-7 relative w-full border-b border-[#F0F0F0]"
-          } z-20  mx-auto  lg:rounded-2xl lg:border-none border-y border-[#F0F0F0] `}
+          } z-20  mx-auto  lg:rounded-2xl border-y border-[#F0F0F0] `}
         >
           <div className="flex w-full h-[56px]">
             <button
@@ -874,8 +874,8 @@ export default function FilterList({
                   ? "transform -translate-y-full opacity-0"
                   : "transform translate-y-0 opacity-100"
               }`
-            : "mt-0 mb-7 relative w-full border-b border-[#F0F0F0]"
-        } z-20  mx-auto  lg:rounded-2xl lg:border-none border-b border-[#F0F0F0] `}
+            : "mt-0 mb-7 lg:rounded-b-[0px] relative w-full border-b border-[#F0F0F0]"
+        } z-20  mx-auto  lg:rounded-2xl border-b border-[#F0F0F0] `}
       >
         {showRightArrow && (
           <button

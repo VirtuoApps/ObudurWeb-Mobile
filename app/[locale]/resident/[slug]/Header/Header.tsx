@@ -1,15 +1,16 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useTranslations } from "next-intl";
+import React, { useEffect, useState } from "react";
+
+import AuthBox from "@/app/HomePage/Header/AuthBox/AuthBox";
 import { FaBars } from "react-icons/fa";
 import LanguageSwitcher from "@/app/components/LanguageSwitcher";
-import AuthBox from "@/app/HomePage/Header/AuthBox/AuthBox";
 import MenuItems from "./MenuItems/MenuItems";
-import { useParams } from "next/navigation";
-import { useRouter } from "@/app/utils/router";
 import axiosInstance from "@/axios";
 import { useHotelData } from "../hotelContext";
+import { useParams } from "next/navigation";
+import { useRouter } from "@/app/utils/router";
+import { useTranslations } from "next-intl";
 
 // Like Button Component
 const LikeButton = ({
