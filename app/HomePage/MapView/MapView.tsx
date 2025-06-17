@@ -448,7 +448,7 @@ export default function GoogleMapView({
           price={getDisplayPrice(selectedHotel.price, selectedCurrency)}
           bedCount={selectedHotel.bedRoomCount.toString()}
           floorCount={"2"}
-          area={`${selectedHotel.projectArea}m2`}
+          area={`${selectedHotel.projectArea}m²`}
           locationText={formatAddress(selectedHotel, "en ")}
           image={selectedHotel.images[0]}
           images={selectedHotel.images}

@@ -205,25 +205,26 @@ export default function ResidentBox({
         {/* Content */}
         <div className="p-4">
           {/* Property type */}
-          <p className="text-base text-[#8C8C8C] font-medium">
-            {residentTypeName}
-          </p>
+          <div className="flex flex-row items-center justify-between">
+            <p className="text-base text-[#8C8C8C] font-medium">
+              {residentTypeName}
+            </p>
 
-          <div className="flex flex-row items-start justify-between mb-4">
+            {/* Price */}
+            <p className="text-base font-bold text-[#362C75] w-[200px] text-right">
+              {price}
+            </p>
+          </div>
+          <div className="flex flex-row items-start justify-between mb-4 mt-2">
             {/* Title */}
             <h3
-              className="text-base font-bold text-[#262626] max-w-[150px] "
+              className="text-base font-bold text-[#262626] w-full line-clamp-2"
               style={{
                 wordBreak: "break-word",
               }}
             >
               {title}
             </h3>
-
-            {/* Price */}
-            <p className="text-base font-bold text-[#362C75] w-[200px] text-right">
-              {price}
-            </p>
           </div>
 
           {/* Features */}
@@ -340,12 +341,12 @@ export default function ResidentBox({
 
           {/* Location */}
           <div className="flex items-start space-x-1 text-[14px] text-[#8C8C8C]">
-            <img
+            {/* <img
               src="/marker-02_(3).png"
               className={`w-[16px] h-[16px] mr-1 ${
                 isListView ? "translate-y-1" : ""
               }`}
-            />
+            /> */}
             <span>{locationText}</span>
           </div>
         </div>

@@ -148,19 +148,22 @@ export default function MapPropertyFloatingCard({
             {/* Details */}
             <div className="flex-1 min-w-0 ml-3">
               {/* Property type */}
-              <p className="text-sm text-[#8C8C8C] font-normal leading-[1.4] mb-1 mt-[20px]">
-                {residentTypeName}
-              </p>
+              <div className="flex flex-row items-center justify-between mt-[12px]">
+                <p className="text-sm text-[#8C8C8C] font-normal leading-[1.4] mb-1 ">
+                  {residentTypeName}
+                </p>
+
+                <p className="text-sm font-bold text-[#362C75] leading-[1.4]">
+                  {price}
+                </p>
+              </div>
 
               {/* Title */}
-              <h3 className="text-sm font-bold text-[#262626] leading-[1.4] mb-1 line-clamp-1">
+              <h3 className="text-sm font-bold text-[#262626] leading-[1.4] mb-1 line-clamp-2 mt-1">
                 {title}
               </h3>
 
               {/* Price */}
-              <p className="text-sm font-bold text-[#362C75] leading-[1.4] mb-3">
-                {price}
-              </p>
 
               {/* Features */}
               {entranceType.tr === "Konut" && (

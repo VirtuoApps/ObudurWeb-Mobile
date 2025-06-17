@@ -23,6 +23,7 @@ interface Feature {
     tr: string;
     en: string;
   };
+  housingType: "house" | "office" | "land" | "other" | "all";
   iconUrl: string;
   featureType: "general" | "inside" | "outside";
   createdAt: string;
@@ -308,10 +309,45 @@ export default function FourthCreateStep() {
     return type ? type.unit : "km";
   };
 
+  console.log({
+    features,
+  });
+
   // Group features by type
   const generalFeatures = features.filter((f) => f.featureType === "general");
-  const insideFeatures = features.filter((f) => f.featureType === "inside");
-  const outsideFeatures = features.filter((f) => f.featureType === "outside");
+  let insideFeatures: any[] = [];
+
+  if (entranceType?.tr === "Konut") {
+    insideFeatures = features.filter(
+      (f) =>
+        f.featureType === "inside" &&
+        (f.housingType === "house" || f.housingType === "all")
+    );
+  }
+
+  if (entranceType?.tr === "İş Yeri") {
+    insideFeatures = features.filter(
+      (f) =>
+        f.featureType === "inside" &&
+        (f.housingType === "office" || f.housingType === "all")
+    );
+  }
+
+  let outsideFeatures: any[] = [];
+  if (entranceType?.tr === "Konut") {
+    outsideFeatures = features.filter(
+      (f) =>
+        f.featureType === "outside" &&
+        (f.housingType === "house" || f.housingType === "all")
+    );
+  }
+  if (entranceType?.tr === "İş Yeri") {
+    outsideFeatures = features.filter(
+      (f) =>
+        f.featureType === "outside" &&
+        (f.housingType === "office" || f.housingType === "all")
+    );
+  }
 
   // Validate fields
   const validateFields = () => {

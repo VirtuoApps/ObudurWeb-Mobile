@@ -10,6 +10,7 @@ import { infrastructureFeatures } from "@/app/utils/infrastructureFeatures";
 import { useHotelData } from "../hotelContext";
 import { useTranslations } from "next-intl";
 import { views } from "@/app/utils/views";
+import { generateRoomCountOptions } from "@/app/[locale]/admin/ilan-olustur/CreationSteps/SecondCreateStep/SecondCreateStep";
 
 interface FeatureIconProps {
   icon: React.ReactNode;
@@ -311,7 +312,7 @@ export default function GeneralInfo() {
   // Format price with currency
   const mainPrice = price[0]?.amount || 0;
   const currency = price[0]?.currency || "USD";
-  
+
   let formattedPrice = "";
   if (currency === "TRY") {
     formattedPrice = `${mainPrice.toLocaleString("tr-TR")} ₺`;
@@ -413,7 +414,13 @@ export default function GeneralInfo() {
                 />
               </svg>
 
-              <span>{roomAsText}</span>
+              <span>
+                {
+                  generateRoomCountOptions().find(
+                    (option) => option.value === roomCount
+                  )?.label
+                }
+              </span>
             </div>
             <div className="flex items-center gap-2 text-[#262626] border-r  pr-4 border-l border-[#D9D9D9] pl-4 whitespace-nowrap w-[33%] sm:w-auto flex items-center justify-center">
               <svg
@@ -506,7 +513,9 @@ export default function GeneralInfo() {
               </svg>
 
               <span>
-                {Math.round(price[0]?.amount / projectArea).toLocaleString("tr-TR")}{" "}
+                {Math.round(price[0]?.amount / projectArea).toLocaleString(
+                  "tr-TR"
+                )}{" "}
                 ₺/m²
               </span>
             </div>
@@ -589,7 +598,9 @@ export default function GeneralInfo() {
               </svg>
 
               <span>
-                {Math.round(price[0]?.amount / projectArea).toLocaleString("tr-TR")}{" "}
+                {Math.round(price[0]?.amount / projectArea).toLocaleString(
+                  "tr-TR"
+                )}{" "}
                 ₺/m²
               </span>
             </div>
