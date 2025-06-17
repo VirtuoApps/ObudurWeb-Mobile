@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import AuthBox from "@/app/HomePage/Header/AuthBox/AuthBox";
@@ -12,7 +12,18 @@ import { useSelector } from "react-redux";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isMobile = useSelector((state: any) => state.favorites.isMobile);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
 
   const router = useRouter();
 
@@ -34,7 +45,7 @@ export default function Header() {
               <ArrowLeftIcon className="h-5 w-5" />
             </button>
           </div>
-  
+
           <div className="xl:hidden flex items-center justify-center flex-1 min-w-0">
             <Image
               src="/obudur-logo.png"
@@ -44,7 +55,7 @@ export default function Header() {
               priority
             />
           </div>
-  
+
           <div className="flex items-center xl:hidden shrink-0">
             <AuthBox />
           </div>
@@ -74,7 +85,7 @@ export default function Header() {
 
         {/* Right Side Items for Desktop */}
         <div className="hidden md:flex items-center gap-4">
-          <AuthBox />
+          <AuthBox hideCreateListingButton={true} />
           <LanguageSwitcher />
         </div>
 
