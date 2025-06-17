@@ -493,7 +493,7 @@ export default function FirstCreateStep() {
           <span className="text-sm text-gray-600 mt-4 sm:mt-0">
             Adım 1 / 6
           </span>
-          <div className="flex flex-col-reverse sm:flex-row gap-4 mt-4 sm:mt-0">
+          <div className="flex flex-row gap-4 mt-4 sm:mt-0 w-full md:w-auto">
             <button
               type="button"
               onClick={() => window.history.back()}
