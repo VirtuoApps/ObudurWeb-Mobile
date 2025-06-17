@@ -3,18 +3,13 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import HomeDetailsPopup from "./HomeDetailsPopup/HomeDetailsPopup";
 import { Hotel } from "@/types/hotel.type";
-import ResidentBox from "../ListView/ResidentBox/ResidentBox";
 import MapPropertyFloatingCard from "./MapPropertyFloatingCard/MapPropertyFloatingCard";
+import ResidentBox from "../ListView/ResidentBox/ResidentBox";
 import { formatAddress } from "@/app/utils/addressFormatter";
 import { getDisplayPrice } from "@/app/utils/priceFormatter";
 import { getLocalizedText } from "../ListView/ListView";
 import { useGoogleMaps } from "../../contexts/GoogleMapsContext";
 import { useRouter } from "@/app/utils/router";
-
-const containerStyle = {
-  width: "100%",
-  height: "calc(100vh - 150px)",
-};
 
 export default function GoogleMapView({
   hotels,
@@ -261,11 +256,11 @@ export default function GoogleMapView({
           isMobile
             ? {
                 width: "100%",
-                height: "calc(100vh - 150px)",
+                height: "calc(100vh - 72px)",
               }
             : {
                 width: "100%",
-                height: "calc(100vh - 80px)",
+                height: "calc(100vh - 96px)",
               }
         }
         center={center}
