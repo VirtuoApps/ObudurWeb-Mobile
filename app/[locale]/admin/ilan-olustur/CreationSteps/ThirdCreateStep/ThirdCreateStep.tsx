@@ -1167,7 +1167,7 @@ export default function ThirdCreateStep() {
           <button
             type="button"
             onClick={handleContinue}
-            className="w-full sm:w-auto bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+            className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
           >
             Devam Et
             <ChevronRightIcon className="h-5 w-5" />

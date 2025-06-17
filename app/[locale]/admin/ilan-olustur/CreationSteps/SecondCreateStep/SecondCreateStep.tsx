@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
 import {
-  ChevronRightIcon,
-  ChevronLeftIcon,
   ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
   ChevronUpIcon,
 } from "@heroicons/react/24/solid";
-import { useListingForm } from "../CreationSteps";
-import { XCircleIcon } from "@heroicons/react/24/solid";
-import GoBackButton from "../../GoBackButton/GoBackButton";
+import React, { useEffect, useRef, useState } from "react";
 import { formatInputPrice, parseInputPrice } from "@/app/utils/priceFormatter";
+
+import GoBackButton from "../../GoBackButton/GoBackButton";
+import { XCircleIcon } from "@heroicons/react/24/solid";
+import { useListingForm } from "../CreationSteps";
 
 // Custom Select component that matches the design
 interface SelectOption {
@@ -1002,7 +1003,7 @@ export default function SecondCreateStep() {
               <button
                 type="button"
                 onClick={handleContinue}
-                className="w-full sm:w-auto bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+                className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
               >
                 Devam Et
                 <ChevronRightIcon className="h-5 w-5" />
