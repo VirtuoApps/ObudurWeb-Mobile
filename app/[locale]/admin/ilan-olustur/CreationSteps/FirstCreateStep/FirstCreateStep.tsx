@@ -294,7 +294,7 @@ export default function FirstCreateStep() {
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">
         <div className="flex flex-col md:flex-row p-10">
           {/* Left Info Panel - 30% width on desktop */}
-          <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 flex flex-col ">
+          <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 hidden flex-col md:flex">
             <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
               İlan kategorilerini belirleyin.
             </h1>
@@ -311,7 +311,7 @@ export default function FirstCreateStep() {
           </div>
 
           {/* Right Form Panel - 70% width on desktop */}
-          <div ref={formPanelRef} className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto border-none md:border-l md:border-[#F0F0F0]">
+          <div ref={formPanelRef} className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto md:border-l md:border-[#F0F0F0]">
             {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
