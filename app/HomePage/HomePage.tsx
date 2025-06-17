@@ -619,7 +619,9 @@ export default function HomePage({
       )}
       <div
         className={`fixed left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-50 px-3 h-[40px] rounded-lg shadow-lg transition-all duration-300 ${
-          isPinSelected && currentView === "map" ? "bottom-40" : "bottom-4"
+          isPinSelected && currentView === "map"
+            ? "bottom-[240px]"
+            : "bottom-[100px]"
         }`}
         onClick={() => handleViewChange(currentView === "map" ? "list" : "map")}
       >

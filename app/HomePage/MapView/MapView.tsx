@@ -398,7 +398,7 @@ export default function GoogleMapView({
               }}
             >
               <div
-                className="w-[356px] h-[356px] p-0 m-0"
+                className="w-[356px] h-auto p-0 m-0"
                 style={{
                   background: "white",
                   borderRadius: "12px",
