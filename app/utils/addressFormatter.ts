@@ -15,23 +15,21 @@ export const formatAddress = (
     state: MultilingualText;
     postalCode: string;
     country: MultilingualText;
+    neighborhood: MultilingualText;
   },
   language: string = "en"
 ) => {
   const parts = [];
-  console.log(hotel);
 
   // Helper function to get localized text
   const getLocalizedText = (textObj: any) => {
     return textObj && textObj[language] ? textObj[language] : textObj?.en || "";
   };
 
-  // il
+  // Add components in the specified order: İl, İlçe, Mahalle
   if (hotel.state) parts.push(getLocalizedText(hotel.state));
-  // ilce
   if (hotel.city) parts.push(getLocalizedText(hotel.city));
-  // sokak
-  if (hotel.street) parts.push(getLocalizedText(hotel.street));
+  if (hotel.neighborhood) parts.push(getLocalizedText(hotel.neighborhood));
 
   return parts.filter(Boolean).join(", ");
 };

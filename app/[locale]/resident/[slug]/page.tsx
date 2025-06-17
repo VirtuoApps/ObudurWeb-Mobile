@@ -104,6 +104,7 @@ interface HotelDetails {
   country: LocalizedText;
   floorCount: number;
   state: LocalizedText;
+  neighborhood: LocalizedText;
   street: LocalizedText;
   buildingNo: string;
   apartmentNo: string;

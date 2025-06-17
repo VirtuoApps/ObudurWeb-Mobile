@@ -251,6 +251,7 @@ export default function GeneralInfo() {
     bathroomCount,
     projectArea,
     entranceType,
+    neighborhood,
   } = hotelData.hotelDetails;
 
   // Get general features for the icons
@@ -353,6 +354,7 @@ export default function GeneralInfo() {
               apartmentNo: hotelData.hotelDetails.apartmentNo,
               city: hotelData.hotelDetails.city,
               state: hotelData.hotelDetails.state,
+              neighborhood: hotelData.hotelDetails.neighborhood,
               postalCode: hotelData.hotelDetails.postalCode,
               country: hotelData.hotelDetails.country,
             })}
@@ -464,6 +466,7 @@ export default function GeneralInfo() {
                 apartmentNo: hotelData.hotelDetails.apartmentNo,
                 city: hotelData.hotelDetails.city,
                 state: hotelData.hotelDetails.state,
+                neighborhood: hotelData.hotelDetails.neighborhood,
                 postalCode: hotelData.hotelDetails.postalCode,
                 country: hotelData.hotelDetails.country,
               })}
@@ -529,6 +532,7 @@ export default function GeneralInfo() {
                 apartmentNo: hotelData.hotelDetails.apartmentNo,
                 city: hotelData.hotelDetails.city,
                 state: hotelData.hotelDetails.state,
+                neighborhood: hotelData.hotelDetails.neighborhood,
                 postalCode: hotelData.hotelDetails.postalCode,
                 country: hotelData.hotelDetails.country,
               })}
@@ -614,6 +618,7 @@ export default function GeneralInfo() {
                 apartmentNo: hotelData.hotelDetails.apartmentNo,
                 city: hotelData.hotelDetails.city,
                 state: hotelData.hotelDetails.state,
+                neighborhood: hotelData.hotelDetails.neighborhood,
                 postalCode: hotelData.hotelDetails.postalCode,
                 country: hotelData.hotelDetails.country,
               })}
