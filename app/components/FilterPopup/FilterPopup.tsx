@@ -745,7 +745,7 @@ export default function FilterPopup({
         {/* Header - Fixed at top */}
         <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-2xl relative">
           <div className="flex items-center justify-between">
-            <h2 className="md:text-lg text-2xl font-bold text-gray-700">
+            <h2 className="text-2xl md:text-lg font-bold text-gray-700">
               {t("title")}
             </h2>
             <button
@@ -773,7 +773,7 @@ export default function FilterPopup({
 
             {/* For Sale Toggle Button */}
             <button
-              className={`relative z-10 py-3 px-4 text-sm font-medium transition-all duration-500 ease-in-out cursor-pointer rounded-[12px] h-[56px] flex-1 flex items-center justify-center ${
+              className={`relative z-10 py-3 px-4 text-base md:text-sm font-medium transition-all duration-500 ease-in-out cursor-pointer rounded-[12px] h-[56px] flex-1 flex items-center justify-center ${
                 tempListingType === "For Sale"
                   ? "text-white"
                   : "text-gray-700 hover:text-gray-800"
@@ -789,7 +789,7 @@ export default function FilterPopup({
 
             {/* For Rent Toggle Button */}
             <button
-              className={`relative z-10 py-3 px-4 text-sm font-medium transition-all duration-500 ease-in-out cursor-pointer rounded-[12px] h-[56px] flex-1 flex items-center justify-center ${
+              className={`relative z-10 py-3 px-4 text-base md:text-sm font-medium transition-all duration-500 ease-in-out cursor-pointer rounded-[12px] h-[56px] flex-1 flex items-center justify-center ${
                 tempListingType === "For Rent"
                   ? "text-white"
                   : "text-gray-700 hover:text-gray-800"
@@ -898,7 +898,7 @@ export default function FilterPopup({
                     <>
                       <PopoverButton
                         ref={buttonRef}
-                        className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-[16px] px-4 py-3 h-[56px] text-sm text-gray-700"
+                        className="flex items-center justify-between w-full bg-white border border-gray-200 rounded-[16px] px-4 py-3 h-[56px] text-base md:text-sm text-gray-700"
                       >
                         <div className="flex items-center flex-1">
                           {isOpen && showSearch ? (
@@ -964,7 +964,7 @@ export default function FilterPopup({
                       </PopoverButton>
 
                       <PopoverPanel className="absolute z-20 mt-2 w-full py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
-                        <div className="w-full overflow-hidden rounded-xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
+                        <div className="w-full overflow-hidden rounded-xl bg-white text-base md:text-sm shadow-lg ring-1 ring-gray-900/5">
                           <div className="p-4">
                             {(isSearching || isFetchingCoordinates) && (
                               <div className="p-3 text-center text-gray-500">
@@ -997,7 +997,7 @@ export default function FilterPopup({
                                         {location.name}
                                       </div>
                                       {location.description && (
-                                        <div className="text-xs text-gray-400 mt-1">
+                                        <div className="text-xs md:text-xs text-gray-400 mt-1">
                                           {location.description}
                                         </div>
                                       )}
@@ -1041,7 +1041,7 @@ export default function FilterPopup({
                     originalData: hotelType, // Keep reference to original data for category filtering
                   }))}
                   defaultText={t("selectEstateType") || "Select Property Type"}
-                  extraClassName="w-full bg-white border border-gray-200 h-[56px] text-sm text-gray-700 "
+                  extraClassName="w-full bg-white border border-gray-200 h-[56px] text-base md:text-sm text-gray-700 "
                   popoverExtraClassName=" md:max-w-[300px] max-w-[190px]"
                 />
               </div>
@@ -1076,7 +1076,7 @@ export default function FilterPopup({
                         }))
                   }
                   defaultText={t("selectCategory") || "Select Category"}
-                  extraClassName="w-full bg-white border border-gray-200 h-[56px] text-sm text-gray-700"
+                  extraClassName="w-full bg-white border border-gray-200 h-[56px] text-base md:text-sm text-gray-700"
                   popoverExtraClassName=" md:max-w-[300px] max-w-[190px]"
                 />
               </div>
@@ -1090,7 +1090,7 @@ export default function FilterPopup({
                 {t("priceLabel")}
               </h3>
               <button
-                className="text-sm text-[#8c8c8c] hover:underline cursor-pointer"
+                className="text-base md:text-sm text-[#8c8c8c] hover:underline cursor-pointer"
                 onClick={() => {
                   setTempMinPrice("");
                   setTempMaxPrice("");
@@ -1133,7 +1133,7 @@ export default function FilterPopup({
                     }
                   }}
                   placeholder={t("minValue")}
-                  className="w-full bg-white border border-gray-200 rounded-[16px] px-4 py-2 h-[56px] text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full bg-white border border-gray-200 rounded-[16px] px-4 py-2 h-[56px] text-base md:text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
                 {/* <div className="absolute right-2 flex flex-col">
                   <button
@@ -1183,7 +1183,7 @@ export default function FilterPopup({
                     }
                   }}
                   placeholder={t("maxValue")}
-                  className="w-full bg-white border border-gray-200  px-4 py-2 h-[56px] rounded-[16px] text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full bg-white border border-gray-200  px-4 py-2 h-[56px] rounded-[16px] text-base md:text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
                 {/* <div className="absolute right-2 flex flex-col">
                   <button
@@ -1222,7 +1222,7 @@ export default function FilterPopup({
                     href: "#",
                   }))}
                   defaultText={t("roomsSelect") || "Select Room Count"}
-                  extraClassName="w-full bg-white border border-gray-200 h-[56px] text-sm text-gray-700"
+                  extraClassName="w-full bg-white border border-gray-200 h-[56px] text-base md:text-sm text-gray-700"
                   popoverExtraClassName=" md:max-w-[300px] max-w-[190px]"
                 />
               </div>
@@ -1248,7 +1248,7 @@ export default function FilterPopup({
                     })
                   )}
                   defaultText={t("bathroomsSelect") || "Select Bathroom Count"}
-                  extraClassName="w-full bg-white border border-gray-200 h-[56px] text-sm text-gray-700"
+                  extraClassName="w-full bg-white border border-gray-200 h-[56px] text-base md:text-sm text-gray-700"
                   popoverExtraClassName=" md:max-w-[300px] max-w-[190px]"
                 />
               </div>
@@ -1262,7 +1262,7 @@ export default function FilterPopup({
                 {t("area")}
               </h3>
               <button
-                className="text-sm text-[#8c8c8c] hover:underline cursor-pointer"
+                className="text-base md:text-sm text-[#8c8c8c] hover:underline cursor-pointer"
                 onClick={() => {
                   setTempMinArea("");
                   setTempMaxArea("");
@@ -1305,7 +1305,7 @@ export default function FilterPopup({
                     }
                   }}
                   placeholder={t("minValue")}
-                  className="w-full bg-white border border-gray-200 rounded-[16px] px-4 py-2 h-[56px] text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full bg-white border border-gray-200 rounded-[16px] px-4 py-2 h-[56px] text-base md:text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
                 {/* <div className="absolute right-2 flex flex-col">
                   <button
@@ -1355,7 +1355,7 @@ export default function FilterPopup({
                     }
                   }}
                   placeholder={t("maxValue")}
-                  className="w-full bg-white border border-gray-200 rounded-[16px] px-4 py-2 h-[56px] text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full bg-white border border-gray-200 rounded-[16px] px-4 py-2 h-[56px] text-base md:text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
                 {/* <div className="absolute right-2 flex flex-col">
                   <button
@@ -1388,12 +1388,12 @@ export default function FilterPopup({
                   <h3 className="text-base font-semibold text-gray-700">
                     {t("faceFeatures") || "Cephe"}{" "}
                     {tempSelectedFaceFeatures.length > 0 ? (
-                      <span className="text-sm font-normal text-[#595959]">
+                      <span className="text-base md:text-sm font-normal text-[#595959]">
                         ({tempSelectedFaceFeatures.length})
                       </span>
                     ) : null}
                   </h3>
-                  <button className="text-sm text-[#8c8c8c] hover:underline cursor-pointer">
+                  <button className="text-base md:text-sm text-[#8c8c8c] hover:underline cursor-pointer">
                     <img
                       src="/chevron-down.png"
                       className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
@@ -1418,7 +1418,7 @@ export default function FilterPopup({
                               isSelected
                                 ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
                                 : "bg-white border-gray-100 text-gray-600"
-                            } border rounded-[16px] h-[40px] px-3 py-1 text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
+                            } border rounded-[16px] h-[40px] px-3 py-1 text-base md:text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
                           >
                             {feature.iconUrl && (
                               <img
@@ -1447,12 +1447,12 @@ export default function FilterPopup({
               <h3 className="text-base font-semibold text-gray-700">
                 {t("interiorFeatures")}{" "}
                 {tempInteriorFeatures.length > 0 ? (
-                  <span className="text-sm font-normal text-[#595959]">
+                  <span className="text-base md:text-sm font-normal text-[#595959]">
                     ({tempInteriorFeatures.length})
                   </span>
                 ) : null}
               </h3>
-              <button className="text-sm text-[#8c8c8c] hover:underline cursor-pointer">
+              <button className="text-base md:text-sm text-[#8c8c8c] hover:underline cursor-pointer">
                 <img
                   src="/chevron-down.png"
                   className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
@@ -1477,7 +1477,7 @@ export default function FilterPopup({
                           isSelected
                             ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
                             : "bg-white border-gray-100 text-gray-600"
-                        } border rounded-[16px] h-[40px] px-3 py-1 text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
+                        } border rounded-[16px] h-[40px] px-3 py-1 text-base md:text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
                       >
                         <img
                           src={feature.iconUrl}
@@ -1503,12 +1503,12 @@ export default function FilterPopup({
               <h3 className="text-base font-semibold text-gray-700">
                 {t("exteriorFeatures") || "Dış Özellikler"}{" "}
                 {tempSelectedExteriorFeatures.length > 0 ? (
-                  <span className="text-sm font-normal text-[#595959]">
+                   <span className="text-base md:text-sm font-normal text-[#595959]">
                     ({tempSelectedExteriorFeatures.length})
                   </span>
                 ) : null}
               </h3>
-              <button className="text-sm text-[#8c8c8c] hover:underline cursor-pointer">
+              <button className="text-base md:text-sm text-[#8c8c8c] hover:underline cursor-pointer">
                 <img
                   src="/chevron-down.png"
                   className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
@@ -1533,7 +1533,7 @@ export default function FilterPopup({
                           isSelected
                             ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
                             : "bg-white border-gray-100 text-gray-600"
-                        } border rounded-[16px] h-[40px] px-3 py-1 text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
+                        } border rounded-[16px] h-[40px] px-3 py-1 text-base md:text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
                       >
                         <img
                           src={feature.iconUrl}
@@ -1564,12 +1564,12 @@ export default function FilterPopup({
                     {t("accessibilityFeatures") ||
                       "Engelliye ve Yaşlıya Yönelik Özellikler"}{" "}
                     {tempSelectedAccessibilityFeatures.length > 0 ? (
-                      <span className="text-sm font-normal text-[#595959]">
+                      <span className="text-base md:text-sm font-normal text-[#595959]">
                         ({tempSelectedAccessibilityFeatures.length})
                       </span>
                     ) : null}
                   </h3>
-                  <button className="text-sm text-[#8c8c8c] hover:underline cursor-pointer">
+                  <button className="text-base md:text-sm text-[#8c8c8c] hover:underline cursor-pointer">
                     <img
                       src="/chevron-down.png"
                       className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
@@ -1597,7 +1597,7 @@ export default function FilterPopup({
                                 isSelected
                                   ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
                                   : "bg-white border-gray-100 text-gray-600"
-                              } border rounded-[16px] h-[40px] px-3 py-1 text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
+                              } border rounded-[16px] h-[40px] px-3 py-1 text-base md:text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
                             >
                               {feature.iconUrl && (
                                 <img
@@ -1627,7 +1627,7 @@ export default function FilterPopup({
           <div className="grid grid-cols-2 gap-4">
             {hasActiveFilters() && (
               <button
-                className="w-full h-[56px] text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-[16px] hover:bg-gray-50"
+                className="w-full h-[56px] text-base md:text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-[16px] hover:bg-gray-50"
                 onClick={clearAllTempFilters}
               >
                 {t("clearAll")}
@@ -1636,7 +1636,7 @@ export default function FilterPopup({
             <button
               onClick={applyFilters}
               disabled={hasActiveFilters() && resultsCount === 0}
-              className={`w-full h-[56px] text-sm font-medium text-white rounded-[16px] cursor-pointer ${
+              className={`w-full h-[56px] text-base md:text-sm font-medium text-white rounded-[16px] cursor-pointer ${
                 hasActiveFilters() && resultsCount === 0
                   ? "bg-gray-300 cursor-not-allowed"
                   : "bg-[#5E5691] hover:bg-[#4a4574]"
