@@ -114,10 +114,14 @@ export default function MapPropertyFloatingCard({
     <>
       {/* Floating Card */}
       <div
-        className={`fixed bottom-4 left-4 right-4 bg-white rounded-lg shadow-lg transform transition-all duration-300 ease-out z-30 ${
+        className={`fixed left-4 right-4 bg-white rounded-lg shadow-lg transform transition-all duration-300 ease-out z-30 safe-area-bottom floating-card mobile-safari-bottom ${
           isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
         }`}
-        style={{ height: "auto", minHeight: "136px" }}
+        style={{ 
+          bottom: "max(1rem, env(safe-area-inset-bottom))",
+          height: "auto", 
+          minHeight: "136px" 
+        }}
         onClick={handleCardClick}
       >
         {/* Content */}

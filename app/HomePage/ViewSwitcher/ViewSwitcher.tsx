@@ -12,9 +12,8 @@ export default function ViewSwitcher({
   currentView,
   setCurrentView,
 }: ViewSwitcherProps) {
-  const t = useTranslations("viewSwitcher");
-  return (
-    <div className="fixed bottom-4 left-0 right-0 w-full flex justify-center items-center">
+  const t = useTranslations("viewSwitcher");  return (
+    <div className="fixed left-0 right-0 w-full flex justify-center items-center safe-area-bottom floating-card mobile-safari-bottom" style={{ bottom: "max(1rem, env(safe-area-inset-bottom))" }}>
       {currentView === "map" && (
         <div
           className="flex flex-row justify-center items-center gap-2 bg-white px-4 py-3 rounded-2xl shadow-lg cursor-pointer"
@@ -24,7 +23,6 @@ export default function ViewSwitcher({
           <p className="text-sm font-bold text-[#5E5691]">{t("list")}</p>
         </div>
       )}
-
       {currentView === "list" && (
         <div
           className="flex flex-row justify-center items-center gap-2 bg-white px-4 py-3 rounded-2xl shadow-lg cursor-pointer"

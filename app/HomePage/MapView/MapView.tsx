@@ -38,10 +38,10 @@ export default function GoogleMapView({
 
   const router = useRouter();
 
-  // Check if screen is mobile
+  // Check if screen is mobile - using 1024px to match HomePage logic
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth < 1024);
     };
 
     checkScreenSize();
@@ -239,7 +239,7 @@ export default function GoogleMapView({
     }
   }, [selectedHotel, mapInstance, hideSelectedHotel]);
 
-  // Notify parent when pin selection changes (mobile only)
+  // Notify parent when pin selection changes (for screens < 1024px)
   useEffect(() => {
     if (onPinSelectionChange && isMobile) {
       const isPinSelected = selectedHotel && !hideSelectedHotel;
@@ -257,6 +257,7 @@ export default function GoogleMapView({
             ? {
                 width: "100%",
                 height: "calc(100vh - 72px)",
+                minHeight: "calc(100dvh - 72px)",
               }
             : {
                 width: "100%",

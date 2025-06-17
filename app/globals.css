@@ -27,6 +27,28 @@ body {
   font-family: var(--font-kumbh-sans), sans-serif;
 }
 
+/* Mobile Safari viewport and safe area handling */
+@supports (padding: max(0px)) {
+  .safe-area-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+  
+  .safe-area-top {
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+}
+
+/* Mobile viewport height handling for Mobile Safari */
+.mobile-vh {
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for mobile browsers */
+}
+
+.mobile-vh-minus-header {
+  height: calc(100vh - 72px);
+  height: calc(100dvh - 72px); /* Dynamic viewport height for mobile browsers */
+}
+
 .gm-style {
   /* font-size: 14px !important; */
   color: #FCFCFC !important;
@@ -272,6 +294,7 @@ body {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
+  line-clamp: 1;
 }
 
 .line-clamp-2 {
@@ -279,4 +302,27 @@ body {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+/* Mobile Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  /* Target only webkit browsers like Mobile Safari */
+  .fixed {
+    position: fixed;
+    transform: translateZ(0); /* Force hardware acceleration */
+  }
+  
+  /* Ensure fixed elements respect safe area */
+  .mobile-safari-bottom {
+    bottom: env(safe-area-inset-bottom, 1rem);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  
+  /* Improve performance for animated elements */
+  .floating-card {
+    will-change: transform, opacity;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
 }
