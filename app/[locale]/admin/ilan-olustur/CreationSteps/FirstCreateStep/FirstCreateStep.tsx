@@ -488,18 +488,27 @@ export default function FirstCreateStep() {
           </div>
         </div>
 
-        <div className=" flex flex-col sm:flex-row justify-between items-center p-6">
-          <span className="text-sm text-gray-600 mb-4 sm:mb-0 mt-auto">
+        <div className="flex flex-col-reverse sm:flex-row justify-between items-center p-6 border-t border-[#F0F0F0]">
+          <span className="text-sm text-gray-600 mt-4 sm:mt-0">
             Adım 1 / 6
           </span>
-          <button
-            type="button"
-            onClick={handleContinue}
-            className="w-full sm:w-auto bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
-          >
-            Devam Et
-            <ChevronRightIcon className="h-5 w-5" />
-          </button>
+          <div className="flex flex-col-reverse sm:flex-row gap-4 mt-4 sm:mt-0">
+            <button
+              type="button"
+              onClick={() => window.history.back()}
+              className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-600 font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition border border-gray-300"
+            >
+              Vazgeç
+            </button>
+            <button
+              type="button"
+              onClick={handleContinue}
+              className="w-full sm:w-auto bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+            >
+              Devam Et
+              <ChevronRightIcon className="w-5 h-5" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
