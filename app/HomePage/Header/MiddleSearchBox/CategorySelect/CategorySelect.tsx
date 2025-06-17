@@ -43,6 +43,7 @@ export default function CategorySelect({
   const [allCategories, setAllCategories] = useState<CategoryApiResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const [showTypeWarning, setShowTypeWarning] = useState(false);
 
   const locale = useLocale();
   const t = useTranslations("categories");
@@ -70,28 +71,22 @@ export default function CategorySelect({
   }, [selectedPropertyType]);
 
   const handleCategorySelect = (category: (typeof categories)[0]) => {
-    setSelectedCategory(category);
-
-    // If property type is not selected and we have category's hotel type info,
-    // automatically select the property type
-    if (!selectedPropertyType && category.originalData?.type) {
-      const hotelType = category.originalData.type;
-
-      const formattedHotelType = {
-        _id: hotelType._id,
-        name:
-          (hotelType.name as any)[locale] ||
-          hotelType.name.tr ||
-          hotelType.name.en,
-        href: "#",
-        originalData: hotelType,
-      };
-      setSelectedPropertyType(formattedHotelType);
+    if (!selectedPropertyType) {
+      setShowTypeWarning(true);
+      setTimeout(() => setShowTypeWarning(false), 2000);
+      return;
     }
-
+    setSelectedCategory(category);
     setIsOpen(false);
     buttonRef.current?.click();
   };
+
+  // Emlak tipi x ile sıfırlanırsa kategori de sıfırlansın
+  useEffect(() => {
+    if (!selectedPropertyType && selectedCategory) {
+      setSelectedCategory(null);
+    }
+  }, [selectedPropertyType]);
 
   // Determine which categories to show
   const categories = selectedPropertyType?.originalData?.categories
@@ -121,15 +116,21 @@ export default function CategorySelect({
       }));
 
   return (
-    <GeneralSelect
-      selectedItem={selectedCategory}
-      onSelect={handleCategorySelect}
-      options={categories}
-      defaultText={t("category")}
-      extraClassName="min-w-[180px] text-[#8c8c8c] hover:text-[#595959] transition-all duration-300"
-      customTextColor={true}
-      popoverExtraClassName="max-w-[250px]"
-      maxHeight="300"
-    />
+    <div>
+      <GeneralSelect
+        selectedItem={selectedCategory}
+        onSelect={handleCategorySelect}
+        options={categories}
+        defaultText={t("category")}
+        extraClassName={`min-w-[180px] transition-all duration-300 ${!selectedPropertyType ? 'text-[#C0C0C0] bg-[#F5F5F5] cursor-not-allowed' : 'text-[#8c8c8c] hover:text-[#595959]'}`}
+        customTextColor={true}
+        popoverExtraClassName="max-w-[250px]"
+        maxHeight="300"
+        disabled={!selectedPropertyType}
+      />
+      {showTypeWarning && (
+        <div className="text-xs text-[#EF1A28] mt-1">Önce emlak tipi seçmelisiniz.</div>
+      )}
+    </div>
   );
 }
