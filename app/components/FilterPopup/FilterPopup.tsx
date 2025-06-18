@@ -14,6 +14,7 @@ import {
 import {
   ChevronDownIcon as ChevronDownSolidIcon,
   MagnifyingGlassIcon,
+  XMarkIcon as XMarkSolidIcon,
 } from "@heroicons/react/20/solid";
 import {
   FaParking,
@@ -159,21 +160,33 @@ export default function FilterPopup({
   const locale = useLocale();
 
   // Temporary states for popup (only applied when "Apply" is clicked)
-  const [tempListingType, setTempListingType] = useState<"For Sale" | "For Rent">(listingType);
-  const [tempSelectedLocation, setTempSelectedLocation] = useState<any>(selectedLocation);
-  const [tempSelectedPropertyType, setTempSelectedPropertyType] = useState<any>(selectedPropertyType);
-  const [tempSelectedCategory, setTempSelectedCategory] = useState<any>(selectedCategory);
+  const [tempListingType, setTempListingType] = useState<
+    "For Sale" | "For Rent"
+  >(listingType);
+  const [tempSelectedLocation, setTempSelectedLocation] =
+    useState<any>(selectedLocation);
+  const [tempSelectedPropertyType, setTempSelectedPropertyType] =
+    useState<any>(selectedPropertyType);
+  const [tempSelectedCategory, setTempSelectedCategory] =
+    useState<any>(selectedCategory);
   const [tempFilters, setTempFilters] = useState<any>(filters);
   const [tempMinPrice, setTempMinPrice] = useState<number | "">(minPrice);
   const [tempMaxPrice, setTempMaxPrice] = useState<number | "">(maxPrice);
   const [tempMinArea, setTempMinArea] = useState<number | "">(minArea);
   const [tempMaxArea, setTempMaxArea] = useState<number | "">(maxArea);
   const [tempRoomCount, setTempRoomCount] = useState<string>(roomCount);
-  const [tempBathroomCount, setTempBathroomCount] = useState<string>(bathroomCount);
-  const [tempSelectedExteriorFeatures, setTempSelectedExteriorFeatures] = useState<any[]>(selectedExteriorFeatures);
-  const [tempInteriorFeatures, setTempInteriorFeatures] = useState<any[]>(interiorFeatures);
-  const [tempSelectedAccessibilityFeatures, setTempSelectedAccessibilityFeatures] = useState<any[]>(selectedAccessibilityFeatures);
-  const [tempSelectedFaceFeatures, setTempSelectedFaceFeatures] = useState<any[]>(selectedFaceFeatures);
+  const [tempBathroomCount, setTempBathroomCount] =
+    useState<string>(bathroomCount);
+  const [tempSelectedExteriorFeatures, setTempSelectedExteriorFeatures] =
+    useState<any[]>(selectedExteriorFeatures);
+  const [tempInteriorFeatures, setTempInteriorFeatures] =
+    useState<any[]>(interiorFeatures);
+  const [
+    tempSelectedAccessibilityFeatures,
+    setTempSelectedAccessibilityFeatures,
+  ] = useState<any[]>(selectedAccessibilityFeatures);
+  const [tempSelectedFaceFeatures, setTempSelectedFaceFeatures] =
+    useState<any[]>(selectedFaceFeatures);
 
   // Location search state variables - similar to LocationSelect.tsx
   const [suggestions, setSuggestions] = useState<any[]>([]);
@@ -232,7 +245,24 @@ export default function FilterPopup({
       setTempSelectedAccessibilityFeatures(selectedAccessibilityFeatures);
       setTempSelectedFaceFeatures(selectedFaceFeatures);
     }
-  }, [isOpen, listingType, selectedLocation, selectedPropertyType, selectedCategory, filters, minPrice, maxPrice, minArea, maxArea, roomCount, bathroomCount, selectedExteriorFeatures, interiorFeatures, selectedAccessibilityFeatures, selectedFaceFeatures]);
+  }, [
+    isOpen,
+    listingType,
+    selectedLocation,
+    selectedPropertyType,
+    selectedCategory,
+    filters,
+    minPrice,
+    maxPrice,
+    minArea,
+    maxArea,
+    roomCount,
+    bathroomCount,
+    selectedExteriorFeatures,
+    interiorFeatures,
+    selectedAccessibilityFeatures,
+    selectedFaceFeatures,
+  ]);
 
   // Fetch hotel types from API
   useEffect(() => {
@@ -290,7 +320,7 @@ export default function FilterPopup({
           const parts = prediction.description.split(",");
           const name = parts[0].trim(); // Get main part of description
           const description = parts.slice(1).join(",").trim(); // Get secondary part (province, country etc.)
-          
+
           return {
             name,
             description,
@@ -357,8 +387,10 @@ export default function FilterPopup({
   };
 
   const toggleFeature = (feature: any) => {
-    const isCurrentlySelected = tempInteriorFeatures.some((f: any) => f._id === feature._id);
-    
+    const isCurrentlySelected = tempInteriorFeatures.some(
+      (f: any) => f._id === feature._id
+    );
+
     setTempInteriorFeatures((prev: any[]) =>
       isCurrentlySelected
         ? prev.filter((f: any) => f._id !== feature._id)
@@ -367,8 +399,10 @@ export default function FilterPopup({
   };
 
   const toggleExteriorFeature = (feature: any) => {
-    const isCurrentlySelected = tempSelectedExteriorFeatures.some((f: any) => f._id === feature._id);
-    
+    const isCurrentlySelected = tempSelectedExteriorFeatures.some(
+      (f: any) => f._id === feature._id
+    );
+
     setTempSelectedExteriorFeatures((prev: any[]) =>
       isCurrentlySelected
         ? prev.filter((f: any) => f._id !== feature._id)
@@ -427,7 +461,9 @@ export default function FilterPopup({
     // Filter by listing type
     if (tempListingType) {
       filteredHotels = filteredHotels.filter((hotel) =>
-        Object.values(hotel.listingType).some((value) => value === tempListingType)
+        Object.values(hotel.listingType).some(
+          (value) => value === tempListingType
+        )
       );
     }
 
@@ -449,7 +485,8 @@ export default function FilterPopup({
       minPrice: tempMinPrice !== "" ? tempMinPrice : null,
       maxPrice: tempMaxPrice !== "" ? tempMaxPrice : null,
       roomCount: tempRoomCount !== "" ? parseInt(tempRoomCount) : null,
-      bathroomCount: tempBathroomCount !== "" ? parseInt(tempBathroomCount) : null,
+      bathroomCount:
+        tempBathroomCount !== "" ? parseInt(tempBathroomCount) : null,
       minProjectArea: tempMinArea !== "" ? Number(tempMinArea) : null,
       maxProjectArea: tempMaxArea !== "" ? Number(tempMaxArea) : null,
       interiorFeatureIds:
@@ -491,7 +528,10 @@ export default function FilterPopup({
       );
     }
 
-    if (filtersForCount.minPrice !== undefined && filtersForCount.minPrice !== null) {
+    if (
+      filtersForCount.minPrice !== undefined &&
+      filtersForCount.minPrice !== null
+    ) {
       filteredHotels = filteredHotels.filter((hotel) => {
         const priceInSelectedCurrency = hotel.price.find(
           (price) => price.currency === selectedCurrency
@@ -502,7 +542,10 @@ export default function FilterPopup({
       });
     }
 
-    if (filtersForCount.maxPrice !== undefined && filtersForCount.maxPrice !== null) {
+    if (
+      filtersForCount.maxPrice !== undefined &&
+      filtersForCount.maxPrice !== null
+    ) {
       filteredHotels = filteredHotels.filter((hotel) => {
         const priceInSelectedCurrency = hotel.price.find(
           (price) => price.currency === selectedCurrency
@@ -580,13 +623,16 @@ export default function FilterPopup({
       filtersForCount.accessibilityFeatureIds.length > 0
     ) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return filtersForCount.accessibilityFeatureIds!.every((featureId: string) =>
-          hotel.featureIds.includes(featureId)
+        return filtersForCount.accessibilityFeatureIds!.every(
+          (featureId: string) => hotel.featureIds.includes(featureId)
         );
       });
     }
 
-    if (filtersForCount.faceFeatureIds && filtersForCount.faceFeatureIds.length > 0) {
+    if (
+      filtersForCount.faceFeatureIds &&
+      filtersForCount.faceFeatureIds.length > 0
+    ) {
       filteredHotels = filteredHotels.filter((hotel) => {
         return filtersForCount.faceFeatureIds!.some(
           (featureId: string) => hotel.face === featureId
@@ -670,7 +716,8 @@ export default function FilterPopup({
   const applyFilters = () => {
     setListingType(tempListingType);
     setSelectedLocation(tempSelectedLocation);
-    setSelectedPropertyType && setSelectedPropertyType(tempSelectedPropertyType);
+    setSelectedPropertyType &&
+      setSelectedPropertyType(tempSelectedPropertyType);
     setSelectedCategory && setSelectedCategory(tempSelectedCategory);
     setFilters(tempFilters);
     setMinPrice(tempMinPrice);
@@ -683,14 +730,18 @@ export default function FilterPopup({
     setInteriorFeatures(tempInteriorFeatures);
     setSelectedAccessibilityFeatures(tempSelectedAccessibilityFeatures);
     setSelectedFaceFeatures(tempSelectedFaceFeatures);
-    
+
     // Update quick filters (selectedFeatures) based on interior and exterior features
     const newSelectedFeatures = [
-      ...tempInteriorFeatures.filter((f: any) => selectedFeatures.some((sf: any) => sf._id === f._id)),
-      ...tempSelectedExteriorFeatures.filter((f: any) => selectedFeatures.some((sf: any) => sf._id === f._id))
+      ...tempInteriorFeatures.filter((f: any) =>
+        selectedFeatures.some((sf: any) => sf._id === f._id)
+      ),
+      ...tempSelectedExteriorFeatures.filter((f: any) =>
+        selectedFeatures.some((sf: any) => sf._id === f._id)
+      ),
     ];
     setSelectedFeatures(newSelectedFeatures);
-    
+
     dispatch(setIsFilterApplied(true));
     onClose && onClose();
   };
@@ -876,7 +927,9 @@ export default function FilterPopup({
 
                   // Convert suggestions to the expected format (same as LocationSelect.tsx)
                   const searchResults = suggestions.map((suggestion) => {
-                    const parts = suggestion.description ? [suggestion.name, suggestion.description] : [suggestion.name];
+                    const parts = suggestion.description
+                      ? [suggestion.name, suggestion.description]
+                      : [suggestion.name];
                     const name = parts[0].trim(); // Get main part of description
                     const description = parts.slice(1).join(",").trim(); // Get secondary part (province, country etc.)
 
@@ -957,10 +1010,24 @@ export default function FilterPopup({
                             </>
                           )}
                         </div>
-                        <ChevronDownSolidIcon
-                          className="h-5 w-5 text-gray-400 ml-2"
-                          aria-hidden="true"
-                        />
+                        {tempSelectedLocation && tempSelectedLocation.name ? (
+                          <XMarkSolidIcon
+                            className="h-5 w-5 text-black ml-2 cursor-pointer"
+                            aria-hidden="true"
+                            onClick={() => {
+                              setTempSelectedLocation(null);
+                              setShowSearch(true);
+                              setSearchQuery("");
+                              setSuggestions([]);
+                              setShowSuggestions(false);
+                            }}
+                          />
+                        ) : (
+                          <ChevronDownSolidIcon
+                            className="h-5 w-5 text-gray-400 ml-2"
+                            aria-hidden="true"
+                          />
+                        )}
                       </PopoverButton>
 
                       <PopoverPanel className="absolute z-20 mt-2 w-full py-1 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
@@ -1237,7 +1304,9 @@ export default function FilterPopup({
               </div>
               <div className="mt-3">
                 <GeneralSelect
-                  selectedItem={tempBathroomCount ? { name: tempBathroomCount } : null}
+                  selectedItem={
+                    tempBathroomCount ? { name: tempBathroomCount } : null
+                  }
                   onSelect={(bathroom) => {
                     setTempBathroomCount(bathroom.name);
                   }}
@@ -1503,7 +1572,7 @@ export default function FilterPopup({
               <h3 className="text-base font-semibold text-gray-700">
                 {t("exteriorFeatures") || "Dış Özellikler"}{" "}
                 {tempSelectedExteriorFeatures.length > 0 ? (
-                   <span className="text-base md:text-sm font-normal text-[#595959]">
+                  <span className="text-base md:text-sm font-normal text-[#595959]">
                     ({tempSelectedExteriorFeatures.length})
                   </span>
                 ) : null}
@@ -1583,9 +1652,10 @@ export default function FilterPopup({
                     <div className="flex flex-wrap gap-2">
                       {(filterOptions.accessibilityFeatures || []).map(
                         (feature) => {
-                          const isSelected = tempSelectedAccessibilityFeatures.find(
-                            (f: any) => f._id === feature._id
-                          );
+                          const isSelected =
+                            tempSelectedAccessibilityFeatures.find(
+                              (f: any) => f._id === feature._id
+                            );
 
                           return (
                             <button
@@ -1640,9 +1710,7 @@ export default function FilterPopup({
                 hasActiveFilters() && resultsCount === 0
                   ? "bg-gray-300 cursor-not-allowed"
                   : "bg-[#5E5691] hover:bg-[#4a4574]"
-              } ${
-                hasActiveFilters() ? "col-span-1" : "col-span-2"
-              }`}
+              } ${hasActiveFilters() ? "col-span-1" : "col-span-2"}`}
             >
               {hasActiveFilters() && resultsCount === 0
                 ? locale === "tr"
