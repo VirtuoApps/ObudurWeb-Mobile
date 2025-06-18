@@ -353,10 +353,10 @@ export default function CreationSteps({
   );
   const [projectArea, setProjectArea] = useState<number>(0);
   const [totalSize, setTotalSize] = useState<number>(0);
-  const [roomCount, setRoomCount] = useState<number>(0);
-  const [bathroomCount, setBathroomCount] = useState<number>(0);
-  const [bedRoomCount, setBedRoomCount] = useState<number>(0);
-  const [floorCount, setFloorCount] = useState<number>(0);
+  const [roomCount, setRoomCount] = useState<number>(-1);
+  const [bathroomCount, setBathroomCount] = useState<number>(-1);
+  const [bedRoomCount, setBedRoomCount] = useState<number>(-1);
+  const [floorCount, setFloorCount] = useState<number>(-1);
   const [buildYear, setBuildYear] = useState<number>(0);
   const [kitchenType, setKitchenType] = useState<MultilangText>({
     tr: "",
@@ -366,7 +366,7 @@ export default function CreationSteps({
   // New fields state
   const [exchangeable, setExchangeable] = useState<boolean>(false);
   const [creditEligible, setCreditEligible] = useState<any>("");
-  const [buildingAge, setBuildingAge] = useState<number>(0);
+  const [buildingAge, setBuildingAge] = useState<number>(-1);
   const [isFurnished, setIsFurnished] = useState<boolean>(false);
   const [dues, setDues] = useState<{ amount: number; currency: string }[]>([]);
   const [usageStatus, setUsageStatus] = useState<Map<string, string>>(
@@ -448,7 +448,9 @@ export default function CreationSteps({
   const [parselNo, setParselNo] = useState<string>(hotelData?.parselNo || "");
 
   // Floor position state
-  const [floorPosition, setFloorPosition] = useState<MultilangText>(hotelData?.floorPosition || { tr: "", en: "" });
+  const [floorPosition, setFloorPosition] = useState<MultilangText>(
+    hotelData?.floorPosition || { tr: "", en: "" }
+  );
 
   // Set hotelId from hotelData if in update mode
   const hotelId = isUpdate && hotelData ? hotelData._id : null;

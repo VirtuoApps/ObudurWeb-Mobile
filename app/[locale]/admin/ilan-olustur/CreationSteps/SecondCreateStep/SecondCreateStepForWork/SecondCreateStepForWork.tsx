@@ -277,6 +277,7 @@ export default function SecondCreateStepForWork() {
   ];
 
   const floorCountOptions = [
+    { value: 0, label: "0" },
     { value: 1, label: "1" },
     { value: 2, label: "2" },
     { value: 3, label: "3" },
@@ -359,17 +360,17 @@ export default function SecondCreateStepForWork() {
     }
 
     // Validate room counts for real estate (may not apply to land)
-    if (!roomCount && roomCount !== 0) {
+    if (!roomCount || roomCount < 0) {
       newErrors.push("Lütfen bölüm / oda sayısını seçin");
       newErrorFields.add("roomCount");
     }
 
-    if (!floorCount && floorCount !== 0) {
+    if ((!floorCount && floorCount !== 0) || floorCount < 0) {
       newErrors.push("Lütfen kat sayısını seçin");
       newErrorFields.add("floorCount");
     }
 
-    if (!buildingAge && buildingAge !== 0) {
+    if ((!buildingAge && buildingAge !== 0) || buildingAge < 0) {
       newErrors.push("Lütfen bina yaşını seçin");
       newErrorFields.add("buildingAge");
     }
@@ -446,7 +447,10 @@ export default function SecondCreateStepForWork() {
           </div>
 
           {/* Right Form Panel */}
-          <div ref={formPanelRef} className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto md:border-l md:border-[#F0F0F0]">
+          <div
+            ref={formPanelRef}
+            className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto md:border-l md:border-[#F0F0F0]"
+          >
             {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
@@ -492,7 +496,9 @@ export default function SecondCreateStepForWork() {
                       type="text"
                       value={getPriceForCurrency("TRY") || ""}
                       onChange={(e) => handlePriceChange("TRY", e.target.value)}
-                      className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("price-try")}`}
+                      className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                        "price-try"
+                      )}`}
                       placeholder="Fiyat yazın"
                     />
                   </div>
@@ -510,7 +516,9 @@ export default function SecondCreateStepForWork() {
                       type="text"
                       value={getPriceForCurrency("USD") || ""}
                       onChange={(e) => handlePriceChange("USD", e.target.value)}
-                      className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("price-usd")}`}
+                      className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                        "price-usd"
+                      )}`}
                       placeholder="Fiyat yazın"
                     />
                   </div>
@@ -557,7 +565,9 @@ export default function SecondCreateStepForWork() {
                         : numericValue;
                     setProjectArea(parseFloat(validValue) || 0);
                   }}
-                  className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                  className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                    "projectArea"
+                  )}`}
                   placeholder="m²"
                 />
               </div>
@@ -573,6 +583,7 @@ export default function SecondCreateStepForWork() {
                   value={roomCount || 0}
                   onChange={(value) => setRoomCount(parseInt(value.toString()))}
                   placeholder="Seçiniz"
+                  hasError={errorFields.has("roomCount")}
                 />
               </div>
               <div className="w-full lg:w-1/3">
@@ -589,6 +600,7 @@ export default function SecondCreateStepForWork() {
                     setFloorCount(parseInt(value.toString()))
                   }
                   placeholder="Seçiniz"
+                  hasError={errorFields.has("floorCount")}
                 />
               </div>
             </div>
@@ -620,6 +632,7 @@ export default function SecondCreateStepForWork() {
                     }
                   }}
                   placeholder="Seçiniz"
+                  hasError={errorFields.has("floorPosition")}
                 />
               </div>
               <div className="w-full lg:w-1/3">
@@ -657,6 +670,7 @@ export default function SecondCreateStepForWork() {
                     }
                   }}
                   placeholder="Seçiniz"
+                  hasError={errorFields.has("source")}
                 />
               </div>
               <div className="w-full lg:w-1/3">
@@ -722,6 +736,7 @@ export default function SecondCreateStepForWork() {
                     }
                   }}
                   placeholder="Seçiniz"
+                  hasError={errorFields.has("heatingType")}
                 />
               </div>
               <div className="w-full lg:w-1/3">
@@ -761,6 +776,7 @@ export default function SecondCreateStepForWork() {
                     }
                   }}
                   placeholder="Seçiniz"
+                  hasError={errorFields.has("usageStatus")}
                 />
               </div>
               <div className="w-full lg:w-1/3">
@@ -777,6 +793,7 @@ export default function SecondCreateStepForWork() {
                     setBuildingAge(parseInt(value.toString()))
                   }
                   placeholder="Seçiniz"
+                  hasError={errorFields.has("buildingAge")}
                 />
               </div>
             </div>
@@ -824,7 +841,9 @@ export default function SecondCreateStepForWork() {
                       onChange={(e) =>
                         handleDuesChange(selectedDuesCurrency, e.target.value)
                       }
-                      className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                      className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                        "dues"
+                      )}`}
                       placeholder="Fiyat yazın"
                     />
                   </div>
