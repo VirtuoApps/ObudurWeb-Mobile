@@ -1010,6 +1010,7 @@ export default function FilterPopup({
                             </>
                           )}
                         </div>
+
                         {tempSelectedLocation && tempSelectedLocation.name ? (
                           <XMarkSolidIcon
                             className="h-5 w-5 text-black ml-2 cursor-pointer"
