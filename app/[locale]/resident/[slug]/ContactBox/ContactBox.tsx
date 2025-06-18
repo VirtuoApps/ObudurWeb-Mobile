@@ -99,14 +99,14 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
   // Prevent body scroll when bottom sheet is open
   useEffect(() => {
     if (isSheetOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
 
     // Cleanup on unmount
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, [isSheetOpen]);
 
@@ -209,6 +209,7 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
 
   const managerName = `${hotelData.manager.firstName} ${hotelData.manager.lastName}`;
   const managerPhone = hotelData.manager.phoneNumber;
+  const managerAgency = hotelData.manager.estateAgency;
 
   const maskName = (name: string) => {
     return name
@@ -307,9 +308,9 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
             <h3 className="font-bold text-lg">
               {isLoginned ? managerName : maskName(managerName)}
             </h3>
-            {/* <p className="text-white/80 text-sm">
-            {isLoginned ? t("agentCompanyName") : "M**** Y****"}
-          </p> */}
+            {isLoginned && managerAgency && (
+              <p className="text-white/80 text-md">{managerAgency}</p>
+            )}
           </div>
         </div>
 
@@ -362,9 +363,7 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
       )}
       {isLoginned && (
         <div className="p-4">
-          <h4 className="font-medium text-gray-800 mb-4">
-            {t("getMoreInfo")}
-          </h4>
+          <h4 className="font-medium text-gray-800 mb-4">{t("getMoreInfo")}</h4>
 
           {existingMessage ? (
             <div className="bg-green-50 p-4 rounded-xl border border-green-200 mb-4">
