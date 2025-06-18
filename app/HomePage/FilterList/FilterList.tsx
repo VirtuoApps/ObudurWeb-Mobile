@@ -567,12 +567,14 @@ export default function FilterList({
             >
               Aramayı Kaydet
             </button>
-            <button
-              onClick={() => setIsSheetOpen(true)}
-              className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-l border-[#F0F0F0]"
-            >
-              <p className="text-sm text-gray-500 font-semibold">Sırala</p>
-            </button>
+            {currentView !== "map" && (
+              <button
+                onClick={() => setIsSheetOpen(true)}
+                className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-l border-[#F0F0F0]"
+              >
+                <p className="text-sm text-gray-500 font-semibold">Sırala</p>
+              </button>
+            )}
 
             {isSheetOpen && (
               <div className="fixed inset-0 z-[99999] flex items-end md:items-center justify-center lg:p-4 overflow-y-auto">
