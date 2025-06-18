@@ -108,7 +108,7 @@ export default function HomePage({
     "For Sale"
   );
   const [searchRadius, setSearchRadius] = useState<number>(50); // Default 50km radius
-
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSaveFilterPopupOpen, setIsSaveFilterPopupOpen] = useState(false);
 
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
@@ -572,6 +572,8 @@ export default function HomePage({
     );
   }
 
+  console.log("Filtered Hotels Count:", isDropdownOpen);
+
   const noResultFound =
     (filters || selectedLocation) && filteredHotels.length === 0;
 
@@ -617,22 +619,28 @@ export default function HomePage({
           }}
         />
       )}
-      <div
-        className={`fixed left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-50 px-3 h-[40px] rounded-lg shadow-lg transition-all duration-300 ${
-          isPinSelected && currentView === "map"
-            ? "bottom-[172px]"
-            : "bottom-[16px]"
-        }`}
-        onClick={() => handleViewChange(currentView === "map" ? "list" : "map")}
-      >
-        <img
-          src={currentView === "map" ? "/list.png" : "/map-03.png"}
-          className="w-5 h-5"
-        />
-        <p className="text-base text-[#262626] font-medium ml-2">
-          {currentView === "map" ? "Liste" : "Harita"}
-        </p>
-      </div>
+
+      {!isDropdownOpen && (
+        <div
+          className={`fixed left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-50 px-3 h-[40px] rounded-lg shadow-lg transition-all duration-300 ${
+            isPinSelected && currentView === "map"
+              ? "bottom-[172px]"
+              : "bottom-[16px]"
+          }`}
+          onClick={() =>
+            handleViewChange(currentView === "map" ? "list" : "map")
+          }
+        >
+          <img
+            src={currentView === "map" ? "/list.png" : "/map-03.png"}
+            className="w-5 h-5"
+          />
+          <p className="text-base text-[#262626] font-medium ml-2">
+            {currentView === "map" ? "Liste" : "Harita"}
+          </p>
+        </div>
+      )}
+
       <SaveFilterPopup
         isOpen={isSaveFilterPopupOpen}
         onClose={() => setIsSaveFilterPopupOpen(false)}
@@ -656,7 +664,9 @@ export default function HomePage({
         resultCount={filteredHotels.length}
       />
       <div
-        className={`bg-white ${isScrolled && isMobile ? "pt-[72px]" : ""} transition-all duration-300`}
+        className={`bg-white ${
+          isScrolled && isMobile ? "pt-[72px]" : ""
+        } transition-all duration-300`}
       >
         <Header
           setFilters={setFilters}
@@ -676,6 +686,8 @@ export default function HomePage({
             setIsPersonalInformationFormPopupOpen
           }
           resetFilters={resetFilters}
+          isDropdownOpen={isDropdownOpen}
+          setIsDropdownOpen={setIsDropdownOpen}
         />
         <FilterList
           features={features}
