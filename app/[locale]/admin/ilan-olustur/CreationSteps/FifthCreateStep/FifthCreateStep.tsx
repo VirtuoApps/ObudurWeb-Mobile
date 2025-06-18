@@ -497,7 +497,7 @@ export default function FifthCreateStep() {
 
               {/* Image preview area */}
               {selectedImages.length > 0 && (
-                <div className="mt-4 grid grid-cols-4 gap-4">
+                <div className="mt-4 grid grid-cols-2 lg:grid-cols-4 gap-4">
                   {selectedImages.map((image, index) => (
                     <div key={index} className="relative group">
                       <img
