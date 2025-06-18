@@ -498,10 +498,13 @@ export default function ThirdCreateStep() {
   // Update the updateAddressFromComponents function
   const updateAddressFromComponents = (addressComponents: any[]) => {
     // Debug: Log address components to see what types we get
-    console.log("Address components:", addressComponents.map(comp => ({
-      name: comp.long_name,
-      types: comp.types
-    })));
+    console.log(
+      "Address components:",
+      addressComponents.map((comp) => ({
+        name: comp.long_name,
+        types: comp.types,
+      }))
+    );
     // Extract country
     const countryComponent = addressComponents.find(
       (component: { types: string[]; long_name: string }) =>
@@ -648,18 +651,18 @@ export default function ThirdCreateStep() {
       const lat = e.latLng.lat();
       const lng = e.latLng.lng();
       setCoordinates([lng, lat]);
-      
+
       // Perform reverse geocoding to get address details
       try {
         const response = await fetch(
           `/api/places/geocode?latlng=${lat},${lng}`
         );
-        
+
         const data = await response.json();
-        
+
         if (data.status === "OK" && data.results && data.results.length > 0) {
           const result = data.results[0];
-          
+
           // Update address components from reverse geocoding result
           if (result.address_components) {
             updateAddressFromComponents(result.address_components);
@@ -684,29 +687,27 @@ export default function ThirdCreateStep() {
     const newErrorFields = new Set<string>();
 
     if (!country || !country.tr || !country.en) {
-      newErrors.push("Lütfen ülke bilgisini Türkçe ve İngilizce olarak girin");
+      newErrors.push("Lütfen ülke bilgisini girin");
       newErrorFields.add("country");
     }
 
     if (!city || !city.tr || !city.en) {
-      newErrors.push("Lütfen şehir bilgisini Türkçe ve İngilizce olarak girin");
+      newErrors.push("Lütfen şehir bilgisini girin");
       newErrorFields.add("city");
     }
 
     if (!state || !state.tr || !state.en) {
-      newErrors.push("Lütfen ilçe bilgisini Türkçe ve İngilizce olarak girin");
+      newErrors.push("Lütfen ilçe bilgisini girin");
       newErrorFields.add("state");
     }
 
     if (!neighborhood || !neighborhood.tr || !neighborhood.en) {
-      newErrors.push(
-        "Lütfen mahalle bilgisini Türkçe ve İngilizce olarak girin"
-      );
+      newErrors.push("Lütfen mahalle bilgisini girin");
       newErrorFields.add("neighborhood");
     }
 
     if (!street || !street.tr || !street.en) {
-      newErrors.push("Lütfen sokak bilgisini Türkçe ve İngilizce olarak girin");
+      newErrors.push("Lütfen sokak bilgisini girin");
       newErrorFields.add("street");
     }
 
@@ -821,7 +822,10 @@ export default function ThirdCreateStep() {
           </div>
 
           {/* Right Form Panel */}
-          <div ref={formPanelRef} className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto md:border-l md:border-[#F0F0F0]">
+          <div
+            ref={formPanelRef}
+            className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto md:border-l md:border-[#F0F0F0]"
+          >
             {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
@@ -918,7 +922,11 @@ export default function ThirdCreateStep() {
                   defaultText={
                     locale === "en" ? "Select Country" : "Ülke Seçin"
                   }
-                  extraClassName={`w-full h-12 border ${errorFields.has("country") ? "border-[#EF1A28]" : "border-gray-300"}`}
+                  extraClassName={`w-full h-12 border ${
+                    errorFields.has("country")
+                      ? "border-[#EF1A28]"
+                      : "border-gray-300"
+                  }`}
                   popoverMaxWidth="400"
                   maxHeight="200"
                   popoverExtraClassName="w-auto max-w-[420px]"
@@ -982,7 +990,9 @@ export default function ThirdCreateStep() {
                   id="neighborhood"
                   value={neighborhood?.tr || ""}
                   onChange={(e) => handleNeighborhoodChange(e.target.value)}
-                  className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("neighborhood")}`}
+                  className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                    "neighborhood"
+                  )}`}
                   placeholder={locale === "en" ? "Neighborhood" : "Mahalle"}
                 />
               </div>
@@ -999,7 +1009,9 @@ export default function ThirdCreateStep() {
                   id="street"
                   value={street?.tr || ""}
                   onChange={(e) => handleStreetChange(e.target.value)}
-                  className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("street")}`}
+                  className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                    "street"
+                  )}`}
                   placeholder={locale === "en" ? "Street" : "Sokak"}
                 />
               </div>
@@ -1020,7 +1032,9 @@ export default function ThirdCreateStep() {
                     id="adaNo"
                     value={adaNo}
                     onChange={(e) => setAdaNo(e.target.value)}
-                    className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("adaNo")}`}
+                    className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                      "adaNo"
+                    )}`}
                     placeholder="Ada No"
                   />
                 </div>
@@ -1036,7 +1050,9 @@ export default function ThirdCreateStep() {
                     id="parselNo"
                     value={parselNo}
                     onChange={(e) => setParselNo(e.target.value)}
-                    className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("parselNo")}`}
+                    className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                      "parselNo"
+                    )}`}
                     placeholder="Parsel No"
                   />
                 </div>
@@ -1055,7 +1071,9 @@ export default function ThirdCreateStep() {
                     id="buildingNo"
                     value={buildingNo}
                     onChange={(e) => setBuildingNo(e.target.value)}
-                    className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("buildingNo")}`}
+                    className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                      "buildingNo"
+                    )}`}
                     placeholder="Bina No"
                   />
                 </div>
@@ -1087,7 +1105,9 @@ export default function ThirdCreateStep() {
                     id="postalCode"
                     value={postalCode}
                     onChange={(e) => setPostalCode(e.target.value)}
-                    className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("postalCode")}`}
+                    className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                      "postalCode"
+                    )}`}
                     placeholder="Posta Kodu"
                   />
                 </div>
@@ -1119,25 +1139,34 @@ export default function ThirdCreateStep() {
                             const lat = e.latLng.lat();
                             const lng = e.latLng.lng();
                             setCoordinates([lng, lat]);
-                            
+
                             // Perform reverse geocoding to get address details
                             try {
                               const response = await fetch(
                                 `/api/places/geocode?latlng=${lat},${lng}`
                               );
-                              
+
                               const data = await response.json();
-                              
-                              if (data.status === "OK" && data.results && data.results.length > 0) {
+
+                              if (
+                                data.status === "OK" &&
+                                data.results &&
+                                data.results.length > 0
+                              ) {
                                 const result = data.results[0];
-                                
+
                                 // Update address components from reverse geocoding result
                                 if (result.address_components) {
-                                  updateAddressFromComponents(result.address_components);
+                                  updateAddressFromComponents(
+                                    result.address_components
+                                  );
                                 }
                               }
                             } catch (error) {
-                              console.error("Error reverse geocoding location:", error);
+                              console.error(
+                                "Error reverse geocoding location:",
+                                error
+                              );
                             }
                           }
                         }}
