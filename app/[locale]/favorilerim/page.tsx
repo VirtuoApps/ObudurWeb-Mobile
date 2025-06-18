@@ -321,7 +321,6 @@ export default function FavoritesPage() {
                     : "/example-house.png"
                 }
                 images={hotel.images || []}
-                roomAsText={hotel.roomAsText?.tr || ""}
                 roomCount={hotel.roomCount || 0}
                 entranceType={hotel.entranceType}
                 priceAsNumber={hotel.price[0].amount}
@@ -360,7 +359,6 @@ export default function FavoritesPage() {
                 image={hotel.images[0]}
                 images={hotel.images}
                 isFavorite={false}
-                roomAsText={hotel.roomAsText}
                 isListView={true}
                 roomCount={hotel.roomCount || 0}
                 entranceType={hotel.entranceType}

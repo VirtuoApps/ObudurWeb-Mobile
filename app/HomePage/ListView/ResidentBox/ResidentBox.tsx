@@ -34,7 +34,6 @@ interface ResidentBoxProps {
   floorCount: string;
   area: string;
   locationText: string;
-  roomAsText: string;
   image?: string;
   images?: string[];
   hotelId: string; // Add hotelId for API calls
@@ -60,7 +59,6 @@ export default function ResidentBox({
   floorCount = "2",
   area = "240m²",
   locationText = "814 E Highland Dr, Seattle, WA 98102",
-  roomAsText = "1+1",
   image = "/example-house.png",
   images = ["/example-house.png"],
   hotelId,
@@ -246,7 +244,7 @@ export default function ResidentBox({
                     strokeLinejoin="round"
                   />
                 </svg>
-                <span>{roomAsText}</span>
+                <span>{`${roomCount} + 1`}</span>
               </div>
 
               <div className="w-[1px] h-[20px] bg-[#D9D9D9]"></div>

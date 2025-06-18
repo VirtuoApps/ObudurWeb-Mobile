@@ -610,9 +610,12 @@ export default function AdminListings() {
           <div className="flex flex-row items-center justify-between lg:hidden mb-6">
             <div>
               <p className="text-[#262626] text-base font-bold">İlanlarım</p>
-              <p className="text-[#595959] text-sm">5 Adet İlanınız Var</p>
+              <p className="text-[#595959] text-sm">{currentItems?.length ?? 0} Adet İlanınız Var</p>
             </div>
-            <button className="bg-[#5E5691] h-[36px] w-[100px] rounded-lg flex items-center justify-center gap-2">
+            <button 
+              onClick={() => router.push("/admin/ilan-olustur")}
+              className="bg-[#5E5691] h-[36px] w-[100px] rounded-lg flex items-center justify-center gap-2"
+            >
               <img src="/plus-01.png" className="w-[20px] h-[20px]" />
               <span className="text-white text-sm font-medium">İlan Ver</span>
             </button>

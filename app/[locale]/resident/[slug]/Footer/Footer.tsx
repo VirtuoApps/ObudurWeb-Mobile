@@ -85,7 +85,7 @@ export default function Footer({
         ></div>
 
         <div className="max-w-[1440px] mx-auto px-4 lg:px-0 py-12 lg:py-20">
-          <div className="flex flex-col lg:flex-row lg:justify-between pt-8 pb-10 gap-8 lg:gap-0">
+          <div className="flex flex-col lg:flex-row lg:justify-between pt-8 pb-10 gap-8 lg:gap-0 lg:px-4">
             {/* Newsletter Column - Move to top on mobile */}
             <div className="w-full lg:w-[342px] order-first lg:order-last">
               <form onSubmit={handleSubscribe}>
@@ -278,7 +278,7 @@ export default function Footer({
 
         {/* Bottom bar */}
         <div className="max-w-[1440px] mx-auto px-4 lg:px-0">
-          <div className="flex justify-center lg:justify-between items-center py-4 lg:py-12 text-xs text-slate-500">
+          <div className="flex justify-start items-center py-4 lg:py-12 text-xs text-slate-500">
             <div className="flex items-center">
               <Image
                 src="/obudur-icon.png"

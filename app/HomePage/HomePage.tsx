@@ -18,14 +18,14 @@ import SaveFilterPopup from "./SaveFilterPopup/SaveFilterPopup";
 import SignupEmailVerifySendPopup from "../components/SignupEMailVerifySendPopup/SignupEmailVerifySendPopup";
 import ViewSwitcher from "./ViewSwitcher/ViewSwitcher";
 import axiosInstance from "@/axios";
+import cities from "./cities";
 import { currencyOptions } from "@/app/components/LanguageSwitcher";
 import dynamic from "next/dynamic";
 import { filterHotelsByProximity } from "@/app/utils/geoUtils";
-import { useTranslations } from "next-intl";
+import { states } from "./states";
 import { useScrollDirection } from "../hooks/useScrollDirection";
 import { useSelector } from "react-redux";
-import cities from "./cities";
-import { states } from "./states";
+import { useTranslations } from "next-intl";
 
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
@@ -620,8 +620,8 @@ export default function HomePage({
       <div
         className={`fixed left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-50 px-3 h-[40px] rounded-lg shadow-lg transition-all duration-300 ${
           isPinSelected && currentView === "map"
-            ? "bottom-[240px]"
-            : "bottom-[100px]"
+            ? "bottom-[172px]"
+            : "bottom-[16px]"
         }`}
         onClick={() => handleViewChange(currentView === "map" ? "list" : "map")}
       >
