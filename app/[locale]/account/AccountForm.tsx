@@ -21,6 +21,7 @@ interface User {
   createdAt: string;
   updatedAt: string;
   profilePicture?: string;
+  estateAgency?: string;
 }
 
 interface AccountFormProps {
@@ -85,6 +86,7 @@ export default function AccountForm({ user }: AccountFormProps) {
     firstName: z.string().min(1, t("firstNameError")),
     lastName: z.string().min(1, t("lastNameError")),
     phoneNumber: z.string().optional(),
+    estateAgency: z.string().optional(),
   });
 
   const passwordSchema = z
@@ -114,6 +116,7 @@ export default function AccountForm({ user }: AccountFormProps) {
       firstName: user?.firstName || "",
       lastName: user?.lastName || "",
       phoneNumber: user?.phoneNumber || "",
+      estateAgency: user?.estateAgency || "",
     },
   });
 
@@ -261,6 +264,8 @@ export default function AccountForm({ user }: AccountFormProps) {
     if (data.firstName !== user.firstName)
       updateData.firstName = data.firstName;
     if (data.lastName !== user.lastName) updateData.lastName = data.lastName;
+    if (data.estateAgency !== user.estateAgency)
+      updateData.estateAgency = data.estateAgency;
 
     // Handle phone number with country code
     const completePhoneNumber = selectedCountryCode.code + phoneNumberOnly;
@@ -530,11 +535,40 @@ export default function AccountForm({ user }: AccountFormProps) {
               )}
             </div>
 
+            <div>
+              <label
+                className="block text-sm font-semibold mb-2"
+                style={{ color: "#1E1E1E" }}
+              >
+                Emlak Ofisi
+                <span className="text-sm text-[#595959] ml-2 font-light">
+                  Opsiyonel
+                </span>
+              </label>
+              <input
+                type="text"
+                placeholder="Gotham Yatırım"
+                {...registerPersonalInfo("estateAgency")}
+                className="w-full h-[56px] px-3 rounded-2xl border border-[#D9D9D9] text-sm outline-none  transition-colors text-[#262626]"
+                style={{
+                  backgroundColor: "#F9F9F9",
+                  borderColor: personalInfoErrors.estateAgency
+                    ? "#EA394B"
+                    : "#E3E3E3",
+                }}
+              />
+              {personalInfoErrors.estateAgency && (
+                <p className="text-xs mt-1" style={{ color: "#EA394B" }}>
+                  {personalInfoErrors.estateAgency.message}
+                </p>
+              )}
+            </div>
+
             <div className="pt-4 flex justify-end">
               <button
                 type="submit"
                 disabled={profileUpdateLoading || !hasChanges}
-                className="px-6 h-[56px] rounded-2xl text-sm font-medium transition-colors disabled:cursor-not-allowed"
+                className="px-6 h-[56px] rounded-2xl text-sm font-medium transition-colors cursor-pointer disabled:cursor-not-allowed"
                 style={{
                   backgroundColor:
                     profileUpdateLoading || !hasChanges ? "#F0F0F0" : "#5E5691",
