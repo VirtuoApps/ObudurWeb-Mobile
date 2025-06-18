@@ -189,7 +189,6 @@ export default function SecondCreateStepForLand() {
   const creditEligibleOptions = [
     { value: true, label: "Evet" },
     { value: false, label: "Hayır" },
-    { value: null, label: "Bilinmiyor" },
   ];
 
   const sourceOptions = [
@@ -313,7 +312,7 @@ export default function SecondCreateStepForLand() {
       newErrorFields.add("generalFeatures");
     }
 
-    if (typeof creditEligible === "undefined") {
+    if (typeof creditEligible === "string" && creditEligible === "") {
       newErrors.push("Lütfen krediye uygunluk durumunu seçin");
       newErrorFields.add("creditEligible");
     }
@@ -384,7 +383,10 @@ export default function SecondCreateStepForLand() {
           </div>
 
           {/* Right Form Panel */}
-          <div ref={formPanelRef} className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto md:border-l md:border-[#F0F0F0]">
+          <div
+            ref={formPanelRef}
+            className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto md:border-l md:border-[#F0F0F0]"
+          >
             {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
@@ -429,7 +431,9 @@ export default function SecondCreateStepForLand() {
                       type="text"
                       value={getPriceForCurrency("TRY") || ""}
                       onChange={(e) => handlePriceChange("TRY", e.target.value)}
-                      className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("price-try")}`}
+                      className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                        "price-try"
+                      )}`}
                       placeholder="Fiyat yazın"
                     />
                   </div>
@@ -447,7 +451,9 @@ export default function SecondCreateStepForLand() {
                       type="text"
                       value={getPriceForCurrency("USD") || ""}
                       onChange={(e) => handlePriceChange("USD", e.target.value)}
-                      className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("price-usd")}`}
+                      className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                        "price-usd"
+                      )}`}
                       placeholder="Fiyat yazın"
                     />
                   </div>
@@ -476,7 +482,9 @@ export default function SecondCreateStepForLand() {
                       : numericValue;
                   setProjectArea(parseFloat(validValue) || 0);
                 }}
-                className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("projectArea")}`}
+                className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                  "projectArea"
+                )}`}
                 placeholder="m²"
               />
             </div>

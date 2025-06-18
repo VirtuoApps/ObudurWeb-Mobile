@@ -400,22 +400,22 @@ export default function SecondCreateStepForHouse() {
     }
 
     // Validate room counts for real estate (may not apply to land)
-    if (!roomCount && roomCount !== 0) {
+    if ((!roomCount && roomCount !== 0) || roomCount < 0) {
       newErrors.push("Lütfen oda sayısını seçin");
       newErrorFields.add("roomCount");
     }
 
-    if (!bathroomCount && bathroomCount !== 0) {
+    if ((!bathroomCount && bathroomCount !== 0) || bathroomCount < 0) {
       newErrors.push("Lütfen banyo sayısını seçin");
       newErrorFields.add("bathroomCount");
     }
 
-    if (!bedRoomCount && bedRoomCount !== 0) {
-      newErrors.push("Lütfen yatak odası sayısını seçin");
+    if ((!bedRoomCount && bedRoomCount !== 0) || bedRoomCount < 0) {
+      newErrors.push("Lütfen balkon sayısını seçin");
       newErrorFields.add("bedRoomCount");
     }
 
-    if (!floorCount && floorCount !== 0) {
+    if ((!floorCount && floorCount !== 0) || floorCount < 0) {
       newErrors.push("Lütfen kat sayısını seçin");
       newErrorFields.add("floorCount");
     }
@@ -425,7 +425,7 @@ export default function SecondCreateStepForHouse() {
       newErrorFields.add("kitchenType");
     }
 
-    if (!buildingAge && buildingAge !== 0) {
+    if ((!buildingAge && buildingAge !== 0) || buildingAge < 0) {
       newErrors.push("Lütfen bina yaşını seçin");
       newErrorFields.add("buildingAge");
     }
@@ -667,7 +667,7 @@ export default function SecondCreateStepForHouse() {
                   options={generateRoomCountOptions()}
                   value={roomCount || 0}
                   onChange={(value) => setRoomCount(parseInt(value))}
-                  placeholder="Seçin"
+                  placeholder="Seçiniz"
                   hasError={errorFields.has("roomCount")}
                 />
               </div>
