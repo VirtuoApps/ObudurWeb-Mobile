@@ -422,7 +422,6 @@ export default function GoogleMapView({
                   image={selectedHotel.images[0]}
                   images={selectedHotel.images}
                   isFavorite={false}
-                  roomAsText={selectedHotel.roomAsText}
                   roomCount={selectedHotel.roomCount || 0}
                   entranceType={selectedHotel.entranceType}
                   priceAsNumber={selectedHotel.price[0].amount}

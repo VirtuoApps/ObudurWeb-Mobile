@@ -107,7 +107,6 @@ export default function NoResultFound({
                 image={hotel.images[0]}
                 images={hotel.images}
                 isFavorite={false}
-                roomAsText={hotel.roomAsText}
                 isListView={true}
                 roomCount={hotel.roomCount || 0}
                 entranceType={hotel.entranceType}
