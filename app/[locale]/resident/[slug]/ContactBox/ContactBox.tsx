@@ -295,7 +295,11 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
         <div className="flex flex-row items-center">
           <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-300 mr-4 flex-shrink-0">
             <img
-              src="/example-person.png"
+              src={
+                hotelData.manager.profilePicture ||
+                t("placeholderImage") ||
+                "https://via.placeholder.com/150"
+              }
               alt={t("agentImageAlt")}
               className="w-full h-full object-cover"
               onError={(e) => {
