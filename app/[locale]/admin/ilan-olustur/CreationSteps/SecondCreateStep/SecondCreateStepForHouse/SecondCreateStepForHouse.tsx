@@ -415,7 +415,7 @@ export default function SecondCreateStepForHouse() {
       newErrorFields.add("bedRoomCount");
     }
 
-    if ((!floorCount && floorCount !== 0) || floorCount < 0) {
+    if (!floorCount || floorCount <= 0) {
       newErrors.push("Lütfen kat sayısını seçin");
       newErrorFields.add("floorCount");
     }
@@ -683,7 +683,7 @@ export default function SecondCreateStepForHouse() {
                   Banyo Sayısı
                 </label>
                 <CustomSelect
-                  options={generateNumberOptions(0, 5)}
+                  options={generateNumberOptions(1, 5)}
                   value={bathroomCount || 0}
                   onChange={(value) => setBathroomCount(parseInt(value))}
                   placeholder="Seçin"
