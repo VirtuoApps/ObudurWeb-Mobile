@@ -1278,7 +1278,8 @@ export default function FilterPopup({
                 <GeneralSelect
                   selectedItem={tempRoomCount ? { name: tempRoomCount } : null}
                   onSelect={(room) => {
-                    setTempRoomCount(room.name);
+                    if (room) setTempRoomCount(room.name);
+                    else setTempRoomCount(""); // Reset if no room selected
                   }}
                   options={filterOptions.roomCount.map((room) => ({
                     name: room,
@@ -1304,7 +1305,8 @@ export default function FilterPopup({
                     tempBathroomCount ? { name: tempBathroomCount } : null
                   }
                   onSelect={(bathroom) => {
-                    setTempBathroomCount(bathroom.name);
+                    if (bathroom) setTempBathroomCount(bathroom.name);
+                    else setTempBathroomCount(""); // Reset if no bathroom selected
                   }}
                   options={filterOptions.bathroomCount.map(
                     (bathroom: number) => ({
