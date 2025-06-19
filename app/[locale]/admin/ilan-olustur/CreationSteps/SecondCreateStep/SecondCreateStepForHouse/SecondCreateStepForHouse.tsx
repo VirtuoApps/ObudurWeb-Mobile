@@ -698,8 +698,8 @@ export default function SecondCreateStepForHouse() {
                   Kat Sayısı
                 </label>
                 <CustomSelect
-                  options={generateNumberOptions(0, 5)}
-                  value={floorCount || 0}
+                  options={generateNumberOptions(1, 5)}
+                  value={floorCount}
                   onChange={(value) => setFloorCount(parseInt(value))}
                   placeholder="Seçin"
                   hasError={errorFields.has("floorCount")}

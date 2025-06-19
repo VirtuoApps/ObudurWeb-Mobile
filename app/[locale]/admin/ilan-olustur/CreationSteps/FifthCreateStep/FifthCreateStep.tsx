@@ -380,6 +380,8 @@ export default function FifthCreateStep() {
     }
   };
 
+  console.log("Selected Images:", selectedImages);
+
   const handleBack = () => {
     setCurrentStep(4);
   };
@@ -458,7 +460,7 @@ export default function FifthCreateStep() {
                 Görseller
               </h2>
               <p className="text-sm text-gray-500 mb-4">
-                En az 3, en fazla 15 görsel yükleyebilirsiniz. (JPG, PNG)
+                En az 3, en fazla 15 görsel yükleyebilirsiniz. (JPG, PNG, HEIC)
               </p>
 
               {/* Drag and drop area for images */}
@@ -473,7 +475,7 @@ export default function FifthCreateStep() {
                   ref={imageInputRef}
                   onChange={handleImageSelect}
                   multiple
-                  accept="image/jpeg,image/png"
+                  accept="image/jpeg,image/png,image/heic,image/jpg,image/heif"
                   className="hidden"
                 />
                 <svg
