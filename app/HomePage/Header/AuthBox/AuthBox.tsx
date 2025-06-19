@@ -73,11 +73,15 @@ export default function AuthBox({
   hideCreateListingButton = false,
   setShowIsPersonalInformationFormPopup,
   hideProfileIcon = false,
+  isDropdownOpen,
+  setIsDropdownOpen,
 }: {
   showLikeButton?: boolean;
   hideCreateListingButton?: boolean;
   setShowIsPersonalInformationFormPopup?: (show: boolean) => void;
   hideProfileIcon?: boolean;
+  isDropdownOpen?: boolean;
+  setIsDropdownOpen?: (isOpen: boolean) => void;
 }) {
   const t = useTranslations("header");
   const [isOpen, setIsOpen] = useState(false);
@@ -90,6 +94,8 @@ export default function AuthBox({
   const guestDropdownRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
+
+  console.log("AuthBox rendered with user:", isDropdownOpen);
 
   const isUserAccountCompleted =
     user?.firstName &&
@@ -106,6 +112,8 @@ export default function AuthBox({
         !dropdownRef.current.contains(event.target as Node)
       ) {
         setDropdownOpen(false);
+
+        if (setIsDropdownOpen) setIsDropdownOpen(false);
       }
       if (
         guestDropdownRef.current &&
@@ -123,19 +131,19 @@ export default function AuthBox({
   // Prevent body scrolling when dropdown is open on mobile
   useEffect(() => {
     if (dropdownOpen || guestDropdownOpen) {
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
     } else {
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
     }
 
     return () => {
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
     };
   }, [dropdownOpen, guestDropdownOpen]);
 
@@ -148,6 +156,8 @@ export default function AuthBox({
     dispatch(clearUser());
     // Close dropdown
     setDropdownOpen(false);
+
+    if (setIsDropdownOpen) setIsDropdownOpen(false);
 
     window.location.href = "/";
   };
@@ -164,7 +174,14 @@ export default function AuthBox({
         <div className="relative" ref={dropdownRef}>
           <div
             className="flex items-center gap-2 cursor-pointer lg:max-w-[200px] max-w-[50px]"
-            onClick={() => setDropdownOpen(!dropdownOpen)}
+            onClick={() => {
+              if (!dropdownOpen === true && setIsDropdownOpen) {
+                console.log("Dropdown is closed, opening it now");
+                setIsDropdownOpen(true);
+              }
+
+              setDropdownOpen(!dropdownOpen);
+            }}
           >
             {!showLikeButton && !hideCreateListingButton && (
               <button
@@ -208,9 +225,9 @@ export default function AuthBox({
             )}
           </div>
 
-                  {/* Dropdown Menu */}
-        {dropdownOpen && (
-          <div className="fixed lg:absolute inset-0 lg:inset-auto lg:-right-4 lg:right-0 lg:mt-2 lg:min-w-[320px] bg-white lg:rounded-[16px] lg:shadow-lg z-50 lg:border lg:border-[#D9D9D9] flex flex-col overflow-y-auto lg:overflow-visible">
+          {/* Dropdown Menu */}
+          {dropdownOpen && (
+            <div className="fixed lg:absolute inset-0 lg:inset-auto lg:-right-4 lg:right-0 lg:mt-2 lg:min-w-[320px] bg-white lg:rounded-[16px] lg:shadow-lg z-50 lg:border lg:border-[#D9D9D9] flex flex-col overflow-y-auto lg:overflow-visible">
               {/* Mobile Close Button */}
 
               {/* Mobile Header */}
@@ -223,7 +240,11 @@ export default function AuthBox({
                 </div>
 
                 <button
-                  onClick={() => setDropdownOpen(false)}
+                  onClick={() => {
+                    setDropdownOpen(false);
+
+                    if (setIsDropdownOpen) setIsDropdownOpen(false);
+                  }}
                   className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100"
                 >
                   <img src="/popup-close-icon.png" className="w-6 h-6" />
@@ -244,7 +265,11 @@ export default function AuthBox({
 
               <Link
                 href="/account"
-                onClick={() => setDropdownOpen(false)}
+                onClick={() => {
+                  setDropdownOpen(false);
+
+                  if (setIsDropdownOpen) setIsDropdownOpen(false);
+                }}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
                 <div className="flex flex-row items-center font-medium lg:font-normal">
@@ -292,7 +317,11 @@ export default function AuthBox({
 
               <Link
                 href="/admin/ilanlar"
-                onClick={() => setDropdownOpen(false)}
+                onClick={() => {
+                  setDropdownOpen(false);
+
+                  if (setIsDropdownOpen) setIsDropdownOpen(false);
+                }}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
                 <div className="flex flex-row items-center font-medium lg:font-normal">
@@ -322,7 +351,10 @@ export default function AuthBox({
 
               <Link
                 href="/favorilerim"
-                onClick={() => setDropdownOpen(false)}
+                onClick={() => {
+                  setDropdownOpen(false);
+                  if (setIsDropdownOpen) setIsDropdownOpen(false);
+                }}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
                 <div className="flex flex-row items-center font-medium lg:font-normal">
@@ -352,7 +384,10 @@ export default function AuthBox({
 
               <Link
                 href="/favori-aramalar"
-                onClick={() => setDropdownOpen(false)}
+                onClick={() => {
+                  setDropdownOpen(false);
+                  if (setIsDropdownOpen) setIsDropdownOpen(false);
+                }}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
                 <div className="flex flex-row items-center font-medium lg:font-normal">
@@ -382,7 +417,10 @@ export default function AuthBox({
 
               <Link
                 href="/dil-para-birimi"
-                onClick={() => setDropdownOpen(false)}
+                onClick={() => {
+                  setDropdownOpen(false);
+                  if (setIsDropdownOpen) setIsDropdownOpen(false);
+                }}
                 className="px-4 py-4 text-[16px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between lg:hidden"
               >
                 <div className="flex flex-row items-center font-medium">
@@ -424,7 +462,10 @@ export default function AuthBox({
 
               <Link
                 href="/iletisim"
-                onClick={() => setDropdownOpen(false)}
+                onClick={() => {
+                  setDropdownOpen(false);
+                  if (setIsDropdownOpen) setIsDropdownOpen(false);
+                }}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
                 <div className="flex flex-row items-center font-medium lg:font-normal">
@@ -450,7 +491,10 @@ export default function AuthBox({
 
               <Link
                 href="/iletisim#offices-section"
-                onClick={() => setDropdownOpen(false)}
+                onClick={() => {
+                  setDropdownOpen(false);
+                  if (setIsDropdownOpen) setIsDropdownOpen(false);
+                }}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
                 <div className="flex flex-row items-center font-medium lg:font-normal">
@@ -506,7 +550,10 @@ export default function AuthBox({
 
               <Link
                 href="/iletisim"
-                onClick={() => setDropdownOpen(false)}
+                onClick={() => {
+                  setDropdownOpen(false);
+                  if (setIsDropdownOpen) setIsDropdownOpen(false);
+                }}
                 className="px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] font-[500] text-[#595959] hover:bg-gray-100 flex flex-row items-center"
               >
                 Geri Bildirim
@@ -527,7 +574,7 @@ export default function AuthBox({
               >
                 <span>Çıkış Yap</span>
               </button>
-          </div>
+            </div>
           )}
         </div>
       </>
