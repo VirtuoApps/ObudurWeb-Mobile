@@ -110,7 +110,7 @@ export default function HomePage({
     "For Sale"
   );
   const [searchRadius, setSearchRadius] = useState<number>(50); // Default 50km radius
-  const [showMapListButton, setShowMapListButton] = useState(false);
+  const [disableMapListButton, setDisableMapListButton] = useState(false);
   const [isSaveFilterPopupOpen, setIsSaveFilterPopupOpen] = useState(false);
 
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
@@ -277,12 +277,15 @@ export default function HomePage({
     const filterId = searchParams.get("filterId");
     if (filterId) {
       applySavedFilter(filterId);
+    } else {
+      const localStorageState = localStorage.getItem("currentView");
+      if (localStorageState) {
+        setCurrentView(localStorageState as "map" | "list");
+      } else {
+        setCurrentView("map");
+      }
     }
   }, [searchParams]);
-
-  console.log({
-    currentView,
-  });
 
   useEffect(() => {
     if (isDefaultSale) {
@@ -626,7 +629,7 @@ export default function HomePage({
         />
       )}
 
-      {!showMapListButton && (
+      {!disableMapListButton && (
         <div
           className={`fixed left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-50 px-3 h-[40px] rounded-lg shadow-lg transition-all duration-300`}
           style={{
@@ -637,9 +640,13 @@ export default function HomePage({
                   : "172px"
                 : "16px",
           }}
-          onClick={() =>
-            handleViewChange(currentView === "map" ? "list" : "map")
-          }
+          onClick={() => {
+            handleViewChange(currentView === "map" ? "list" : "map");
+            localStorage.setItem(
+              "currentView",
+              currentView === "map" ? "list" : "map"
+            );
+          }}
         >
           <img
             src={currentView === "map" ? "/list.png" : "/map-03.png"}
@@ -696,9 +703,10 @@ export default function HomePage({
             setIsPersonalInformationFormPopupOpen
           }
           resetFilters={resetFilters}
-          showMapListButton={showMapListButton}
-          setShowMapListButton={setShowMapListButton}
+          disableMapListButton={disableMapListButton}
+          setDisableMapListButton={setDisableMapListButton}
         />
+
         <FilterList
           features={features}
           selectedFeatures={selectedFeatures}
@@ -706,9 +714,13 @@ export default function HomePage({
           currentView={currentView}
           listingType={listingType}
           setListingType={setListingType}
-          onChangeCurrentView={() =>
-            handleViewChange(currentView === "map" ? "list" : "map")
-          }
+          onChangeCurrentView={() => {
+            handleViewChange(currentView === "map" ? "list" : "map");
+            localStorage.setItem(
+              "currentView",
+              currentView === "map" ? "list" : "map"
+            );
+          }}
           filterOptions={filterOptions}
           selectedLocation={selectedLocation}
           setSelectedLocation={setSelectedLocation}
@@ -754,8 +766,6 @@ export default function HomePage({
           sortOption={sortOption}
           setSortOption={setSortOption}
           resultCount={filteredHotels.length}
-          showMapListButton={showMapListButton}
-          setShowMapListButton={setShowMapListButton}
         />
 
         {/* View Container with Transitions */}

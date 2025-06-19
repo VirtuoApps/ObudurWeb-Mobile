@@ -136,6 +136,9 @@ export default function FavoritesPage() {
     return shuffled.slice(0, count);
   };
 
+  const favoriteLength =
+    favorites?.filter((fav) => fav.hotelDetails)?.length || 0;
+
   // Sort favorites based on selected option
   const sortedFavorites = React.useMemo(() => {
     if (!sortOption) return favorites;
@@ -180,7 +183,7 @@ export default function FavoritesPage() {
       <div className="container mx-auto p-8">
         <h1 className="text-2xl font-bold mb-8">Favori İlanlar</h1>
         <p className=" text-[#595959] text-sm">
-          {favorites.length} adet favori ilanınız var.
+          {favoriteLength} adet favori ilanınız var.
         </p>
         <div className="flex justify-center items-center min-h-[300px]">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
@@ -210,7 +213,7 @@ export default function FavoritesPage() {
         <div>
           <h1 className="text-[#262626] font-bold text-2xl">Favori İlanlar</h1>
           <p className="text-[#595959] text-sm">
-            {favorites.length} adet favori ilanınız var.
+            {favoriteLength} adet favori ilanınız var.
           </p>
         </div>
 
@@ -268,7 +271,7 @@ export default function FavoritesPage() {
       <div className="block lg:hidden mb-8">
         <h1 className="text-[#262626] font-bold text-2xl">Favori İlanlar</h1>
         <p className="text-[#595959] text-sm">
-          {favorites.length} adet favori ilanınız var.
+          {favoriteLength} adet favori ilanınız var.
         </p>
       </div>
 
