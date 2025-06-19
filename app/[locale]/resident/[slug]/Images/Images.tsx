@@ -104,7 +104,7 @@ export default function Images() {
           <div className="hidden md:grid md:grid-cols-2 gap-2 p-1 w-full">
             {/* Large image - responsive width x 520px height */}
             <div
-              className="relative w-full h-[516.5px] overflow-hidden shadow-md cursor-pointer"
+              className="relative w-full h-[516.5px] overflow-hidden cursor-pointer"
               onClick={() => openModal(0)}
             >
               <Image
@@ -119,7 +119,7 @@ export default function Images() {
             {/* 2 images stacked - responsive width x 254px height each */}
             <div className="flex flex-col gap-2">
               <div
-                className="relative w-full h-[254px] overflow-hidden shadow-md cursor-pointer"
+                className="relative w-full h-[254px] overflow-hidden cursor-pointer"
                 onClick={() => openModal(1)}
               >
                 <Image
@@ -130,7 +130,7 @@ export default function Images() {
                 />
               </div>
               <div
-                className="relative w-full h-[254px] overflow-hidden shadow-md cursor-pointer"
+                className="relative w-full h-[254px] overflow-hidden cursor-pointer"
                 onClick={() => openModal(2)}
               >
                 <Image
@@ -155,7 +155,7 @@ export default function Images() {
           <div className="md:hidden p-1 w-full">
             {/* Single main image with counter */}
             <div
-              className="relative w-full h-[240px] mb-2 overflow-hidden rounded-lg shadow-md cursor-pointer"
+              className="relative w-full h-[240px] mb-2 overflow-hidden rounded-lg cursor-pointer"
               onClick={() => openModal(0)}
             >
               <Image
@@ -183,7 +183,7 @@ export default function Images() {
           <div className="hidden md:grid md:grid-cols-[2fr_1fr] gap-2 p-1 w-full">
             {/* Large image - responsive width x 520px height */}
             <div
-              className="relative w-full h-[524px] overflow-hidden shadow-md cursor-pointer"
+              className="relative w-full h-[524px] overflow-hidden cursor-pointer"
               onClick={() => openModal(0)}
             >
               <Image
@@ -198,7 +198,7 @@ export default function Images() {
             {/* 3 images stacked - responsive width x 169px height each */}
             <div className="flex flex-col gap-2 w-full">
               <div
-                className="relative w-full h-[169px] overflow-hidden shadow-md cursor-pointer"
+                className="relative w-full h-[169px] overflow-hidden cursor-pointer"
                 onClick={() => openModal(1)}
               >
                 <Image
@@ -209,7 +209,7 @@ export default function Images() {
                 />
               </div>
               <div
-                className="relative w-full h-[169px] overflow-hidden shadow-md cursor-pointer"
+                className="relative w-full h-[169px] overflow-hidden cursor-pointer"
                 onClick={() => openModal(2)}
               >
                 <Image
@@ -220,7 +220,7 @@ export default function Images() {
                 />
               </div>
               <div
-                className="relative w-full h-[169px] overflow-hidden shadow-md cursor-pointer"
+                className="relative w-full h-[169px] overflow-hidden cursor-pointer"
                 onClick={() => openModal(3)}
               >
                 <Image
@@ -245,7 +245,7 @@ export default function Images() {
           <div className="md:hidden p-1 w-full">
             {/* Single main image with counter */}
             <div
-              className="relative w-full h-[240px] mb-2 overflow-hidden rounded-lg shadow-md cursor-pointer"
+              className="relative w-full h-[240px] mb-2 overflow-hidden rounded-lg cursor-pointer"
               onClick={() => openModal(0)}
             >
               <Image
@@ -272,7 +272,7 @@ export default function Images() {
         <div className="hidden md:grid md:grid-cols-5 gap-2 p-1 w-full">
           {/* Large image - responsive width x 520px height (spans 2 rows and 3 columns) */}
           <div
-            className="relative md:col-span-3 w-full h-[516.5px] md:row-span-2 overflow-hidden shadow-md cursor-pointer"
+            className="relative md:col-span-3 w-full h-[516.5px] md:row-span-2 overflow-hidden cursor-pointer"
             onClick={() => openModal(0)}
           >
             <Image
@@ -287,7 +287,7 @@ export default function Images() {
           {/* 2x2 grid on the right - each responsive width x 254px height */}
           <div className="md:col-span-2 grid grid-cols-2 gap-2 h-full">
             <div
-              className="relative w-full h-[254px] overflow-hidden shadow-md cursor-pointer"
+              className="relative w-full h-[254px] overflow-hidden cursor-pointer"
               onClick={() => openModal(1)}
             >
               <Image
@@ -298,7 +298,7 @@ export default function Images() {
               />
             </div>
             <div
-              className="relative w-full h-[254px] overflow-hidden shadow-md cursor-pointer"
+              className="relative w-full h-[254px] overflow-hidden cursor-pointer"
               onClick={() => openModal(2)}
             >
               <Image
@@ -309,7 +309,7 @@ export default function Images() {
               />
             </div>
             <div
-              className="relative w-full h-[254px] overflow-hidden shadow-md cursor-pointer"
+              className="relative w-full h-[254px] overflow-hidden cursor-pointer"
               onClick={() => openModal(3)}
             >
               <Image
@@ -320,7 +320,7 @@ export default function Images() {
               />
             </div>
             <div
-              className="relative w-full h-[254px] overflow-hidden shadow-md cursor-pointer"
+              className="relative w-full h-[254px] overflow-hidden cursor-pointer"
               onClick={() => openModal(4)}
             >
               <Image

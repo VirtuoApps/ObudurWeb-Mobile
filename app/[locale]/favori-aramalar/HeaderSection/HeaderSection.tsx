@@ -7,6 +7,11 @@ type HeaderSectionType = {
 
 export default function HeaderSection({ totalFilters }: HeaderSectionType) {
   const router = useRouter();
+
+  if (totalFilters === 0) {
+    return null; // Don't render if there are no filters
+  }
+
   return (
     <div className="w-full py-6 sm:py-10 sm:px-14">
       <div className="max-w-[1440px] mx-auto flex flex-row items-start sm:items-center justify-between gap-4 sm:gap-0 px-4 sm:px-0">
