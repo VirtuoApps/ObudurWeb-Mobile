@@ -152,7 +152,6 @@ export default function AuthBox({
     dispatch(clearUser());
     // Close dropdown
     closeDropdownHandler();
-
     window.location.href = "/";
   };
 
