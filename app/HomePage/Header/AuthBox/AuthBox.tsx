@@ -109,9 +109,7 @@ export default function AuthBox({
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setDropdownOpen(false);
-
-        if (setDisableMapListButton) setDisableMapListButton(false);
+        closeDropdownHandler();
       }
       if (
         guestDropdownRef.current &&
@@ -153,14 +151,15 @@ export default function AuthBox({
     // Clear user from Redux
     dispatch(clearUser());
     // Close dropdown
-    setDropdownOpen(false);
-
-    if (setDisableMapListButton) setDisableMapListButton(false);
+    closeDropdownHandler();
 
     window.location.href = "/";
   };
 
-  console.log("daamn", disableMapListButton);
+  const closeDropdownHandler = () => {
+    setDropdownOpen(false);
+    if (setDisableMapListButton) setDisableMapListButton(false);
+  };
 
   if (user) {
     return (
@@ -241,9 +240,7 @@ export default function AuthBox({
 
                 <button
                   onClick={() => {
-                    setDropdownOpen(false);
-
-                    if (setDisableMapListButton) setDisableMapListButton(false);
+                    closeDropdownHandler();
                   }}
                   className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100"
                 >
@@ -266,9 +263,7 @@ export default function AuthBox({
               <Link
                 href="/account"
                 onClick={() => {
-                  setDropdownOpen(false);
-
-                  if (setDisableMapListButton) setDisableMapListButton(false);
+                  closeDropdownHandler();
                 }}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
@@ -318,9 +313,7 @@ export default function AuthBox({
               <Link
                 href="/admin/ilanlar"
                 onClick={() => {
-                  setDropdownOpen(false);
-
-                  if (setDisableMapListButton) setDisableMapListButton(false);
+                  closeDropdownHandler();
                 }}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
@@ -352,8 +345,7 @@ export default function AuthBox({
               <Link
                 href="/favorilerim"
                 onClick={() => {
-                  setDropdownOpen(false);
-                  if (setDisableMapListButton) setDisableMapListButton(false);
+                  closeDropdownHandler();
                 }}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
@@ -385,8 +377,7 @@ export default function AuthBox({
               <Link
                 href="/favori-aramalar"
                 onClick={() => {
-                  setDropdownOpen(false);
-                  if (setDisableMapListButton) setDisableMapListButton(false);
+                  closeDropdownHandler();
                 }}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
@@ -418,8 +409,7 @@ export default function AuthBox({
               <Link
                 href="/dil-para-birimi"
                 onClick={() => {
-                  setDropdownOpen(false);
-                  if (setDisableMapListButton) setDisableMapListButton(false);
+                  closeDropdownHandler();
                 }}
                 className="px-4 py-4 text-[16px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between lg:hidden"
               >
@@ -463,8 +453,7 @@ export default function AuthBox({
               <Link
                 href="/iletisim"
                 onClick={() => {
-                  setDropdownOpen(false);
-                  if (setDisableMapListButton) setDisableMapListButton(false);
+                  closeDropdownHandler();
                 }}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
@@ -492,8 +481,7 @@ export default function AuthBox({
               <Link
                 href="/iletisim#offices-section"
                 onClick={() => {
-                  setDropdownOpen(false);
-                  if (setDisableMapListButton) setDisableMapListButton(false);
+                  closeDropdownHandler();
                 }}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
@@ -551,8 +539,7 @@ export default function AuthBox({
               <Link
                 href="/iletisim"
                 onClick={() => {
-                  setDropdownOpen(false);
-                  if (setDisableMapListButton) setDisableMapListButton(false);
+                  closeDropdownHandler();
                 }}
                 className="px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] font-[500] text-[#595959] hover:bg-gray-100 flex flex-row items-center"
               >
