@@ -91,8 +91,6 @@ export default function FilterList({
   sortOption,
   setSortOption,
   resultCount,
-  showMapListButton = false,
-  setShowMapListButton = () => {},
 }: {
   onChangeCurrentView: () => void;
   currentView: "map" | "list";
@@ -150,8 +148,6 @@ export default function FilterList({
     >
   >;
   resultCount: number;
-  showMapListButton?: boolean;
-  setShowMapListButton?: (isOpen: boolean) => void;
 }) {
   const dispatch = useDispatch();
   const isFilterApplied = useSelector(
@@ -546,7 +542,7 @@ export default function FilterList({
           searchRadius={searchRadius}
         />
         <div
-          className={`bg-white flex flex-row transition-all duration-350 ease-in-out ${
+          className={`bg-white flex flex-row transition-all duration-350 ease-in-out z-[9999] ${
             currentView === "map"
               ? `fixed lg:top-28 ${
                   isScrolled && isMobile ? "top-[72px]" : "top-[71px]"
@@ -575,9 +571,6 @@ export default function FilterList({
               <button
                 onClick={() => {
                   setIsSheetOpen(true);
-                  if (setShowMapListButton) {
-                    setShowMapListButton(true);
-                  }
                 }}
 
                 className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-l border-[#F0F0F0]"
@@ -671,7 +664,7 @@ export default function FilterList({
 
                     <button
                       type="button"
-                      className={`mb-[16px] h-[54px] justify-center w-full inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer bg-[#5E5691] border-[0.5px] border-[#362C75] text-[#362C75]"}`}
+                      className={`mb-[16px] h-[54px] justify-center w-full inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer bg-[#5E5691] border-[0.5px] border-[#362C75] text-[#fcfcfc]`}
                       onClick={handleSortSelection}
                     >
                       Sırala

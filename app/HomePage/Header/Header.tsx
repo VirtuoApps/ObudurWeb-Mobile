@@ -34,8 +34,8 @@ export default function Header({
   setIsFilterPopupOpen,
   setShowIsPersonalInformationFormPopup,
   resetFilters,
-  showMapListButton = false,
-  setShowMapListButton = () => {},
+  disableMapListButton = false,
+  setDisableMapListButton = () => {},
 }: {
   setFilters: (filters: FilterType) => void;
   filterOptions: FilterOptions;
@@ -52,8 +52,8 @@ export default function Header({
   setIsFilterPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setShowIsPersonalInformationFormPopup: (show: boolean) => void;
   resetFilters?: any;
-  showMapListButton?: boolean;
-  setShowMapListButton?: (isOpen: boolean) => void;
+  disableMapListButton?: boolean;
+  setDisableMapListButton?: (isOpen: boolean) => void;
 }) {
   const dispatch = useDispatch();
   const t = useTranslations("header");
@@ -101,8 +101,8 @@ export default function Header({
 
           <div className="flex items-center xl:hidden shrink-0">
             <AuthBox
-              showMapListButton={showMapListButton}
-              setShowMapListButton={setShowMapListButton}
+              disableMapListButton={disableMapListButton}
+              setDisableMapListButton={setDisableMapListButton}
             />
           </div>
         </div>
@@ -175,8 +175,8 @@ export default function Header({
             setShowIsPersonalInformationFormPopup={
               setShowIsPersonalInformationFormPopup
             }
-            showMapListButton={showMapListButton}
-            setShowMapListButton={setShowMapListButton}
+            disableMapListButton={disableMapListButton}
+            setDisableMapListButton={setDisableMapListButton}
           />
           <LanguageSwitcher />
         </div>
@@ -184,8 +184,8 @@ export default function Header({
         {/* Mobile Right Side - Sabit genişlik */}
         <div className="flex items-center xl:hidden shrink-0">
           <AuthBox
-            showMapListButton={showMapListButton}
-            setShowMapListButton={setShowMapListButton}
+            disableMapListButton={disableMapListButton}
+            setDisableMapListButton={setDisableMapListButton}
           />
           <div className="hidden lg:flex ml-2">
             <LanguageSwitcher />
@@ -215,8 +215,8 @@ export default function Header({
           </div>
           <div className="flex flex-row justify-between gap-4">
             <AuthBox
-              showMapListButton={showMapListButton}
-              setShowMapListButton={setShowMapListButton}
+              disableMapListButton={disableMapListButton}
+              setDisableMapListButton={setDisableMapListButton}
             />
             <LanguageSwitcher />
           </div>

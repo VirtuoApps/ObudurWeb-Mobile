@@ -125,5 +125,6 @@ const favoritesSlice = createSlice({
   },
 });
 
-export const { clearFavorites, setIsFilterApplied, setIsMobile } = favoritesSlice.actions;
+export const { clearFavorites, setIsFilterApplied, setIsMobile } =
+  favoritesSlice.actions;
 export default favoritesSlice.reducer;
