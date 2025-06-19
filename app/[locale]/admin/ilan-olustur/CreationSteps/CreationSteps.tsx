@@ -686,10 +686,6 @@ export default function CreationSteps({
     hotelId,
   };
 
-  console.log({
-    entranceType,
-  });
-
   return (
     <ListingFormContext.Provider value={contextValue}>
       {currentStep === 1 && <FirstCreateStep />}

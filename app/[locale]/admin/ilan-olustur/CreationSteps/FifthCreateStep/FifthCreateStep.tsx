@@ -88,6 +88,13 @@ export default function FifthCreateStep() {
     }
   }, [isUpdate, images, video]);
 
+  // Add scroll reset effect when step changes
+  useEffect(() => {
+    if (formPanelRef.current) {
+      formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, []); // Empty dependency array means this runs once when component mounts
+
   // Upload a single image
   const uploadImage = async (file: File, index: number) => {
     try {
