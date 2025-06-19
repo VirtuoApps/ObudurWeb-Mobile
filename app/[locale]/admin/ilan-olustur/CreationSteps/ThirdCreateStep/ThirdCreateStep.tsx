@@ -802,6 +802,13 @@ export default function ThirdCreateStep() {
     return citiesList.find((c) => c.id === selectedCityId) || null;
   };
 
+  // Add scroll reset effect when step changes
+  useEffect(() => {
+    if (formPanelRef.current) {
+      formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, []); // Empty dependency array means this runs once when component mounts
+
   return (
     <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start p-4">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">

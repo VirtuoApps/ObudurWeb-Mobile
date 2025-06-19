@@ -283,7 +283,10 @@ export default function FirstCreateStep() {
   }));
 
   const filteredCategoryOptions = entranceType
-    ? (propertyTypes.find((type) => type.name.tr === entranceType.tr)?.categories || []).map((cat) => ({
+    ? (
+        propertyTypes.find((type) => type.name.tr === entranceType.tr)
+          ?.categories || []
+      ).map((cat) => ({
         name: cat.name.tr,
         value: cat,
       }))
@@ -311,7 +314,10 @@ export default function FirstCreateStep() {
           </div>
 
           {/* Right Form Panel - 70% width on desktop */}
-          <div ref={formPanelRef} className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto md:border-l md:border-[#F0F0F0]">
+          <div
+            ref={formPanelRef}
+            className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto md:border-l md:border-[#F0F0F0]"
+          >
             {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
@@ -346,9 +352,15 @@ export default function FirstCreateStep() {
               <div className="flex flex-col md:flex-row gap-4 w-full">
                 {/* İlan Tipi */}
                 <div className="flex-1 min-w-[180px]">
-                  <span className="block font-semibold mb-2 text-[#262626] text-base">İlan Tipi</span>
+                  <span className="block font-semibold mb-2 text-[#262626] text-base">
+                    İlan Tipi
+                  </span>
                   <GeneralSelect
-                    selectedItem={listingType ? { name: listingType.tr, value: listingType } : null}
+                    selectedItem={
+                      listingType
+                        ? { name: listingType.tr, value: listingType }
+                        : null
+                    }
                     onSelect={(item) => {
                       setListingType(item.value);
                       setEntranceType(null);
@@ -356,37 +368,65 @@ export default function FirstCreateStep() {
                     }}
                     options={listingTypeOptions}
                     defaultText="İlan Tipi Seçin"
-                    extraClassName={`w-full text-[#595959] bg-white border ${errorFields.has("listingType") ? "border-[#EF1A28]" : "border-[#E0E0E0]"}`}
+                    extraClassName={`w-full text-[#595959] bg-white border ${
+                      errorFields.has("listingType")
+                        ? "border-[#EF1A28]"
+                        : "border-[#E0E0E0]"
+                    }`}
                     maxHeight="200"
                     customTextColor={true}
                   />
                 </div>
                 {/* Emlak Tipi */}
                 <div className="flex-1 min-w-[180px]">
-                  <span className="block font-semibold mb-2 text-[#262626] text-base">Emlak Tipi</span>
+                  <span className="block font-semibold mb-2 text-[#262626] text-base">
+                    Emlak Tipi
+                  </span>
                   <GeneralSelect
-                    selectedItem={entranceType ? { name: entranceType.tr, value: entranceType } : null}
+                    selectedItem={
+                      entranceType
+                        ? { name: entranceType.tr, value: entranceType }
+                        : null
+                    }
                     onSelect={(item) => {
                       handlePropertyTypeSelect(item.value);
                     }}
                     options={listingType ? propertyTypeOptions : []}
-                    defaultText={listingType ? "Emlak Tipi Seçin" : "Önce ilan tipi seçin"}
-                    extraClassName={`w-full text-[#595959] bg-white border ${errorFields.has("entranceType") ? "border-[#EF1A28]" : "border-[#E0E0E0]"}`}
+                    defaultText={
+                      listingType ? "Emlak Tipi Seçin" : "Önce ilan tipi seçin"
+                    }
+                    extraClassName={`w-full text-[#595959] bg-white border ${
+                      errorFields.has("entranceType")
+                        ? "border-[#EF1A28]"
+                        : "border-[#E0E0E0]"
+                    }`}
                     maxHeight="200"
                     customTextColor={true}
                   />
                 </div>
                 {/* Kategori */}
                 <div className="flex-1 min-w-[180px]">
-                  <span className="block font-semibold mb-2 text-[#262626] text-base">Kategori</span>
+                  <span className="block font-semibold mb-2 text-[#262626] text-base">
+                    Kategori
+                  </span>
                   <GeneralSelect
-                    selectedItem={housingType ? { name: housingType.tr, value: housingType } : null}
+                    selectedItem={
+                      housingType
+                        ? { name: housingType.tr, value: housingType }
+                        : null
+                    }
                     onSelect={(item) => {
                       handleCategorySelect(item.value);
                     }}
                     options={entranceType ? filteredCategoryOptions : []}
-                    defaultText={entranceType ? "Kategori Seçin" : "Önce emlak tipi seçin"}
-                    extraClassName={`w-full text-[#595959] bg-white border ${errorFields.has("housingType") ? "border-[#EF1A28]" : "border-[#E0E0E0]"}`}
+                    defaultText={
+                      entranceType ? "Kategori Seçin" : "Önce emlak tipi seçin"
+                    }
+                    extraClassName={`w-full text-[#595959] bg-white border ${
+                      errorFields.has("housingType")
+                        ? "border-[#EF1A28]"
+                        : "border-[#E0E0E0]"
+                    }`}
                     maxHeight="200"
                     customTextColor={true}
                   />
@@ -490,9 +530,7 @@ export default function FirstCreateStep() {
         </div>
 
         <div className="flex flex-col-reverse sm:flex-row justify-between items-center p-6 border-t border-[#F0F0F0]">
-          <span className="text-sm text-gray-600 mt-4 sm:mt-0">
-            Adım 1 / 6
-          </span>
+          <span className="text-sm text-gray-600 mt-4 sm:mt-0">Adım 1 / 6</span>
           <div className="flex flex-row gap-4 mt-4 sm:mt-0 w-full md:w-auto">
             <button
               type="button"

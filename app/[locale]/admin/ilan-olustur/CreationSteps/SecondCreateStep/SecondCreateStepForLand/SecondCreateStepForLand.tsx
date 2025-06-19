@@ -364,10 +364,18 @@ export default function SecondCreateStepForLand() {
     setCurrentStep(1);
   };
 
+  // Add scroll reset effect when step changes
+  useEffect(() => {
+    if (formPanelRef.current) {
+      formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, []); // Empty dependency array means this runs once when component mounts
+
   return (
     <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start p-4">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">
         <div className="flex flex-col md:flex-row p-10">
+          ¨@
           {/* Left Info Panel */}
           <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 flex flex-col">
             <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
@@ -381,7 +389,6 @@ export default function SecondCreateStepForLand() {
               </p>
             </div>
           </div>
-
           {/* Right Form Panel */}
           <div
             ref={formPanelRef}
