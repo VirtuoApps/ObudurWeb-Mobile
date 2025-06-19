@@ -1011,7 +1011,7 @@ export default function FilterPopup({
                           )}
                         </div>
 
-                        {tempSelectedLocation && tempSelectedLocation.name ? (
+                        {tempSelectedLocation && tempSelectedLocation.name && (
                           <XMarkSolidIcon
                             className="h-5 w-5 text-black ml-2 cursor-pointer"
                             aria-hidden="true"
@@ -1022,11 +1022,6 @@ export default function FilterPopup({
                               setSuggestions([]);
                               setShowSuggestions(false);
                             }}
-                          />
-                        ) : (
-                          <ChevronDownSolidIcon
-                            className="h-5 w-5 text-gray-400 ml-2"
-                            aria-hidden="true"
                           />
                         )}
                       </PopoverButton>
