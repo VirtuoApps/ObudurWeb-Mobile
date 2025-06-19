@@ -26,6 +26,7 @@ import { states } from "./states";
 import { useScrollDirection } from "../hooks/useScrollDirection";
 import { useSelector } from "react-redux";
 import { useTranslations } from "next-intl";
+import Bowser from "bowser";
 
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
@@ -74,6 +75,7 @@ export default function HomePage({
   const [sortOption, setSortOption] = useState<
     "ascending" | "descending" | "newest" | "oldest" | null
   >(null);
+  const [browser, setBrowser] = useState<string>("");
 
   // Transition states
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -591,6 +593,12 @@ export default function HomePage({
     };
   }, [currentView, noResultFound, isFilterPopupOpen]);
 
+  useEffect(() => {
+    const browser = Bowser.getParser(window.navigator.userAgent);
+    const browserName = browser.getBrowserName();
+    setBrowser(browserName);
+  }, []);
+
   return (
     <>
       {showEmailVerifiedPopup && (
@@ -620,11 +628,15 @@ export default function HomePage({
 
       {!showMapListButton && (
         <div
-          className={`fixed left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-50 px-3 h-[40px] rounded-lg shadow-lg transition-all duration-300 ${
-            isPinSelected && currentView === "map"
-              ? "bottom-[172px]"
-              : "bottom-[16px]"
-          }`}
+          className={`fixed left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-50 px-3 h-[40px] rounded-lg shadow-lg transition-all duration-300`}
+          style={{
+            bottom:
+              isPinSelected && currentView === "map"
+                ? browser === "Safari"
+                  ? "250px"
+                  : "172px"
+                : "16px",
+          }}
           onClick={() =>
             handleViewChange(currentView === "map" ? "list" : "map")
           }

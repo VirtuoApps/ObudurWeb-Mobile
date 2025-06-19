@@ -356,7 +356,7 @@ export default function CreationSteps({
   const [roomCount, setRoomCount] = useState<number>(-1);
   const [bathroomCount, setBathroomCount] = useState<number>(-1);
   const [bedRoomCount, setBedRoomCount] = useState<number>(-1);
-  const [floorCount, setFloorCount] = useState<number>(-1);
+  const [floorCount, setFloorCount] = useState<number>(0);
   const [buildYear, setBuildYear] = useState<number>(0);
   const [kitchenType, setKitchenType] = useState<MultilangText>({
     tr: "",
@@ -469,9 +469,9 @@ export default function CreationSteps({
       setPrice(hotelData.price || []);
       setProjectArea(hotelData.projectArea || 0);
       setTotalSize(hotelData.totalSize || 0);
-      setRoomCount(hotelData.roomCount || 0);
-      setBathroomCount(hotelData.bathroomCount || 0);
-      setBedRoomCount(hotelData.bedRoomCount || 0);
+      setRoomCount(hotelData.roomCount || -1);
+      setBathroomCount(hotelData.bathroomCount || -1);
+      setBedRoomCount(hotelData.bedRoomCount || -1);
       setFloorCount(hotelData.floorCount || 0);
       setBuildYear(hotelData.buildYear || 0);
       setKitchenType(hotelData.kitchenType || { tr: "", en: "" });

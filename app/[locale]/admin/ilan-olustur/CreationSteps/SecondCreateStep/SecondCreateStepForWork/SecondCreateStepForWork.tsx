@@ -277,7 +277,6 @@ export default function SecondCreateStepForWork() {
   ];
 
   const floorCountOptions = [
-    { value: 0, label: "0" },
     { value: 1, label: "1" },
     { value: 2, label: "2" },
     { value: 3, label: "3" },
@@ -365,7 +364,7 @@ export default function SecondCreateStepForWork() {
       newErrorFields.add("roomCount");
     }
 
-    if ((!floorCount && floorCount !== 0) || floorCount < 0) {
+    if (!floorCount || floorCount <= 0) {
       newErrors.push("Lütfen kat sayısını seçin");
       newErrorFields.add("floorCount");
     }
