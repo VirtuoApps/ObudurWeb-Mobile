@@ -12,6 +12,12 @@ import { FilterOptions } from "@/types/filter-options.type";
 import { Hotel } from "@/types/hotel.type";
 import { Feature } from "@/types/feature.type";
 import axiosInstance from "@/axios";
+import { useRouter } from "@/app/utils/router";
+import ResidentBox from "@/app/HomePage/ListView/ResidentBox/ResidentBox";
+import { getLocalizedText } from "../favorilerim/page";
+import { useLocale } from "next-intl";
+import { formatAddress } from "@/app/utils/addressFormatter";
+import { getDisplayPrice } from "@/app/utils/priceFormatter";
 
 export default function FavoriAramalarPage() {
   const [savedFilters, setSavedFilters] = useState<SavedFilter[]>([]);
@@ -23,6 +29,30 @@ export default function FavoriAramalarPage() {
   const [hotels, setHotels] = useState<Hotel[]>([]);
   const [allQuickFilters, setAllQuickFilters] = useState<Feature[]>([]);
   const [dataLoading, setDataLoading] = useState(true);
+  const selectedLanguage = useLocale();
+  const router = useRouter();
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
+
+  // Get selected currency from localStorage
+  useEffect(() => {
+    const storedCurrency = localStorage.getItem("selectedCurrency");
+
+    if (storedCurrency) {
+      setSelectedCurrency(storedCurrency);
+    }
+
+    // Setup listener for currency changes
+    const handleStorageChange = () => {
+      const currency = localStorage.getItem("selectedCurrency");
+
+      if (currency && currency !== selectedCurrency) {
+        setSelectedCurrency(currency);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, [selectedCurrency]);
 
   useEffect(() => {
     fetchData();
@@ -76,6 +106,13 @@ export default function FavoriAramalarPage() {
     }
   };
 
+  const getRandomHotels = (count: number = 4): Hotel[] => {
+    if (hotels.length === 0) return [];
+
+    const shuffled = [...hotels].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  };
+
   return (
     <div className="w-full">
       <SimpleHeader
@@ -97,9 +134,68 @@ export default function FavoriAramalarPage() {
               <div className="text-red-600 text-sm sm:text-base">{error}</div>
             </div>
           ) : savedFilters.length === 0 ? (
-            <div className="flex justify-center items-center py-20">
-              <div className="text-gray-600 text-sm sm:text-base">
-                Henüz favori aramanız bulunmuyor.
+            <div className="w-full flex flex-col items-center justify-center text-gray-500 pt-10">
+              <div
+                className={`w-full flex flex-col items-center justify-center text-gray-500 pt-10`}
+              >
+                <p className="text-center text-[#362C75] font-bold text-[24px]">
+                  Henüz Kaydedilmiş Aramanız Yok!
+                </p>
+                <p className="text-center text-[#262626] font-medium text-[16px] mt-4">
+                  Sık kullandığınız filtreleri kaydedin, size özel yeni
+                  ilanlardan anında haberdar olun.
+                </p>
+                <p className="text-center text-[#595959] font-medium text-[16px] mt-3">
+                  Fırsatları kaçırmamak için aramaya başlayın!
+                </p>
+                <button
+                  onClick={() => {
+                    localStorage.setItem("currentView", "list");
+                    router.push(`/`);
+                  }}
+                  className="bg-[#5E5691] rounded-2xl py-4 px-6 flex items-center justify-center text-white mt-5"
+                >
+                  Arama Yap
+                </button>
+              </div>
+
+              <div className="mt-10 mb-6">
+                <h2 className="text-start text-[#262626] font-bold text-[24px] mb-8 ml-6">
+                  İlginizi Çekebilecek İlanlar
+                </h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 px-2">
+                  {getRandomHotels(6).map((hotel) => (
+                    <ResidentBox
+                      key={hotel._id}
+                      hotelId={hotel._id}
+                      slug={hotel.slug}
+                      type={getLocalizedText(
+                        hotel.listingType,
+                        selectedLanguage
+                      )}
+                      isOptinable={false}
+                      residentTypeName={getLocalizedText(
+                        hotel.housingType,
+                        selectedLanguage
+                      )}
+                      title={getLocalizedText(hotel.title, selectedLanguage)}
+                      price={getDisplayPrice(hotel.price, selectedCurrency)}
+                      bedCount={hotel.bedRoomCount.toString()}
+                      floorCount={"2"}
+                      area={`${hotel.projectArea}m2`}
+                      locationText={formatAddress(hotel, selectedLanguage)}
+                      image={hotel.images[0]}
+                      images={hotel.images}
+                      isFavorite={false}
+                      isListView={true}
+                      roomCount={hotel.roomCount || 0}
+                      entranceType={hotel.entranceType}
+                      priceAsNumber={hotel.price[0].amount}
+                      areaAsNumber={+hotel.projectArea}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           ) : !filterOptions ? (

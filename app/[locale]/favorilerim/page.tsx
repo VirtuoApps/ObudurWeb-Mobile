@@ -209,63 +209,67 @@ export default function FavoritesPage() {
   return (
     <div className="container mx-auto p-8 pb-0 px-2">
       {/* Header with sorting - matching SortAndSaveFiltering design */}
-      <div className="justify-between items-start mb-8 hidden lg:flex">
-        <div>
-          <h1 className="text-[#262626] font-bold text-2xl">Favori İlanlar</h1>
-          <p className="text-[#595959] text-sm">
-            {favoriteLength} adet favori ilanınız var.
-          </p>
-        </div>
+      {favoriteLength > 0 && (
+        <div className="justify-between items-start mb-8 hidden lg:flex">
+          <div>
+            <h1 className="text-[#262626] font-bold text-2xl">
+              Favori İlanlar
+            </h1>
+            <p className="text-[#595959] text-sm">
+              {favoriteLength} adet favori ilanınız var.
+            </p>
+          </div>
 
-        <div className="flex flex-row items-center gap-2">
-          <div className="relative">
-            <button
-              onClick={() => setIsSortOpen(!isSortOpen)}
-              className="border bg-transparent flex flex-row items-center justify-between rounded-xl px-5 py-3 cursor-pointer min-w-[240px]"
-            >
-              <p className="text-sm text-gray-500 font-semibold mr-12">
-                {getSortDisplayText()}
-              </p>
-              <img
-                src="/chevron-down.png"
-                className={`w-6 h-6 transition-transform duration-200 ${
-                  isSortOpen ? "rotate-180" : ""
-                }`}
-                alt="arrow-down"
-              />
-            </button>
+          <div className="flex flex-row items-center gap-2">
+            <div className="relative">
+              <button
+                onClick={() => setIsSortOpen(!isSortOpen)}
+                className="border bg-transparent flex flex-row items-center justify-between rounded-xl px-5 py-3 cursor-pointer min-w-[240px]"
+              >
+                <p className="text-sm text-gray-500 font-semibold mr-12">
+                  {getSortDisplayText()}
+                </p>
+                <img
+                  src="/chevron-down.png"
+                  className={`w-6 h-6 transition-transform duration-200 ${
+                    isSortOpen ? "rotate-180" : ""
+                  }`}
+                  alt="arrow-down"
+                />
+              </button>
 
-            {isSortOpen && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-white border rounded-xl shadow-lg z-10">
-                <div
-                  className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
-                  onClick={() => handleSortSelection("ascending")}
-                >
-                  <p className="text-sm">En Düşük Fiyat</p>
+              {isSortOpen && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white border rounded-xl shadow-lg z-10">
+                  <div
+                    className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                    onClick={() => handleSortSelection("ascending")}
+                  >
+                    <p className="text-sm">En Düşük Fiyat</p>
+                  </div>
+                  <div
+                    className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                    onClick={() => handleSortSelection("descending")}
+                  >
+                    <p className="text-sm">En Yüksek Fiyat</p>
+                  </div>
+                  <div
+                    className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                    onClick={() => handleSortSelection("newest")}
+                  >
+                    <p className="text-sm">Önce En Yeni İlan</p>
+                  </div>
+                  <div
+                    className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                    onClick={() => handleSortSelection("oldest")}
+                  >
+                    <p className="text-sm">Önce En Eski İlan</p>
+                  </div>
                 </div>
-                <div
-                  className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
-                  onClick={() => handleSortSelection("descending")}
-                >
-                  <p className="text-sm">En Yüksek Fiyat</p>
-                </div>
-                <div
-                  className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
-                  onClick={() => handleSortSelection("newest")}
-                >
-                  <p className="text-sm">Önce En Yeni İlan</p>
-                </div>
-                <div
-                  className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
-                  onClick={() => handleSortSelection("oldest")}
-                >
-                  <p className="text-sm">Önce En Eski İlan</p>
-                </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Mobile header - without sorting for now */}
       <div className="block lg:hidden mb-8">
@@ -275,16 +279,40 @@ export default function FavoritesPage() {
         </p>
       </div>
 
-      {favorites.length === 0 ? (
-        <div className="bg-gray-100 p-8 rounded-lg text-center">
-          <p className="text-gray-700 mb-4">
-            Henüz favori ilanınız bulunmamaktadır.
+      {favoriteLength === 0 ? (
+        // <div className="bg-gray-100 p-8 rounded-lg text-center">
+        //   <p className="text-gray-700 mb-4">
+        //     Henüz favori ilanınız bulunmamaktadır.
+        //   </p>
+        //   <button
+        //     onClick={() => router.push("/")}
+        //     className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition"
+        //   >
+        //     İlanları Keşfet
+        //   </button>
+        // </div>
+
+        <div
+          className={`w-full flex flex-col items-center justify-center text-gray-500`}
+        >
+          <p className="text-center text-[#362C75] font-bold text-[24px]">
+            Henüz Favori İlanınız Yok!
+          </p>
+          <p className="text-center text-[#262626] font-medium text-[16px] mt-4">
+            Beğendiğiniz ilanları favorilerinize ekleyin, dilediğiniz zaman
+            kolayca ulaşın.
+          </p>
+          <p className="text-center text-[#595959] font-medium text-[16px] mt-3">
+            Keşfetmeye başlayın, favorilerinizi oluşturun!
           </p>
           <button
-            onClick={() => router.push("/")}
-            className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition"
+            onClick={() => {
+              localStorage.setItem("currentView", "list");
+              router.push(`/`);
+            }}
+            className="bg-[#5E5691] rounded-2xl py-4 px-6 flex items-center justify-center text-white mt-5"
           >
-            İlanları Keşfet
+            İlanlara Göz At
           </button>
         </div>
       ) : (
@@ -338,7 +366,9 @@ export default function FavoritesPage() {
       {similarHotels.length > 0 && (
         <div className="w-full mt-16 mb-8 -mx-5">
           <h2 className="text-start text-[#262626] font-bold text-[24px] mb-8 ml-6">
-            Benzer İlanlar
+            {favoriteLength > 0
+              ? "Benzer İlanlar"
+              : "İlginizi Çekebilecek İlanlar"}
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 bg-white px-2">
