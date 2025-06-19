@@ -572,6 +572,8 @@ export default function HomePage({
     );
   }
 
+  console.log("Filtered Hotels Count:", isDropdownOpen);
+
   const noResultFound =
     (filters || selectedLocation) && filteredHotels.length === 0;
 

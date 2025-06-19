@@ -95,6 +95,8 @@ export default function AuthBox({
 
   const router = useRouter();
 
+  console.log("AuthBox rendered with user:", isDropdownOpen);
+
   const isUserAccountCompleted =
     user?.firstName &&
     user?.lastName &&
@@ -110,7 +112,6 @@ export default function AuthBox({
         !dropdownRef.current.contains(event.target as Node)
       ) {
         setDropdownOpen(false);
-
         if (setShowMapListButton) setShowMapListButton(false);
       }
       if (
@@ -154,7 +155,6 @@ export default function AuthBox({
     dispatch(clearUser());
     // Close dropdown
     setDropdownOpen(false);
-
     if (setShowMapListButton) setShowMapListButton(false);
 
     window.location.href = "/";
@@ -242,7 +242,6 @@ export default function AuthBox({
                 <button
                   onClick={() => {
                     setDropdownOpen(false);
-
                     if (setShowMapListButton) setShowMapListButton(false);
                   }}
                   className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100"
@@ -267,7 +266,6 @@ export default function AuthBox({
                 href="/account"
                 onClick={() => {
                   setDropdownOpen(false);
-
                   if (setShowMapListButton) setShowMapListButton(false);
                 }}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
@@ -319,7 +317,6 @@ export default function AuthBox({
                 href="/admin/ilanlar"
                 onClick={() => {
                   setDropdownOpen(false);
-
                   if (setShowMapListButton) setShowMapListButton(false);
                 }}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"

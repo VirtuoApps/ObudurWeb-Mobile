@@ -579,6 +579,7 @@ export default function FilterList({
                     setShowMapListButton(true);
                   }
                 }}
+
                 className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-l border-[#F0F0F0]"
               >
                 <p className="text-sm text-gray-500 font-semibold">Sırala</p>
