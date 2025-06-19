@@ -91,8 +91,8 @@ export default function FilterList({
   sortOption,
   setSortOption,
   resultCount,
-  isDropdownOpen = false,
-  setIsDropdownOpen = () => {},
+  showMapListButton = false,
+  setShowMapListButton = () => {},
 }: {
   onChangeCurrentView: () => void;
   currentView: "map" | "list";
@@ -150,8 +150,8 @@ export default function FilterList({
     >
   >;
   resultCount: number;
-  isDropdownOpen?: boolean;
-  setIsDropdownOpen?: (isOpen: boolean) => void;
+  showMapListButton?: boolean;
+  setShowMapListButton?: (isOpen: boolean) => void;
 }) {
   const dispatch = useDispatch();
   const isFilterApplied = useSelector(
@@ -575,8 +575,8 @@ export default function FilterList({
               <button
                 onClick={() => {
                   setIsSheetOpen(true);
-                  if (setIsDropdownOpen) {
-                    setIsDropdownOpen(true);
+                  if (setShowMapListButton) {
+                    setShowMapListButton(true);
                   }
                 }}
                 className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-l border-[#F0F0F0]"
