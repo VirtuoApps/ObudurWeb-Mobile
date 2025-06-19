@@ -425,7 +425,9 @@ export default function FourthCreateStep() {
   }) => {
     return (
       <div className="mt-6">
-        <h2 className="font-semibold mb-2 text-[#262626]">{title}</h2>
+        <h2 className="font-semibold mb-2 text-[#262626] text-[16px]">
+          {title}
+        </h2>
         <div className="flex flex-wrap gap-2">
           {features.map((feature) => (
             <FeatureItem key={feature._id} feature={feature} />
@@ -493,7 +495,7 @@ export default function FourthCreateStep() {
               {/* Orientation (Cephe) */}
               {entranceType?.tr !== "Arsa" && (
                 <div>
-                  <h2 className="font-semibold mb-4 text-[#262626] text-xl">
+                  <h2 className="font-semibold mb-4 text-[#262626] text-[16px]">
                     Cephe
                   </h2>
                   <div className="flex flex-wrap gap-2">
@@ -608,7 +610,7 @@ export default function FourthCreateStep() {
                   </div>
                   {/* View (Manzara) Section */}
                   <div className="mt-8">
-                    <h2 className="font-semibold mb-2 text-[#262626]">
+                    <h2 className="font-semibold mb-2 text-[#262626] text-[16px]">
                       Manzara
                     </h2>
                     <div className="flex flex-wrap gap-4">
@@ -647,7 +649,7 @@ export default function FourthCreateStep() {
 
               {/* Distances */}
               <div>
-                <h2 className="text-xl font-bold text-[#181818] mb-2">
+                <h2 className="text-[16px] font-bold text-[#181818] mb-2">
                   Lokasyon Özellikleri
                 </h2>
                 <p className="text-sm text-[#6C6C6C] mb-6">
