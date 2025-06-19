@@ -108,7 +108,7 @@ export default function HomePage({
     "For Sale"
   );
   const [searchRadius, setSearchRadius] = useState<number>(50); // Default 50km radius
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showMapListButton, setShowMapListButton] = useState(false);
   const [isSaveFilterPopupOpen, setIsSaveFilterPopupOpen] = useState(false);
 
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
@@ -572,8 +572,6 @@ export default function HomePage({
     );
   }
 
-  console.log("Filtered Hotels Count:", isDropdownOpen);
-
   const noResultFound =
     (filters || selectedLocation) && filteredHotels.length === 0;
 
@@ -620,7 +618,7 @@ export default function HomePage({
         />
       )}
 
-      {!isDropdownOpen && (
+      {!showMapListButton && (
         <div
           className={`fixed left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-50 px-3 h-[40px] rounded-lg shadow-lg transition-all duration-300 ${
             isPinSelected && currentView === "map"
@@ -686,8 +684,8 @@ export default function HomePage({
             setIsPersonalInformationFormPopupOpen
           }
           resetFilters={resetFilters}
-          isDropdownOpen={isDropdownOpen}
-          setIsDropdownOpen={setIsDropdownOpen}
+          showMapListButton={showMapListButton}
+          setShowMapListButton={setShowMapListButton}
         />
         <FilterList
           features={features}
@@ -744,6 +742,8 @@ export default function HomePage({
           sortOption={sortOption}
           setSortOption={setSortOption}
           resultCount={filteredHotels.length}
+          showMapListButton={showMapListButton}
+          setShowMapListButton={setShowMapListButton}
         />
 
         {/* View Container with Transitions */}

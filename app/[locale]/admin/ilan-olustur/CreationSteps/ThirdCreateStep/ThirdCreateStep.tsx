@@ -692,12 +692,12 @@ export default function ThirdCreateStep() {
     }
 
     if (!city || !city.tr || !city.en) {
-      newErrors.push("Lütfen şehir bilgisini girin");
+      newErrors.push("Lütfen ilçe bilgisini girin");
       newErrorFields.add("city");
     }
 
     if (!state || !state.tr || !state.en) {
-      newErrors.push("Lütfen ilçe bilgisini girin");
+      newErrors.push("Lütfen şehir bilgisini girin");
       newErrorFields.add("state");
     }
 
@@ -947,7 +947,11 @@ export default function ThirdCreateStep() {
                   defaultText={
                     locale === "en" ? "Select Province" : "Şehir Seçin"
                   }
-                  extraClassName="w-full h-12 border border-gray-300"
+                  extraClassName={`w-full h-12 border ${
+                    errorFields.has("state")
+                      ? "border-[#EF1A28]"
+                      : "border-gray-300"
+                  }`}
                   popoverMaxWidth="400"
                   maxHeight="200"
                   popoverExtraClassName="w-auto max-w-[420px]"
@@ -971,7 +975,11 @@ export default function ThirdCreateStep() {
                   defaultText={
                     locale === "en" ? "Select District" : "İlçe Seçin"
                   }
-                  extraClassName="w-full h-12 border border-gray-300"
+                  extraClassName={`w-full h-12 border ${
+                    errorFields.has("city")
+                      ? "border-[#EF1A28]"
+                      : "border-gray-300"
+                  }`}
                   popoverMaxWidth="200"
                   maxHeight="200"
                   popoverExtraClassName="w-auto max-w-[280px]"
