@@ -175,13 +175,18 @@ export default function Header({
             setShowIsPersonalInformationFormPopup={
               setShowIsPersonalInformationFormPopup
             }
+            isDropdownOpen={isDropdownOpen}
+            setIsDropdownOpen={setIsDropdownOpen}
           />
           <LanguageSwitcher />
         </div>
 
         {/* Mobile Right Side - Sabit genişlik */}
         <div className="flex items-center xl:hidden shrink-0">
-          <AuthBox />
+          <AuthBox
+            isDropdownOpen={isDropdownOpen}
+            setIsDropdownOpen={setIsDropdownOpen}
+          />
           <div className="hidden lg:flex ml-2">
             <LanguageSwitcher />
           </div>
@@ -209,7 +214,10 @@ export default function Header({
             />
           </div>
           <div className="flex flex-row justify-between gap-4">
-            <AuthBox />
+            <AuthBox
+              isDropdownOpen={isDropdownOpen}
+              setIsDropdownOpen={setIsDropdownOpen}
+            />
             <LanguageSwitcher />
           </div>
         </div>

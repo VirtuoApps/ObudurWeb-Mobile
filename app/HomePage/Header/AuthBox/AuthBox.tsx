@@ -95,8 +95,6 @@ export default function AuthBox({
 
   const router = useRouter();
 
-  console.log("AuthBox rendered with user:", isDropdownOpen);
-
   const isUserAccountCompleted =
     user?.firstName &&
     user?.lastName &&
@@ -161,6 +159,8 @@ export default function AuthBox({
 
     window.location.href = "/";
   };
+
+  console.log("daamn", isDropdownOpen);
 
   if (user) {
     return (

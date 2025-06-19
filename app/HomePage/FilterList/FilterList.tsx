@@ -91,6 +91,8 @@ export default function FilterList({
   sortOption,
   setSortOption,
   resultCount,
+  isDropdownOpen = false,
+  setIsDropdownOpen = () => {},
 }: {
   onChangeCurrentView: () => void;
   currentView: "map" | "list";
@@ -148,6 +150,8 @@ export default function FilterList({
     >
   >;
   resultCount: number;
+  isDropdownOpen?: boolean;
+  setIsDropdownOpen?: (isOpen: boolean) => void;
 }) {
   const dispatch = useDispatch();
   const isFilterApplied = useSelector(
@@ -569,7 +573,12 @@ export default function FilterList({
             </button>
             {currentView !== "map" && (
               <button
-                onClick={() => setIsSheetOpen(true)}
+                onClick={() => {
+                  setIsSheetOpen(true);
+                  if (setIsDropdownOpen) {
+                    setIsDropdownOpen(true);
+                  }
+                }}
                 className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-l border-[#F0F0F0]"
               >
                 <p className="text-sm text-gray-500 font-semibold">Sırala</p>
