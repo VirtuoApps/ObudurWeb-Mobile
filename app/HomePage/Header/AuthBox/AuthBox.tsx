@@ -73,15 +73,15 @@ export default function AuthBox({
   hideCreateListingButton = false,
   setShowIsPersonalInformationFormPopup,
   hideProfileIcon = false,
-  isDropdownOpen,
-  setIsDropdownOpen,
+  showMapListButton,
+  setShowMapListButton,
 }: {
   showLikeButton?: boolean;
   hideCreateListingButton?: boolean;
   setShowIsPersonalInformationFormPopup?: (show: boolean) => void;
   hideProfileIcon?: boolean;
-  isDropdownOpen?: boolean;
-  setIsDropdownOpen?: (isOpen: boolean) => void;
+  showMapListButton?: boolean;
+  setShowMapListButton?: (isOpen: boolean) => void;
 }) {
   const t = useTranslations("header");
   const [isOpen, setIsOpen] = useState(false);
@@ -112,8 +112,7 @@ export default function AuthBox({
         !dropdownRef.current.contains(event.target as Node)
       ) {
         setDropdownOpen(false);
-
-        if (setIsDropdownOpen) setIsDropdownOpen(false);
+        if (setShowMapListButton) setShowMapListButton(false);
       }
       if (
         guestDropdownRef.current &&
@@ -156,11 +155,12 @@ export default function AuthBox({
     dispatch(clearUser());
     // Close dropdown
     setDropdownOpen(false);
-
-    if (setIsDropdownOpen) setIsDropdownOpen(false);
+    if (setShowMapListButton) setShowMapListButton(false);
 
     window.location.href = "/";
   };
+
+  console.log("daamn", showMapListButton);
 
   if (user) {
     return (
@@ -175,9 +175,9 @@ export default function AuthBox({
           <div
             className="flex items-center gap-2 cursor-pointer lg:max-w-[200px] max-w-[50px]"
             onClick={() => {
-              if (!dropdownOpen === true && setIsDropdownOpen) {
+              if (!dropdownOpen === true && setShowMapListButton) {
                 console.log("Dropdown is closed, opening it now");
-                setIsDropdownOpen(true);
+                setShowMapListButton(true);
               }
 
               setDropdownOpen(!dropdownOpen);
@@ -242,8 +242,7 @@ export default function AuthBox({
                 <button
                   onClick={() => {
                     setDropdownOpen(false);
-
-                    if (setIsDropdownOpen) setIsDropdownOpen(false);
+                    if (setShowMapListButton) setShowMapListButton(false);
                   }}
                   className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100"
                 >
@@ -267,8 +266,7 @@ export default function AuthBox({
                 href="/account"
                 onClick={() => {
                   setDropdownOpen(false);
-
-                  if (setIsDropdownOpen) setIsDropdownOpen(false);
+                  if (setShowMapListButton) setShowMapListButton(false);
                 }}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
@@ -319,8 +317,7 @@ export default function AuthBox({
                 href="/admin/ilanlar"
                 onClick={() => {
                   setDropdownOpen(false);
-
-                  if (setIsDropdownOpen) setIsDropdownOpen(false);
+                  if (setShowMapListButton) setShowMapListButton(false);
                 }}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
@@ -353,7 +350,7 @@ export default function AuthBox({
                 href="/favorilerim"
                 onClick={() => {
                   setDropdownOpen(false);
-                  if (setIsDropdownOpen) setIsDropdownOpen(false);
+                  if (setShowMapListButton) setShowMapListButton(false);
                 }}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
@@ -386,7 +383,7 @@ export default function AuthBox({
                 href="/favori-aramalar"
                 onClick={() => {
                   setDropdownOpen(false);
-                  if (setIsDropdownOpen) setIsDropdownOpen(false);
+                  if (setShowMapListButton) setShowMapListButton(false);
                 }}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
@@ -419,7 +416,7 @@ export default function AuthBox({
                 href="/dil-para-birimi"
                 onClick={() => {
                   setDropdownOpen(false);
-                  if (setIsDropdownOpen) setIsDropdownOpen(false);
+                  if (setShowMapListButton) setShowMapListButton(false);
                 }}
                 className="px-4 py-4 text-[16px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between lg:hidden"
               >
@@ -464,7 +461,7 @@ export default function AuthBox({
                 href="/iletisim"
                 onClick={() => {
                   setDropdownOpen(false);
-                  if (setIsDropdownOpen) setIsDropdownOpen(false);
+                  if (setShowMapListButton) setShowMapListButton(false);
                 }}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
@@ -493,7 +490,7 @@ export default function AuthBox({
                 href="/iletisim#offices-section"
                 onClick={() => {
                   setDropdownOpen(false);
-                  if (setIsDropdownOpen) setIsDropdownOpen(false);
+                  if (setShowMapListButton) setShowMapListButton(false);
                 }}
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
@@ -552,7 +549,7 @@ export default function AuthBox({
                 href="/iletisim"
                 onClick={() => {
                   setDropdownOpen(false);
-                  if (setIsDropdownOpen) setIsDropdownOpen(false);
+                  if (setShowMapListButton) setShowMapListButton(false);
                 }}
                 className="px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] font-[500] text-[#595959] hover:bg-gray-100 flex flex-row items-center"
               >
