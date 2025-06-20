@@ -172,6 +172,7 @@ export default function FilterList({
     (state: any) => state.favorites.isFilterApplied
   ); // Adjust state path
   const t = useTranslations("filterList");
+  const filteringT = useTranslations("filtering");
   const locale = useLocale();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
@@ -607,13 +608,13 @@ export default function FilterList({
               onClick={() => setIsFilterPopupOpen(true)}
               className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-r border-[#F0F0F0]"
             >
-              Filtreler ({countActiveFilters()})
+              {filteringT("filters")} ({countActiveFilters()})
             </button>
             <button
               onClick={() => setIsSaveFilterSheetOpen(true)}
               className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#262626]"
             >
-              Aramayı Kaydet
+              {filteringT("saveSearch")}
             </button>
             {currentView !== "map" && (
               <button
@@ -622,7 +623,9 @@ export default function FilterList({
                 }}
                 className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-l border-[#F0F0F0]"
               >
-                <p className="text-sm text-gray-500 font-semibold">Sırala</p>
+                <p className="text-sm text-gray-500 font-semibold">
+                  {filteringT("sort")}
+                </p>
               </button>
             )}
 
@@ -667,7 +670,9 @@ export default function FilterList({
                             <div className="w-[10px] h-[10px] rounded-full bg-[#362C75]"></div>
                           )}
                         </div>
-                        <p className="text-sm">Önce en düşük fiyat</p>
+                        <p className="text-sm">
+                          {filteringT("sortOptions.lowestPrice")}
+                        </p>
                       </div>
                       <div
                         className={`px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold rounded-2xl flex items-center gap-2 outline ${
@@ -682,7 +687,9 @@ export default function FilterList({
                             <div className="w-[10px] h-[10px] rounded-full bg-[#362C75]"></div>
                           )}
                         </div>
-                        <p className="text-sm">Önce en yüksek fiyat</p>
+                        <p className="text-sm">
+                          {filteringT("sortOptions.highestPrice")}
+                        </p>
                       </div>
                       <div
                         className={`px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold rounded-2xl flex items-center gap-2 outline ${
@@ -697,7 +704,9 @@ export default function FilterList({
                             <div className="w-[10px] h-[10px] rounded-full bg-[#362C75]"></div>
                           )}
                         </div>
-                        <p className="text-sm">Önce en yeni ilan</p>
+                        <p className="text-sm">
+                          {filteringT("sortOptions.newest")}
+                        </p>
                       </div>
                       {/* <div
                   className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
@@ -714,7 +723,7 @@ export default function FilterList({
                       className={`mb-[16px] h-[54px] justify-center w-full inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer bg-[#5E5691] border-[0.5px] border-[#362C75] text-[#fcfcfc]`}
                       onClick={handleSortSelection}
                     >
-                      Sırala
+                      {filteringT("sort")}
                     </button>
                   </div>
                 </div>
@@ -745,7 +754,7 @@ export default function FilterList({
                 <>
                   <div className="flex justify-between items-start p-4">
                     <h2 className="text-2xl font-bold text-[#262626]">
-                      Kaydedildi!
+                      {filteringT("saved")}
                     </h2>
                     <button
                       onClick={() => {
@@ -765,11 +774,10 @@ export default function FilterList({
 
                   <div className="p-4 space-y-2">
                     <h2 className="text-[#262626] font-kumbh font-bold text-base leading-[140%] tracking-[0%] align-start">
-                      Arama filtreleriniz başarılı bir şekilde kaydedildi.
+                      {filteringT("saveSuccess.title")}
                     </h2>
                     <p className="text-[#595959] font-kumbh font-medium text-base leading-[140%] tracking-[0%] align-start">
-                      Artık profilinizden kayıtlı aramalarınıza ulaşabilir,
-                      dilerseniz bildirim ayarlarını değiştirebilirsiniz.
+                      {filteringT("saveSuccess.description")}
                     </p>
 
                     <button
@@ -784,7 +792,7 @@ export default function FilterList({
                         backgroundColor: "#5E5691",
                       }}
                     >
-                      Kapat
+                      {filteringT("close")}
                     </button>
                   </div>
                 </>
@@ -793,7 +801,7 @@ export default function FilterList({
                   <div className="sticky top-0 bg-white z-10 px-4 py-[22px] rounded-t-[24px] relative">
                     <div className="flex items-center justify-between">
                       <h2 className="md:text-lg text-2xl font-bold text-[#262626]">
-                        Aramayı Kaydet
+                        {filteringT("saveSearch")}
                       </h2>
                       <button
                         onClick={() => {

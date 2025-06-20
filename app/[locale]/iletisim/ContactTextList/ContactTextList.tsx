@@ -1,6 +1,9 @@
 import React from "react";
+import { useTranslations } from "next-intl";
 
 export default function ContactTextList() {
+  const t = useTranslations("contactPage");
+
   return (
     <div className=" px-6 py-12 md:py-16">
       <div className="max-w-7xl mx-auto">
@@ -8,7 +11,7 @@ export default function ContactTextList() {
           {/* Merkez Ofis */}
           <div className="text-center md:text-left">
             <h3 className="text-[#262626] text-2xl font-semibold mb-6">
-              Merkez Ofis
+              {t("centralOffice")}
             </h3>
             <div className="">
               <p className="text-[#262626] text-base">
@@ -19,7 +22,7 @@ export default function ContactTextList() {
                 href="#"
                 className="text-[#5E5691] text-base inline-block mt-3 hover:underline"
               >
-                Yol Tarifi Al
+                {t("getDirections")}
               </a>
             </div>
           </div>
@@ -27,7 +30,7 @@ export default function ContactTextList() {
           {/* İletişim Kanalları */}
           <div className="flex flex-col items-center ">
             <h3 className="text-[#262626] text-2xl font-semibold mb-6">
-              İletişim Kanalları
+              {t("contactChannels")}
             </h3>
             <div className="space-y-2">
               <p className="text-[#262626] text-base text-center">
@@ -45,7 +48,7 @@ export default function ContactTextList() {
           {/* Bizi Takip Edin */}
           <div className="text-center md:text-right">
             <h3 className="text-[#262626] text-2xl font-semibold mb-4 flex justify-center md:justify-end">
-              Bizi Takip Edin
+              {t("followUs")}
             </h3>
             <div className="flex flex-col items-center md:items-end">
               <span className="inline-flex items-center  rounded-full text-[#262626] text-base">

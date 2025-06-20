@@ -106,51 +106,51 @@ export default function MiddleSearchBox({
           {t("forRent")}
         </button>
       </div> */}
-      
-<div
-  className={`relative flex rounded-md bg-gray-100 p-1 h-[36px] items-center shrink-0 ${
-    isMobileMenu ? "w-full" : ""
-  }`}
->
-  {/* Sliding Background */}
-  <div
-    className={`absolute w-[calc(50%-4px)] bg-[#362C75] rounded-md transition-all duration-500 ease-in-out shadow-md h-[32px] ${
-      listingType === "For Sale" ? "translate-x-0" : "translate-x-full"
-    }`}
-  />
 
-  {/* For Sale Toggle Button */}
-  <button
-    className={`relative z-10 py-2 px-4 text-sm font-medium transition-all duration-500 ease-in-out cursor-pointer rounded-md flex-1 min-w-[60px] flex items-center justify-center ${
-      listingType === "For Sale" 
-        ? "text-white" 
-        : "text-gray-600 hover:text-gray-800"
-    }`}
-    onClick={() => setListingType("For Sale")}
-    aria-pressed={listingType === "For Sale"}
-    role="switch"
-  >
-    <span className="transition-all duration-200 ease-in-out relative z-10">
-      {t("forSale")}
-    </span>
-  </button>
-  
-  {/* For Rent Toggle Button */}
-  <button
-    className={`relative z-10 py-2 px-4 text-sm font-medium transition-all duration-500 ease-in-out cursor-pointer rounded-md flex-1 min-w-[60px] flex items-center justify-center ${
-      listingType === "For Rent" 
-        ? "text-white" 
-        : "text-gray-600 hover:text-gray-800"
-    }`}
-    onClick={() => setListingType("For Rent")}
-    aria-pressed={listingType === "For Rent"}
-    role="switch"
-  >
-    <span className="transition-all duration-200 ease-in-out relative z-10">
-      {t("forRent")}
-    </span>
-  </button>
-</div>
+      <div
+        className={`relative flex rounded-md bg-gray-100 p-1 h-[36px] items-center shrink-0 ${
+          isMobileMenu ? "w-full" : ""
+        }`}
+      >
+        {/* Sliding Background */}
+        <div
+          className={`absolute w-[calc(50%-4px)] bg-[#362C75] rounded-md transition-all duration-500 ease-in-out shadow-md h-[32px] ${
+            listingType === "For Sale" ? "translate-x-0" : "translate-x-full"
+          }`}
+        />
+
+        {/* For Sale Toggle Button */}
+        <button
+          className={`relative z-10 py-2 px-4 text-sm font-medium transition-all duration-500 ease-in-out cursor-pointer rounded-md flex-1 min-w-[90px] flex items-center justify-center ${
+            listingType === "For Sale"
+              ? "text-white"
+              : "text-gray-600 hover:text-gray-800"
+          }`}
+          onClick={() => setListingType("For Sale")}
+          aria-pressed={listingType === "For Sale"}
+          role="switch"
+        >
+          <span className="transition-all duration-200 ease-in-out relative z-10">
+            {t("forSale")}
+          </span>
+        </button>
+
+        {/* For Rent Toggle Button */}
+        <button
+          className={`relative z-10 py-2 px-4 text-sm font-medium transition-all duration-500 ease-in-out cursor-pointer rounded-md flex-1 min-w-[90px] flex items-center justify-center ${
+            listingType === "For Rent"
+              ? "text-white"
+              : "text-gray-600 hover:text-gray-800"
+          }`}
+          onClick={() => setListingType("For Rent")}
+          aria-pressed={listingType === "For Rent"}
+          role="switch"
+        >
+          <span className="transition-all duration-200 ease-in-out relative z-10">
+            {t("forRent")}
+          </span>
+        </button>
+      </div>
 
       {/* Konum */}
       <LocationSelect
@@ -176,7 +176,7 @@ export default function MiddleSearchBox({
       <div className="bg-[#D9D9D9] w-[1px] h-[24px] flex-shrink-0"></div>
 
       {/* Kategori */}
-      <div onClick={handleCategoryButtonClick} style={{ width: '100%' }}>
+      <div onClick={handleCategoryButtonClick} style={{ width: "100%" }}>
         <CategorySelect
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}

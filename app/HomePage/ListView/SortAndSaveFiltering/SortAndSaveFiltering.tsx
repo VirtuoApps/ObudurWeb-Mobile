@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface SortAndSaveFilteringProps {
   sortOption: "ascending" | "descending" | "newest" | "oldest" | null;
@@ -20,6 +21,7 @@ export default function SortAndSaveFiltering({
   isCurrentFilterExist,
 }: SortAndSaveFilteringProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const t = useTranslations("filtering");
 
   const handleSortSelection = (
     option: "ascending" | "descending" | "newest" | "oldest"
@@ -31,22 +33,22 @@ export default function SortAndSaveFiltering({
   const getSortDisplayText = () => {
     switch (sortOption) {
       case "ascending":
-        return "En Düşük Fiyat";
+        return t("sortOptions.lowestPrice");
       case "descending":
-        return "En Yüksek Fiyat";
+        return t("sortOptions.highestPrice");
       case "newest":
-        return "Önce En Yeni İlan";
+        return t("sortOptions.newest");
       case "oldest":
-        return "Önce En Eski İlan";
+        return t("sortOptions.oldest");
       default:
-        return "Sırala";
+        return t("sort");
     }
   };
 
   return (
     <div className=" justify-between items-center mb-8 px-5 hidden lg:flex">
       <p className="text-sm text-gray-800">
-        Arama kriterlerinize uygun <b>{totalHotelsCount}</b> adet ilan bulundu.
+        {t("resultsCount", { count: totalHotelsCount })}
       </p>
 
       <div className="flex flex-row items-center gap-2">
@@ -56,7 +58,7 @@ export default function SortAndSaveFiltering({
             className="border bg-transparent rounded-xl px-5 py-3 cursor-pointer"
           >
             <p className="text-sm text-[#5E5691] font-semibold">
-              Aramayı Kaydet
+              {t("saveSearch")}
             </p>
           </button>
         )}
@@ -84,25 +86,25 @@ export default function SortAndSaveFiltering({
                 className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
                 onClick={() => handleSortSelection("ascending")}
               >
-                <p className="text-sm">En Düşük Fiyat</p>
+                <p className="text-sm">{t("sortOptions.lowestPrice")}</p>
               </div>
               <div
                 className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
                 onClick={() => handleSortSelection("descending")}
               >
-                <p className="text-sm">En Yüksek Fiyat</p>
+                <p className="text-sm">{t("sortOptions.highestPrice")}</p>
               </div>
               <div
                 className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
                 onClick={() => handleSortSelection("newest")}
               >
-                <p className="text-sm">Önce En Yeni İlan</p>
+                <p className="text-sm">{t("sortOptions.newest")}</p>
               </div>
               <div
                 className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
                 onClick={() => handleSortSelection("oldest")}
               >
-                <p className="text-sm">Önce En Eski İlan</p>
+                <p className="text-sm">{t("sortOptions.oldest")}</p>
               </div>
             </div>
           )}

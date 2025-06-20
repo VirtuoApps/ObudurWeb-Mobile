@@ -4,6 +4,7 @@ import {
   ChevronDownIcon,
 } from "@heroicons/react/24/solid";
 import React from "react";
+import { useTranslations } from "next-intl";
 
 type GoBackButtonProps = {
   handleBack: () => void;
@@ -16,6 +17,7 @@ export default function GoBackButton({
   step,
   totalSteps,
 }: GoBackButtonProps) {
+  const t = useTranslations("adminCreation.step1");
   const handleBackWithScroll = () => {
     // Execute the original back handler
     handleBack();
@@ -43,7 +45,9 @@ export default function GoBackButton({
       >
         <ChevronLeftIcon className="h-5 w-5" />
       </button>
-      <span className="text-sm text-gray-600 ">Adım {step} / 6</span>
+      <span className="text-sm text-gray-600 ">
+        {t("stepCounter", { current: step, total: totalSteps })}
+      </span>
     </div>
   );
 }

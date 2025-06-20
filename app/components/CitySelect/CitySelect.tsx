@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import { useTranslations } from "next-intl";
 
 type CitySelectProps = {
   selectedCity: any | null;
@@ -109,6 +110,7 @@ export default function CitySelect({
   extraClassName = "",
 }: CitySelectProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const t = useTranslations("common");
   const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(true);
   const [filteredCities, setFilteredCities] = useState<City[]>([]);
@@ -184,7 +186,7 @@ export default function CitySelect({
                       type="text"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder="Şehir ara..."
+                      placeholder={t("citySearchPlaceholder")}
                       className="outline-none w-full bg-transparent"
                       onClick={(e) => e.stopPropagation()}
                       onKeyDown={(e) => {

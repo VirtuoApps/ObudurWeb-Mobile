@@ -91,7 +91,7 @@ export default function AccountForm({ user }: AccountFormProps) {
 
   const passwordSchema = z
     .object({
-      currentPassword: z.string().min(1, "Mevcut parola gerekli"),
+      currentPassword: z.string().min(1, t("currentPasswordRequiredError")),
       password: z.string().min(6, t("passwordLengthError")),
       confirmPassword: z.string(),
     })
@@ -191,13 +191,13 @@ export default function AccountForm({ user }: AccountFormProps) {
 
     // Validate file type
     if (!file.type.startsWith("image/")) {
-      alert("Lütfen geçerli bir resim dosyası seçin (JPG, PNG, GIF)");
+      alert(t("invalidImageFile"));
       return;
     }
 
     // Validate file size (5MB max)
     if (file.size > 5 * 1024 * 1024) {
-      alert("Dosya boyutu 5MB'den büyük olamaz");
+      alert(t("fileTooLarge"));
       return;
     }
 
@@ -242,7 +242,7 @@ export default function AccountForm({ user }: AccountFormProps) {
       }
     } catch (error) {
       console.error("Error uploading image:", error);
-      alert("Resim yüklenirken bir hata oluştu. Lütfen tekrar deneyin.");
+      alert(t("imageUploadError"));
     } finally {
       setImageUploadLoading(false);
       // Reset file input
@@ -340,7 +340,7 @@ export default function AccountForm({ user }: AccountFormProps) {
       <header className="flex lg:flex-row flex-col justify-between items-start">
         <div>
           <h1 className="text-2xl font-bold" style={{ color: "#262626" }}>
-            Profil Detayları
+            {t("pageTitle")}
           </h1>
         </div>
       </header>
@@ -363,7 +363,7 @@ export default function AccountForm({ user }: AccountFormProps) {
         <div className="w-20 h-20 rounded-lg bg-gray-200 overflow-hidden">
           <img
             src={currentProfilePicture || "/placeholder_picture.png"}
-            alt="Profil fotoğrafı"
+            alt={t("profilePhotoAlt")}
             className="w-full h-full object-cover"
           />
         </div>
@@ -380,7 +380,7 @@ export default function AccountForm({ user }: AccountFormProps) {
           className="h-[36px] px-5 rounded-lg text-[#FCFCFC] text-sm font-medium flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           style={{ backgroundColor: "#5E5691" }}
         >
-          {imageUploadLoading ? "Yükleniyor..." : "Yükle"}
+          {imageUploadLoading ? t("uploading") : t("upload")}
           <img src="/image-add.png" alt="upload-icon" className="w-[20px]" />
         </button>
         <div>
@@ -388,13 +388,13 @@ export default function AccountForm({ user }: AccountFormProps) {
             className="font-semibold text-center lg:text-left "
             style={{ color: "#262626" }}
           >
-            Profil fotoğrafı Yükle
+            {t("uploadProfilePhoto")}
           </h3>
           <p
             className="text-xs mt-1 text-center lg:text-left"
             style={{ color: "#595959" }}
           >
-            JPG, GIF veya PNG. Maksimum boyut 5MB
+            {t("imageUploadHint")}
           </p>
         </div>
       </div>
@@ -404,7 +404,7 @@ export default function AccountForm({ user }: AccountFormProps) {
         {/* Profile Information Form */}
         <div className="bg-white rounded-xl p-6">
           <h2 className="text-2xl  mb-6 text-[#262626] font-bold">
-            Profil Bilgileriniz
+            {t("profileInfoTitle")}
           </h2>
           <form
             onSubmit={handleSubmitPersonalInfo(onSubmitPersonalInfo)}
@@ -413,11 +413,11 @@ export default function AccountForm({ user }: AccountFormProps) {
             <div className="flex gap-4 flex-row justify-between">
               <div className="w-1/2">
                 <label className="block text-sm font-semibold mb-2 text-[#262626]">
-                  İsim
+                  {t("firstNameLabel")}
                 </label>
                 <input
                   type="text"
-                  placeholder="Alfred"
+                  placeholder={t("firstNamePlaceholder")}
                   {...registerPersonalInfo("firstName")}
                   className="w-full h-[56px] px-3 rounded-2xl border border-[#D9D9D9] text-sm outline-none  transition-colors text-[#262626]"
                   style={{
@@ -439,11 +439,11 @@ export default function AccountForm({ user }: AccountFormProps) {
                   className="block text-sm font-semibold mb-2"
                   style={{ color: "#1E1E1E" }}
                 >
-                  Soyisim
+                  {t("lastNameLabel")}
                 </label>
                 <input
                   type="text"
-                  placeholder="Pennyworth"
+                  placeholder={t("lastNamePlaceholder")}
                   {...registerPersonalInfo("lastName")}
                   className="w-full h-[56px] px-3 rounded-2xl border border-[#D9D9D9] text-sm outline-none  transition-colors text-[#262626]"
                   style={{
@@ -466,7 +466,7 @@ export default function AccountForm({ user }: AccountFormProps) {
                 className="block text-sm font-semibold mb-2"
                 style={{ color: "#1E1E1E" }}
               >
-                Telefon
+                {t("phoneLabel")}
               </label>
               <div className="flex gap-2">
                 <GeneralSelect
@@ -480,7 +480,7 @@ export default function AccountForm({ user }: AccountFormProps) {
                 />
                 <input
                   type="tel"
-                  placeholder="123 456 78 90"
+                  placeholder={t("phonePlaceholder")}
                   value={phoneNumberOnly}
                   onChange={(e) => {
                     // Only allow numbers and spaces
@@ -516,11 +516,11 @@ export default function AccountForm({ user }: AccountFormProps) {
                 className="block text-sm font-semibold mb-2"
                 style={{ color: "#1E1E1E" }}
               >
-                E-Posta Adresi
+                {t("emailLabel")}
               </label>
               <input
                 type="email"
-                placeholder="alfred.pennyworth@gmail.com"
+                placeholder={t("emailPlaceholder")}
                 {...registerPersonalInfo("email")}
                 className="w-full h-[56px] px-3 rounded-2xl border border-[#D9D9D9] text-sm outline-none  transition-colors text-[#262626]"
                 style={{
@@ -540,14 +540,14 @@ export default function AccountForm({ user }: AccountFormProps) {
                 className="block text-sm font-semibold mb-2"
                 style={{ color: "#1E1E1E" }}
               >
-                Emlak Ofisi
+                {t("estateAgencyLabel")}
                 <span className="text-sm text-[#595959] ml-2 font-light">
-                  Opsiyonel
+                  {t("optional")}
                 </span>
               </label>
               <input
                 type="text"
-                placeholder="Gotham Yatırım"
+                placeholder={t("estateAgencyPlaceholder")}
                 {...registerPersonalInfo("estateAgency")}
                 className="w-full h-[56px] px-3 rounded-2xl border border-[#D9D9D9] text-sm outline-none  transition-colors text-[#262626]"
                 style={{
@@ -577,8 +577,8 @@ export default function AccountForm({ user }: AccountFormProps) {
                 }}
               >
                 {profileUpdateLoading
-                  ? "Güncelleniyor..."
-                  : "Bilgilerimi Güncelle"}
+                  ? t("updatingButton")
+                  : t("updateProfileButton")}
               </button>
             </div>
           </form>
@@ -590,7 +590,7 @@ export default function AccountForm({ user }: AccountFormProps) {
             className="text-lg font-semibold mb-6"
             style={{ color: "#1E1E1E" }}
           >
-            Parola
+            {t("passwordTitle")}
           </h2>
           <form
             onSubmit={handleSubmitPassword(onSubmitPassword)}
@@ -601,11 +601,11 @@ export default function AccountForm({ user }: AccountFormProps) {
                 className="block text-sm font-semibold mb-2"
                 style={{ color: "#1E1E1E" }}
               >
-                Mevcut Parola
+                {t("currentPasswordLabel")}
               </label>
               <input
                 type="password"
-                placeholder="Buraya yazın"
+                placeholder={t("textPlaceholder")}
                 {...registerPassword("currentPassword")}
                 className="w-full h-[56px] px-3 rounded-2xl border border-[#D9D9D9] text-sm outline-none  transition-colors text-[#262626]"
                 style={{
@@ -627,11 +627,11 @@ export default function AccountForm({ user }: AccountFormProps) {
                 className="block text-sm font-semibold mb-2"
                 style={{ color: "#1E1E1E" }}
               >
-                Yeni Parola
+                {t("newPasswordLabel")}
               </label>
               <input
                 type="password"
-                placeholder="Buraya yazın"
+                placeholder={t("textPlaceholder")}
                 {...registerPassword("password")}
                 className="w-full h-[56px] px-3 rounded-2xl border border-[#D9D9D9] text-sm outline-none  transition-colors text-[#262626]"
                 style={{
@@ -651,11 +651,11 @@ export default function AccountForm({ user }: AccountFormProps) {
                 className="block text-sm font-semibold mb-2"
                 style={{ color: "#1E1E1E" }}
               >
-                Yeni Parola Tekrar
+                {t("confirmNewPasswordLabel")}
               </label>
               <input
                 type="password"
-                placeholder="Buraya yazın"
+                placeholder={t("textPlaceholder")}
                 {...registerPassword("confirmPassword")}
                 className="w-full h-[56px] px-3 rounded-2xl border border-[#D9D9D9] text-sm outline-none  transition-colors text-[#262626]"
                 style={{
@@ -689,8 +689,8 @@ export default function AccountForm({ user }: AccountFormProps) {
                 }}
               >
                 {passwordUpdateLoading
-                  ? "Güncelleniyor..."
-                  : "Parolamı Güncelle"}
+                  ? t("updatingButton")
+                  : t("updatePasswordButton")}
               </button>
             </div>
 
@@ -702,7 +702,7 @@ export default function AccountForm({ user }: AccountFormProps) {
                   className="h-[56px] px-4 rounded-2xl bg-white border border-gray-300 text-sm lg:text-base font-medium hover:border-gray-400 transition-colors cursor-pointer"
                   style={{ color: "#262626" }}
                 >
-                  Hesabı Sil
+                  {t("deleteAccountButton")}
                 </button>
                 <button
                   onClick={handleLogout}
@@ -714,7 +714,7 @@ export default function AccountForm({ user }: AccountFormProps) {
                     alt="logout-icon"
                     className="w-[18px]"
                   />
-                  Çıkış Yap
+                  {t("logoutButton")}
                 </button>
               </div>
             </div>

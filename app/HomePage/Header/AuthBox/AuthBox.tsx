@@ -84,6 +84,7 @@ export default function AuthBox({
   setDisableMapListButton?: (isOpen: boolean) => void;
 }) {
   const t = useTranslations("header");
+  const t_authBox = useTranslations("authBox");
   const [isOpen, setIsOpen] = useState(false);
   const [authState, setAuthState] = useState("login");
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -194,7 +195,7 @@ export default function AuthBox({
 
                   router.push("/admin/ilan-olustur");
                 }}
-                className="hidden lg:block rounded-lg px-2 py-3 transition-all duration-300 hover:bg-gray-50 text-[#5E5691] cursor-pointer font-medium text-[14px] w-[82px] h-[48px]"
+                className="hidden lg:block rounded-lg px-2 py-3 transition-all duration-300 hover:bg-gray-50 text-[#5E5691] cursor-pointer font-medium text-[14px] w-[92px] h-[48px]"
               >
                 <p className="">{t("postListing")}</p>
               </button>
@@ -272,7 +273,7 @@ export default function AuthBox({
                     src="/user-profile-settings-2.png"
                     className="w-[24px] h-[24px] lg:w-[20px] lg:h-[20px] mr-3 lg:mr-2 "
                   />
-                  Profil Detayları
+                  {t_authBox("profileDetails")}
                 </div>
                 <svg
                   width="24"
@@ -322,7 +323,7 @@ export default function AuthBox({
                     src="/favourite.png"
                     className="w-[24px] h-[24px] lg:w-[20px] lg:h-[20px] mr-3 lg:mr-2"
                   />
-                  İlanlarım
+                  {t_authBox("myListings")}
                 </div>
                 <svg
                   width="24"
@@ -354,7 +355,7 @@ export default function AuthBox({
                     src="/heart.png"
                     className="w-[24px] h-[24px] lg:w-[20px] lg:h-[20px] mr-3 lg:mr-2"
                   />
-                  Favori ilanlar
+                  {t_authBox("favoriteListings")}
                 </div>
                 <svg
                   width="24"
@@ -386,7 +387,7 @@ export default function AuthBox({
                     src="/search-02.png"
                     className="w-[24px] h-[24px] lg:w-[20px] lg:h-[20px] mr-3 lg:mr-2"
                   />
-                  Favori aramalar
+                  {t_authBox("favoriteSearches")}
                 </div>
                 <svg
                   width="24"
@@ -428,7 +429,7 @@ export default function AuthBox({
                     <line x1="2" y1="12" x2="22" y2="12"></line>
                     <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
                   </svg>
-                  Dil & Para Birimi
+                  {t_authBox("languageAndCurrency")}
                 </div>
                 <svg
                   width="24"
@@ -458,7 +459,7 @@ export default function AuthBox({
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
                 <div className="flex flex-row items-center font-medium lg:font-normal">
-                  İletişim
+                  {t_authBox("contact")}
                 </div>
                 <svg
                   width="24"
@@ -486,7 +487,7 @@ export default function AuthBox({
                 className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
               >
                 <div className="flex flex-row items-center font-medium lg:font-normal">
-                  Gayrimenkul Ofislerimiz
+                  {t_authBox("ourRealEstateOffices")}
                 </div>
                 <svg
                   width="24"
@@ -514,7 +515,7 @@ export default function AuthBox({
                   target="_blank"
                   className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#595959] hover:bg-gray-100 flex flex-row items-center justify-between"
                 >
-                  <span>Admin Paneli</span>
+                  <span>{t_authBox("adminPanel")}</span>
                   <svg
                     width="24"
                     height="24"
@@ -543,14 +544,14 @@ export default function AuthBox({
                 }}
                 className="px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] font-[500] text-[#595959] hover:bg-gray-100 flex flex-row items-center"
               >
-                Geri Bildirim
+                {t_authBox("feedback")}
               </Link>
 
               <Link
                 href="/sozlesmeler?id=sozlesmeler&itemId=bireysel"
                 className="px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] font-[500] text-[#595959] hover:bg-gray-100 flex flex-row items-center"
               >
-                Kullanıcı Sözleşmeleri
+                {t_authBox("userAgreements")}
               </Link>
 
               <div className="border-b border-gray-100 my-3 lg:my-2"></div>
@@ -559,7 +560,7 @@ export default function AuthBox({
                 onClick={handleLogout}
                 className="block w-full text-left px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] text-[#EF1A28] hover:bg-gray-100 cursor-pointer flex flex-row items-center justify-between mb-4"
               >
-                <span>Çıkış Yap</span>
+                <span>{t_authBox("logout")}</span>
               </button>
             </div>
           )}
@@ -603,7 +604,7 @@ export default function AuthBox({
             <div className="lg:hidden px-4 pb-6 flex flex-row items-center justify-between mt-5">
               <div>
                 <p className="text-[#362C75] text-[24px] font-bold">
-                  Hoş Geldiniz!
+                  {t_authBox("welcomeGreeting")}
                 </p>
               </div>
 
@@ -618,7 +619,7 @@ export default function AuthBox({
             {/* Desktop Header */}
             <div className="hidden lg:flex px-4 mt-4 flex-col gap-2">
               <p className="text-[#362C75] text-[16px] font-bold leading-[14px]">
-                Hoş Geldiniz!
+                {t_authBox("welcomeGreeting")}
               </p>
             </div>
 
@@ -632,7 +633,9 @@ export default function AuthBox({
               }}
               className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between text-left"
             >
-              <span className="font-medium lg:font-normal">Giriş Yap</span>
+              <span className="font-medium lg:font-normal">
+                {t_authBox("login")}
+              </span>
               <svg
                 width="24"
                 height="24"
@@ -659,7 +662,9 @@ export default function AuthBox({
               }}
               className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between text-left"
             >
-              <span className="font-medium lg:font-normal">Üye Ol</span>
+              <span className="font-medium lg:font-normal">
+                {t_authBox("signUp")}
+              </span>
               <svg
                 width="24"
                 height="24"
@@ -691,7 +696,9 @@ export default function AuthBox({
               }}
               className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between cursor-pointer"
             >
-              <span className="font-medium lg:font-normal">İlan Ver</span>
+              <span className="font-medium lg:font-normal">
+                {t("postListing")}
+              </span>
               <svg
                 width="24"
                 height="24"
@@ -720,7 +727,9 @@ export default function AuthBox({
               onClick={() => setGuestDropdownOpen(false)}
               className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
             >
-              <span className="font-medium lg:font-normal">İletişim</span>
+              <span className="font-medium lg:font-normal">
+                {t_authBox("contact")}
+              </span>
               <svg
                 width="24"
                 height="24"
@@ -745,7 +754,7 @@ export default function AuthBox({
               className="px-4 py-4 lg:py-2 text-[16px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between"
             >
               <span className="font-medium lg:font-normal">
-                Gayrimenkul Ofislerimiz
+                {t_authBox("ourRealEstateOffices")}
               </span>
               <svg
                 width="24"
@@ -775,7 +784,7 @@ export default function AuthBox({
               onClick={() => setGuestDropdownOpen(false)}
               className="px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center"
             >
-              Geri Bildirim
+              {t_authBox("feedback")}
             </Link>
 
             <Link
@@ -783,7 +792,7 @@ export default function AuthBox({
               onClick={() => setGuestDropdownOpen(false)}
               className="px-4 py-4 lg:py-2 text-[14px] lg:text-[14px] text-[#262626] hover:bg-gray-100 flex flex-row items-center mb-4"
             >
-              Kullanıcı Sözleşmeleri
+              {t_authBox("userAgreements")}
             </Link>
           </div>
         )}
