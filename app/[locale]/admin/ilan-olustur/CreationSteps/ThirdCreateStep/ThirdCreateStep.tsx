@@ -7,12 +7,12 @@ import {
 import { GetCity, GetCountries, GetState } from "react-country-state-city";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 
 import GeneralSelect from "../../../../../components/GeneralSelect/GeneralSelect";
 import GoBackButton from "../../GoBackButton/GoBackButton";
 import { useGoogleMaps } from "../../../../../contexts/GoogleMapsContext";
 import { useListingForm } from "../CreationSteps";
-import { useLocale } from "next-intl";
 
 interface PlaceSuggestion {
   description: string;
@@ -21,6 +21,8 @@ interface PlaceSuggestion {
 
 export default function ThirdCreateStep() {
   const locale = useLocale();
+  const t = useTranslations("adminCreation.step3");
+  const tCommon = useTranslations("common");
   const [errors, setErrors] = useState<string[]>([]);
   const [errorFields, setErrorFields] = useState<Set<string>>(new Set());
   const formPanelRef = useRef<HTMLDivElement>(null);
@@ -701,27 +703,27 @@ export default function ThirdCreateStep() {
     const newErrorFields = new Set<string>();
 
     if (!country || !country.tr || !country.en) {
-      newErrors.push("Lütfen ülke bilgisini girin");
+      newErrors.push(t("validation.countryRequired"));
       newErrorFields.add("country");
     }
 
     if (!city || !city.tr || !city.en) {
-      newErrors.push("Lütfen ilçe bilgisini girin");
+      newErrors.push(t("validation.districtRequired"));
       newErrorFields.add("city");
     }
 
     if (!state || !state.tr || !state.en) {
-      newErrors.push("Lütfen şehir bilgisini girin");
+      newErrors.push(t("validation.provinceRequired"));
       newErrorFields.add("state");
     }
 
     if (!neighborhood || !neighborhood.tr || !neighborhood.en) {
-      newErrors.push("Lütfen mahalle bilgisini girin");
+      newErrors.push(t("validation.neighborhoodRequired"));
       newErrorFields.add("neighborhood");
     }
 
     if (!street || !street.tr || !street.en) {
-      newErrors.push("Lütfen sokak bilgisini girin");
+      newErrors.push(t("validation.streetRequired"));
       newErrorFields.add("street");
     }
 
@@ -729,28 +731,28 @@ export default function ThirdCreateStep() {
     if (entranceType?.tr === "Arsa") {
       // For land, require adaNo and parselNo
       if (!adaNo) {
-        newErrors.push("Lütfen ada numarasını girin");
+        newErrors.push(t("validation.adaNoRequired"));
         newErrorFields.add("adaNo");
       }
       if (!parselNo) {
-        newErrors.push("Lütfen parsel numarasını girin");
+        newErrors.push(t("validation.parselNoRequired"));
         newErrorFields.add("parselNo");
       }
     } else {
       // For other types, require buildingNo and postalCode
       if (!buildingNo) {
-        newErrors.push("Lütfen bina numarasını girin");
+        newErrors.push(t("validation.buildingNoRequired"));
         newErrorFields.add("buildingNo");
       }
 
       if (!postalCode) {
-        newErrors.push("Lütfen posta kodunu girin");
+        newErrors.push(t("validation.postalCodeRequired"));
         newErrorFields.add("postalCode");
       }
     }
 
     if (!coordinates || coordinates.length !== 2) {
-      newErrors.push("Lütfen haritadan konum seçin");
+      newErrors.push(t("validation.coordinatesRequired"));
       newErrorFields.add("coordinates");
     }
 
@@ -823,15 +825,10 @@ export default function ThirdCreateStep() {
           {/* Left Info Panel */}
           <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 flex flex-col">
             <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
-              İlanın konumunu belirtin.
+              {t("title")}
             </h1>
             <div className="mt-4 text-base text-[#595959] font-medium">
-              <p className="leading-[140%]">
-                Bu adımda, mülkünüzün adres bilgilerini ve harita üzerindeki
-                konumunu doğru bir şekilde işaretleyin. Konum bilgisi,
-                potansiyel alıcılar ve kiracılar için en önemli kriterlerden
-                biridir.
-              </p>
+              <p className="leading-[140%]">{t("description")}</p>
             </div>
           </div>
 
@@ -852,7 +849,7 @@ export default function ThirdCreateStep() {
                   </div>
                   <div className="ml-3">
                     <h3 className="text-sm font-medium text-red-800">
-                      Lütfen aşağıdaki hataları düzeltin:
+                      {t("fixErrors")}
                     </h3>
                     <div className="mt-2 text-sm text-red-700">
                       <ul className="list-disc pl-5 space-y-1">
@@ -867,11 +864,10 @@ export default function ThirdCreateStep() {
             )}
 
             <label className="font-semibold block mb-2 text-[#262626]">
-              Haritada Konum Seçin
+              {t("mapLocationSelect")}
             </label>
             <p className="text-sm text-gray-500 mb-2">
-              Konumu bulmak için arama yapabilir veya harita üzerinde tıklayarak
-              tam konumu belirleyebilirsiniz.
+              {t("mapLocationDescription")}
             </p>
 
             {/* Search Input with Autocomplete */}
@@ -880,9 +876,7 @@ export default function ThirdCreateStep() {
                 <div className="relative flex-grow" ref={searchInputRef}>
                   <input
                     type="text"
-                    placeholder={useTranslations("common")(
-                      "addressSearchPlaceholder"
-                    )}
+                    placeholder={tCommon("addressSearchPlaceholder")}
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                     className="w-full h-12 pl-10 pr-4 rounded-lg border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
@@ -929,15 +923,13 @@ export default function ThirdCreateStep() {
                   htmlFor="country"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  {locale === "tr" ? "Ülke" : "Country"}
+                  {t("country")}
                 </label>
                 <GeneralSelect
                   selectedItem={getSelectedCountry()}
                   onSelect={handleCountrySelect}
                   options={countriesList}
-                  defaultText={
-                    locale === "en" ? "Select Country" : "Ülke Seçin"
-                  }
+                  defaultText={t("selectCountry")}
                   extraClassName={`w-full h-12 border ${
                     errorFields.has("country")
                       ? "border-[#EF1A28]"
@@ -954,15 +946,13 @@ export default function ThirdCreateStep() {
                   htmlFor="state"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  {locale === "tr" ? "Şehir" : "Province"}
+                  {t("province")}
                 </label>
                 <GeneralSelect
                   selectedItem={getSelectedState()}
                   onSelect={handleStateSelect}
                   options={statesList}
-                  defaultText={
-                    locale === "en" ? "Select Province" : "Şehir Seçin"
-                  }
+                  defaultText={t("selectProvince")}
                   extraClassName={`w-full h-12 border ${
                     errorFields.has("state")
                       ? "border-[#EF1A28]"
@@ -982,15 +972,13 @@ export default function ThirdCreateStep() {
                   htmlFor="city"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  {locale === "tr" ? "İlçe" : "District"}
+                  {t("district")}
                 </label>
                 <GeneralSelect
                   selectedItem={getSelectedCity()}
                   onSelect={handleCitySelect}
                   options={citiesList}
-                  defaultText={
-                    locale === "en" ? "Select District" : "İlçe Seçin"
-                  }
+                  defaultText={t("selectDistrict")}
                   extraClassName={`w-full h-12 border ${
                     errorFields.has("city")
                       ? "border-[#EF1A28]"
@@ -1007,7 +995,7 @@ export default function ThirdCreateStep() {
                   htmlFor="neighborhood"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  {locale === "tr" ? "Mahalle" : "Neighborhood"}
+                  {t("neighborhood")}
                 </label>
                 <input
                   type="text"
@@ -1017,7 +1005,7 @@ export default function ThirdCreateStep() {
                   className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
                     "neighborhood"
                   )}`}
-                  placeholder={locale === "en" ? "Neighborhood" : "Mahalle"}
+                  placeholder={t("neighborhood")}
                 />
               </div>
 
@@ -1026,7 +1014,7 @@ export default function ThirdCreateStep() {
                   htmlFor="street"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  {locale === "tr" ? "Sokak" : "Street"}
+                  {t("street")}
                 </label>
                 <input
                   type="text"
@@ -1036,7 +1024,7 @@ export default function ThirdCreateStep() {
                   className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
                     "street"
                   )}`}
-                  placeholder={locale === "en" ? "Street" : "Sokak"}
+                  placeholder={t("street")}
                 />
               </div>
             </div>
@@ -1049,7 +1037,7 @@ export default function ThirdCreateStep() {
                     htmlFor="adaNo"
                     className="font-semibold block mb-2 text-[#262626]"
                   >
-                    Ada No
+                    {t("adaNo")}
                   </label>
                   <input
                     type="text"
@@ -1059,7 +1047,7 @@ export default function ThirdCreateStep() {
                     className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
                       "adaNo"
                     )}`}
-                    placeholder="Ada No"
+                    placeholder={t("adaNo")}
                   />
                 </div>
                 <div className="w-full sm:w-1/2">
@@ -1067,7 +1055,7 @@ export default function ThirdCreateStep() {
                     htmlFor="parselNo"
                     className="font-semibold block mb-2 text-[#262626]"
                   >
-                    Parsel No
+                    {t("parselNo")}
                   </label>
                   <input
                     type="text"
@@ -1077,7 +1065,7 @@ export default function ThirdCreateStep() {
                     className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
                       "parselNo"
                     )}`}
-                    placeholder="Parsel No"
+                    placeholder={t("parselNo")}
                   />
                 </div>
               </div>
@@ -1088,7 +1076,7 @@ export default function ThirdCreateStep() {
                     htmlFor="buildingNo"
                     className="font-semibold block mb-2 text-[#262626]"
                   >
-                    Bina No
+                    {t("buildingNo")}
                   </label>
                   <input
                     type="text"
@@ -1098,7 +1086,7 @@ export default function ThirdCreateStep() {
                     className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
                       "buildingNo"
                     )}`}
-                    placeholder="Bina No"
+                    placeholder={t("buildingNo")}
                   />
                 </div>
                 <div className="w-full sm:w-1/3">
@@ -1106,7 +1094,7 @@ export default function ThirdCreateStep() {
                     htmlFor="apartmentNo"
                     className="font-semibold block mb-2 text-[#262626]"
                   >
-                    Daire No
+                    {t("apartmentNo")}
                   </label>
                   <input
                     type="text"
@@ -1114,7 +1102,7 @@ export default function ThirdCreateStep() {
                     value={apartmentNo}
                     onChange={(e) => setApartmentNo(e.target.value)}
                     className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                    placeholder="Daire No (opsiyonel)"
+                    placeholder={t("apartmentNoPlaceholder")}
                   />
                 </div>
                 <div className="w-full sm:w-1/3">
@@ -1122,7 +1110,7 @@ export default function ThirdCreateStep() {
                     htmlFor="postalCode"
                     className="font-semibold block mb-2 text-[#262626]"
                   >
-                    Posta Kodu
+                    {t("postalCode")}
                   </label>
                   <input
                     type="text"
@@ -1132,7 +1120,7 @@ export default function ThirdCreateStep() {
                     className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
                       "postalCode"
                     )}`}
-                    placeholder="Posta Kodu"
+                    placeholder={t("postalCode")}
                   />
                 </div>
               </div>
@@ -1200,18 +1188,18 @@ export default function ThirdCreateStep() {
 
                   <div className="mt-2 text-sm grid grid-cols-2 gap-4">
                     <div>
-                      <span className="font-medium">Enlem:</span>{" "}
+                      <span className="font-medium">{t("latitude")}</span>{" "}
                       {coordinates[1].toFixed(6)}
                     </div>
                     <div>
-                      <span className="font-medium">Boylam:</span>{" "}
+                      <span className="font-medium">{t("longitude")}</span>{" "}
                       {coordinates[0].toFixed(6)}
                     </div>
                   </div>
                 </div>
               </div>
             ) : (
-              <div>Loading Map...</div>
+              <div>{t("loadingMap")}</div>
             )}
           </div>
         </div>
@@ -1222,7 +1210,7 @@ export default function ThirdCreateStep() {
             onClick={handleContinue}
             className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
           >
-            Devam Et
+            {t("continue")}
             <ChevronRightIcon className="h-5 w-5" />
           </button>
         </div>

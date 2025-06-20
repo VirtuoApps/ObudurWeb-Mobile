@@ -880,6 +880,127 @@
       "fileUploaded": "Dosya yüklendi",
       "creationError": "İlan oluşturma hatası:",
       "fixErrors": "Lütfen aşağıdaki hataları düzeltin:"
+    },
+    "step2_land": {
+      "title": "Arsa özelliklerini belirtin.",
+      "description": "Bu adımda, arsanın temel özelliklerini, fiyatını ve imar durumu gibi diğer önemli detayları girebilirsiniz. Bu bilgilerin doğruluğu, potansiyel alıcıların ilgisini çekmek için kritiktir.",
+      "fixErrors": "Lütfen aşağıdaki hataları düzeltin:",
+      "priceTRY": "Fiyat (TRY)",
+      "priceUSD": "Fiyat (USD)",
+      "pricePlaceholder": "Fiyat yazın",
+      "area": "Metrekare",
+      "areaPlaceholder": "m²",
+      "creditEligible": "Krediye Uygunluk",
+      "source": "Kimden",
+      "zoningStatus": "İmar Durumu",
+      "deedStatus": "Tapu Durumu",
+      "generalFeatures": "Genel Özellikler",
+      "exchangeable": "Takaslı",
+      "continue": "Devam Et",
+      "selectPlaceholder": "Seçiniz",
+      "validation": {
+        "priceUSD": "Lütfen USD para biriminde fiyat belirtin",
+        "priceTRY": "Lütfen TRY para biriminde fiyat belirtin",
+        "area": "Lütfen metrekare değerini girin",
+        "generalFeatures": "Lütfen genel özellikleri seçin",
+        "creditEligible": "Lütfen krediye uygunluk durumunu seçin",
+        "source": "Lütfen kimden bilgisini seçin",
+        "zoningStatus": "Lütfen imar durumunu seçin",
+        "deedStatus": "Lütfen tapu durumunu seçin"
+      },
+      "options": {
+        "generalFeaturesOptions": {
+          "partitioned": "İfrazlı",
+          "parceled": "Parselli",
+          "withProject": "Projeli",
+          "cornerParcel": "Köşe Parsel"
+        },
+        "creditEligibleOptions": {
+          "true": "Evet",
+          "false": "Hayır"
+        },
+        "sourceOptions": {
+          "fromOwner": "Sahibinden",
+          "fromRealEstate": "Emlak Ofisinden"
+        },
+        "zoningStatusOptions": {
+          "island": "Ada",
+          "a-legend": "A-Lejantlı",
+          "land": "Arazi",
+          "vineyard-garden": "Bağ & Bahçe",
+          "warehouse-depot": "Depo & Antrepo",
+          "education": "Eğitim",
+          "energy-storage": "Enerji Depolama",
+          "residential": "Konut",
+          "miscellaneous": "Muhtelif",
+          "private-use": "Özel Kullanım",
+          "health": "Sağlık",
+          "industrial": "Sanayi",
+          "greenhouse": "Sera",
+          "protected-area": "Sit Alanı",
+          "sports-area": "Spor Alanı",
+          "field": "Tarla",
+          "field-vineyard": "Tarla + Bağ",
+          "commercial": "Ticari",
+          "commercial-residential": "Ticari + Konut",
+          "mass-housing": "Toplu Konut",
+          "tourism": "Turizm",
+          "tourism-residential": "Turizm + Konut",
+          "tourism-commercial": "Turizm + Ticari",
+          "villa": "Villa",
+          "olive-grove": "Zeytinlik"
+        },
+        "deedStatusOptions": {
+          "shared-title": "Hisseli Tapu",
+          "independent-title": "Müstakil Tapulu",
+          "allocation-deed": "Tahsis Tapu",
+          "possession-deed": "Zilliyet Tapu",
+          "cooperative-share": "Kooperatif Hisseli Tapu",
+          "foreign-title": "Yurt Dışı Tapulu",
+          "no-deed": "Tapu Kaydı Yok"
+        },
+        "booleans": {
+          "true": "Evet",
+          "false": "Hayır"
+        }
+      }
+    },
+    "step3": {
+      "title": "İlanın konumunu belirtin.",
+      "description": "Bu adımda, mülkünüzün adres bilgilerini ve harita üzerindeki konumunu doğru bir şekilde işaretleyin. Konum bilgisi, potansiyel alıcılar ve kiracılar için en önemli kriterlerden biridir.",
+      "fixErrors": "Lütfen aşağıdaki hataları düzeltin:",
+      "mapLocationSelect": "Haritada Konum Seçin",
+      "mapLocationDescription": "Konumu bulmak için arama yapabilir veya harita üzerinde tıklayarak tam konumu belirleyebilirsiniz.",
+      "country": "Ülke",
+      "selectCountry": "Ülke Seçin",
+      "province": "Şehir",
+      "selectProvince": "Şehir Seçin",
+      "district": "İlçe",
+      "selectDistrict": "İlçe Seçin",
+      "neighborhood": "Mahalle",
+      "street": "Sokak",
+      "adaNo": "Ada No",
+      "parselNo": "Parsel No",
+      "buildingNo": "Bina No",
+      "apartmentNo": "Daire No",
+      "apartmentNoPlaceholder": "Daire No (opsiyonel)",
+      "postalCode": "Posta Kodu",
+      "latitude": "Enlem:",
+      "longitude": "Boylam:",
+      "loadingMap": "Harita Yükleniyor...",
+      "continue": "Devam Et",
+      "validation": {
+        "countryRequired": "Lütfen ülke bilgisini girin",
+        "districtRequired": "Lütfen ilçe bilgisini girin",
+        "provinceRequired": "Lütfen şehir bilgisini girin",
+        "neighborhoodRequired": "Lütfen mahalle bilgisini girin",
+        "streetRequired": "Lütfen sokak bilgisini girin",
+        "adaNoRequired": "Lütfen ada numarasını girin",
+        "parselNoRequired": "Lütfen parsel numarasını girin",
+        "buildingNoRequired": "Lütfen bina numarasını girin",
+        "postalCodeRequired": "Lütfen posta kodunu girin",
+        "coordinatesRequired": "Lütfen haritadan konum seçin"
+      }
     }
   },
   "authBox": {

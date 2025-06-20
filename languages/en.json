@@ -3,7 +3,8 @@
     "loading": "Loading...",
     "loadingMap": "Loading map...",
     "noResultsFound": "No results found matching your filters.",
-    "clearFilters": "Clear Filters"
+    "clearFilters": "Clear Filters",
+    "addressSearchPlaceholder": "Search address..."
   },
   "header": {
     "title": "Obudur",
@@ -874,6 +875,127 @@
       "fileUploaded": "File uploaded",
       "creationError": "Listing creation error:",
       "fixErrors": "Please fix the following errors:"
+    },
+    "step2_land": {
+      "title": "Specify the properties of the land.",
+      "description": "In this step, you can enter the basic features, price, zoning status, and other important details of the land. The accuracy of this information is critical for attracting potential buyers.",
+      "fixErrors": "Please fix the following errors:",
+      "priceTRY": "Price (TRY)",
+      "priceUSD": "Price (USD)",
+      "pricePlaceholder": "Enter price",
+      "area": "Area (m²)",
+      "areaPlaceholder": "m²",
+      "creditEligible": "Credit Eligible",
+      "source": "From Whom",
+      "zoningStatus": "Zoning Status",
+      "deedStatus": "Deed Status",
+      "generalFeatures": "General Features",
+      "exchangeable": "Exchangeable",
+      "continue": "Continue",
+      "selectPlaceholder": "Select",
+      "validation": {
+        "priceUSD": "Please specify the price in USD",
+        "priceTRY": "Please specify the price in TRY",
+        "area": "Please enter the square meter value",
+        "generalFeatures": "Please select general features",
+        "creditEligible": "Please select credit eligibility",
+        "source": "Please select the source information",
+        "zoningStatus": "Please select the zoning status",
+        "deedStatus": "Please select the deed status"
+      },
+      "options": {
+        "generalFeaturesOptions": {
+          "partitioned": "Partitioned",
+          "parceled": "Parceled",
+          "withProject": "With Project",
+          "cornerParcel": "Corner Parcel"
+        },
+        "creditEligibleOptions": {
+          "true": "Yes",
+          "false": "No"
+        },
+        "sourceOptions": {
+          "fromOwner": "From Owner",
+          "fromRealEstate": "From Real Estate Office"
+        },
+        "zoningStatusOptions": {
+          "island": "Island",
+          "a-legend": "A-Legend",
+          "land": "Land",
+          "vineyard-garden": "Vineyard & Garden",
+          "warehouse-depot": "Warehouse & Depot",
+          "education": "Education",
+          "energy-storage": "Energy Storage",
+          "residential": "Residential",
+          "miscellaneous": "Miscellaneous",
+          "private-use": "Private Use",
+          "health": "Health",
+          "industrial": "Industry",
+          "greenhouse": "Greenhouse",
+          "protected-area": "Protected Area",
+          "sports-area": "Sports Area",
+          "field": "Field",
+          "field-vineyard": "Field + Vineyard",
+          "commercial": "Commercial",
+          "commercial-residential": "Commercial + Residential",
+          "mass-housing": "Mass Housing",
+          "tourism": "Tourism",
+          "tourism-residential": "Tourism + Residential",
+          "tourism-commercial": "Tourism + Commercial",
+          "villa": "Villa",
+          "olive-grove": "Olive Grove"
+        },
+        "deedStatusOptions": {
+          "shared-title": "Shared Title Deed",
+          "independent-title": "Independent Title Deed",
+          "allocation-deed": "Allocation Deed",
+          "possession-deed": "Possession Deed",
+          "cooperative-share": "Cooperative Share Title",
+          "foreign-title": "Foreign Title Deed",
+          "no-deed": "No Title Deed Record"
+        },
+        "booleans": {
+          "true": "Yes",
+          "false": "No"
+        }
+      }
+    },
+    "step3": {
+      "title": "Specify the location of the listing.",
+      "description": "In this step, accurately mark your property's address information and its location on the map. Location information is one of the most important criteria for potential buyers and tenants.",
+      "fixErrors": "Please correct the following errors:",
+      "mapLocationSelect": "Select Location on Map",
+      "mapLocationDescription": "You can search to find the location or click on the map to specify the exact location.",
+      "country": "Country",
+      "selectCountry": "Select Country",
+      "province": "Province",
+      "selectProvince": "Select Province",
+      "district": "District",
+      "selectDistrict": "Select District",
+      "neighborhood": "Neighborhood",
+      "street": "Street",
+      "adaNo": "Ada No",
+      "parselNo": "Parsel No",
+      "buildingNo": "Building No",
+      "apartmentNo": "Apartment No",
+      "apartmentNoPlaceholder": "Apartment No (optional)",
+      "postalCode": "Postal Code",
+      "latitude": "Latitude:",
+      "longitude": "Longitude:",
+      "loadingMap": "Loading Map...",
+      "continue": "Continue",
+      "validation": {
+        "countryRequired": "Please enter the country information",
+        "districtRequired": "Please enter the district information",
+        "provinceRequired": "Please enter the province information",
+        "neighborhoodRequired": "Please enter the neighborhood information",
+        "streetRequired": "Please enter the street information",
+        "adaNoRequired": "Please enter the ada number",
+        "parselNoRequired": "Please enter the parsel number",
+        "buildingNoRequired": "Please enter the building number",
+        "postalCodeRequired": "Please enter the postal code",
+        "coordinatesRequired": "Please select a location from the map"
+      }
     }
   },
   "authBox": {

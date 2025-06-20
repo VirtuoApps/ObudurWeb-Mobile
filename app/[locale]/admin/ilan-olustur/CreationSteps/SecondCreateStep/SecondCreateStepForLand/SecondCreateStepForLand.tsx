@@ -6,6 +6,7 @@ import {
 } from "@heroicons/react/24/solid";
 import React, { useEffect, useRef, useState } from "react";
 import { formatInputPrice, parseInputPrice } from "@/app/utils/priceFormatter";
+import { useTranslations, useLocale } from "next-intl";
 
 import GoBackButton from "../../../GoBackButton/GoBackButton";
 import { XCircleIcon } from "@heroicons/react/24/solid";
@@ -117,6 +118,9 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
 };
 
 export default function SecondCreateStepForLand() {
+  const t = useTranslations("adminCreation.step2_land");
+  const locale = useLocale();
+
   const [errors, setErrors] = useState<string[]>([]);
   const [errorFields, setErrorFields] = useState<Set<string>>(new Set());
   const formPanelRef = useRef<HTMLDivElement>(null);
@@ -180,96 +184,173 @@ export default function SecondCreateStepForLand() {
   };
 
   const generalFeaturesOptions = [
-    { value: "partitioned", label: "İfrazlı", en: "Partitioned" },
-    { value: "parceled", label: "Parselli", en: "Parceled" },
-    { value: "withProject", label: "Projeli", en: "With Project" },
-    { value: "cornerParcel", label: "Köşe Parsel", en: "Corner Parcel" },
+    {
+      value: "partitioned",
+      tr: "İfrazlı",
+      en: "Partitioned",
+    },
+    { value: "parceled", tr: "Parselli", en: "Parceled" },
+    {
+      value: "withProject",
+      tr: "Projeli",
+      en: "With Project",
+    },
+    {
+      value: "cornerParcel",
+      tr: "Köşe Parsel",
+      en: "Corner Parcel",
+    },
   ];
 
   const creditEligibleOptions = [
-    { value: true, label: "Evet" },
-    { value: false, label: "Hayır" },
+    { value: true, tr: "Evet", en: "Yes" },
+    { value: false, tr: "Hayır", en: "No" },
   ];
 
   const sourceOptions = [
-    { value: "fromOwner", label: "Sahibinden" },
-    { value: "fromRealEstate", label: "Emlak Ofisinden" },
+    {
+      value: "fromOwner",
+      tr: "Sahibinden",
+      en: "From Owner",
+    },
+    {
+      value: "fromRealEstate",
+      tr: "Emlak Ofisinden",
+      en: "From Real Estate Office",
+    },
   ];
 
   const zoningStatusOptions = [
-    { value: "island", label: "Ada", en: "Island" },
-    { value: "a-legend", label: "A-Lejantlı", en: "A-Legend" },
-    { value: "land", label: "Arazi", en: "Land" },
-    { value: "vineyard-garden", label: "Bağ & Bahçe", en: "Vineyard & Garden" },
+    { value: "island", tr: "Ada", en: "Island" },
+    { value: "a-legend", tr: "A-Lejantlı", en: "A-Legend" },
+    { value: "land", tr: "Arazi", en: "Land" },
+    {
+      value: "vineyard-garden",
+      tr: "Bağ & Bahçe",
+      en: "Vineyard & Garden",
+    },
     {
       value: "warehouse-depot",
-      label: "Depo & Antrepo",
+      tr: "Depo & Antrepo",
       en: "Warehouse & Depot",
     },
-    { value: "education", label: "Eğitim", en: "Education" },
+    { value: "education", tr: "Eğitim", en: "Education" },
     {
       value: "energy-storage",
-      label: "Enerji Depolama",
+      tr: "Enerji Depolama",
       en: "Energy Storage",
     },
-    { value: "residential", label: "Konut", en: "Residential" },
-    { value: "miscellaneous", label: "Muhtelif", en: "Miscellaneous" },
-    { value: "private-use", label: "Özel Kullanım", en: "Private Use" },
-    { value: "health", label: "Sağlık", en: "Health" },
-    { value: "industrial", label: "Sanayi", en: "Industry" },
-    { value: "greenhouse", label: "Sera", en: "Greenhouse" },
-    { value: "protected-area", label: "Sit Alanı", en: "Protected Area" },
-    { value: "sports-area", label: "Spor Alanı", en: "Sports Area" },
-    { value: "field", label: "Tarla", en: "Field" },
-    { value: "field-vineyard", label: "Tarla + Bağ", en: "Field + Vineyard" },
-    { value: "commercial", label: "Ticari", en: "Commercial" },
+    { value: "residential", tr: "Konut", en: "Residential" },
+    { value: "miscellaneous", tr: "Muhtelif", en: "Miscellaneous" },
+    { value: "private-use", tr: "Özel Kullanım", en: "Private Use" },
+    { value: "health", tr: "Sağlık", en: "Health" },
+    { value: "industrial", tr: "Sanayi", en: "Industry" },
+    { value: "greenhouse", tr: "Sera", en: "Greenhouse" },
+    {
+      value: "protected-area",
+      tr: "Sit Alanı",
+      en: "Protected Area",
+    },
+    { value: "sports-area", tr: "Spor Alanı", en: "Sports Area" },
+    { value: "field", tr: "Tarla", en: "Field" },
+    {
+      value: "field-vineyard",
+      tr: "Tarla + Bağ",
+      en: "Field + Vineyard",
+    },
+    { value: "commercial", tr: "Ticari", en: "Commercial" },
     {
       value: "commercial-residential",
-      label: "Ticari + Konut",
+      tr: "Ticari + Konut",
       en: "Commercial + Residential",
     },
-    { value: "mass-housing", label: "Toplu Konut", en: "Mass Housing" },
-    { value: "tourism", label: "Turizm", en: "Tourism" },
+    { value: "mass-housing", tr: "Toplu Konut", en: "Mass Housing" },
+    { value: "tourism", tr: "Turizm", en: "Tourism" },
     {
       value: "tourism-residential",
-      label: "Turizm + Konut",
+      tr: "Turizm + Konut",
       en: "Tourism + Residential",
     },
     {
       value: "tourism-commercial",
-      label: "Turizm + Ticari",
+      tr: "Turizm + Ticari",
       en: "Tourism + Commercial",
     },
-    { value: "villa", label: "Villa", en: "Villa" },
-    { value: "olive-grove", label: "Zeytinlik", en: "Olive Grove" },
+    { value: "villa", tr: "Villa", en: "Villa" },
+    { value: "olive-grove", tr: "Zeytinlik", en: "Olive Grove" },
   ];
 
   const deedStatusOptions = [
-    { value: "shared-title", label: "Hisseli Tapu", en: "Shared Title Deed" },
+    {
+      value: "shared-title",
+      tr: "Hisseli Tapu",
+      en: "Shared Title Deed",
+    },
     {
       value: "independent-title",
-      label: "Müstakil Tapulu",
+      tr: "Müstakil Tapulu",
       en: "Independent Title Deed",
     },
-    { value: "allocation-deed", label: "Tahsis Tapu", en: "Allocation Deed" },
-    { value: "possession-deed", label: "Zilliyet Tapu", en: "Possession Deed" },
+    {
+      value: "allocation-deed",
+      tr: "Tahsis Tapu",
+      en: "Allocation Deed",
+    },
+    {
+      value: "possession-deed",
+      tr: "Zilliyet Tapu",
+      en: "Possession Deed",
+    },
     {
       value: "cooperative-share",
-      label: "Kooperatif Hisseli Tapu",
+      tr: "Kooperatif Hisseli Tapu",
       en: "Cooperative Share Title",
     },
     {
       value: "foreign-title",
-      label: "Yurt Dışı Tapulu",
+      tr: "Yurt Dışı Tapulu",
       en: "Foreign Title Deed",
     },
-    { value: "no-deed", label: "Tapu Kaydı Yok", en: "No Title Deed Record" },
+    {
+      value: "no-deed",
+      tr: "Tapu Kaydı Yok",
+      en: "No Title Deed Record",
+    },
   ];
 
   const booleanOptions = [
-    { value: "true", label: "Evet" },
-    { value: "false", label: "Hayır" },
+    { value: "true", tr: "Evet", en: "Yes" },
+    { value: "false", tr: "Hayır", en: "No" },
   ];
+
+  const localizedCreditEligibleOptions = creditEligibleOptions.map(
+    (option) => ({
+      value: option.value,
+      label: String(option[locale as keyof typeof option]),
+    })
+  );
+  const localizedSourceOptions = sourceOptions.map((option) => ({
+    value: option.value,
+    label: String(option[locale as keyof typeof option]),
+  }));
+  const localizedZoningStatusOptions = zoningStatusOptions.map((option) => ({
+    value: option.value,
+    label: String(option[locale as keyof typeof option]),
+  }));
+  const localizedDeedStatusOptions = deedStatusOptions.map((option) => ({
+    value: option.value,
+    label: String(option[locale as keyof typeof option]),
+  }));
+  const localizedGeneralFeaturesOptions = generalFeaturesOptions.map(
+    (option) => ({
+      value: option.value,
+      label: String(option[locale as keyof typeof option]),
+    })
+  );
+  const localizedBooleanOptions = booleanOptions.map((option) => ({
+    value: option.value,
+    label: String(option[locale as keyof typeof option]),
+  }));
 
   // Helper function to get error styling for fields
   const getFieldErrorClass = (fieldName: string): string => {
@@ -288,18 +369,18 @@ export default function SecondCreateStepForLand() {
     const tryPrice = price?.find((p: any) => p.currency === "TRY");
 
     if (!usdPrice || usdPrice.amount <= 0) {
-      newErrors.push("Lütfen USD para biriminde fiyat belirtin");
+      newErrors.push(t("validation.priceUSD"));
       newErrorFields.add("price-usd");
     }
 
     if (!tryPrice || tryPrice.amount <= 0) {
-      newErrors.push("Lütfen TRY para biriminde fiyat belirtin");
+      newErrors.push(t("validation.priceTRY"));
       newErrorFields.add("price-try");
     }
 
     // Check area fields
     if (!projectArea || projectArea <= 0) {
-      newErrors.push("Lütfen metrekare değerini girin");
+      newErrors.push(t("validation.area"));
       newErrorFields.add("projectArea");
     }
 
@@ -308,27 +389,27 @@ export default function SecondCreateStepForLand() {
       !generalFeatures.get("tr") ||
       !generalFeatures.get("en")
     ) {
-      newErrors.push("Lütfen genel özellikleri seçin");
+      newErrors.push(t("validation.generalFeatures"));
       newErrorFields.add("generalFeatures");
     }
 
     if (typeof creditEligible === "string" && creditEligible === "") {
-      newErrors.push("Lütfen krediye uygunluk durumunu seçin");
+      newErrors.push(t("validation.creditEligible"));
       newErrorFields.add("creditEligible");
     }
 
     if (!source || source.tr === "" || source.en === "") {
-      newErrors.push("Lütfen kimden bilgisini seçin");
+      newErrors.push(t("validation.source"));
       newErrorFields.add("source");
     }
 
     if (!zoningStatus || !zoningStatus.get("tr") || !zoningStatus.get("en")) {
-      newErrors.push("Lütfen imar durumunu seçin");
+      newErrors.push(t("validation.zoningStatus"));
       newErrorFields.add("zoningStatus");
     }
 
     if (!deedStatus || !deedStatus.get("tr") || !deedStatus.get("en")) {
-      newErrors.push("Lütfen tapu durumunu seçin");
+      newErrors.push(t("validation.deedStatus"));
       newErrorFields.add("deedStatus");
     }
 
@@ -393,14 +474,10 @@ export default function SecondCreateStepForLand() {
           {/* Left Info Panel */}
           <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 flex flex-col">
             <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
-              Arsa özelliklerini belirtin.
+              {t("title")}
             </h1>
             <div className="mt-4 text-base text-[#595959] font-medium">
-              <p className="leading-[140%]">
-                Bu adımda, arsanın temel özelliklerini, fiyatını ve imar durumu
-                gibi diğer önemli detayları girebilirsiniz. Bu bilgilerin
-                doğruluğu, potansiyel alıcıların ilgisini çekmek için kritiktir.
-              </p>
+              <p className="leading-[140%]">{t("description")}</p>
             </div>
           </div>
           {/* Right Form Panel */}
@@ -420,7 +497,7 @@ export default function SecondCreateStepForLand() {
                   </div>
                   <div className="ml-3">
                     <h3 className="text-sm font-medium text-red-800">
-                      Lütfen aşağıdaki hataları düzeltin:
+                      {t("fixErrors")}
                     </h3>
                     <div className="mt-2 text-sm text-red-700">
                       <ul className="list-disc pl-5 space-y-1">
@@ -439,7 +516,7 @@ export default function SecondCreateStepForLand() {
               <div className="flex flex-col sm:flex-row gap-4 mb-4">
                 <div className="w-full sm:w-1/2">
                   <label className="font-semibold block mb-2 text-[#262626]">
-                    Fiyat (TRY)
+                    {t("priceTRY")}
                   </label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium">
@@ -452,14 +529,14 @@ export default function SecondCreateStepForLand() {
                       className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
                         "price-try"
                       )}`}
-                      placeholder="Fiyat yazın"
+                      placeholder={t("pricePlaceholder")}
                     />
                   </div>
                 </div>
 
                 <div className="w-full sm:w-1/2">
                   <label className="font-semibold block mb-2 text-[#262626]">
-                    Fiyat (USD)
+                    {t("priceUSD")}
                   </label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium">
@@ -472,7 +549,7 @@ export default function SecondCreateStepForLand() {
                       className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
                         "price-usd"
                       )}`}
-                      placeholder="Fiyat yazın"
+                      placeholder={t("pricePlaceholder")}
                     />
                   </div>
                 </div>
@@ -485,7 +562,7 @@ export default function SecondCreateStepForLand() {
                 htmlFor="projectArea"
                 className="font-semibold block mb-2 text-[#262626]"
               >
-                Metrekare
+                {t("area")}
               </label>
               <input
                 type="text"
@@ -503,7 +580,7 @@ export default function SecondCreateStepForLand() {
                 className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
                   "projectArea"
                 )}`}
-                placeholder="m²"
+                placeholder={t("areaPlaceholder")}
               />
             </div>
             {/* Krediye Uygunluk - Kimden */}
@@ -513,13 +590,13 @@ export default function SecondCreateStepForLand() {
                   htmlFor="creditEligible"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Krediye Uygunluk
+                  {t("creditEligible")}
                 </label>
                 <CustomSelect
-                  options={creditEligibleOptions}
+                  options={localizedCreditEligibleOptions}
                   value={creditEligible}
                   onChange={(value) => setCreditEligible(value)}
-                  placeholder="Seçiniz"
+                  placeholder={t("selectPlaceholder")}
                   hasError={errorFields.has("creditEligible")}
                 />
               </div>
@@ -528,15 +605,14 @@ export default function SecondCreateStepForLand() {
                   htmlFor="source"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Kimden
+                  {t("source")}
                 </label>
                 <CustomSelect
-                  options={sourceOptions}
+                  options={localizedSourceOptions}
                   value={
                     source?.tr
-                      ? sourceOptions.find(
-                          (option) => option.label === source.tr
-                        )?.value || ""
+                      ? sourceOptions.find((option) => option.tr === source.tr)
+                          ?.value || ""
                       : ""
                   }
                   onChange={(value) => {
@@ -545,15 +621,12 @@ export default function SecondCreateStepForLand() {
                     );
                     if (selected) {
                       setSource({
-                        tr: selected.label,
-                        en:
-                          selected.value === "fromOwner"
-                            ? "From Owner"
-                            : "From Real Estate Office",
+                        tr: selected.tr,
+                        en: selected.en,
                       });
                     }
                   }}
-                  placeholder="Seçiniz"
+                  placeholder={t("selectPlaceholder")}
                   hasError={errorFields.has("source")}
                 />
               </div>
@@ -566,14 +639,14 @@ export default function SecondCreateStepForLand() {
                   htmlFor="zoningStatus"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  İmar Durumu
+                  {t("zoningStatus")}
                 </label>
                 <CustomSelect
-                  options={zoningStatusOptions}
+                  options={localizedZoningStatusOptions}
                   value={
                     zoningStatus?.get("tr")
                       ? zoningStatusOptions.find(
-                          (option) => option.label === zoningStatus.get("tr")
+                          (option) => option.tr === zoningStatus.get("tr")
                         )?.value || ""
                       : ""
                   }
@@ -583,12 +656,12 @@ export default function SecondCreateStepForLand() {
                     );
                     if (selected) {
                       const newMap = new Map<string, string>();
-                      newMap.set("tr", selected.label);
+                      newMap.set("tr", selected.tr);
                       newMap.set("en", selected.en);
                       setZoningStatus(newMap);
                     }
                   }}
-                  placeholder="Seçiniz"
+                  placeholder={t("selectPlaceholder")}
                   hasError={errorFields.has("zoningStatus")}
                 />
               </div>
@@ -597,14 +670,14 @@ export default function SecondCreateStepForLand() {
                   htmlFor="deedStatus"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Tapu Durumu
+                  {t("deedStatus")}
                 </label>
                 <CustomSelect
-                  options={deedStatusOptions}
+                  options={localizedDeedStatusOptions}
                   value={
                     deedStatus?.get("tr")
                       ? deedStatusOptions.find(
-                          (option) => option.label === deedStatus.get("tr")
+                          (option) => option.tr === deedStatus.get("tr")
                         )?.value || ""
                       : ""
                   }
@@ -614,12 +687,12 @@ export default function SecondCreateStepForLand() {
                     );
                     if (selected) {
                       const newMap = new Map<string, string>();
-                      newMap.set("tr", selected.label);
+                      newMap.set("tr", selected.tr);
                       newMap.set("en", selected.en);
                       setDeedStatus(newMap);
                     }
                   }}
-                  placeholder="Seçiniz"
+                  placeholder={t("selectPlaceholder")}
                   hasError={errorFields.has("deedStatus")}
                 />
               </div>
@@ -632,14 +705,14 @@ export default function SecondCreateStepForLand() {
                   htmlFor="generalFeatures"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Genel Özellikler
+                  {t("generalFeatures")}
                 </label>
                 <CustomSelect
-                  options={generalFeaturesOptions}
+                  options={localizedGeneralFeaturesOptions}
                   value={
                     generalFeatures?.get("tr")
                       ? generalFeaturesOptions.find(
-                          (option) => option.label === generalFeatures.get("tr")
+                          (option) => option.tr === generalFeatures.get("tr")
                         )?.value || ""
                       : ""
                   }
@@ -649,12 +722,12 @@ export default function SecondCreateStepForLand() {
                     );
                     if (selected) {
                       const newMap = new Map<string, string>();
-                      newMap.set("tr", selected.label);
+                      newMap.set("tr", selected.tr);
                       newMap.set("en", selected.en);
                       setGeneralFeatures(newMap);
                     }
                   }}
-                  placeholder="Seçiniz"
+                  placeholder={t("selectPlaceholder")}
                   openUpward={true}
                   hasError={errorFields.has("generalFeatures")}
                 />
@@ -664,13 +737,13 @@ export default function SecondCreateStepForLand() {
                   htmlFor="exchangeable"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Takaslı
+                  {t("exchangeable")}
                 </label>
                 <CustomSelect
-                  options={booleanOptions}
+                  options={localizedBooleanOptions}
                   value={exchangeable ? "true" : "false"}
                   onChange={(value) => setExchangeable(value === "true")}
-                  placeholder="Seçiniz"
+                  placeholder={t("selectPlaceholder")}
                   openUpward={true}
                 />
               </div>
@@ -684,7 +757,7 @@ export default function SecondCreateStepForLand() {
             onClick={handleContinue}
             className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
           >
-            Devam Et
+            {t("continue")}
             <ChevronRightIcon className="h-5 w-5" />
           </button>
         </div>
