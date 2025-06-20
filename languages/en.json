@@ -448,7 +448,7 @@
     "noMessages": "No messages yet for this listing"
   },
   "filtering": {
-    "filters": "Filters",
+    "filters": "Filters ({count})",
     "sort": "Sort",
     "save": "Save",
     "saveSearch": "Save Search",
@@ -468,7 +468,10 @@
       "title": "Your search filters have been successfully saved.",
       "description": "You can now access your saved searches from your profile and change notification settings if you wish."
     },
-    "resultsCount": "Found <b>{count}</b> listings matching your search criteria."
+    "resultsCount": "Found {count} listings matching your search criteria.",
+    "searchSaved": "Your search filters have been successfully saved.",
+    "resetFilters": "Reset Filters",
+    "noResults": "Try searching again by resetting your filters."
   },
   "adminInterface": {
     "loading": "Loading...",
@@ -540,18 +543,6 @@
       "markAllSeen": "Mark All as Seen"
     }
   },
-  "common": {
-    "loading": "Loading...",
-    "loadingMap": "Loading map...",
-    "noResultsFound": "No results found matching your filters.",
-    "clearFilters": "Clear Filters",
-    "searchPlaceholder": "Search...",
-    "citySearchPlaceholder": "Search city...",
-    "addressSearchPlaceholder": "Search address...",
-    "none": "None",
-    "empty": "Empty",
-    "openKitchen": "Open Kitchen"
-  },
   "adminCreation": {
     "step1": {
       "title": "Determine listing categories.",
@@ -588,16 +579,6 @@
       "creationError": "Listing creation error:",
       "fixErrors": "Please fix the following errors:"
     }
-  },
-  "filtering": {
-    "filters": "Filters ({count})",
-    "saveSearch": "Save Search",
-    "sort": "Sort",
-    "saving": "Saving...",
-    "save": "Save",
-    "searchSaved": "Your search filters have been successfully saved.",
-    "resetFilters": "Reset Filters",
-    "noResults": "Try searching again by resetting your filters."
   },
   "authBox": {
     "profileDetails": "Profile Details",

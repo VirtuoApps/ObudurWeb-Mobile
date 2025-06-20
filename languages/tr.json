@@ -3,7 +3,13 @@
     "loading": "Yükleniyor...",
     "loadingMap": "Harita yükleniyor...",
     "noResultsFound": "Filtrelerinize uygun sonuç bulunamadı.",
-    "clearFilters": "Filtreleri Temizle"
+    "clearFilters": "Filtreleri Temizle",
+    "searchPlaceholder": "Ara...",
+    "citySearchPlaceholder": "Şehir ara...",
+    "addressSearchPlaceholder": "Adres ara...",
+    "none": "Yok",
+    "empty": "Boş",
+    "openKitchen": "Açık Mutfak"
   },
   "header": {
     "title": "Obudur",
@@ -448,7 +454,7 @@
     "noMessages": "Bu ilanla ilgili henüz mesaj yok"
   },
   "filtering": {
-    "filters": "Filtreler",
+    "filters": "Filtreler ({count})",
     "sort": "Sırala",
     "save": "Kaydet",
     "saveSearch": "Aramayı Kaydet",
@@ -468,7 +474,10 @@
       "title": "Arama filtreleriniz başarılı bir şekilde kaydedildi.",
       "description": "Artık profilinizden kayıtlı aramalarınıza ulaşabilir, dilerseniz bildirim ayarlarını değiştirebilirsiniz."
     },
-    "resultsCount": "Arama kriterlerinize uygun <b>{count}</b> adet ilan bulundu."
+    "resultsCount": "Arama kriterlerinize uygun {count} adet ilan bulundu.",
+    "searchSaved": "Arama filtreleriniz başarılı bir şekilde kaydedildi.",
+    "resetFilters": "Filtreleri Sıfırla",
+    "noResults": "Filtrelerinizi sıfırlayarak yeniden arama yapmayı deneyin."
   },
   "adminInterface": {
     "loading": "Yükleniyor...",
@@ -540,18 +549,6 @@
       "markAllSeen": "Tümünü Görüldü Olarak İşaretle"
     }
   },
-  "common": {
-    "loading": "Yükleniyor...",
-    "loadingMap": "Harita yükleniyor...",
-    "noResultsFound": "Filtrelerinize uygun sonuç bulunamadı.",
-    "clearFilters": "Filtreleri Temizle",
-    "searchPlaceholder": "Ara...",
-    "citySearchPlaceholder": "Şehir ara...",
-    "addressSearchPlaceholder": "Adres ara...",
-    "none": "Yok",
-    "empty": "Boş",
-    "openKitchen": "Açık Mutfak"
-  },
   "adminCreation": {
     "step1": {
       "title": "İlan kategorilerini belirleyin.",
@@ -588,16 +585,6 @@
       "creationError": "İlan oluşturma hatası:",
       "fixErrors": "Lütfen aşağıdaki hataları düzeltin:"
     }
-  },
-  "filtering": {
-    "filters": "Filtreler ({count})",
-    "saveSearch": "Aramayı Kaydet",
-    "sort": "Sırala",
-    "saving": "Kaydediliyor...",
-    "save": "Kaydet",
-    "searchSaved": "Arama filtreleriniz başarılı bir şekilde kaydedildi.",
-    "resetFilters": "Filtreleri Sıfırla",
-    "noResults": "Filtrelerinizi sıfırlayarak yeniden arama yapmayı deneyin."
   },
   "authBox": {
     "profileDetails": "Profil Detayları",
