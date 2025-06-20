@@ -371,5 +371,176 @@
       "successMessage": "E-posta listesine abone oldunuz",
       "errorMessage": "Abonelik işlemi sırasında bir hata oluştu."
     }
+  },
+  "contactPage": {
+    "title": "Obudur'a ulaşmak çok kolay!",
+    "subtitle": "Obudur, işini büyütmek isteyen bağımsız emlakçılara güvenilir bir zemin sunar.",
+    "description1": "Eğitimden teknolojiye, pazarlamadan kurumsal kimliğe kadar her adımda yanındayız.",
+    "description2": "Kendi ofisini açarken yalnız kalmak istemiyorsan, başvurunu yap: aradığın o destek, O Budur.",
+    "officesTitle": "Gayrimenkül Ofislerimiz",
+    "officesSubtitle": "Obudur ile birlikte çalışan markalarımızın ofisleri.",
+    "centralOffice": "Merkez Ofis",
+    "contactChannels": "İletişim Kanalları",
+    "followUs": "Bizi Takip Edin",
+    "getDirections": "Yol Tarifi Al"
+  },
+  "becomePartnerPage": {
+    "title": "Hayalindeki ofis, güçlü bir marka, O Budur.",
+    "subtitle": "Obudur, işini büyütmek isteyen bağımsız emlakçılara güvenilir bir zemin sunar.",
+    "description1": "Eğitimden teknolojiye, pazarlamadan kurumsal kimliğe kadar her adımda yanındayız.",
+    "description2": "Kendi ofisini açarken yalnız kalmak istemiyorsan, başvurunu yap: aradığın o destek, O Budur."
+  },
+  "careerPage": {
+    "title": "Yeni bir başlangıç arıyorsan, Obudur!",
+    "subtitle": "Kariyerinde yeni bir sayfa açmak istiyorsan, doğru yerdesin.",
+    "description1": "Yeteneklerine değer veren, fikirlerini önemseyen ve birlikte büyümeye inanan bir ekip arıyorsan: O budur.",
+    "description2": "Obudur'da sadece bir iş değil, birlikte yol alacağın bir gelecek bulacaksın."
+  },
+  "agreementsPage": {
+    "title": "Kullanıcı Sözleşmeleri"
+  },
+  "favoritesPage": {
+    "noFavoritesTitle": "Henüz Favori İlanınız Yok!",
+    "noFavoritesSubtitle": "Beğendiğiniz ilanları favorilerinize ekleyin, daha sonra kolayca ulaşın.",
+    "noFavoritesDescription": "Size özel önerileri kaçırmamak için aramaya başlayın!",
+    "suggestedListingsTitle": "İlginizi Çekebilecek İlanlar",
+    "sort": "Sırala"
+  },
+  "savedSearchesPage": {
+    "title": "Favori Aramalar",
+    "subtitle": "{count} adet favori aramanız var.",
+    "newSearch": "Yeni Arama",
+    "noSearchesTitle": "Henüz Kaydedilmiş Aramanız Yok!",
+    "noSearchesSubtitle": "Sık kullandığınız filtreleri kaydedin, size özel yeni ilanlardan anında haberdar olun.",
+    "noSearchesDescription": "Fırsatları kaçırmamak için aramaya başlayın!",
+    "searchButton": "Arama Yap",
+    "suggestedListingsTitle": "İlginizi Çekebilecek İlanlar",
+    "filters": "Filtreler:",
+    "quickFilters": "Hızlı Filtreler"
+  },
+  "adminListings": {
+    "postListing": "İlan Ver",
+    "noMessages": "Bu ilanla ilgili henüz mesaj yok"
+  },
+  "filtering": {
+    "filters": "Filtreler",
+    "sort": "Sırala",
+    "save": "Kaydet",
+    "saveSearch": "Aramayı Kaydet",
+    "saving": "Kaydediliyor...",
+    "saved": "Kaydedildi!",
+    "cancel": "Vazgeç",
+    "close": "Kapat",
+    "searchName": "Arama Adı",
+    "searchNamePlaceholder": "Yeni aramam",
+    "sortOptions": {
+      "lowestPrice": "Önce en düşük fiyat",
+      "highestPrice": "Önce en yüksek fiyat",
+      "newest": "Önce en yeni ilan",
+      "oldest": "Önce en eski ilan"
+    },
+    "saveSuccess": {
+      "title": "Arama filtreleriniz başarılı bir şekilde kaydedildi.",
+      "description": "Artık profilinizden kayıtlı aramalarınıza ulaşabilir, dilerseniz bildirim ayarlarını değiştirebilirsiniz."
+    },
+    "resultsCount": "Arama kriterlerinize uygun <b>{count}</b> adet ilan bulundu."
+  },
+  "adminInterface": {
+    "loading": "Yükleniyor...",
+    "publish": "Yayınla",
+    "unpublish": "Duraklat",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "cancel": "İptal",
+    "confirm": "Onayla",
+    "close": "Kapat",
+    "updateStatus": "Durum Güncelle",
+    "update": "Güncelle",
+    "create": "Oluştur",
+    "status": "Durum",
+    "active": "Aktif",
+    "inactive": "Aktif Değil",
+    "optioned": "Opsiyonlandı",
+    "stopped": "Durduruldu",
+    "sold": "Satıldı",
+    "price": "Fiyat",
+    "message": "Mesaj",
+    "listings": "İlanlar",
+    "all": "Tümü",
+    "actions": "İşlemler",
+    "pause": "Duraklat",
+    "share": "Paylaş",
+    "viewOnMap": "Haritada Gör",
+    "deleteListing": "İlanı Sil",
+    "processing": "İşleniyor...",
+    "confirmations": {
+      "unpublish": "Yayından kaldırmak istediğinize emin misiniz?",
+      "delete": "Bu ilanı silmek istediğinize emin misiniz? Bu işlem geri alınamaz.",
+      "title": "Onay"
+    },
+    "messages": {
+      "unseen": "Görülmemiş",
+      "seen": "Görülmüş",
+      "markAllSeen": "Tümünü Görüldü Olarak İşaretle"
+    }
+  },
+  "common": {
+    "loading": "Yükleniyor...",
+    "loadingMap": "Harita yükleniyor...",
+    "noResultsFound": "Filtrelerinize uygun sonuç bulunamadı.",
+    "clearFilters": "Filtreleri Temizle",
+    "searchPlaceholder": "Ara...",
+    "citySearchPlaceholder": "Şehir ara...",
+    "addressSearchPlaceholder": "Adres ara...",
+    "none": "Yok",
+    "empty": "Boş",
+    "openKitchen": "Açık Mutfak"
+  },
+  "adminCreation": {
+    "step1": {
+      "title": "İlan kategorilerini belirleyin.",
+      "subtitle": "İlan vereceğiniz mülkün kategorilerini belirtin.",
+      "description": "İlan Başlığı ve İlan Açıklaması için farklı dillerde yapacağınız girişler ilanın anlaşılırlığını artıracaktır gibi bir açıklama metni.",
+      "categoriesTitle": "İlan Kategorileri",
+      "listingType": "İlan Tipi",
+      "propertyType": "Emlak Tipi",
+      "category": "Kategori",
+      "selectListingType": "İlan Tipi Seçin",
+      "selectPropertyType": "Emlak Tipi Seçin",
+      "selectCategory": "Kategori Seçin",
+      "selectPropertyFirst": "Önce ilan tipi seçin",
+      "selectCategoryFirst": "Önce emlak tipi seçin",
+      "titleAndDescription": "İlan Başlığı ve Açıklaması",
+      "turkish": "Türkçe",
+      "english": "English",
+      "required": "Zorunlu",
+      "titlePlaceholder": "İlan Başlığı",
+      "descriptionPlaceholder": "İlan Açıklaması",
+      "fixErrors": "Lütfen aşağıdaki hataları düzeltin:",
+      "validationErrors": {
+        "titleTurkish": "İlan açıklamasını (Türkçe) dilinde doldurun",
+        "titleEnglish": "İlan açıklamasını (English) dilinde doldurun"
+      }
+    },
+    "step6": {
+      "title": "Dökümanlar",
+      "subtitle": "İlan vereceğiniz mülkün dökümanlarını yükleyin.",
+      "description": "Dökümanları dosya olarak yükleyebilir veya link olarak ekleyebilirsiniz.",
+      "linkPlaceholder": "Dosya linkini girin",
+      "uploading": "Yükleniyor...",
+      "fileUploaded": "Dosya yüklendi",
+      "creationError": "İlan oluşturma hatası:",
+      "fixErrors": "Lütfen aşağıdaki hataları düzeltin:"
+    }
+  },
+  "filtering": {
+    "filters": "Filtreler ({count})",
+    "saveSearch": "Aramayı Kaydet",
+    "sort": "Sırala",
+    "saving": "Kaydediliyor...",
+    "save": "Kaydet",
+    "searchSaved": "Arama filtreleriniz başarılı bir şekilde kaydedildi.",
+    "resetFilters": "Filtreleri Sıfırla",
+    "noResults": "Filtrelerinizi sıfırlayarak yeniden arama yapmayı deneyin."
   }
 }

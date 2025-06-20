@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { SavedFilter } from "../../api/savedFilters";
 import FilterEditPopup from "../FilterEditPopup/FilterEditPopup";
@@ -8,6 +8,7 @@ import { FilterOptions } from "@/types/filter-options.type";
 import { Hotel } from "@/types/hotel.type";
 import { Feature } from "@/types/feature.type";
 import axiosInstance from "@/axios";
+import { useLocale, useTranslations } from "next-intl";
 
 interface FilterBoxProps {
   filter: SavedFilter;
@@ -31,103 +32,101 @@ export default function FilterBox({
   allQuickFilters,
 }: FilterBoxProps) {
   const router = useRouter();
-  const [siteNotifications, setSiteNotifications] = React.useState(
+  const [siteNotifications, setSiteNotifications] = useState(
     filter.enableNotifications
   );
-  const [emailNotifications, setEmailNotifications] = React.useState(
+  const [emailNotifications, setEmailNotifications] = useState(
     filter.enableMailNotifications
   );
-  const [isEditPopupOpen, setIsEditPopupOpen] = React.useState(false);
-  const [deleteModalOpen, setDeleteModalOpen] = React.useState(false);
-  const [deleteLoading, setDeleteLoading] = React.useState(false);
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+
+  const selectedLanguage = useLocale();
+  const t = useTranslations("savedSearchesPage");
 
   // Format the date
   const formatDate = (dateString?: string) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    const options: Intl.DateTimeFormatOptions = {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-    return date.toLocaleDateString("tr-TR", options) + "'te kaydedildi";
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - date.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 1) return "1 gün önce";
+    return `${diffDays} gün önce`;
   };
 
   // Build category text
   const getCategoryText = () => {
-    const parts = [];
-    if (filter.listingType) parts.push(filter.listingType);
-    if (filter.state) parts.push(filter.state);
-    if (filter.propertyType) parts.push(filter.propertyType);
-    return parts.join(", ") || "-";
+    const categoryText = filter.categoryId ? "Kategori" : "Tümü";
+    const propertyText = filter.propertyType || "Tümü";
+    return `${propertyText} - ${categoryText}`;
   };
 
   // Build location text
   const getLocationText = () => {
-    if (filter.selectedLocation) {
-      return filter.selectedLocation.name;
-    }
-    return "-";
+    return filter.selectedLocation?.name || "Tüm konumlar";
   };
 
   // Build filters text
   const getFiltersText = () => {
-    const filters = [];
+    const activeFilters: string[] = [];
 
-    // Room selection
-    if (filter.roomAsText) filters.push(filter.roomAsText);
-
-    // Area
-    if (filter.minProjectArea || filter.maxProjectArea) {
-      if (filter.minProjectArea && filter.maxProjectArea) {
-        filters.push(`${filter.minProjectArea}-${filter.maxProjectArea} m²`);
-      } else if (filter.minProjectArea) {
-        filters.push(`Min ${filter.minProjectArea} m²`);
-      } else if (filter.maxProjectArea) {
-        filters.push(`Max ${filter.maxProjectArea} m²`);
-      }
-    }
-
-    // Price
-    if (filter.minPrice || filter.maxPrice) {
-      if (filter.minPrice && filter.maxPrice) {
-        filters.push(
-          `${filter.minPrice.toLocaleString(
-            "tr-TR"
-          )}-${filter.maxPrice.toLocaleString("tr-TR")} TL`
+    // Selected features
+    if (filter.selectedFeatures?.length > 0) {
+      filter.selectedFeatures.forEach((feature: any) => {
+        const quickFilter = allQuickFilters.find(
+          (qf) => qf._id === feature._id
         );
-      } else if (filter.minPrice) {
-        filters.push(`Min ${filter.minPrice.toLocaleString("tr-TR")} TL`);
-      } else if (filter.maxPrice) {
-        filters.push(`Max ${filter.maxPrice.toLocaleString("tr-TR")} TL`);
-      }
+        if (quickFilter) {
+          activeFilters.push(quickFilter.name[selectedLanguage as "tr" | "en"]);
+        }
+      });
     }
 
-    // Features
-    if (filter.selectedFeatures && filter.selectedFeatures.length > 0) {
-      const featureNames = filter.selectedFeatures
-        .slice(0, 3)
-        .map((f) => f.name);
-      filters.push(...featureNames);
+    // Price range
+    if (filter.minPrice || filter.maxPrice) {
+      const min = filter.minPrice || 0;
+      const max = filter.maxPrice || "∞";
+      activeFilters.push(`Fiyat: ${min} - ${max}`);
+    }
 
-      if (filter.selectedFeatures.length > 3) {
-        filters.push(`+${filter.selectedFeatures.length - 3} Filtre daha`);
-      }
+    // Area range
+    if (filter.minProjectArea || filter.maxProjectArea) {
+      const min = filter.minProjectArea || 0;
+      const max = filter.maxProjectArea || "∞";
+      activeFilters.push(`Alan: ${min} - ${max} m²`);
+    }
+
+    // Room count
+    if (filter.roomCount) {
+      activeFilters.push(`${filter.roomCount} oda`);
+    }
+
+    // Bathroom count
+    if (filter.bathroomCount) {
+      activeFilters.push(`${filter.bathroomCount} banyo`);
     }
 
     // Feature IDs count
-    const featureCount =
-      (filter.interiorFeatureIds?.length || 0) +
-      (filter.exteriorFeatureIds?.length || 0) +
-      (filter.accessibilityFeatureIds?.length || 0) +
-      (filter.faceFeatureIds?.length || 0) +
-      (filter.locationFeatureIds?.length || 0);
+    let featureCount = 0;
+    if (filter.interiorFeatureIds?.length)
+      featureCount += filter.interiorFeatureIds.length;
+    if (filter.exteriorFeatureIds?.length)
+      featureCount += filter.exteriorFeatureIds.length;
+    if (filter.accessibilityFeatureIds?.length)
+      featureCount += filter.accessibilityFeatureIds.length;
+    if (filter.faceFeatureIds?.length)
+      featureCount += filter.faceFeatureIds.length;
+    if (filter.locationFeatureIds?.length)
+      featureCount += filter.locationFeatureIds.length;
 
-    if (featureCount > 0 && filter.selectedFeatures.length === 0) {
-      filters.push(`${featureCount} özellik seçili`);
+    if (featureCount > 0) {
+      activeFilters.push(`+${featureCount} özellik`);
     }
 
-    return filters.join(", ") || "-";
+    return activeFilters.length > 0 ? activeFilters.join(", ") : "Filtre yok";
   };
 
   const handleViewResults = () => {
@@ -206,7 +205,7 @@ export default function FilterBox({
 
           <div className="flex flex-col sm:flex-row gap-1 sm:gap-0">
             <span className="text-[#262626] font-bold text-xs sm:text-sm leading-[140%] tracking-normal sm:min-w-[80px]">
-              Filtreler:
+              {useTranslations("filtering")("filters")}:
             </span>
             <span className="text-gray-700 font-normal text-xs sm:text-sm leading-[140%] tracking-normal">
               {getFiltersText()}
@@ -430,7 +429,9 @@ export default function FilterBox({
                 onClick={handleDeleteFilter}
                 disabled={deleteLoading}
               >
-                {deleteLoading ? "Yükleniyor..." : "Sil"}
+                {deleteLoading
+                  ? useTranslations("adminInterface")("loading")
+                  : useTranslations("adminInterface")("delete")}
               </button>
             </div>
           </div>

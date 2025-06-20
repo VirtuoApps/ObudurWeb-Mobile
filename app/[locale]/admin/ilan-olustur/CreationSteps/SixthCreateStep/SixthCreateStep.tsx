@@ -4,6 +4,7 @@ import { useListingForm } from "../CreationSteps";
 import axiosInstance from "@/axios";
 import { useRouter } from "@/app/utils/router";
 import GoBackButton from "../../GoBackButton/GoBackButton";
+import { useTranslations } from "next-intl";
 
 // Predefined document types
 const DOCUMENT_TYPES = [
@@ -13,6 +14,7 @@ const DOCUMENT_TYPES = [
 
 export default function SixthCreateStep() {
   const router = useRouter();
+  const t = useTranslations("adminInterface");
   const {
     setCurrentStep,
     images,
@@ -683,7 +685,7 @@ export default function SixthCreateStep() {
                 <span>İşleniyor...</span>
               </div>
             ) : (
-              <span>{isUpdate ? "Güncelle" : "Oluştur"}</span>
+              <span>{isUpdate ? t("update") : t("create")}</span>
             )}
           </button>
         </div>

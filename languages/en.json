@@ -371,5 +371,176 @@
       "successMessage": "You have subscribed to our newsletter",
       "errorMessage": "An error occurred during the subscription process."
     }
+  },
+  "contactPage": {
+    "title": "Reaching Obudur is very easy!",
+    "subtitle": "Obudur provides a reliable foundation for independent real estate agents who want to grow their business.",
+    "description1": "We are with you every step of the way, from training to technology, from marketing to corporate identity.",
+    "description2": "If you don't want to be alone when opening your own office, apply: the support you are looking for is here.",
+    "officesTitle": "Our Real Estate Offices",
+    "officesSubtitle": "Offices of our brands working with Obudur.",
+    "centralOffice": "Central Office",
+    "contactChannels": "Contact Channels",
+    "followUs": "Follow Us",
+    "getDirections": "Get Directions"
+  },
+  "becomePartnerPage": {
+    "title": "Your dream office, a strong brand, That's It.",
+    "subtitle": "Obudur provides a reliable foundation for independent real estate agents who want to grow their business.",
+    "description1": "We are with you every step of the way, from training to technology, from marketing to corporate identity.",
+    "description2": "If you don't want to be alone when opening your own office, apply: the support you are looking for is here."
+  },
+  "careerPage": {
+    "title": "If you're looking for a new beginning, Obudur!",
+    "subtitle": "If you want to turn a new page in your career, you're in the right place.",
+    "description1": "If you're looking for a team that values your talents, cares about your ideas, and believes in growing together: That's it.",
+    "description2": "At Obudur, you'll find not just a job, but a future you'll journey together."
+  },
+  "agreementsPage": {
+    "title": "User Agreements"
+  },
+  "favoritesPage": {
+    "noFavoritesTitle": "You Don't Have Any Favorite Listings Yet!",
+    "noFavoritesSubtitle": "Add the listings you like to your favorites, access them easily later.",
+    "noFavoritesDescription": "Start searching so you don't miss out on personalized recommendations!",
+    "suggestedListingsTitle": "Listings That May Interest You",
+    "sort": "Sort"
+  },
+  "savedSearchesPage": {
+    "title": "Saved Searches",
+    "subtitle": "You have {count} saved searches.",
+    "newSearch": "New Search",
+    "noSearchesTitle": "You Don't Have Any Saved Searches Yet!",
+    "noSearchesSubtitle": "Save the filters you use frequently, get notified instantly about new listings tailored for you.",
+    "noSearchesDescription": "Start searching so you don't miss opportunities!",
+    "searchButton": "Search",
+    "suggestedListingsTitle": "Listings That May Interest You",
+    "filters": "Filters:",
+    "quickFilters": "Quick Filters"
+  },
+  "adminListings": {
+    "postListing": "Post Listing",
+    "noMessages": "No messages yet for this listing"
+  },
+  "filtering": {
+    "filters": "Filters",
+    "sort": "Sort",
+    "save": "Save",
+    "saveSearch": "Save Search",
+    "saving": "Saving...",
+    "saved": "Saved!",
+    "cancel": "Cancel",
+    "close": "Close",
+    "searchName": "Search Name",
+    "searchNamePlaceholder": "My new search",
+    "sortOptions": {
+      "lowestPrice": "Lowest price first",
+      "highestPrice": "Highest price first",
+      "newest": "Newest listings first",
+      "oldest": "Oldest listings first"
+    },
+    "saveSuccess": {
+      "title": "Your search filters have been successfully saved.",
+      "description": "You can now access your saved searches from your profile and change notification settings if you wish."
+    },
+    "resultsCount": "Found <b>{count}</b> listings matching your search criteria."
+  },
+  "adminInterface": {
+    "loading": "Loading...",
+    "publish": "Publish",
+    "unpublish": "Pause",
+    "delete": "Delete",
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "close": "Close",
+    "updateStatus": "Update Status",
+    "update": "Update",
+    "create": "Create",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "optioned": "Optioned",
+    "stopped": "Stopped",
+    "sold": "Sold",
+    "price": "Price",
+    "message": "Message",
+    "listings": "Listings",
+    "all": "All",
+    "actions": "Actions",
+    "pause": "Pause",
+    "share": "Share",
+    "viewOnMap": "View on Map",
+    "deleteListing": "Delete Listing",
+    "processing": "Processing...",
+    "confirmations": {
+      "unpublish": "Are you sure you want to unpublish?",
+      "delete": "Are you sure you want to delete this listing? This action cannot be undone.",
+      "title": "Confirmation"
+    },
+    "messages": {
+      "unseen": "Unseen",
+      "seen": "Seen",
+      "markAllSeen": "Mark All as Seen"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "loadingMap": "Loading map...",
+    "noResultsFound": "No results found matching your filters.",
+    "clearFilters": "Clear Filters",
+    "searchPlaceholder": "Search...",
+    "citySearchPlaceholder": "Search city...",
+    "addressSearchPlaceholder": "Search address...",
+    "none": "None",
+    "empty": "Empty",
+    "openKitchen": "Open Kitchen"
+  },
+  "adminCreation": {
+    "step1": {
+      "title": "Determine listing categories.",
+      "subtitle": "Specify the categories of the property you will list.",
+      "description": "Entries you make in different languages for Listing Title and Listing Description will increase the comprehensibility of the listing.",
+      "categoriesTitle": "Listing Categories",
+      "listingType": "Listing Type",
+      "propertyType": "Property Type",
+      "category": "Category",
+      "selectListingType": "Select Listing Type",
+      "selectPropertyType": "Select Property Type",
+      "selectCategory": "Select Category",
+      "selectPropertyFirst": "First select listing type",
+      "selectCategoryFirst": "First select property type",
+      "titleAndDescription": "Listing Title and Description",
+      "turkish": "Turkish",
+      "english": "English",
+      "required": "Required",
+      "titlePlaceholder": "Listing Title",
+      "descriptionPlaceholder": "Listing Description",
+      "fixErrors": "Please fix the following errors:",
+      "validationErrors": {
+        "titleTurkish": "Please fill in the listing description in Turkish",
+        "titleEnglish": "Please fill in the listing description in English"
+      }
+    },
+    "step6": {
+      "title": "Documents",
+      "subtitle": "Upload the documents of the property you will list.",
+      "description": "You can upload documents as files or add them as links.",
+      "linkPlaceholder": "Enter file link",
+      "uploading": "Uploading...",
+      "fileUploaded": "File uploaded",
+      "creationError": "Listing creation error:",
+      "fixErrors": "Please fix the following errors:"
+    }
+  },
+  "filtering": {
+    "filters": "Filters ({count})",
+    "saveSearch": "Save Search",
+    "sort": "Sort",
+    "saving": "Saving...",
+    "save": "Save",
+    "searchSaved": "Your search filters have been successfully saved.",
+    "resetFilters": "Reset Filters",
+    "noResults": "Try searching again by resetting your filters."
   }
 }

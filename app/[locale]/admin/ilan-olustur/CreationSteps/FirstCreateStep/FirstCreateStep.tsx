@@ -196,12 +196,12 @@ export default function FirstCreateStep() {
 
     // Check descriptions in both languages
     if (!description?.tr || description.tr.trim() === "") {
-      newErrors.push("İlan açıklamasını (Türkçe) dilinde doldurun");
+      newErrors.push(t("adminCreation.step1.validationErrors.titleTurkish"));
       newErrorFields.add("description-tr");
     }
 
     if (!description?.en || description.en.trim() === "") {
-      newErrors.push("İlan açıklamasını (English) dilinde doldurun");
+      newErrors.push(t("adminCreation.step1.validationErrors.titleEnglish"));
       newErrorFields.add("description-en");
     }
 

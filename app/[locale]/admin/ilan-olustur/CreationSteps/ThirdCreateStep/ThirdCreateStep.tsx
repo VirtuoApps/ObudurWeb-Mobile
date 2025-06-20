@@ -880,7 +880,9 @@ export default function ThirdCreateStep() {
                 <div className="relative flex-grow" ref={searchInputRef}>
                   <input
                     type="text"
-                    placeholder="Adres ara..."
+                    placeholder={useTranslations("common")(
+                      "addressSearchPlaceholder"
+                    )}
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                     className="w-full h-12 pl-10 pr-4 rounded-lg border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"

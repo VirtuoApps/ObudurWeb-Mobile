@@ -25,6 +25,7 @@ import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
 import AdminPropertyCard from "@/app/components/AdminPropertyCard/AdminPropertyCard";
 import Footer from "../../resident/[slug]/Footer/Footer";
 import PersonalInformationFormPopup from "@/app/components/PersonalInformationsFormPopup/PersonalInformationsFormPopup";
+import { useTranslations } from "next-intl";
 
 interface Price {
   amount: number;
@@ -86,6 +87,7 @@ interface Message {
 export default function AdminListings() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
+  const t = useTranslations("adminInterface");
   const [statusFilter, setStatusFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
   const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
@@ -288,17 +290,17 @@ export default function AdminListings() {
   const getStatusText = (status: string) => {
     switch (status) {
       case "active":
-        return "Aktif";
+        return t("active");
       case "inactive":
-        return "Aktif Değil";
+        return t("inactive");
       case "optioned":
-        return "Opsiyonlandı";
+        return t("optioned");
       case "stopped":
-        return "Durduruldu";
+        return t("stopped");
       case "sold":
-        return "Satıldı";
+        return t("sold");
       default:
-        return "Aktif";
+        return t("active");
     }
   };
 
@@ -590,8 +592,6 @@ export default function AdminListings() {
     setUnpublishModalOpen(true);
   };
 
-
-
   return (
     <>
       {!isUserAccountCompleted && (
@@ -610,9 +610,11 @@ export default function AdminListings() {
           <div className="flex flex-row items-center justify-between lg:hidden mb-6">
             <div>
               <p className="text-[#262626] text-base font-bold">İlanlarım</p>
-              <p className="text-[#595959] text-sm">{currentItems?.length ?? 0} Adet İlanınız Var</p>
+              <p className="text-[#595959] text-sm">
+                {currentItems?.length ?? 0} Adet İlanınız Var
+              </p>
             </div>
-            <button 
+            <button
               onClick={() => router.push("/admin/ilan-olustur")}
               className="bg-[#5E5691] h-[36px] w-[100px] rounded-lg flex items-center justify-center gap-2"
             >
@@ -643,7 +645,9 @@ export default function AdminListings() {
                     onClick={() => setStatusDropdownOpen(!statusDropdownOpen)}
                   >
                     <span>
-                      {statusFilter === "all" ? "Durum" : statusFilter}
+                      {statusFilter === "all"
+                        ? t("status")
+                        : getStatusText(statusFilter)}
                     </span>
                     <img
                       src="/chevron-down.png"
@@ -666,38 +670,38 @@ export default function AdminListings() {
                         <li
                           className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
                           onClick={() => {
-                            setStatusFilter("Aktif");
+                            setStatusFilter("active");
                             setStatusDropdownOpen(false);
                           }}
                         >
-                          Aktif
+                          {t("active")}
                         </li>
                         <li
                           className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
                           onClick={() => {
-                            setStatusFilter("Satıldı");
+                            setStatusFilter("sold");
                             setStatusDropdownOpen(false);
                           }}
                         >
-                          Satıldı
+                          {t("sold")}
                         </li>
                         <li
                           className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
                           onClick={() => {
-                            setStatusFilter("Durduruldu");
+                            setStatusFilter("stopped");
                             setStatusDropdownOpen(false);
                           }}
                         >
-                          Durduruldu
+                          {t("stopped")}
                         </li>
                         <li
                           className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
                           onClick={() => {
-                            setStatusFilter("Aktif Değil");
+                            setStatusFilter("inactive");
                             setStatusDropdownOpen(false);
                           }}
                         >
-                          Aktif Değil
+                          {t("inactive")}
                         </li>
                       </ul>
                     </div>
@@ -904,7 +908,7 @@ export default function AdminListings() {
                         </td>
                         <td
                           className="py-4 px-4 text-sm font-semibold text-gray-900 border-r border-[#F0F0F0]"
-                          data-label="Fiyat"
+                          data-label={t("price")}
                         >
                           {formatPrice(property.price)}
                         </td>
@@ -932,7 +936,7 @@ export default function AdminListings() {
                         </td>
                         <td
                           className="py-4 px-4 text-sm text-gray-700 border-r border-[#F0F0F0]"
-                          data-label="Mesaj"
+                          data-label={t("message")}
                         >
                           <div
                             className="flex items-center gap-1 cursor-pointer"
@@ -951,7 +955,7 @@ export default function AdminListings() {
                         </td>
                         <td
                           className="py-4 px-4 text-sm border-r border-[#F0F0F0]"
-                          data-label="Durum"
+                          data-label={t("status")}
                         >
                           {renderStatusByProperty(property)}
                         </td>
@@ -1202,20 +1206,20 @@ export default function AdminListings() {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {currentItems.map((property) => (
-                                  <AdminPropertyCard
-                  key={property._id}
-                  property={property}
-                  onEdit={handleCardEdit}
-                  onDelete={() => {
-                    handleDeleteProperty(property._id);
-                  }}
-                  onPublish={() => {
-                    handleUpdatePublishStatus(true, property._id);
-                  }}
-                  onUnpublish={() => {
-                    handleUpdatePublishStatus(false, property._id);
-                  }}
-                />
+                  <AdminPropertyCard
+                    key={property._id}
+                    property={property}
+                    onEdit={handleCardEdit}
+                    onDelete={() => {
+                      handleDeleteProperty(property._id);
+                    }}
+                    onPublish={() => {
+                      handleUpdatePublishStatus(true, property._id);
+                    }}
+                    onUnpublish={() => {
+                      handleUpdatePublishStatus(false, property._id);
+                    }}
+                  />
                 ))}
               </div>
             )}
@@ -1263,7 +1267,7 @@ export default function AdminListings() {
                   onClick={() => handleUpdatePublishStatus(true)}
                   disabled={updateLoading}
                 >
-                  {updateLoading ? "Yükleniyor..." : "Yayınla"}
+                  {updateLoading ? t("loading") : t("publish")}
                 </button>
               </div>
             </div>
@@ -1279,9 +1283,11 @@ export default function AdminListings() {
             }}
           >
             <div className="bg-white rounded-lg p-6 max-w-md w-full">
-              <h3 className="text-lg font-semibold mb-4 text-gray-700">Onay</h3>
+              <h3 className="text-lg font-semibold mb-4 text-gray-700">
+                {t("confirmations.title")}
+              </h3>
               <p className="mb-6 text-gray-700">
-                Yayından kaldırmak istediğinize emin misiniz?
+                {t("confirmations.unpublish")}
               </p>
               <div className="flex justify-end gap-3">
                 <button
@@ -1292,14 +1298,14 @@ export default function AdminListings() {
                   }}
                   disabled={updateLoading}
                 >
-                  İptal
+                  {t("cancel")}
                 </button>
                 <button
                   className="px-4 py-2 bg-[#FA9441] text-white rounded-lg hover:bg-[#e5863b] transition"
                   onClick={() => handleUpdatePublishStatus(false)}
                   disabled={updateLoading}
                 >
-                  {updateLoading ? "Yükleniyor..." : "Duraklat"}
+                  {updateLoading ? t("loading") : t("unpublish")}
                 </button>
               </div>
             </div>
@@ -1315,11 +1321,10 @@ export default function AdminListings() {
             }}
           >
             <div className="bg-white rounded-lg p-6 max-w-md w-full">
-              <h3 className="text-lg font-semibold mb-4 text-gray-700">Onay</h3>
-              <p className="mb-6 text-gray-700">
-                Bu ilanı silmek istediğinize emin misiniz? Bu işlem geri
-                alınamaz.
-              </p>
+              <h3 className="text-lg font-semibold mb-4 text-gray-700">
+                {t("confirmations.title")}
+              </h3>
+              <p className="mb-6 text-gray-700">{t("confirmations.delete")}</p>
               <div className="flex justify-end gap-3">
                 <button
                   className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition"
@@ -1329,7 +1334,7 @@ export default function AdminListings() {
                   }}
                   disabled={updateLoading}
                 >
-                  İptal
+                  {t("cancel")}
                 </button>
                 <button
                   className="px-4 py-2 bg-[#EF1A28] text-white rounded-lg hover:bg-red-700 transition"
@@ -1338,7 +1343,7 @@ export default function AdminListings() {
                   }}
                   disabled={updateLoading}
                 >
-                  {updateLoading ? "Yükleniyor..." : "Sil"}
+                  {updateLoading ? t("loading") : t("delete")}
                 </button>
               </div>
             </div>
@@ -1355,22 +1360,22 @@ export default function AdminListings() {
           >
             <div className="bg-white rounded-lg p-6 max-w-md w-full">
               <h3 className="text-lg font-semibold mb-4 text-gray-700">
-                Durum Güncelle
+                {t("updateStatus")}
               </h3>
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Durum
+                  {t("status")}
                 </label>
                 <select
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
                   value={selectedStatus}
                   onChange={(e) => setSelectedStatus(e.target.value)}
                 >
-                  <option value="active">Aktif</option>
-                  <option value="inactive">Aktif Değil</option>
-                  <option value="optioned">Opsiyonlandı</option>
-                  <option value="stopped">Durduruldu</option>
-                  <option value="sold">Satıldı</option>
+                  <option value="active">{t("active")}</option>
+                  <option value="inactive">{t("inactive")}</option>
+                  <option value="optioned">{t("optioned")}</option>
+                  <option value="stopped">{t("stopped")}</option>
+                  <option value="sold">{t("sold")}</option>
                 </select>
               </div>
               <div className="flex justify-end gap-3">
@@ -1383,14 +1388,14 @@ export default function AdminListings() {
                   }}
                   disabled={updateLoading}
                 >
-                  İptal
+                  {t("cancel")}
                 </button>
                 <button
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
                   onClick={handleUpdateStatus}
                   disabled={updateLoading}
                 >
-                  {updateLoading ? "Yükleniyor..." : "Güncelle"}
+                  {updateLoading ? t("loading") : t("update")}
                 </button>
               </div>
             </div>
@@ -1449,7 +1454,7 @@ export default function AdminListings() {
                   }`}
                   onClick={() => setActiveMessageTab("unseen")}
                 >
-                  Görülmemiş (
+                  {t("messages.unseen")} (
                   {selectedPropertyMessages.filter((m) => !m.isSeen).length})
                 </button>
                 <button
@@ -1460,7 +1465,7 @@ export default function AdminListings() {
                   }`}
                   onClick={() => setActiveMessageTab("seen")}
                 >
-                  Görüldü (
+                  {t("messages.seen")} (
                   {selectedPropertyMessages.filter((m) => m.isSeen).length})
                 </button>
                 {activeMessageTab === "unseen" &&
@@ -1470,7 +1475,7 @@ export default function AdminListings() {
                       className="ml-auto px-4 py-2 text-xs font-medium text-blue-600 hover:text-blue-800"
                       onClick={markAllAsSeen}
                     >
-                      Tümünü Okundu Olarak İşaretle
+                      {t("messages.markAllSeen")}
                     </button>
                   )}
               </div>

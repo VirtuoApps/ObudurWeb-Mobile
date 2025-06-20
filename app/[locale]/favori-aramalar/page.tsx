@@ -15,7 +15,7 @@ import axiosInstance from "@/axios";
 import { useRouter } from "@/app/utils/router";
 import ResidentBox from "@/app/HomePage/ListView/ResidentBox/ResidentBox";
 import { getLocalizedText } from "../favorilerim/page";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { formatAddress } from "@/app/utils/addressFormatter";
 import { getDisplayPrice } from "@/app/utils/priceFormatter";
 
@@ -32,6 +32,7 @@ export default function FavoriAramalarPage() {
   const selectedLanguage = useLocale();
   const router = useRouter();
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
+  const t = useTranslations("savedSearchesPage");
 
   // Get selected currency from localStorage
   useEffect(() => {
@@ -139,14 +140,13 @@ export default function FavoriAramalarPage() {
                 className={`w-full flex flex-col items-center justify-center text-gray-500 pt-10`}
               >
                 <p className="text-center text-[#362C75] font-bold text-[24px]">
-                  Henüz Kaydedilmiş Aramanız Yok!
+                  {t("noSearchesTitle")}
                 </p>
                 <p className="text-center text-[#262626] font-medium text-[16px] mt-4">
-                  Sık kullandığınız filtreleri kaydedin, size özel yeni
-                  ilanlardan anında haberdar olun.
+                  {t("noSearchesSubtitle")}
                 </p>
                 <p className="text-center text-[#595959] font-medium text-[16px] mt-3">
-                  Fırsatları kaçırmamak için aramaya başlayın!
+                  {t("noSearchesDescription")}
                 </p>
                 <button
                   onClick={() => {
@@ -155,13 +155,13 @@ export default function FavoriAramalarPage() {
                   }}
                   className="bg-[#5E5691] rounded-2xl py-4 px-6 flex items-center justify-center text-white mt-5"
                 >
-                  Arama Yap
+                  {t("searchButton")}
                 </button>
               </div>
 
               <div className="mt-10 mb-6">
                 <h2 className="text-start text-[#262626] font-bold text-[24px] mb-8 ml-6">
-                  İlginizi Çekebilecek İlanlar
+                  {t("suggestedListingsTitle")}
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 px-2">
