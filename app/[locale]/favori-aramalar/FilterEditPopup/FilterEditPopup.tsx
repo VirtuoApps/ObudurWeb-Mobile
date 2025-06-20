@@ -862,7 +862,7 @@ export default function FilterEditPopup({
                 onClick={() => setQuickFiltersCollapsed(!quickFiltersCollapsed)}
               >
                 <h3 className="text-base font-semibold text-gray-700">
-                  Hızlı Filtreler{" "}
+                  {useTranslations("savedSearchesPage")("quickFilters")}{" "}
                   {selectedFeatures.length > 0 ? (
                     <span className="text-sm font-normal text-[#595959]">
                       ({selectedFeatures.length})

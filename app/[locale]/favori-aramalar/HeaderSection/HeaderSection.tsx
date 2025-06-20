@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 type HeaderSectionType = {
   totalFilters: number;
@@ -7,6 +8,7 @@ type HeaderSectionType = {
 
 export default function HeaderSection({ totalFilters }: HeaderSectionType) {
   const router = useRouter();
+  const t = useTranslations("savedSearchesPage");
 
   if (totalFilters === 0) {
     return null; // Don't render if there are no filters
@@ -18,10 +20,10 @@ export default function HeaderSection({ totalFilters }: HeaderSectionType) {
         {/* Left side - Title and subtitle */}
         <div>
           <h1 className="text-base sm:text-xl lg:text-2xl font-bold text-[#262626] mb-1 sm:mb-2">
-            Favori Aramalar
+            {t("title")}
           </h1>
           <p className="text-sm sm:text-sm text-[#595959]">
-            {totalFilters} adet favori aramanız var.
+            {t("subtitle", { count: totalFilters })}
           </p>
         </div>
 
@@ -31,7 +33,7 @@ export default function HeaderSection({ totalFilters }: HeaderSectionType) {
           className="flex items-center gap-2 bg-[#5E5691] hover:bg-[#4B4578] transition-colors text-white px-4 py-2 rounded-xl font-medium text-sm h-[36px] sm:w-[159px] justify-center cursor-pointer"
         >
           <img src="/search-icon.png" className="w-5 h-5" />
-          <span>Yeni Arama</span>
+          <span>{t("newSearch")}</span>
         </button>
       </div>
     </div>
