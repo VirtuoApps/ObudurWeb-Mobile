@@ -111,7 +111,10 @@ export default function Location() {
                 <span className="text-[#595959] text-sm md:text-base font-medium truncate">
                   {distance.name[currentLocale]}{" "}
                   <span className="text-gray-500 font-normal">
-                    {distance.value.toFixed(1).padStart(3, "0")} km
+                    {distance.value % 1 === 0
+                      ? distance.value.toString() + " "
+                      : distance.value.toFixed(1) + " "}
+                    km
                   </span>
                 </span>
               </li>
