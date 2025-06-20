@@ -401,6 +401,26 @@
       "subscribed": "Abone Oldunuz",
       "successMessage": "E-posta listesine abone oldunuz",
       "errorMessage": "Abonelik işlemi sırasında bir hata oluştu."
+    },
+    "links": {
+      "postAd": "İlan Verin",
+      "forSale": "Satılık İlanlar",
+      "forRent": "Kiralık İlanlar",
+      "career": "Kariyer",
+      "becomeAPartner": "Bayimiz Olun",
+      "ourSalesOffices": "Satış Ofislerimiz",
+      "contact": "İletişim",
+      "feedback": "Geri Bildirim",
+      "userAgreements": "Kullanıcı Sözleşmeleri",
+      "cookiePolicy": "Çerez Politikası",
+      "languageAndCurrency": "Dil & Para Birimi",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "linkedin": "LinkedIn"
+    },
+    "bottom": {
+      "copyright": "© 2025 Obudur",
+      "companyInfo": "Şirket Bilgileri"
     }
   },
   "contactPage": {

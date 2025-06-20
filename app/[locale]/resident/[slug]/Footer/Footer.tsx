@@ -30,6 +30,8 @@ export default function Footer({
   hideTopMargin = false,
 }: FooterType) {
   const t = useTranslations("footer.newsletter");
+  const t_links = useTranslations("footer.links");
+  const t_bottom = useTranslations("footer.bottom");
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -139,7 +141,7 @@ export default function Footer({
                       href="/admin/ilan-olustur"
                       className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
                     >
-                      İlan Verin
+                      {t_links("postAd")}
                     </a>
                   </li>
                   <li>
@@ -147,7 +149,7 @@ export default function Footer({
                       href="/satilik"
                       className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
                     >
-                      Satılık İlanlar
+                      {t_links("forSale")}
                     </a>
                   </li>
                   <li>
@@ -155,7 +157,7 @@ export default function Footer({
                       href="/kiralik"
                       className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
                     >
-                      Kiralık İlanlar
+                      {t_links("forRent")}
                     </a>
                   </li>
                 </ul>
@@ -169,7 +171,7 @@ export default function Footer({
                       className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
                       href="/kariyer"
                     >
-                      Kariyer
+                      {t_links("career")}
                     </a>
                   </li>
                   <li>
@@ -177,7 +179,7 @@ export default function Footer({
                       href="/bayimiz-olun"
                       className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
                     >
-                      Bayimiz Olun
+                      {t_links("becomeAPartner")}
                     </a>
                   </li>
                   <li>
@@ -185,7 +187,7 @@ export default function Footer({
                       href="/iletisim#offices-section"
                       className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
                     >
-                      Satış Ofislerimiz
+                      {t_links("ourSalesOffices")}
                     </a>
                   </li>
                   <li>
@@ -193,7 +195,7 @@ export default function Footer({
                       href="/iletisim"
                       className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
                     >
-                      İletişim
+                      {t_links("contact")}
                     </a>
                   </li>
                 </ul>
@@ -207,7 +209,7 @@ export default function Footer({
                       href="/iletisim"
                       className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
                     >
-                      Geri Bildirim
+                      {t_links("feedback")}
                     </a>
                   </li>
                   <li>
@@ -215,7 +217,7 @@ export default function Footer({
                       href="/sozlesmeler?id=sozlesmeler&itemId=bireysel"
                       className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
                     >
-                      Kullanıcı Sözleşmeleri
+                      {t_links("userAgreements")}
                     </a>
                   </li>
                   <li>
@@ -223,7 +225,7 @@ export default function Footer({
                       href="/sozlesmeler?id=cerezler&itemId=tercihler"
                       className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
                     >
-                      Çerez Politikası
+                      {t_links("cookiePolicy")}
                     </a>
                   </li>
                   <li>
@@ -231,7 +233,7 @@ export default function Footer({
                       className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
                       onClick={() => setIsLanguageSwitcherOpen(true)}
                     >
-                      Dil & Para Birimi
+                      {t_links("languageAndCurrency")}
                     </a>
                   </li>
                 </ul>
@@ -246,7 +248,7 @@ export default function Footer({
                       target="_blank"
                       className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
                     >
-                      Instagram
+                      {t_links("instagram")}
                     </a>
                   </li>
                   <li>
@@ -255,7 +257,7 @@ export default function Footer({
                       target="_blank"
                       className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
                     >
-                      Facebook
+                      {t_links("facebook")}
                     </a>
                   </li>
                   <li>
@@ -264,7 +266,7 @@ export default function Footer({
                       target="_blank"
                       className="text-sm text-[#8C8C8C] hover:text-[#31286A] cursor-pointer"
                     >
-                      LinkedIn
+                      {t_links("linkedin")}
                     </a>
                   </li>
                 </ul>
@@ -288,9 +290,11 @@ export default function Footer({
                 className="mr-4"
               />
               <span className="text-[14px] font-medium mr-4">
-                © 2025 Obudur
+                {t_bottom("copyright")}
               </span>
-              <span className="text-[14px] font-medium">Şirket Bilgileri</span>
+              <span className="text-[14px] font-medium">
+                {t_bottom("companyInfo")}
+              </span>
             </div>
           </div>
         </div>

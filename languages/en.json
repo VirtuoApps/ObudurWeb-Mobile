@@ -395,6 +395,26 @@
       "subscribed": "Subscribed",
       "successMessage": "You have subscribed to our newsletter",
       "errorMessage": "An error occurred during the subscription process."
+    },
+    "links": {
+      "postAd": "Post Ad",
+      "forSale": "For Sale Listings",
+      "forRent": "For Rent Listings",
+      "career": "Career",
+      "becomeAPartner": "Become a Partner",
+      "ourSalesOffices": "Our Sales Offices",
+      "contact": "Contact",
+      "feedback": "Feedback",
+      "userAgreements": "User Agreements",
+      "cookiePolicy": "Cookie Policy",
+      "languageAndCurrency": "Language & Currency",
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "linkedin": "LinkedIn"
+    },
+    "bottom": {
+      "copyright": "© 2025 Obudur",
+      "companyInfo": "Company Information"
     }
   },
   "contactPage": {
