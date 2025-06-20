@@ -585,9 +585,19 @@
       "descriptionPlaceholder": "Listing Description",
       "fixErrors": "Please fix the following errors:",
       "validationErrors": {
-        "titleTurkish": "Please fill in the listing description in Turkish",
-        "titleEnglish": "Please fill in the listing description in English"
-      }
+        "listingTypeRequired": "Please select a listing type (For Sale or For Rent)",
+        "propertyTypeRequired": "Please select a property type",
+        "categoryRequired": "Please select a category",
+        "titleTurkishRequired": "Please fill in the listing title in Turkish",
+        "titleEnglishRequired": "Please fill in the listing title in English",
+        "descriptionTurkishRequired": "Please fill in the listing description in Turkish",
+        "descriptionEnglishRequired": "Please fill in the listing description in English"
+      },
+      "stepCounter": "Step {current} / {total}",
+      "cancel": "Cancel",
+      "continue": "Continue",
+      "titleEnglishPlaceholder": "Title",
+      "descriptionEnglishPlaceholder": "Description"
     },
     "step6": {
       "title": "Documents",

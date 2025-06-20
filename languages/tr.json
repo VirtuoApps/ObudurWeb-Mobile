@@ -591,9 +591,19 @@
       "descriptionPlaceholder": "İlan Açıklaması",
       "fixErrors": "Lütfen aşağıdaki hataları düzeltin:",
       "validationErrors": {
-        "titleTurkish": "İlan açıklamasını (Türkçe) dilinde doldurun",
-        "titleEnglish": "İlan açıklamasını (English) dilinde doldurun"
-      }
+        "listingTypeRequired": "Lütfen ilan tipini seçin (Satılık veya Kiralık)",
+        "propertyTypeRequired": "Lütfen emlak tipini seçin",
+        "categoryRequired": "Lütfen kategori seçin",
+        "titleTurkishRequired": "İlan başlığını (Türkçe) dilinde doldurun",
+        "titleEnglishRequired": "İlan başlığını (English) dilinde doldurun",
+        "descriptionTurkishRequired": "İlan açıklamasını (Türkçe) dilinde doldurun",
+        "descriptionEnglishRequired": "İlan açıklamasını (English) dilinde doldurun"
+      },
+      "stepCounter": "Adım {current} / {total}",
+      "cancel": "Vazgeç",
+      "continue": "Devam Et",
+      "titleEnglishPlaceholder": "Title",
+      "descriptionEnglishPlaceholder": "Description"
     },
     "step6": {
       "title": "Dökümanlar",
