@@ -1278,11 +1278,33 @@ export default function FilterPopup({
                 <GeneralSelect
                   selectedItem={tempRoomCount ? { name: tempRoomCount } : null}
                   onSelect={(room) => {
-                    if (room) setTempRoomCount(room.name);
+                    if (room) setTempRoomCount(room.value.toString());
                     else setTempRoomCount(""); // Reset if no room selected
                   }}
-                  options={[1, 2, 3, 4].map((room) => ({
-                    name: room,
+                  options={[
+                    {
+                      name: "Stüdyo",
+                      value: 0,
+                    },
+                    {
+                      name: "1+1",
+                      value: 1,
+                    },
+                    {
+                      name: "2+1",
+                      value: 2,
+                    },
+                    {
+                      name: "3+1",
+                      value: 3,
+                    },
+                    {
+                      name: "4+1",
+                      value: 4,
+                    },
+                  ].map((room) => ({
+                    name: room.name,
+                    value: room.value,
                     href: "#",
                   }))}
                   defaultText={t("roomsSelect") || "Select Room Count"}

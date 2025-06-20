@@ -631,7 +631,7 @@ export default function HomePage({
 
       {!disableMapListButton && (
         <div
-          className={`fixed left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-50 px-3 h-[40px] rounded-lg shadow-lg transition-all duration-300`}
+          className={`fixed left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-40 px-3 h-[40px] rounded-lg shadow-lg transition-all duration-300`}
           style={{
             bottom:
               isPinSelected && currentView === "map"
