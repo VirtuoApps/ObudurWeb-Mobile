@@ -599,6 +599,126 @@
       "titleEnglishPlaceholder": "Title",
       "descriptionEnglishPlaceholder": "Description"
     },
+    "step2_work": {
+      "title": "Specify the features of the workplace.",
+      "description": "In this step, you can enter the basic features, price, and other important details of the workplace. The accuracy of this information is critical to attract potential buyers or tenants.",
+      "fixErrors": "Please fix the following errors:",
+      "priceTRY": "Price (TRY)",
+      "priceUSD": "Price (USD)",
+      "pricePlaceholder": "Enter price",
+      "area": "Area (m²)",
+      "areaPlaceholder": "m²",
+      "roomCount": "Section / Room Count",
+      "selectPlaceholder": "Select",
+      "floorCount": "Floor Count",
+      "floorPosition": "Floor Position",
+      "source": "From Whom",
+      "exchangeable": "Exchangeable",
+      "heating": "Heating",
+      "usageStatus": "Usage Status",
+      "buildingAge": "Building Age",
+      "creditEligible": "Credit Eligible",
+      "dues": "Dues",
+      "continue": "Continue",
+      "selectOption": "Select option",
+      "validation": {
+        "priceUSD": "Please specify the price in USD",
+        "priceTRY": "Please specify the price in TRY",
+        "area": "Please enter the square meter value",
+        "roomCount": "Please select the number of sections / rooms",
+        "floorCount": "Please select the floor count",
+        "buildingAge": "Please select the building age",
+        "heatingType": "Please select the heating type",
+        "source": "Please select from whom information",
+        "usageStatus": "Please select the usage status",
+        "floorPosition": "Please select the floor position"
+      },
+      "options": {
+        "heatingTypes": {
+          "none": "None",
+          "stove": "Stove",
+          "naturalGasStove": "Natural Gas Stove",
+          "floorHeater": "Floor Heater",
+          "naturalGasBoiler": "Natural Gas (Boiler)",
+          "central": "Central",
+          "airConditioning": "Air Conditioning",
+          "solarEnergy": "Solar Energy"
+        },
+        "sources": {
+          "fromOwner": "From Owner",
+          "fromRealEstate": "From Real Estate Office",
+          "fromConstruction": "From Construction Company"
+        },
+        "usageStatuses": {
+          "empty": "Empty",
+          "tenantOccupied": "Tenant Occupied",
+          "ownerOccupied": "Owner Occupied"
+        },
+        "buildingAges": {
+          "0": "0",
+          "1": "1",
+          "2": "2",
+          "3": "3",
+          "4": "4",
+          "5": "5",
+          "10": "10",
+          "15": "15",
+          "20+": "20+"
+        },
+        "booleans": {
+          "true": "Yes",
+          "false": "No"
+        },
+        "roomCounts": {
+          "1": "1",
+          "2": "2",
+          "3": "3",
+          "4": "4",
+          "5": "5",
+          "5+": "5+"
+        },
+        "floorCounts": {
+          "1": "1",
+          "2": "2",
+          "3": "3",
+          "4": "4",
+          "5": "5",
+          "10": "10"
+        },
+        "floorPositions": {
+          "level4Basement": "Level 4 Basement",
+          "level3Basement": "Level 3 Basement",
+          "level2Basement": "Level 2 Basement",
+          "level1Basement": "Level 1 Basement",
+          "groundFloor": "Ground Floor",
+          "basementFloor": "Basement Floor",
+          "gardenFloor": "Garden Floor",
+          "entrance": "Entrance",
+          "highEntrance": "High Entrance",
+          "roofFloor": "Roof Floor",
+          "1": "1",
+          "2": "2",
+          "3": "3",
+          "4": "4",
+          "5": "5",
+          "6": "6",
+          "7": "7",
+          "8": "8",
+          "9": "9",
+          "10": "10",
+          "11": "11",
+          "12": "12",
+          "13": "13",
+          "14": "14",
+          "15": "15",
+          "16": "16",
+          "17": "17",
+          "18": "18",
+          "19": "19",
+          "20+": "20+"
+        }
+      }
+    },
     "step6": {
       "title": "Documents",
       "subtitle": "Upload the documents of the property you will list.",
