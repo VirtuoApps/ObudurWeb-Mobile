@@ -10,11 +10,10 @@ import axiosInstance from "../../../../axios";
 import { useAppDispatch } from "@/app/store/hooks";
 import { fetchUserData } from "@/app/store/userSlice";
 import SignupEmailVerifySendPopup from "../../SignupEMailVerifySendPopup/SignupEmailVerifySendPopup";
+import UserContract from "../UserContract/UserContract";
 
 // Define the type for form data
 type SignupFormData = {
-  firstName: string;
-  lastName: string;
   email: string;
   password: string;
   passwordConfirm: string;
@@ -31,14 +30,12 @@ export default function SignupForm({
   const t = useTranslations("signupForm");
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
-
+  const [contractOpen, setContractOpen] = useState(false);
   const dispatch = useAppDispatch();
 
   // Define the schema for form validation with localized error messages
   const signupSchema = z
     .object({
-      firstName: z.string().min(1, t("firstNameError")),
-      lastName: z.string().min(1, t("lastNameError")),
       email: z.string().email(t("emailError")),
       password: z.string().min(6, t("passwordError")),
       passwordConfirm: z.string().min(6, t("passwordConfirmError")),
@@ -59,8 +56,6 @@ export default function SignupForm({
     resolver: zodResolver(signupSchema),
     mode: "onChange",
     defaultValues: {
-      firstName: "",
-      lastName: "",
       email: "",
       password: "",
       passwordConfirm: "",
@@ -73,13 +68,8 @@ export default function SignupForm({
       setIsLoading(true);
       setApiError(null);
 
-      // Combine first name and last name
-      const name = `${data.firstName} ${data.lastName}`;
-
       // Call the registration API with name included
       const response = await axiosInstance.post("/auth/register", {
-        firstName: data.firstName,
-        lastName: data.lastName,
         email: data.email,
         password: data.password,
       });
@@ -126,13 +116,13 @@ export default function SignupForm({
   };
 
   return (
-    <>
+    <div className="z-[9999]">
       <div
         className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
         onClick={onClose}
       >
         <div
-          className="bg-white rounded-lg p-6 w-full max-w-md mx-4"
+          className="bg-white rounded-[24px] p-6 w-full max-w-md mx-4"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex flex-row items-center justify-between mb-6">
@@ -140,7 +130,7 @@ export default function SignupForm({
               {t("title")}
             </h2>
             <button
-              className="text-gray-500 hover:text-gray-700"
+              className="text-[#262626] hover:text-gray-700"
               onClick={onClose}
             >
               <XMarkIcon className="w-6 h-6" />
@@ -159,48 +149,12 @@ export default function SignupForm({
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
               <input
-                id="firstName"
-                type="text"
-                placeholder={t("firstNamePlaceholder")}
-                {...register("firstName")}
-                autoComplete="off"
-                className={`w-full px-3 py-2 pl-1 border-b outline-none text-gray-600 placeholder:text-gray-400 ${
-                  errors.firstName ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              {errors.firstName && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.firstName.message}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <input
-                id="lastName"
-                type="text"
-                placeholder={t("lastNamePlaceholder")}
-                {...register("lastName")}
-                autoComplete="off"
-                className={`w-full px-3 py-2 pl-1 border-b outline-none text-gray-600 placeholder:text-gray-400 ${
-                  errors.lastName ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-              {errors.lastName && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.lastName.message}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <input
                 id="email"
                 type="email"
                 placeholder={t("emailPlaceholder")}
                 {...register("email")}
                 autoComplete="off"
-                className={`w-full px-3 py-2 pl-1 border-b outline-none text-gray-600 placeholder:text-gray-400 ${
+                className={`w-full rounded-[16px] h-14 border py-2 px-3 text-[#262626] focus:outline-none focus:ring-none placeholder:text-gray-400 ${
                   errors.email ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -218,7 +172,7 @@ export default function SignupForm({
                 placeholder={t("passwordPlaceholder")}
                 {...register("password")}
                 autoComplete="off"
-                className={`w-full px-3 py-2 pl-1 border-b placeholder:text-gray-400 text-gray-600 outline-none ${
+                className={`w-full rounded-[16px] h-14 border py-2 px-3 text-[#262626] focus:outline-none focus:ring-none placeholder:text-gray-400 outline-none ${
                   errors.password ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -236,7 +190,7 @@ export default function SignupForm({
                 placeholder={t("passwordConfirmPlaceholder")}
                 {...register("passwordConfirm")}
                 autoComplete="off"
-                className={`w-full px-3 py-2 pl-1 border-b placeholder:text-gray-400 text-gray-600 outline-none ${
+                className={`w-full rounded-[16px] h-14 border py-2 px-3 text-[#262626] focus:outline-none focus:ring-none placeholder:text-gray-400 outline-none ${
                   errors.passwordConfirm ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -260,7 +214,10 @@ export default function SignupForm({
                 htmlFor="agreement"
                 className={`ml-2 text-sm ${
                   errors.agreement ? "text-red-500" : "text-gray-500"
-                }`}
+                } cursor-pointer decoration-1 underline`}
+                onClick={() => {
+                  setContractOpen(true);
+                }}
               >
                 {t("agreement")}
               </label>
@@ -321,6 +278,8 @@ export default function SignupForm({
         </div> */}
         </div>
       </div>
-    </>
+
+      <UserContract isOpen={contractOpen} setIsOpen={setContractOpen} />
+    </div>
   );
 }

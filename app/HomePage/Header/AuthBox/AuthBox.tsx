@@ -569,7 +569,7 @@ export default function AuthBox({
   }
 
   return (
-    <>
+    <div className="z-[9999]">
       <AuthPopup
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
@@ -788,6 +788,6 @@ export default function AuthBox({
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
