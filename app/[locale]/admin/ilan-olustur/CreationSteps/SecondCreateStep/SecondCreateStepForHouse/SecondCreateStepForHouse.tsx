@@ -10,6 +10,7 @@ import { formatInputPrice, parseInputPrice } from "@/app/utils/priceFormatter";
 import GoBackButton from "../../../GoBackButton/GoBackButton";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import { useListingForm } from "../../CreationSteps";
+import { useTranslations } from "next-intl";
 
 // Custom Select component that matches the design
 interface SelectOption {
@@ -113,6 +114,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
 };
 
 export default function SecondCreateStepForHouse() {
+  const t = useTranslations("adminCreation.step2_house");
   const [errors, setErrors] = useState<string[]>([]);
   const [errorFields, setErrorFields] = useState<Set<string>>(new Set());
   const [selectedDuesCurrency, setSelectedDuesCurrency] =
@@ -238,103 +240,145 @@ export default function SecondCreateStepForHouse() {
 
   // Kitchen type options
   const kitchenTypeOptions = [
-    { value: "americanKitchen", label: "Amerikan Mutfak" },
-    { value: "separateKitchen", label: "Ayrı Mutfak" },
-    { value: "openKitchen", label: "Açık Mutfak" },
-    { value: "islandKitchen", label: "Ada Mutfak" },
-    { value: "cornerKitchen", label: "Köşe Mutfak" },
+    {
+      value: "americanKitchen",
+      label: t("options.kitchenTypes.americanKitchen"),
+    },
+    {
+      value: "separateKitchen",
+      label: t("options.kitchenTypes.separateKitchen"),
+    },
+    { value: "openKitchen", label: t("options.kitchenTypes.openKitchen") },
+    { value: "islandKitchen", label: t("options.kitchenTypes.islandKitchen") },
+    { value: "cornerKitchen", label: t("options.kitchenTypes.cornerKitchen") },
   ];
 
   // Heating type options
   const heatingTypeOptions = [
-    { value: "none", label: "Yok" },
-    { value: "stove", label: "Soba" },
-    { value: "naturalGasStove", label: "Doğalgaz Sobası" },
-    { value: "floorHeater", label: "Kat Kaloriferi" },
-    { value: "naturalGasBoiler", label: "Doğalgaz (kombi)" },
-    { value: "central", label: "Merkezi" },
-    { value: "airConditioning", label: "Klima" },
-    { value: "solarEnergy", label: "Güneş Enerjisi" },
+    { value: "none", label: t("options.heatingTypes.none") },
+    { value: "stove", label: t("options.heatingTypes.stove") },
+    {
+      value: "naturalGasStove",
+      label: t("options.heatingTypes.naturalGasStove"),
+    },
+    { value: "floorHeater", label: t("options.heatingTypes.floorHeater") },
+    {
+      value: "naturalGasBoiler",
+      label: t("options.heatingTypes.naturalGasBoiler"),
+    },
+    { value: "central", label: t("options.heatingTypes.central") },
+    {
+      value: "airConditioning",
+      label: t("options.heatingTypes.airConditioning"),
+    },
+    { value: "solarEnergy", label: t("options.heatingTypes.solarEnergy") },
   ];
 
   // Source options
   const sourceOptions = [
-    { value: "fromOwner", label: "Sahibinden" },
-    { value: "fromRealEstate", label: "Emlak Ofisinden" },
-    { value: "fromConstruction", label: "İnşaat Firmasından" },
+    { value: "fromOwner", label: t("options.sources.fromOwner") },
+    { value: "fromRealEstate", label: t("options.sources.fromRealEstate") },
+    {
+      value: "fromConstruction",
+      label: t("options.sources.fromConstruction"),
+    },
   ];
 
   // Usage status options
   const usageStatusOptions = [
-    { value: "empty", label: "Boş" },
-    { value: "tenantOccupied", label: "Kiracılı" },
-    { value: "ownerOccupied", label: "Mülk Sahibi" },
+    { value: "empty", label: t("options.usageStatuses.empty") },
+    {
+      value: "tenantOccupied",
+      label: t("options.usageStatuses.tenantOccupied"),
+    },
+    {
+      value: "ownerOccupied",
+      label: t("options.usageStatuses.ownerOccupied"),
+    },
   ];
 
   // Deed status options
   const deedStatusOptions = [
-    { value: "condominium", label: "Kat Mülkiyetli" },
-    { value: "floorEasement", label: "Kat İrtifaklı" },
-    { value: "sharedDeed", label: "Hisseli Tapu" },
-    { value: "detachedDeed", label: "Müstakil Tapulu" },
-    { value: "landDeed", label: "Arsa Tapulu" },
-    { value: "cooperativeShare", label: "Kooperatif Hisseli Tapu" },
-    { value: "usufructRight", label: "İntifa Hakkı Tesisli" },
-    { value: "foreignDeed", label: "Yurt Dışı Tapulu" },
-    { value: "noDeedRecord", label: "Tapu Kaydı Yok" },
+    { value: "condominium", label: t("options.deedStatuses.condominium") },
+    { value: "floorEasement", label: t("options.deedStatuses.floorEasement") },
+    { value: "sharedDeed", label: t("options.deedStatuses.sharedDeed") },
+    { value: "detachedDeed", label: t("options.deedStatuses.detachedDeed") },
+    { value: "landDeed", label: t("options.deedStatuses.landDeed") },
+    {
+      value: "cooperativeShare",
+      label: t("options.deedStatuses.cooperativeShare"),
+    },
+    {
+      value: "usufructRight",
+      label: t("options.deedStatuses.usufructRight"),
+    },
+    { value: "foreignDeed", label: t("options.deedStatuses.foreignDeed") },
+    { value: "noDeedRecord", label: t("options.deedStatuses.noDeedRecord") },
   ];
 
   // Building age options
   const buildingAgeOptions = [
-    { value: 0, label: "0" },
-    { value: 1, label: "1" },
-    { value: 2, label: "2" },
-    { value: 3, label: "3" },
-    { value: 4, label: "4" },
-    { value: 5, label: "5" },
-    { value: 10, label: "10" },
-    { value: 15, label: "15" },
-    { value: 20, label: "20+" },
+    { value: 0, label: t("options.buildingAges.0") },
+    { value: 1, label: t("options.buildingAges.1") },
+    { value: 2, label: t("options.buildingAges.2") },
+    { value: 3, label: t("options.buildingAges.3") },
+    { value: 4, label: t("options.buildingAges.4") },
+    { value: 5, label: t("options.buildingAges.5") },
+    { value: 10, label: t("options.buildingAges.10") },
+    { value: 15, label: t("options.buildingAges.15") },
+    { value: 20, label: t("options.buildingAges.20+") },
   ];
 
   // Boolean options
   const booleanOptions = [
-    { value: "true", label: "Evet" },
-    { value: "false", label: "Hayır" },
+    { value: "true", label: t("options.booleans.true") },
+    { value: "false", label: t("options.booleans.false") },
   ];
 
   // Floor position options
   const floorPositionOptions = [
-    { tr: "Kot 4", en: "Level 4 Basement" },
-    { tr: "Kot 3", en: "Level 3 Basement" },
-    { tr: "Kot 2", en: "Level 2 Basement" },
-    { tr: "Kot 1", en: "Level 1 Basement" },
-    { tr: "Zemin Kat", en: "Ground Floor" },
-    { tr: "Bodrum Kat", en: "Basement Floor" },
-    { tr: "Bahçe Katı", en: "Garden Floor" },
-    { tr: "Giriş", en: "Entrance" },
-    { tr: "Yüksek Giriş", en: "High Entrance" },
-    { tr: "Çatı Katı", en: "Roof Floor" },
-    { tr: "1", en: "1" },
-    { tr: "2", en: "2" },
-    { tr: "3", en: "3" },
-    { tr: "4", en: "4" },
-    { tr: "5", en: "5" },
-    { tr: "6", en: "6" },
-    { tr: "7", en: "7" },
-    { tr: "8", en: "8" },
-    { tr: "9", en: "9" },
-    { tr: "10", en: "10" },
-    { tr: "11", en: "11" },
-    { tr: "12", en: "12" },
-    { tr: "13", en: "13" },
-    { tr: "14", en: "14" },
-    { tr: "15", en: "15" },
-    { tr: "16", en: "16" },
-    { tr: "17", en: "17" },
-    { tr: "18", en: "18" },
-    { tr: "19", en: "19" },
-    { tr: "20+", en: "20+" },
+    {
+      tr: t("options.floorPositions.level4Basement"),
+      en: "Level 4 Basement",
+    },
+    {
+      tr: t("options.floorPositions.level3Basement"),
+      en: "Level 3 Basement",
+    },
+    {
+      tr: t("options.floorPositions.level2Basement"),
+      en: "Level 2 Basement",
+    },
+    {
+      tr: t("options.floorPositions.level1Basement"),
+      en: "Level 1 Basement",
+    },
+    { tr: t("options.floorPositions.groundFloor"), en: "Ground Floor" },
+    { tr: t("options.floorPositions.basementFloor"), en: "Basement Floor" },
+    { tr: t("options.floorPositions.gardenFloor"), en: "Garden Floor" },
+    { tr: t("options.floorPositions.entrance"), en: "Entrance" },
+    { tr: t("options.floorPositions.highEntrance"), en: "High Entrance" },
+    { tr: t("options.floorPositions.roofFloor"), en: "Roof Floor" },
+    { tr: t("options.floorPositions.1"), en: "1" },
+    { tr: t("options.floorPositions.2"), en: "2" },
+    { tr: t("options.floorPositions.3"), en: "3" },
+    { tr: t("options.floorPositions.4"), en: "4" },
+    { tr: t("options.floorPositions.5"), en: "5" },
+    { tr: t("options.floorPositions.6"), en: "6" },
+    { tr: t("options.floorPositions.7"), en: "7" },
+    { tr: t("options.floorPositions.8"), en: "8" },
+    { tr: t("options.floorPositions.9"), en: "9" },
+    { tr: t("options.floorPositions.10"), en: "10" },
+    { tr: t("options.floorPositions.11"), en: "11" },
+    { tr: t("options.floorPositions.12"), en: "12" },
+    { tr: t("options.floorPositions.13"), en: "13" },
+    { tr: t("options.floorPositions.14"), en: "14" },
+    { tr: t("options.floorPositions.15"), en: "15" },
+    { tr: t("options.floorPositions.16"), en: "16" },
+    { tr: t("options.floorPositions.17"), en: "17" },
+    { tr: t("options.floorPositions.18"), en: "18" },
+    { tr: t("options.floorPositions.19"), en: "19" },
+    { tr: t("options.floorPositions.20+"), en: "20+" },
   ];
 
   // Generate options for number-based selects
@@ -348,17 +392,17 @@ export default function SecondCreateStepForHouse() {
 
   const generateRoomCountOptions = (): SelectOption[] => {
     return [
-      { value: 0, label: "Stüdyo" },
-      { value: 1, label: "1+1" },
-      { value: 2, label: "2+1" },
-      { value: 3, label: "3+1" },
-      { value: 4, label: "4+1" },
-      { value: 5, label: "5+1" },
-      { value: 6, label: "6+1" },
-      { value: 7, label: "7+1" },
-      { value: 8, label: "8+1" },
-      { value: 9, label: "9+1" },
-      { value: 10, label: "10 Üzeri" },
+      { value: 0, label: t("options.roomCounts.studio") },
+      { value: 1, label: t("options.roomCounts.1+1") },
+      { value: 2, label: t("options.roomCounts.2+1") },
+      { value: 3, label: t("options.roomCounts.3+1") },
+      { value: 4, label: t("options.roomCounts.4+1") },
+      { value: 5, label: t("options.roomCounts.5+1") },
+      { value: 6, label: t("options.roomCounts.6+1") },
+      { value: 7, label: t("options.roomCounts.7+1") },
+      { value: 8, label: t("options.roomCounts.8+1") },
+      { value: 9, label: t("options.roomCounts.9+1") },
+      { value: 10, label: t("options.roomCounts.10+") },
     ];
   };
 
@@ -379,79 +423,79 @@ export default function SecondCreateStepForHouse() {
     const tryPrice = price?.find((p) => p.currency === "TRY");
 
     if (!usdPrice || usdPrice.amount <= 0) {
-      newErrors.push("Lütfen USD para biriminde fiyat belirtin");
+      newErrors.push(t("validation.priceUSD"));
       newErrorFields.add("price-usd");
     }
 
     if (!tryPrice || tryPrice.amount <= 0) {
-      newErrors.push("Lütfen TRY para biriminde fiyat belirtin");
+      newErrors.push(t("validation.priceTRY"));
       newErrorFields.add("price-try");
     }
 
     // Check area fields
     if (!projectArea || projectArea <= 0) {
-      newErrors.push("Lütfen brüt metrekare değerini girin");
+      newErrors.push(t("validation.grossArea"));
       newErrorFields.add("projectArea");
     }
 
     if (!totalSize || totalSize <= 0) {
-      newErrors.push("Lütfen net metrekare değerini girin");
+      newErrors.push(t("validation.netArea"));
       newErrorFields.add("totalSize");
     }
 
     // Validate room counts for real estate (may not apply to land)
     if ((!roomCount && roomCount !== 0) || roomCount < 0) {
-      newErrors.push("Lütfen oda sayısını seçin");
+      newErrors.push(t("validation.roomCount"));
       newErrorFields.add("roomCount");
     }
 
     if ((!bathroomCount && bathroomCount !== 0) || bathroomCount < 0) {
-      newErrors.push("Lütfen banyo sayısını seçin");
+      newErrors.push(t("validation.bathroomCount"));
       newErrorFields.add("bathroomCount");
     }
 
     if ((!bedRoomCount && bedRoomCount !== 0) || bedRoomCount < 0) {
-      newErrors.push("Lütfen balkon sayısını seçin");
+      newErrors.push(t("validation.balconyCount"));
       newErrorFields.add("bedRoomCount");
     }
 
     if (!floorCount || floorCount <= 0) {
-      newErrors.push("Lütfen kat sayısını seçin");
+      newErrors.push(t("validation.floorCount"));
       newErrorFields.add("floorCount");
     }
 
     if (!kitchenType || kitchenType.tr === "" || kitchenType.en === "") {
-      newErrors.push("Lütfen mutfak tipini seçin");
+      newErrors.push(t("validation.kitchenType"));
       newErrorFields.add("kitchenType");
     }
 
     if ((!buildingAge && buildingAge !== 0) || buildingAge < 0) {
-      newErrors.push("Lütfen bina yaşını seçin");
+      newErrors.push(t("validation.buildingAge"));
       newErrorFields.add("buildingAge");
     }
 
     if (!heatingType || heatingType.tr === "" || heatingType.en === "") {
-      newErrors.push("Lütfen ısıtma tipini seçin");
+      newErrors.push(t("validation.heatingType"));
       newErrorFields.add("heatingType");
     }
 
     if (!source || source.tr === "" || source.en === "") {
-      newErrors.push("Lütfen kimden bilgisini seçin");
+      newErrors.push(t("validation.source"));
       newErrorFields.add("source");
     }
 
     if (!usageStatus || !usageStatus.get("tr") || !usageStatus.get("en")) {
-      newErrors.push("Lütfen kullanım durumunu seçin");
+      newErrors.push(t("validation.usageStatus"));
       newErrorFields.add("usageStatus");
     }
 
     if (!deedStatus || !deedStatus.get("tr") || !deedStatus.get("en")) {
-      newErrors.push("Lütfen tapu durumunu seçin");
+      newErrors.push(t("validation.deedStatus"));
       newErrorFields.add("deedStatus");
     }
 
     if (!floorPosition || floorPosition.tr === "" || floorPosition.en === "") {
-      newErrors.push("Lütfen bulunduğu katı seçin");
+      newErrors.push(t("validation.floorPosition"));
       newErrorFields.add("floorPosition");
     }
 
@@ -515,14 +559,10 @@ export default function SecondCreateStepForHouse() {
           {/* Left Info Panel */}
           <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 flex flex-col">
             <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
-              Evin özelliklerini belirtin.
+              {t("title")}
             </h1>
             <div className="mt-4 text-base text-[#595959] font-medium">
-              <p className="leading-[140%]">
-                Bu adımda, ilanınızın temel özelliklerini, fiyatını ve diğer
-                önemli detayları girebilirsiniz. Bu bilgilerin doğruluğu,
-                alıcıların veya kiracıların ilgisini çekmek için kritiktir.
-              </p>
+              <p className="leading-[140%]">{t("description")}</p>
             </div>
           </div>
 
@@ -543,7 +583,7 @@ export default function SecondCreateStepForHouse() {
                   </div>
                   <div className="ml-3">
                     <h3 className="text-sm font-medium text-red-800">
-                      Lütfen aşağıdaki hataları düzeltin:
+                      {t("fixErrors")}
                     </h3>
                     <div className="mt-2 text-sm text-red-700">
                       <ul className="list-disc pl-5 space-y-1">
@@ -562,7 +602,7 @@ export default function SecondCreateStepForHouse() {
               <div className="flex flex-col sm:flex-row gap-4 mb-4">
                 <div className="w-full sm:w-1/2">
                   <label className="font-semibold block mb-2 text-[#262626]">
-                    Fiyat (TRY)
+                    {t("priceTRY")}
                   </label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium">
@@ -575,14 +615,14 @@ export default function SecondCreateStepForHouse() {
                       className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
                         "price-try"
                       )}`}
-                      placeholder="Fiyat yazın"
+                      placeholder={t("pricePlaceholder")}
                     />
                   </div>
                 </div>
 
                 <div className="w-full sm:w-1/2">
                   <label className="font-semibold block mb-2 text-[#262626]">
-                    Fiyat (USD)
+                    {t("priceUSD")}
                   </label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium">
@@ -595,7 +635,7 @@ export default function SecondCreateStepForHouse() {
                       className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
                         "price-usd"
                       )}`}
-                      placeholder="Fiyat yazın"
+                      placeholder={t("pricePlaceholder")}
                     />
                   </div>
                 </div>
@@ -626,7 +666,7 @@ export default function SecondCreateStepForHouse() {
                   htmlFor="projectArea"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Metrekare (Brüt)
+                  {t("grossArea")}
                 </label>
                 <input
                   type="text"
@@ -644,7 +684,7 @@ export default function SecondCreateStepForHouse() {
                   className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
                     "projectArea"
                   )}`}
-                  placeholder="Buraya yazın"
+                  placeholder={t("areaPlaceholder")}
                 />
               </div>
               <div className="w-full lg:w-1/3">
@@ -652,7 +692,7 @@ export default function SecondCreateStepForHouse() {
                   htmlFor="totalSize"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Metrekare (Net)
+                  {t("netArea")}
                 </label>
                 <input
                   type="text"
@@ -670,7 +710,7 @@ export default function SecondCreateStepForHouse() {
                   className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
                     "totalSize"
                   )}`}
-                  placeholder="Buraya yazın"
+                  placeholder={t("areaPlaceholder")}
                 />
               </div>
               <div className="w-full lg:w-1/3">
@@ -678,13 +718,13 @@ export default function SecondCreateStepForHouse() {
                   htmlFor="roomCount"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Oda Sayısı
+                  {t("roomCount")}
                 </label>
                 <CustomSelect
                   options={generateRoomCountOptions()}
                   value={roomCount || 0}
                   onChange={(value) => setRoomCount(parseInt(value))}
-                  placeholder="Seçiniz"
+                  placeholder={t("selectPlaceholder")}
                   hasError={errorFields.has("roomCount")}
                 />
               </div>
@@ -697,13 +737,13 @@ export default function SecondCreateStepForHouse() {
                   htmlFor="bathroomCount"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Banyo Sayısı
+                  {t("bathroomCount")}
                 </label>
                 <CustomSelect
                   options={generateNumberOptions(1, 5)}
                   value={bathroomCount || 0}
                   onChange={(value) => setBathroomCount(parseInt(value))}
-                  placeholder="Seçin"
+                  placeholder={t("selectOption")}
                   hasError={errorFields.has("bathroomCount")}
                 />
               </div>
@@ -712,13 +752,13 @@ export default function SecondCreateStepForHouse() {
                   htmlFor="floorCount"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Kat Sayısı
+                  {t("floorCount")}
                 </label>
                 <CustomSelect
                   options={generateNumberOptions(1, 5)}
                   value={floorCount}
                   onChange={(value) => setFloorCount(parseInt(value))}
-                  placeholder="Seçin"
+                  placeholder={t("selectOption")}
                   hasError={errorFields.has("floorCount")}
                 />
               </div>
@@ -727,7 +767,7 @@ export default function SecondCreateStepForHouse() {
                   htmlFor="floorPosition"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Bulunduğu Kat
+                  {t("floorPosition")}
                 </label>
                 <CustomSelect
                   options={floorPositionOptions.map((option) => ({
@@ -746,7 +786,7 @@ export default function SecondCreateStepForHouse() {
                       });
                     }
                   }}
-                  placeholder="Seçin"
+                  placeholder={t("selectOption")}
                   hasError={errorFields.has("floorPosition")}
                 />
               </div>
@@ -759,13 +799,13 @@ export default function SecondCreateStepForHouse() {
                   htmlFor="bedRoomCount"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Balkon Sayısı
+                  {t("balconyCount")}
                 </label>
                 <CustomSelect
                   options={generateNumberOptions(0, 5)}
                   value={bedRoomCount || 0}
                   onChange={(value) => setBedRoomCount(parseInt(value))}
-                  placeholder="Seçin"
+                  placeholder={t("selectOption")}
                   hasError={errorFields.has("bedRoomCount")}
                 />
               </div>
@@ -774,7 +814,7 @@ export default function SecondCreateStepForHouse() {
                   htmlFor="kitchenType"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Mutfak Tipi
+                  {t("kitchenType")}
                 </label>
                 <CustomSelect
                   options={kitchenTypeOptions}
@@ -807,7 +847,7 @@ export default function SecondCreateStepForHouse() {
                       });
                     }
                   }}
-                  placeholder="Seçin"
+                  placeholder={t("selectOption")}
                   hasError={errorFields.has("kitchenType")}
                 />
               </div>
@@ -816,7 +856,7 @@ export default function SecondCreateStepForHouse() {
                   htmlFor="heatingType"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Isıtma
+                  {t("heating")}
                 </label>
                 <CustomSelect
                   options={heatingTypeOptions}
@@ -855,7 +895,7 @@ export default function SecondCreateStepForHouse() {
                       });
                     }
                   }}
-                  placeholder="Seçin"
+                  placeholder={t("selectOption")}
                   hasError={errorFields.has("heatingType")}
                 />
               </div>
@@ -868,7 +908,7 @@ export default function SecondCreateStepForHouse() {
                   htmlFor="source"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Kimden
+                  {t("source")}
                 </label>
                 <CustomSelect
                   options={sourceOptions}
@@ -897,7 +937,7 @@ export default function SecondCreateStepForHouse() {
                       });
                     }
                   }}
-                  placeholder="Seçin"
+                  placeholder={t("selectOption")}
                   hasError={errorFields.has("source")}
                 />
               </div>
@@ -906,13 +946,13 @@ export default function SecondCreateStepForHouse() {
                   htmlFor="exchangeable"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Takaslı
+                  {t("exchangeable")}
                 </label>
                 <CustomSelect
                   options={booleanOptions}
                   value={exchangeable ? "true" : "false"}
                   onChange={(value) => setExchangeable(value === "true")}
-                  placeholder="Seçin"
+                  placeholder={t("selectOption")}
                 />
               </div>
               <div className="w-full lg:w-1/3">
@@ -920,13 +960,13 @@ export default function SecondCreateStepForHouse() {
                   htmlFor="isFurnished"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Eşyalı
+                  {t("furnished")}
                 </label>
                 <CustomSelect
                   options={booleanOptions}
                   value={isFurnished ? "true" : "false"}
                   onChange={(value) => setIsFurnished(value === "true")}
-                  placeholder="Seçin"
+                  placeholder={t("selectOption")}
                 />
               </div>
             </div>
@@ -938,13 +978,13 @@ export default function SecondCreateStepForHouse() {
                   htmlFor="creditEligible"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Krediye Uygunluk
+                  {t("creditEligible")}
                 </label>
                 <CustomSelect
                   options={booleanOptions}
                   value={creditEligible ? "true" : "false"}
                   onChange={(value) => setCreditEligible(value as any)}
-                  placeholder="Seçin"
+                  placeholder={t("selectOption")}
                 />
               </div>
               <div className="w-full lg:w-1/3">
@@ -952,19 +992,19 @@ export default function SecondCreateStepForHouse() {
                   htmlFor="buildingAge"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Bina Yaşı
+                  {t("buildingAge")}
                 </label>
                 <CustomSelect
                   options={buildingAgeOptions}
                   value={buildingAge || 0}
                   onChange={(value) => setBuildingAge(parseInt(value))}
-                  placeholder="Seçin"
+                  placeholder={t("selectOption")}
                   hasError={errorFields.has("buildingAge")}
                 />
               </div>
               <div className="w-full lg:w-1/3">
                 <label className="font-semibold block mb-2 text-[#262626]">
-                  Aidat
+                  {t("dues")}
                 </label>
                 <div className="flex gap-2">
                   <div className="w-20">
@@ -986,7 +1026,7 @@ export default function SecondCreateStepForHouse() {
                         handleDuesChange(selectedDuesCurrency, e.target.value)
                       }
                       className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                      placeholder="Fiyat yazın"
+                      placeholder={t("pricePlaceholder")}
                     />
                   </div>
                 </div>
@@ -1000,7 +1040,7 @@ export default function SecondCreateStepForHouse() {
                   htmlFor="usageStatus"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Kullanım Durumu
+                  {t("usageStatus")}
                 </label>
                 <CustomSelect
                   options={usageStatusOptions}
@@ -1031,7 +1071,7 @@ export default function SecondCreateStepForHouse() {
                       setUsageStatus(usageMap);
                     }
                   }}
-                  placeholder="Seçin"
+                  placeholder={t("selectOption")}
                   hasError={errorFields.has("usageStatus")}
                   openUpward={true}
                 />
@@ -1041,7 +1081,7 @@ export default function SecondCreateStepForHouse() {
                   htmlFor="deedStatus"
                   className="font-semibold block mb-2 text-[#262626]"
                 >
-                  Tapu Durumu
+                  {t("deedStatus")}
                 </label>
                 <CustomSelect
                   options={deedStatusOptions}
@@ -1084,7 +1124,7 @@ export default function SecondCreateStepForHouse() {
                       setDeedStatus(deedMap);
                     }
                   }}
-                  placeholder="Seçin"
+                  placeholder={t("selectOption")}
                   hasError={errorFields.has("deedStatus")}
                   openUpward={true}
                 />
@@ -1099,7 +1139,7 @@ export default function SecondCreateStepForHouse() {
             onClick={handleContinue}
             className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
           >
-            Devam Et
+            {t("continue")}
             <ChevronRightIcon className="h-5 w-5" />
           </button>
         </div>
