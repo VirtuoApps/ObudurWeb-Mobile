@@ -360,8 +360,15 @@ export default function SixthCreateStep() {
     );
     if (hasUploadingDocs) {
       setErrors(["Yüklenmekte olan dökümanlar var, lütfen bekleyin."]);
-      if (formPanelRef.current) {
+      // Scroll to top to see errors - handle both mobile and desktop
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (formPanelRef.current) {
         formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
       return;
     }
@@ -372,9 +379,17 @@ export default function SixthCreateStep() {
 
   // Add scroll reset effect when step changes
   useEffect(() => {
-    if (formPanelRef.current) {
-      formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    const scrollToTop = () => {
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (formPanelRef.current) {
+        formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+
+    scrollToTop();
   }, []); // Empty dependency array means this runs once when component mounts
 
   return (

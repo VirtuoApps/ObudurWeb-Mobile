@@ -232,9 +232,15 @@ export default function FirstCreateStep() {
       // Move to the next step
       setCurrentStep(2);
     } else {
-      // Scroll form panel to top to see errors
-      if (formPanelRef.current) {
+      // Scroll to top to see errors - handle both mobile and desktop
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (formPanelRef.current) {
         formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
   };

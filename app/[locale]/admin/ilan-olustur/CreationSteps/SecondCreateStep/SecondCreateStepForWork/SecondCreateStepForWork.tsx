@@ -415,8 +415,14 @@ export default function SecondCreateStepForWork() {
       setCurrentStep(3);
     } else {
       // Scroll form panel to top to see errors
-      if (formPanelRef.current) {
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (formPanelRef.current) {
         formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
   };
@@ -426,12 +432,20 @@ export default function SecondCreateStepForWork() {
     setCurrentStep(1);
   };
 
-  // Add scroll reset effect when step changes
+  // Add scroll reset effect when component mounts
   useEffect(() => {
-    if (formPanelRef.current) {
-      formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, []); // Empty dependency array means this runs once when component mounts
+    const scrollToTop = () => {
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (formPanelRef.current) {
+        formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+
+    scrollToTop();
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start p-4">
@@ -485,13 +499,9 @@ export default function SecondCreateStepForWork() {
 
             {/* Price */}
             <div className="mb-6">
-              <h2 className="font-semibold mb-2 text-[#262626] text-2xl">
-                Fiyat
-              </h2>
-
               <div className="flex flex-col sm:flex-row gap-4 mb-4">
                 <div className="w-full sm:w-1/2">
-                  <label className="font-medium block mb-2 text-[#262626]">
+                  <label className="font-semibold block mb-2 text-[#262626]">
                     Fiyat (TRY)
                   </label>
                   <div className="relative">
@@ -511,7 +521,7 @@ export default function SecondCreateStepForWork() {
                 </div>
 
                 <div className="w-full sm:w-1/2">
-                  <label className="font-medium block mb-2 text-[#262626]">
+                  <label className="font-semibold block mb-2 text-[#262626]">
                     Fiyat (USD)
                   </label>
                   <div className="relative">

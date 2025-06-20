@@ -198,6 +198,20 @@ export default function ThirdCreateStep() {
     [setCity]
   );
 
+  useEffect(() => {
+    const scrollToTop = () => {
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (formPanelRef.current) {
+        formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+
+    scrollToTop();
+  }, []);
+
   // Load countries on component mount
   useEffect(() => {
     GetCountries().then((result) => {
@@ -801,13 +815,6 @@ export default function ThirdCreateStep() {
     if (!selectedCityId) return null;
     return citiesList.find((c) => c.id === selectedCityId) || null;
   };
-
-  // Add scroll reset effect when step changes
-  useEffect(() => {
-    if (formPanelRef.current) {
-      formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, []); // Empty dependency array means this runs once when component mounts
 
   return (
     <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start p-4">
