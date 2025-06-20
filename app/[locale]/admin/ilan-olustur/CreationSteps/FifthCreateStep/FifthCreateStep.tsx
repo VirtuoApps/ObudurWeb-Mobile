@@ -9,9 +9,11 @@ import GoBackButton from "../../GoBackButton/GoBackButton";
 import axiosInstance from "@/axios";
 import { useListingForm } from "../CreationSteps";
 import { useRouter } from "@/app/utils/router";
+import { useTranslations } from "next-intl";
 
 export default function FifthCreateStep() {
   const router = useRouter();
+  const t = useTranslations("adminCreation.step5");
   const {
     setCurrentStep,
     images,
@@ -218,7 +220,7 @@ export default function FifthCreateStep() {
 
     const files = Array.from(event.target.files);
     if (selectedImages.length + files.length > 15) {
-      setErrors(["Maksimum 15 görsel yükleyebilirsiniz."]);
+      setErrors([t("validation.maxImages")]);
       setTimeout(() => {
         setErrors([]);
       }, 3000);
@@ -273,7 +275,7 @@ export default function FifthCreateStep() {
     );
 
     if (selectedImages.length + files.length > 15) {
-      setErrors(["Maksimum 15 görsel yükleyebilirsiniz."]);
+      setErrors([t("validation.maxImages")]);
       return;
     }
 
@@ -352,33 +354,31 @@ export default function FifthCreateStep() {
 
     // Check minimum image requirement (3 images)
     if (selectedImages.length < 3 && images.length < 3) {
-      newErrors.push("Lütfen en az 3 görsel yükleyin.");
+      newErrors.push(t("validation.minImages"));
     }
 
     // Check maximum image requirement (15 images)
     if (selectedImages.length > 15 || images.length > 15) {
-      newErrors.push("Maksimum 15 görsel yükleyebilirsiniz.");
+      newErrors.push(t("validation.maxImages"));
     }
 
     // Check if there are no images at all (neither in selectedImages nor in context)
     if (selectedImages.length === 0 && images.length === 0) {
-      newErrors.push("Lütfen en az 3 görsel yükleyin.");
+      newErrors.push(t("validation.noImages"));
     }
 
     const hasUploadingImages = selectedImages.some((img) => img.uploading);
     if (hasUploadingImages) {
-      newErrors.push("Yüklenmekte olan görseller var, lütfen bekleyin.");
+      newErrors.push(t("validation.uploadingImages"));
     }
 
     const hasErrorImages = selectedImages.some((img) => img.error);
     if (hasErrorImages) {
-      newErrors.push(
-        "Bazı görseller yüklenemedi. Lütfen tekrar deneyin veya bu görselleri kaldırın."
-      );
+      newErrors.push(t("validation.imageErrors"));
     }
 
     if (selectedVideo?.uploading) {
-      newErrors.push("Video yükleniyor, lütfen bekleyin.");
+      newErrors.push(t("validation.uploadingVideo"));
     }
 
     if (newErrors.length === 0) {
@@ -414,15 +414,10 @@ export default function FifthCreateStep() {
           {/* Left Info Panel */}
           <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 flex flex-col">
             <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
-              İlanınız için görseller ve video ekleyin.
+              {t("title")}
             </h1>
             <div className="mt-4 text-base text-[#595959] font-medium">
-              <p className="leading-[140%]">
-                Bu adımda, mülkünüzün fotoğraflarını ve tanıtım videosunu
-                yükleyebilirsiniz. Kaliteli ve çeşitli görseller, potansiyel
-                alıcıların ve kiracıların ilgisini çekmede en önemli
-                faktörlerdendir.
-              </p>
+              <p className="leading-[140%]">{t("description")}</p>
             </div>
           </div>
 
@@ -443,7 +438,7 @@ export default function FifthCreateStep() {
                   </div>
                   <div className="ml-3">
                     <h3 className="text-sm font-medium text-red-800">
-                      Lütfen aşağıdaki hataları düzeltin:
+                      {t("fixErrors")}
                     </h3>
                     <div className="mt-2 text-sm text-red-700">
                       <ul className="list-disc pl-5 space-y-1">
@@ -467,7 +462,7 @@ export default function FifthCreateStep() {
                   </div>
                   <div className="ml-3">
                     <h3 className="text-sm font-medium text-red-800">
-                      Form gönderilirken bir hata oluştu:
+                      {t("submitError")}
                     </h3>
                     <p className="mt-2 text-sm text-red-700">{submitError}</p>
                   </div>
@@ -478,10 +473,10 @@ export default function FifthCreateStep() {
             {/* Image Upload Section */}
             <div className="mb-8">
               <h2 className="font-semibold text-lg mb-2 text-gray-700">
-                Görseller
+                {t("imageTitle")}
               </h2>
               <p className="text-sm text-gray-500 mb-4">
-                En az 3, en fazla 15 görsel yükleyebilirsiniz. (JPG, PNG, HEIC)
+                {t("imageDescription")}
               </p>
 
               {/* Drag and drop area for images */}
@@ -514,7 +509,7 @@ export default function FifthCreateStep() {
                   />
                 </svg>
                 <p className="mt-2 text-sm text-gray-600">
-                  Bilgisayardan yükle veya sürükle bırak
+                  {t("dropzoneText")}
                 </p>
               </div>
 
@@ -604,11 +599,10 @@ export default function FifthCreateStep() {
             {/* Video Upload Section */}
             <div className="mb-8">
               <h2 className="font-semibold text-lg mb-2 text-gray-700">
-                Video
+                {t("videoTitle")}
               </h2>
               <p className="text-sm text-gray-500 mb-4">
-                Maksimum 1 dakika uzunluğunda video yükleyebilirsiniz. (MP4,
-                MOV)
+                {t("videoDescription")}
               </p>
 
               {/* Drag and drop area for video */}
@@ -640,7 +634,7 @@ export default function FifthCreateStep() {
                   />
                 </svg>
                 <p className="mt-2 text-sm text-gray-600">
-                  Bilgisayardan yükle veya sürükle bırak
+                  {t("dropzoneText")}
                 </p>
               </div>
 
@@ -731,7 +725,7 @@ export default function FifthCreateStep() {
             disabled={isSubmitting}
             className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition disabled:opacity-50"
           >
-            Devam Et
+            {t("continue")}
             <ChevronRightIcon className="h-5 w-5" />
           </button>
         </div>

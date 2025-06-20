@@ -871,6 +871,26 @@
         }
       }
     },
+    "step5": {
+      "title": "İlanınız için görseller ve video ekleyin.",
+      "description": "Bu adımda, mülkünüzün fotoğraflarını ve tanıtım videosunu yükleyebilirsiniz. Kaliteli ve çeşitli görseller, potansiyel alıcıların ve kiracıların ilgisini çekmede en önemli faktörlerdendir.",
+      "imageTitle": "Görseller",
+      "imageDescription": "En az 3, en fazla 15 görsel yükleyebilirsiniz. (JPG, PNG, HEIC)",
+      "dropzoneText": "Bilgisayardan yükle veya sürükle bırak",
+      "videoTitle": "Video",
+      "videoDescription": "Maksimum 1 dakika uzunluğunda video yükleyebilirsiniz. (MP4, MOV)",
+      "continue": "Devam Et",
+      "fixErrors": "Lütfen aşağıdaki hataları düzeltin:",
+      "submitError": "Form gönderilirken bir hata oluştu:",
+      "validation": {
+        "maxImages": "Maksimum 15 görsel yükleyebilirsiniz.",
+        "minImages": "Lütfen en az 3 görsel yükleyin.",
+        "noImages": "Lütfen en az 3 görsel yükleyin.",
+        "uploadingImages": "Yüklenmekte olan görseller var, lütfen bekleyin.",
+        "imageErrors": "Bazı görseller yüklenemedi. Lütfen tekrar deneyin veya bu görselleri kaldırın.",
+        "uploadingVideo": "Video yükleniyor, lütfen bekleyin."
+      }
+    },
     "step6": {
       "title": "Dökümanlar",
       "subtitle": "İlan vereceğiniz mülkün dökümanlarını yükleyin.",

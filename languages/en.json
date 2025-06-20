@@ -866,6 +866,26 @@
         }
       }
     },
+    "step5": {
+      "title": "Add images and video for your listing.",
+      "description": "In this step, you can upload photos and a promotional video of your property. High-quality and diverse visuals are the most important factors in attracting the interest of potential buyers and tenants.",
+      "imageTitle": "Images",
+      "imageDescription": "You can upload a minimum of 3 and a maximum of 15 images. (JPG, PNG, HEIC)",
+      "dropzoneText": "Upload from computer or drag and drop",
+      "videoTitle": "Video",
+      "videoDescription": "You can upload a video of maximum 1 minute length. (MP4, MOV)",
+      "continue": "Continue",
+      "fixErrors": "Please fix the following errors:",
+      "submitError": "An error occurred while submitting the form:",
+      "validation": {
+        "maxImages": "You can upload a maximum of 15 images.",
+        "minImages": "Please upload at least 3 images.",
+        "noImages": "Please upload at least 3 images.",
+        "uploadingImages": "There are images being uploaded, please wait.",
+        "imageErrors": "Some images could not be uploaded. Please try again or remove these images.",
+        "uploadingVideo": "Video is uploading, please wait."
+      }
+    },
     "step6": {
       "title": "Documents",
       "subtitle": "Upload the documents of the property you will list.",
