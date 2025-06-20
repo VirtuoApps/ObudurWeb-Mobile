@@ -91,6 +91,14 @@ export default function FilterList({
   sortOption,
   setSortOption,
   resultCount,
+  infrastructureFeatures,
+  setInfrastructureFeatures,
+  selectedInfrastructureFeatures,
+  setSelectedInfrastructureFeatures,
+  sceneryFeatures,
+  setSceneryFeatures,
+  selectedSceneryFeatures,
+  setSelectedSceneryFeatures,
 }: {
   onChangeCurrentView: () => void;
   currentView: "map" | "list";
@@ -148,6 +156,16 @@ export default function FilterList({
     >
   >;
   resultCount: number;
+  infrastructureFeatures: any[];
+  setInfrastructureFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  selectedInfrastructureFeatures: any[];
+  setSelectedInfrastructureFeatures: React.Dispatch<
+    React.SetStateAction<any[]>
+  >;
+  sceneryFeatures: any[];
+  setSceneryFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  selectedSceneryFeatures: any[];
+  setSelectedSceneryFeatures: React.Dispatch<React.SetStateAction<any[]>>;
 }) {
   const dispatch = useDispatch();
   const isFilterApplied = useSelector(
@@ -250,6 +268,8 @@ export default function FilterList({
     const hasInteriorFeatures = interiorFeatures.length > 0;
     const hasAccessibilityFeatures = selectedAccessibilityFeatures.length > 0;
     const hasFaceFeatures = selectedFaceFeatures.length > 0;
+    const hasInfrastructureFeatures = selectedInfrastructureFeatures.length > 0;
+    const hasSceneryFeatures = selectedSceneryFeatures.length > 0;
     const hasSizeFilters =
       filters?.isOnePlusOneSelected ||
       filters?.isTwoPlusOneSelected ||
@@ -269,6 +289,8 @@ export default function FilterList({
       hasInteriorFeatures ||
       hasAccessibilityFeatures ||
       hasFaceFeatures ||
+      hasInfrastructureFeatures ||
+      hasSceneryFeatures ||
       hasSizeFilters ||
       isNewSelected
     );
@@ -323,6 +345,14 @@ export default function FilterList({
     // Face features
     if (selectedFaceFeatures.length > 0) count += selectedFaceFeatures.length;
 
+    // Infrastructure features
+    if (selectedInfrastructureFeatures.length > 0)
+      count += selectedInfrastructureFeatures.length;
+
+    // Scenery features
+    if (selectedSceneryFeatures.length > 0)
+      count += selectedSceneryFeatures.length;
+
     return count;
   };
 
@@ -349,6 +379,8 @@ export default function FilterList({
     setInteriorFeatures([]);
     setSelectedAccessibilityFeatures([]);
     setSelectedFaceFeatures([]);
+    setSelectedInfrastructureFeatures([]);
+    setSelectedSceneryFeatures([]);
     setFilters({
       ...filters,
       isOnePlusOneSelected: false,
@@ -439,6 +471,14 @@ export default function FilterList({
           selectedFaceFeatures.map((f) => f._id).length > 0
             ? selectedFaceFeatures.map((f) => f._id)
             : filters?.faceFeatureIds || null,
+        infrastructureFeatureIds:
+          selectedInfrastructureFeatures.map((f) => f._id).length > 0
+            ? selectedInfrastructureFeatures.map((f) => f._id)
+            : filters?.infrastructureFeatureIds || null,
+        sceneryFeatureIds:
+          selectedSceneryFeatures.map((f) => f._id).length > 0
+            ? selectedSceneryFeatures.map((f) => f._id)
+            : filters?.sceneryFeatureIds || null,
         locationFeatureIds: null,
         isNewSelected: filters?.isNewSelected || null,
         isOnePlusOneSelected: filters?.isOnePlusOneSelected || null,
@@ -540,6 +580,14 @@ export default function FilterList({
           hotels={hotels}
           selectedCurrency={selectedCurrency}
           searchRadius={searchRadius}
+          selectedInfrastructureFeatures={selectedInfrastructureFeatures}
+          setSelectedInfrastructureFeatures={setSelectedInfrastructureFeatures}
+          selectedSceneryFeatures={selectedSceneryFeatures}
+          setSelectedSceneryFeatures={setSelectedSceneryFeatures}
+          infrastructureFeatures={infrastructureFeatures}
+          setInfrastructureFeatures={setInfrastructureFeatures}
+          sceneryFeatures={sceneryFeatures}
+          setSceneryFeatures={setSceneryFeatures}
         />
         <div
           className={`bg-white flex flex-row transition-all duration-350 ease-in-out z-[9999] ${
@@ -864,9 +912,17 @@ export default function FilterList({
         setFaceFeatures={setFaceFeatures}
         selectedFaceFeatures={selectedFaceFeatures}
         setSelectedFaceFeatures={setSelectedFaceFeatures}
+        selectedInfrastructureFeatures={selectedInfrastructureFeatures}
+        setSelectedInfrastructureFeatures={setSelectedInfrastructureFeatures}
+        selectedSceneryFeatures={selectedSceneryFeatures}
+        setSelectedSceneryFeatures={setSelectedSceneryFeatures}
         hotels={hotels}
         selectedCurrency={selectedCurrency}
         searchRadius={searchRadius}
+        infrastructureFeatures={infrastructureFeatures}
+        setInfrastructureFeatures={setInfrastructureFeatures}
+        sceneryFeatures={sceneryFeatures}
+        setSceneryFeatures={setSceneryFeatures}
       />
       <div
         className={`bg-white flex flex-row transition-all duration-350 ease-in-out ${

@@ -99,6 +99,10 @@ export default function HomePage({
   const [accessibilityFeatures, setAccessibilityFeatures] = useState<any[]>([]);
   const [selectedFaceFeatures, setSelectedFaceFeatures] = useState<any[]>([]);
   const [faceFeatures, setFaceFeatures] = useState<any[]>([]);
+  const [selectedInfrastructureFeatures, setSelectedInfrastructureFeatures] = useState<any[]>([]);
+  const [infrastructureFeatures, setInfrastructureFeatures] = useState<any[]>([]);
+  const [selectedSceneryFeatures, setSelectedSceneryFeatures] = useState<any[]>([]);
+  const [sceneryFeatures, setSceneryFeatures] = useState<any[]>([]);
   const [currencyCode, setCurrencyCode] = useState("₺");
 
   const [selectedLocation, setSelectedLocation] = useState<any | null>(null);
@@ -261,6 +265,26 @@ export default function HomePage({
           setSelectedFaceFeatures(faceFeatureData);
         }
 
+        if (
+          savedFilter.infrastructureFeatureIds &&
+          savedFilter.infrastructureFeatureIds.length > 0
+        ) {
+          const infrastructureFeatureData = savedFilter.infrastructureFeatureIds.map(
+            (id: string) => ({ _id: id })
+          );
+          setSelectedInfrastructureFeatures(infrastructureFeatureData);
+        }
+
+        if (
+          savedFilter.sceneryFeatureIds &&
+          savedFilter.sceneryFeatureIds.length > 0
+        ) {
+          const sceneryFeatureData = savedFilter.sceneryFeatureIds.map(
+            (id: string) => ({ _id: id })
+          );
+          setSelectedSceneryFeatures(sceneryFeatureData);
+        }
+
         // Switch to list view to show results
         setCurrentView("list");
 
@@ -320,6 +344,8 @@ export default function HomePage({
     setSelectedExteriorFeatures([]);
     setSelectedAccessibilityFeatures([]);
     setSelectedFaceFeatures([]);
+    setSelectedInfrastructureFeatures([]);
+    setSelectedSceneryFeatures([]);
     setSelectedLocation(null);
     setSelectedPropertyType && setSelectedPropertyType(null);
     setSelectedCategory && setSelectedCategory(null);
@@ -528,6 +554,22 @@ export default function HomePage({
       filteredHotels = filteredHotels.filter((hotel) => {
         return filters.faceFeatureIds!.some(
           (featureId: string) => hotel.face === featureId
+        );
+      });
+    }
+
+    if (filters.infrastructureFeatureIds && filters.infrastructureFeatureIds.length > 0) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return filters.infrastructureFeatureIds!.every((featureId: string) =>
+          hotel.featureIds.includes(featureId)
+        );
+      });
+    }
+
+    if (filters.sceneryFeatureIds && filters.sceneryFeatureIds.length > 0) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return filters.sceneryFeatureIds!.every((featureId: string) =>
+          hotel.featureIds.includes(featureId)
         );
       });
     }
@@ -752,6 +794,14 @@ export default function HomePage({
           setSelectedFaceFeatures={setSelectedFaceFeatures}
           faceFeatures={faceFeatures}
           setFaceFeatures={setFaceFeatures}
+          infrastructureFeatures={infrastructureFeatures}
+          setInfrastructureFeatures={setInfrastructureFeatures}
+          selectedInfrastructureFeatures={selectedInfrastructureFeatures}
+          setSelectedInfrastructureFeatures={setSelectedInfrastructureFeatures}
+          sceneryFeatures={sceneryFeatures}
+          setSceneryFeatures={setSceneryFeatures}
+          selectedSceneryFeatures={selectedSceneryFeatures}
+          setSelectedSceneryFeatures={setSelectedSceneryFeatures}
           currencyCode={currencyCode}
           setCurrencyCode={setCurrencyCode}
           interiorFeatures={interiorFeatures}
@@ -801,6 +851,10 @@ export default function HomePage({
                   setAccessibilityFeatures([]);
                   setSelectedFaceFeatures([]);
                   setFaceFeatures([]);
+                  setSelectedInfrastructureFeatures([]);
+                  setInfrastructureFeatures([]);
+                  setSelectedSceneryFeatures([]);
+                  setSceneryFeatures([]);
                   setMinPrice("");
                   setMaxPrice("");
                   setMinArea("");

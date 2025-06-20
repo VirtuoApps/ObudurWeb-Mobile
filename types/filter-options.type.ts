@@ -57,6 +57,8 @@ export interface FilterOptions {
   bathroomCount: number[];
   interiorFeatures: Feature[];
   outsideFeatures: Feature[];
+  infrastructureFeatures: Feature[];
+  sceneryFeatures: Feature[];
   generalFeatures: Feature[];
   accessibilityFeatures: Feature[];
   faceFeatures: Feature[];
