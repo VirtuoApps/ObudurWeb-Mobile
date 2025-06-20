@@ -1001,6 +1001,31 @@
         "postalCodeRequired": "Lütfen posta kodunu girin",
         "coordinatesRequired": "Lütfen haritadan konum seçin"
       }
+    },
+    "step4": {
+      "title": "İlanın özelliklerini ve çevresel bilgilerini ekleyin.",
+      "description": "Bu adımda, mülkünüzün sahip olduğu iç, dış ve genel özellikleri, manzarayı, cepheyi ve çevresindeki önemli noktalara olan uzaklıkları belirtebilirsiniz. Detaylı bilgi, ilanı daha çekici kılar.",
+      "fixErrors": "Lütfen aşağıdaki hataları düzeltin:",
+      "validation": {
+        "atLeastOneFeature": "En az bir özellik seçmelisiniz",
+        "distanceTypeExists": "Bu uzaklık tipi zaten eklenmiş",
+        "invalidDistanceValue": "Lütfen geçerli bir uzaklık değeri girin",
+        "distanceTypeAndValueRequired": "Lütfen uzaklık tipi ve değeri girin"
+      },
+      "facade": "Cephe",
+      "generalFeatures": "Genel Özellikler",
+      "interiorFeatures": "İç Özellikler",
+      "exteriorFeatures": "Dış Özellikler",
+      "elderlyDisabledFeatures": "Engelliye ve Yaşlıya Yönelik Özellikler",
+      "infrastructureFeatures": "Altyapı Özellikleri",
+      "view": "Manzara",
+      "locationFeatures": "Lokasyon Özellikleri",
+      "locationFeaturesDescription": "Gayrimenkulün merkezi lokasyonlara olan uzaklığını belirtin.",
+      "distanceType": "Uzaklık Tipi",
+      "distancePlaceholder": "Lokasyona olan uzaklığı yazın (Km)",
+      "add": "Ekle",
+      "allDistanceTypesAdded": "Tüm lokasyon tipleri eklenmiştir.",
+      "continue": "Devam Et"
     }
   },
   "authBox": {

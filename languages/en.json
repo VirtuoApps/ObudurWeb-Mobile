@@ -996,6 +996,31 @@
         "postalCodeRequired": "Please enter the postal code",
         "coordinatesRequired": "Please select a location from the map"
       }
+    },
+    "step4": {
+      "title": "Add the features and environmental information of the listing.",
+      "description": "In this step, you can specify the interior, exterior, and general features of your property, the view, the facade, and its distances to important points in the vicinity. Detailed information makes the listing more attractive.",
+      "fixErrors": "Please fix the following errors:",
+      "validation": {
+        "atLeastOneFeature": "You must select at least one feature",
+        "distanceTypeExists": "This distance type has already been added",
+        "invalidDistanceValue": "Please enter a valid distance value",
+        "distanceTypeAndValueRequired": "Please enter distance type and value"
+      },
+      "facade": "Facade",
+      "generalFeatures": "General Features",
+      "interiorFeatures": "Interior Features",
+      "exteriorFeatures": "Exterior Features",
+      "elderlyDisabledFeatures": "Features for Elderly and Disabled",
+      "infrastructureFeatures": "Infrastructure Features",
+      "view": "View",
+      "locationFeatures": "Location Features",
+      "locationFeaturesDescription": "Specify the distance of the property to central locations.",
+      "distanceType": "Distance Type",
+      "distancePlaceholder": "Enter distance to location (Km)",
+      "add": "Add",
+      "allDistanceTypesAdded": "All location types have been added.",
+      "continue": "Continue"
     }
   },
   "authBox": {
