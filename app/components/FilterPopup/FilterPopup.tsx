@@ -1281,7 +1281,7 @@ export default function FilterPopup({
                     if (room) setTempRoomCount(room.name);
                     else setTempRoomCount(""); // Reset if no room selected
                   }}
-                  options={filterOptions.roomCount.map((room) => ({
+                  options={[1, 2, 3, 4].map((room) => ({
                     name: room,
                     href: "#",
                   }))}
@@ -1308,12 +1308,10 @@ export default function FilterPopup({
                     if (bathroom) setTempBathroomCount(bathroom.name);
                     else setTempBathroomCount(""); // Reset if no bathroom selected
                   }}
-                  options={filterOptions.bathroomCount.map(
-                    (bathroom: number) => ({
-                      name: bathroom.toString(),
-                      href: "#",
-                    })
-                  )}
+                  options={[0, 1, 2, 3, 4, 5].map((bathroom: number) => ({
+                    name: bathroom.toString(),
+                    href: "#",
+                  }))}
                   defaultText={t("bathroomsSelect") || "Select Bathroom Count"}
                   extraClassName="w-full bg-white border border-gray-200 h-[56px] text-base md:text-sm text-gray-700"
                   popoverExtraClassName=" md:max-w-[300px] max-w-[190px]"
