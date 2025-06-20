@@ -598,5 +598,21 @@
     "searchSaved": "Arama filtreleriniz başarılı bir şekilde kaydedildi.",
     "resetFilters": "Filtreleri Sıfırla",
     "noResults": "Filtrelerinizi sıfırlayarak yeniden arama yapmayı deneyin."
+  },
+  "authBox": {
+    "profileDetails": "Profil Detayları",
+    "myListings": "İlanlarım",
+    "favoriteListings": "Favori ilanlar",
+    "favoriteSearches": "Favori aramalar",
+    "languageAndCurrency": "Dil & Para Birimi",
+    "contact": "İletişim",
+    "ourRealEstateOffices": "Gayrimenkul Ofislerimiz",
+    "adminPanel": "Admin Paneli",
+    "feedback": "Geri Bildirim",
+    "userAgreements": "Kullanıcı Sözleşmeleri",
+    "logout": "Çıkış Yap",
+    "welcomeGreeting": "Hoş Geldiniz!",
+    "login": "Giriş Yap",
+    "signUp": "Üye Ol"
   }
 }

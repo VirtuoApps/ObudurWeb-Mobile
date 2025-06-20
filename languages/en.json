@@ -598,5 +598,21 @@
     "searchSaved": "Your search filters have been successfully saved.",
     "resetFilters": "Reset Filters",
     "noResults": "Try searching again by resetting your filters."
+  },
+  "authBox": {
+    "profileDetails": "Profile Details",
+    "myListings": "My Listings",
+    "favoriteListings": "Favorite Listings",
+    "favoriteSearches": "Favorite Searches",
+    "languageAndCurrency": "Language & Currency",
+    "contact": "Contact",
+    "ourRealEstateOffices": "Our Real Estate Offices",
+    "adminPanel": "Admin Panel",
+    "feedback": "Feedback",
+    "userAgreements": "User Agreements",
+    "logout": "Log Out",
+    "welcomeGreeting": "Welcome!",
+    "login": "Login",
+    "signUp": "Sign Up"
   }
 }
