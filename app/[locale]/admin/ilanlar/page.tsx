@@ -538,7 +538,7 @@ export default function AdminListings() {
             backgroundColor: "#1EB173",
           }}
         >
-          Aktif
+          {t("activeStatus")}
         </span>
       );
     }
@@ -551,7 +551,7 @@ export default function AdminListings() {
             backgroundColor: "#FA9441",
           }}
         >
-          Onay Bekliyor
+          {t("pendingApproval")}
         </span>
       );
     }
@@ -564,7 +564,7 @@ export default function AdminListings() {
             backgroundColor: "#362C75",
           }}
         >
-          Duraklatıldı
+          {t("paused")}
         </span>
       );
     }
@@ -609,9 +609,11 @@ export default function AdminListings() {
 
           <div className="flex flex-row items-center justify-between lg:hidden mb-6">
             <div>
-              <p className="text-[#262626] text-base font-bold">İlanlarım</p>
+              <p className="text-[#262626] text-base font-bold">
+                {t("myListings")}
+              </p>
               <p className="text-[#595959] text-sm">
-                {currentItems?.length ?? 0} Adet İlanınız Var
+                {t("itemsCount", { count: currentItems?.length ?? 0 })}
               </p>
             </div>
             <button
@@ -619,7 +621,9 @@ export default function AdminListings() {
               className="bg-[#5E5691] h-[36px] w-[100px] rounded-lg flex items-center justify-center gap-2"
             >
               <img src="/plus-01.png" className="w-[20px] h-[20px]" />
-              <span className="text-white text-sm font-medium">İlan Ver</span>
+              <span className="text-white text-sm font-medium">
+                {t("postListing")}
+              </span>
             </button>
           </div>
 
@@ -630,11 +634,11 @@ export default function AdminListings() {
               <div>
                 <h1 className="text-2xl  text-gray-800 font-bold">
                   {user?.role === "super-admin"
-                    ? "Tüm İlanlar"
-                    : "Benim İlanlarım"}
+                    ? t("allListings")
+                    : t("myListingsTitle")}
                 </h1>
                 <p className="text-sm text-[#8F8F99] ">
-                  {filteredProperties.length} ilan listeleniyor
+                  {t("listingsCount", { count: filteredProperties.length })}
                 </p>
               </div>
               <div className="flex flex-wrap gap-3">
@@ -665,7 +669,7 @@ export default function AdminListings() {
                             setStatusDropdownOpen(false);
                           }}
                         >
-                          Tümü
+                          {t("all")}
                         </li>
                         <li
                           className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
@@ -715,7 +719,7 @@ export default function AdminListings() {
                     onClick={() => setTypeDropdownOpen(!typeDropdownOpen)}
                   >
                     <span>
-                      {typeFilter === "all" ? "İlan Türü" : typeFilter}
+                      {typeFilter === "all" ? t("listingType") : typeFilter}
                     </span>
                     <img
                       src="/chevron-down.png"
@@ -733,7 +737,7 @@ export default function AdminListings() {
                             setTypeDropdownOpen(false);
                           }}
                         >
-                          Tümü
+                          {t("all")}
                         </li>
                         <li
                           className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
@@ -742,7 +746,7 @@ export default function AdminListings() {
                             setTypeDropdownOpen(false);
                           }}
                         >
-                          Satılık
+                          {t("forSale")}
                         </li>
                         <li
                           className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
@@ -751,7 +755,7 @@ export default function AdminListings() {
                             setTypeDropdownOpen(false);
                           }}
                         >
-                          Kiralık
+                          {t("forRent")}
                         </li>
                       </ul>
                     </div>
@@ -765,21 +769,21 @@ export default function AdminListings() {
           <div className="hidden lg:block bg-white  rounded-2xl shadow-md p-6 px-0 overflow-auto pt-0">
             {loading ? (
               <div className="flex justify-center items-center h-screen">
-                <span className="text-gray-500 ">Yükleniyor...</span>
+                <span className="text-gray-500 ">{t("loading")}</span>
               </div>
             ) : filteredProperties.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16">
                 <h3 className="text-lg font-medium text-gray-700 mb-2">
-                  Hiç ilanınız yok
+                  {t("noListingsTitle")}
                 </h3>
                 <p className="text-sm text-gray-500 mb-6">
-                  İlk ilanınızı oluşturarak başlayın
+                  {t("noListingsSubtitle")}
                 </p>
                 <button
                   onClick={() => router.push("/admin/ilan-olustur")}
                   className="flex items-center justify-center gap-2 bg-[#1EB173] rounded-lg py-2 px-4 text-sm font-medium text-white hover:bg-[#19935f] transition"
                 >
-                  <span>İlk İlanını Oluştur</span>
+                  <span>{t("createFirstListing")}</span>
                   <svg
                     width="20"
                     height="20"
@@ -813,17 +817,17 @@ export default function AdminListings() {
                   <thead className="bg-white  sticky top-0 z-10">
                     <tr>
                       <th className="py-4 px-4 text-left text-sm   tracking-wide text-[#595959] font-bold border-r border-[#F0F0F0]">
-                        No
+                        {t("no")}
                       </th>
                       <th className="py-4 px-4 text-left text-sm font-bold  tracking-wide text-[#595959] border-r border-[#F0F0F0]">
-                        İlan Özeti
+                        {t("listingsSummary")}
                       </th>
                       <th
                         className="py-4 px-4 text-left text-sm font-bold  tracking-wide text-[#595959] cursor-pointer border-r border-[#F0F0F0]"
                         onClick={() => handleSort("price")}
                       >
                         <div className="flex items-center gap-1">
-                          Fiyat {getSortIcon("price")}
+                          {t("price")} {getSortIcon("price")}
                         </div>
                       </th>
                       <th
@@ -831,7 +835,7 @@ export default function AdminListings() {
                         onClick={() => handleSort("views")}
                       >
                         <div className="flex items-center gap-1">
-                          Görüldü {getSortIcon("views")}
+                          {t("viewed")} {getSortIcon("views")}
                         </div>
                       </th>
                       <th
@@ -839,7 +843,7 @@ export default function AdminListings() {
                         onClick={() => handleSort("favorites")}
                       >
                         <div className="flex items-center gap-1">
-                          Favori {getSortIcon("favorites")}
+                          {t("favorites")} {getSortIcon("favorites")}
                         </div>
                       </th>
                       <th
@@ -847,15 +851,15 @@ export default function AdminListings() {
                         onClick={() => handleSort("messages")}
                       >
                         <div className="flex items-center gap-1">
-                          Mesaj {getSortIcon("messages")}
+                          {t("message")} {getSortIcon("messages")}
                         </div>
                       </th>
                       <th className="py-4 px-4 text-left text-sm font-bold  tracking-wide text-[#595959] border-r border-[#F0F0F0]">
-                        Durum
+                        {t("status")}
                       </th>
 
                       <th className="py-4 px-4 text-left text-sm font-bold  tracking-wide text-[#595959]">
-                        İşlemler
+                        {t("actions")}
                       </th>
                     </tr>
                   </thead>
@@ -871,13 +875,13 @@ export default function AdminListings() {
                       >
                         <td
                           className="py-4 px-4 text-sm font-medium text-gray-700 border-r border-[#F0F0F0]"
-                          data-label="No"
+                          data-label={t("no")}
                         >
                           #{property.no}
                         </td>
                         <td
                           className="py-4 px-4 text-sm text-gray-500 border-r border-[#F0F0F0]"
-                          data-label="İlan Özeti"
+                          data-label={t("listingsSummary")}
                         >
                           <div className="flex items-center gap-4">
                             <img
@@ -914,7 +918,7 @@ export default function AdminListings() {
                         </td>
                         <td
                           className="py-4 px-4 text-sm text-gray-700 border-r border-[#F0F0F0]"
-                          data-label="Görüldü"
+                          data-label={t("viewed")}
                         >
                           <div className="flex items-center gap-1">
                             <EyeIcon className="h-4 w-4 text-gray-500 " />
@@ -925,7 +929,7 @@ export default function AdminListings() {
                         </td>
                         <td
                           className="py-4 px-4 text-sm text-gray-700 border-r border-[#F0F0F0]"
-                          data-label="Favori"
+                          data-label={t("favorites")}
                         >
                           <div className="flex items-center gap-1">
                             <HeartIcon className="h-4 w-4 text-gray-500 " />
@@ -962,7 +966,7 @@ export default function AdminListings() {
 
                         <td
                           className="py-4 px-4 text-right w-[240px]"
-                          data-label="İşlemler"
+                          data-label={t("actions")}
                         >
                           <div className="flex items-center justify-center gap-1">
                             <button
@@ -1057,11 +1061,11 @@ export default function AdminListings() {
                                 navigator.clipboard
                                   .writeText(url)
                                   .then(() => {
-                                    toast.success("Link kopyalandı");
+                                    toast.success(t("linkCopied"));
                                   })
                                   .catch((err) => {
                                     console.error("Kopyalama hatası:", err);
-                                    toast.error("Kopyalama işlemi başarısız");
+                                    toast.error(t("copyFailed"));
                                   });
                               }}
                             >
@@ -1073,7 +1077,7 @@ export default function AdminListings() {
                                 xmlns="http://www.w3.org/2000/svg"
                               >
                                 <path
-                                  d="M6.14876 8.49164L4.28755 10.3529C3.59243 11.048 3.1927 11.9938 3.20001 12.9878C3.20731 13.9818 3.5983 14.9334 4.32639 15.639C5.03196 16.3671 5.98374 16.7581 6.97759 16.7654C7.99411 16.7728 8.91753 16.3956 9.61268 15.7005L11.4739 13.8393M13.8512 11.5074L15.7125 9.64619C16.4076 8.95108 16.8073 8.00528 16.8 7.01127C16.7927 6.01726 16.4017 5.06568 15.6736 4.36007C14.9682 3.65467 14.0166 3.26366 13.0226 3.25636C12.0286 3.24905 11.0826 3.62609 10.3875 4.32123L8.52627 6.18244M7.17759 12.7722L12.7612 7.18852"
+                                  d="M6.14876 8.49164L4.28755 10.3529C3.59243 11.048 3.1927 11.9938 3.20001 12.9878C3.20731 13.9818 3.5983 14.9334 4.32639 15.639C5.03196 16.3671 5.98374 16.7581 6.97759 16.7654C7.99411 16.7728 8.91753 16.3956 9.61268 15.7005L11.4739 13.8393M13.8512 11.5074L15.7125 9.64619C16.4076 8.95108 16.8073 8.00528 16.8073 7.01127C16.7999 6.01726 16.4089 5.06568 15.6808 4.36007C14.9754 3.65467 14.0236 3.26366 13.0296 3.25636C12.0356 3.24905 11.0896 3.62609 10.3945 4.32123L8.53327 6.18244M7.18459 12.7722L12.7682 7.18852"
                                   stroke={
                                     hoveredIcon === `${property._id}-share`
                                       ? "#FCFCFC"
@@ -1098,7 +1102,7 @@ export default function AdminListings() {
                                   alt="pause"
                                   className="w-4 h-4"
                                 />
-                                Duraklat
+                                {t("pause")}
                               </button>
                             )}
 
@@ -1115,7 +1119,7 @@ export default function AdminListings() {
                                   alt="publish"
                                   className="w-4 h-4"
                                 />
-                                Yayınla
+                                {t("publish")}
                               </button>
                             )}
 
@@ -1164,21 +1168,21 @@ export default function AdminListings() {
           <div className="lg:hidden">
             {loading ? (
               <div className="flex justify-center items-center h-40">
-                <span className="text-gray-500">Yükleniyor...</span>
+                <span className="text-gray-500">{t("loading")}</span>
               </div>
             ) : filteredProperties.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-16 bg-white rounded-2xl">
                 <h3 className="text-lg font-medium text-gray-700 mb-2">
-                  Hiç ilanınız yok
+                  {t("noListingsTitle")}
                 </h3>
                 <p className="text-sm text-gray-500 mb-6">
-                  İlk ilanınızı oluşturarak başlayın
+                  {t("noListingsSubtitle")}
                 </p>
                 <button
                   onClick={() => router.push("/admin/ilan-olustur")}
                   className="flex items-center justify-center gap-2 bg-[#1EB173] rounded-lg py-2 px-4 text-sm font-medium text-white hover:bg-[#19935f] transition"
                 >
-                  <span>İlk İlanını Oluştur</span>
+                  <span>{t("createFirstListing")}</span>
                   <svg
                     width="20"
                     height="20"
@@ -1247,10 +1251,10 @@ export default function AdminListings() {
             }}
           >
             <div className="bg-white rounded-lg p-6 max-w-md w-full">
-              <h3 className="text-lg font-semibold mb-4 text-gray-700">Onay</h3>
-              <p className="mb-6 text-gray-700">
-                Yayınlamak istediğinize emin misiniz?
-              </p>
+              <h3 className="text-lg font-semibold mb-4 text-gray-700">
+                {t("confirmations.title")}
+              </h3>
+              <p className="mb-6 text-gray-700">{t("publishConfirmation")}</p>
               <div className="flex justify-end gap-3">
                 <button
                   className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition"
@@ -1260,7 +1264,7 @@ export default function AdminListings() {
                   }}
                   disabled={updateLoading}
                 >
-                  İptal
+                  {t("cancel")}
                 </button>
                 <button
                   className="px-4 py-2 bg-[#1EB173] text-white rounded-lg hover:bg-[#19935f] transition"
@@ -1484,13 +1488,11 @@ export default function AdminListings() {
               <div className="flex-1 overflow-y-auto">
                 {messagesLoading ? (
                   <div className="flex justify-center items-center h-40">
-                    <span className="text-gray-500">Yükleniyor...</span>
+                    <span className="text-gray-500">{t("loading")}</span>
                   </div>
                 ) : selectedPropertyMessages.length === 0 ? (
                   <div className="flex justify-center items-center h-40">
-                    <span className="text-gray-500">
-                      Bu ilanla ilgili henüz mesaj yok
-                    </span>
+                    <span className="text-gray-500">{t("noMessagesYet")}</span>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -1538,8 +1540,8 @@ export default function AdminListings() {
                                 }
                                 title={
                                   message.isSeen
-                                    ? "Okunmadı Olarak İşaretle"
-                                    : "Okundu Olarak İşaretle"
+                                    ? t("markAsUnread")
+                                    : t("markAsRead")
                                 }
                               >
                                 <CheckCircleIcon className="h-5 w-5" />
@@ -1551,17 +1553,17 @@ export default function AdminListings() {
                           </p>
                           <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
                             <div>
-                              <span className="font-medium">E-posta:</span>{" "}
+                              <span className="font-medium">{t("email")}:</span>{" "}
                               {message.email}
                             </div>
                             <div>
-                              <span className="font-medium">Telefon:</span>{" "}
+                              <span className="font-medium">{t("phone")}:</span>{" "}
                               {message.phoneNumber}
                             </div>
                             {message.iWantToSeeProperty && (
                               <div className="col-span-2 mt-2">
                                 <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">
-                                  Müşteriyle görüşme talebi
+                                  {t("customerMeetingRequest")}
                                 </span>
                               </div>
                             )}
