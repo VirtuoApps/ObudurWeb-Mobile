@@ -308,7 +308,7 @@ export default function GoogleMapView({
               key={hotel._id || index}
               position={position}
               label={{
-                text: getDisplayPrice(hotel.price, selectedCurrency),
+                text: getDisplayPrice(hotel.price, selectedCurrency, true),
                 color: "white",
                 fontSize: "12px",
                 fontWeight: "bold",

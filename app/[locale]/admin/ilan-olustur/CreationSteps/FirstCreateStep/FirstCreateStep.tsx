@@ -189,8 +189,18 @@ export default function FirstCreateStep() {
       newErrorFields.add("title-tr");
     }
 
+    if (title?.tr.trim().length > 80) {
+      newErrors.push("İlan başlığı (Türkçe) 80 karakterden fazla olamaz");
+      newErrorFields.add("title-tr");
+    }
+
     if (!title?.en || title.en.trim() === "") {
       newErrors.push("İlan başlığını (English) dilinde doldurun");
+      newErrorFields.add("title-en");
+    }
+
+    if (title?.en.trim().length > 80) {
+      newErrors.push("İlan başlığı (English) 80 karakterden fazla olamaz");
       newErrorFields.add("title-en");
     }
 
