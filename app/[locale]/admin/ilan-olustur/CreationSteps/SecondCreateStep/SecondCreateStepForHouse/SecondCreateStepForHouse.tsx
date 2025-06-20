@@ -61,7 +61,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
     <div className="relative" ref={dropdownRef}>
       <button
         type="button"
-        className={`w-full h-12 rounded-lg border bg-white px-4 flex items-center justify-between text-[#262626] focus:outline-none transition-colors ${
+        className={`w-full h-[56px] rounded-[16px] border bg-white px-4 flex items-center justify-between text-[#262626] focus:outline-none transition-colors ${
           hasError
             ? "border-[#EF1A28] focus:border-[#EF1A28]"
             : "border-[#E2E2E2] focus:border-[#5D568D] hover:border-[#5D568D]"
@@ -555,7 +555,7 @@ export default function SecondCreateStepForHouse() {
                       type="text"
                       value={getPriceForCurrency("TRY") || ""}
                       onChange={(e) => handlePriceChange("TRY", e.target.value)}
-                      className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                      className={`w-full h-[56px] rounded-[16px] border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
                         "price-try"
                       )}`}
                       placeholder="Fiyat yazın"
@@ -575,7 +575,7 @@ export default function SecondCreateStepForHouse() {
                       type="text"
                       value={getPriceForCurrency("USD") || ""}
                       onChange={(e) => handlePriceChange("USD", e.target.value)}
-                      className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                      className={`w-full h-[56px] rounded-[16px] border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
                         "price-usd"
                       )}`}
                       placeholder="Fiyat yazın"
@@ -624,7 +624,7 @@ export default function SecondCreateStepForHouse() {
                         : numericValue;
                     setProjectArea(parseFloat(validValue) || 0);
                   }}
-                  className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                  className={`w-full h-[56px] rounded-[16px] border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
                     "projectArea"
                   )}`}
                   placeholder="Buraya yazın"
@@ -650,7 +650,7 @@ export default function SecondCreateStepForHouse() {
                         : numericValue;
                     setTotalSize(parseFloat(validValue) || 0);
                   }}
-                  className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                  className={`w-full h-[56px] rounded-[16px] border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
                     "totalSize"
                   )}`}
                   placeholder="Buraya yazın"
@@ -968,7 +968,7 @@ export default function SecondCreateStepForHouse() {
                       onChange={(e) =>
                         handleDuesChange(selectedDuesCurrency, e.target.value)
                       }
-                      className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                      className="w-full h-[56px] rounded-[16px] border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
                       placeholder="Fiyat yazın"
                     />
                   </div>
@@ -1080,7 +1080,7 @@ export default function SecondCreateStepForHouse() {
           <button
             type="button"
             onClick={handleContinue}
-            className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+            className="cursor-pointer w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
           >
             Devam Et
             <ChevronRightIcon className="h-5 w-5" />

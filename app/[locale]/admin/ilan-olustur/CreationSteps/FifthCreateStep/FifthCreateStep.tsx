@@ -454,7 +454,7 @@ export default function FifthCreateStep() {
 
             {/* Image Upload Section */}
             <div className="mb-8">
-              <h2 className="font-semibold text-lg mb-2 text-gray-700">
+              <h2 className="text-[16px] text-[#262626] font-bold">
                 Görseller
               </h2>
               <p className="text-sm text-gray-500 mb-4">
@@ -497,7 +497,7 @@ export default function FifthCreateStep() {
 
               {/* Image preview area */}
               {selectedImages.length > 0 && (
-                <div className="mt-4 grid grid-cols-4 gap-4">
+                <div className="mt-4 grid grid-cols-4 gap-6">
                   {selectedImages.map((image, index) => (
                     <div key={index} className="relative group">
                       <img
@@ -532,7 +532,7 @@ export default function FifthCreateStep() {
                         </div>
                       ) : (
                         <div
-                          className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"
+                          className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded-[16px] cursor-pointer"
                           onClick={(e) => {
                             e.stopPropagation();
                             removeImage(index);
@@ -580,7 +580,7 @@ export default function FifthCreateStep() {
 
             {/* Video Upload Section */}
             <div className="mb-8">
-              <h2 className="font-semibold text-lg mb-2 text-gray-700">
+              <h2 className="font-bold text-[16px] text-[#262626]">
                 Video
               </h2>
               <p className="text-sm text-gray-500 mb-4">
@@ -590,7 +590,7 @@ export default function FifthCreateStep() {
 
               {/* Drag and drop area for video */}
               <div
-                className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center bg-gray-50 cursor-pointer"
+                className="border-2 border-dashed border-gray-300 rounded-[16px] p-6 flex flex-col items-center justify-center bg-gray-50 cursor-pointer"
                 onClick={() => videoInputRef.current?.click()}
                 onDrop={handleVideoDrop}
                 onDragOver={handleDragOver}
@@ -706,7 +706,7 @@ export default function FifthCreateStep() {
             type="button"
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition disabled:opacity-50"
+            className="cursor-pointer w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition disabled:opacity-50"
           >
             Devam Et
             <ChevronRightIcon className="h-5 w-5" />

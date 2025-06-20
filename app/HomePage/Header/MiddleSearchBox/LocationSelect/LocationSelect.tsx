@@ -262,7 +262,7 @@ export default function LocationSelect({
                     {selectedLocation && !isMobileMenu && isHovered && (
                       <button
                         type="button"
-                        className="ml-2 p-1 rounded hover:bg-gray-100 transition"
+                        className="ml-2 p-1 rounded hover:bg-gray-100 transition cursor-pointer"
                         onClick={e => {
                           e.stopPropagation();
                           setSelectedLocation(null);

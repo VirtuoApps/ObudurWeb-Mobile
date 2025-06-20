@@ -129,7 +129,7 @@ export default function GeneralSelect({
               {selectedItem && !popoverExtraClassName?.includes('mobile') ? (
                 <button
                   type="button"
-                  className="ml-2 p-1 rounded hover:bg-gray-100 transition"
+                  className="ml-2 p-1 rounded hover:bg-gray-100 transition cursor-pointer"
                   onClick={e => {
                     e.stopPropagation();
                     handleSelect(null);

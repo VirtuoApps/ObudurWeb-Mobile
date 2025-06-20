@@ -434,7 +434,7 @@ export default function SixthCreateStep() {
 
               return (
                 <div key={index} className="mb-8">
-                  <h2 className="font-semibold text-lg mb-2 text-gray-700">
+                  <h2 className="font-bold text-[16px] mb-4 text-[#262626]">
                     {docType.tr}
                   </h2>
 
@@ -442,7 +442,7 @@ export default function SixthCreateStep() {
                   <div className="w-full flex flex-row items-center relative mb-5 ml-4">
                     <img src="/link-angled.png" className="w-6 h-6" />
                     <input
-                      className="border border-[#D9D9D9] rounded-2xl p-4 flex items-center gap-2 w-full text-gray-600 pl-12 pr-12 -ml-10 placeholder:text-gray-400"
+                      className="border border-[#D9D9D9] rounded-[16px] p-4 flex items-center gap-2 w-full text-[#8C8C8C] pl-12 pr-12 -ml-10 placeholder:text-gray-400 text-[14px] font-medium"
                       placeholder="Dosya linkini girin"
                       value={isLink ? documentLinks[docKey] : ""}
                       onChange={(e) =>
@@ -477,7 +477,7 @@ export default function SixthCreateStep() {
                   {/* File upload area */}
                   {!hasDocument || !isLink ? (
                     <div
-                      className={`border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center ${
+                      className={`border-2 border-dashed border-gray-300 rounded-[16px] p-6 flex flex-col items-center justify-center ${
                         hasDocument ? "bg-green-50" : "bg-white"
                       } ${!hasDocument ? "cursor-pointer" : ""} ${
                         dragActive[docKey] ? "border-blue-500 bg-blue-50" : ""
@@ -634,7 +634,7 @@ export default function SixthCreateStep() {
               Object.values(uploadingDocs).some((uploading) => uploading) ||
               isSubmitting
             }
-            className="bg-[#6656AD] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl transition disabled:opacity-70 disabled:cursor-not-allowed"
+            className="bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl transition disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
           >
             {isSubmitting ? (
               <div className="flex items-center">
@@ -661,7 +661,7 @@ export default function SixthCreateStep() {
                 <span>İşleniyor...</span>
               </div>
             ) : (
-              <span>{isUpdate ? "Güncelle" : "Oluştur"}</span>
+              <span>{isUpdate ? "Güncelle" : "Tamamla"}</span>
             )}
           </button>
         </div>

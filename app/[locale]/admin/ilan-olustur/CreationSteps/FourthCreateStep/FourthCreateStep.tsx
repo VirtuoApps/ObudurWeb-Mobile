@@ -392,7 +392,7 @@ export default function FourthCreateStep() {
     return (
       <button
         type="button"
-        className={`inline-flex items-center gap-2 px-4 py-2 rounded-full transition border  cursor-pointer ${
+        className={`inline-flex items-center gap-2 px-4 py-2 rounded-[16px] transition border  cursor-pointer text-[14px] min-h-[40px] ${
           isSelected
             ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
             : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
@@ -425,7 +425,7 @@ export default function FourthCreateStep() {
   }) => {
     return (
       <div className="mt-6">
-        <h2 className="font-semibold mb-2 text-[#262626]">{title}</h2>
+        <h2 className="font-bold mb-4 text-[#262626] text-[16px]">{title}</h2>
         <div className="flex flex-wrap gap-2">
           {features.map((feature) => (
             <FeatureItem key={feature._id} feature={feature} />
@@ -493,7 +493,7 @@ export default function FourthCreateStep() {
               {/* Orientation (Cephe) */}
               {entranceType?.tr !== "Arsa" && (
                 <div>
-                  <h2 className="font-semibold mb-4 text-[#262626] text-xl">
+                  <h2 className="font-semibold mb-4 text-[#262626] text-[16px] font-bold">
                     Cephe
                   </h2>
                   <div className="flex flex-wrap gap-2">
@@ -501,7 +501,7 @@ export default function FourthCreateStep() {
                       <button
                         key={option._id}
                         type="button"
-                        className={`inline-flex items-center  px-4 py-2 rounded-full transition border cursor-pointer ${
+                        className={`inline-flex items-center  px-4 py-2 rounded-[16px] transition border cursor-pointer text-[14px] min-h-[40px] ${
                           faces.includes(option._id)
                             ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75] "
                             : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
@@ -567,7 +567,7 @@ export default function FourthCreateStep() {
                 <>
                   {" "}
                   <div className="mt-6">
-                    <h2 className="font-semibold mb-2 text-[#262626]">
+                    <h2 className="font-semibold mb-4 text-[#262626]">
                       Altyapı Özellikleri
                     </h2>
                     <div className="flex flex-wrap gap-2">
@@ -608,7 +608,7 @@ export default function FourthCreateStep() {
                   </div>
                   {/* View (Manzara) Section */}
                   <div className="mt-8">
-                    <h2 className="font-semibold mb-2 text-[#262626]">
+                    <h2 className="font-semibold mb-4 text-[#262626]">
                       Manzara
                     </h2>
                     <div className="flex flex-wrap gap-4">
@@ -647,10 +647,10 @@ export default function FourthCreateStep() {
 
               {/* Distances */}
               <div>
-                <h2 className="text-xl font-bold text-[#181818] mb-2">
+                <h2 className="text-[16px] font-bold text-[#181818]">
                   Lokasyon Özellikleri
                 </h2>
-                <p className="text-sm text-[#6C6C6C] mb-6">
+                <p className="text-[14px] text-[#6C6C6C] mb-4">
                   Gayrimenkulün merkezi lokasyonlara olan uzaklığını belirtin.
                 </p>
 
@@ -686,7 +686,7 @@ export default function FourthCreateStep() {
                           type="number"
                           step="0.1"
                           min="0"
-                          className="w-full h-12 px-4 border border-[#E2E2E2] rounded-lg placeholder:text-gray-400 text-gray-700 focus:outline-none focus:border-[#5D568D]"
+                          className="w-full h-[56px] px-4 border border-[#E2E2E2] rounded-[16px] placeholder:text-gray-400 text-gray-700 focus:outline-none focus:border-[#5D568D] text-[14px]"
                           placeholder="Lokasyona olan uzaklığı yazın (Km)"
                           value={newDistanceValue}
                           onChange={(e) => setNewDistanceValue(e.target.value)}

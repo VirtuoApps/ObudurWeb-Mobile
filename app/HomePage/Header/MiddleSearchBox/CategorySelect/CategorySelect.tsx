@@ -122,7 +122,7 @@ export default function CategorySelect({
         onSelect={handleCategorySelect}
         options={categories}
         defaultText={t("category")}
-        extraClassName={`min-w-[180px] transition-all duration-300 ${!selectedPropertyType ? 'text-[#C0C0C0] bg-[#F5F5F5] cursor-not-allowed' : 'text-[#8c8c8c] hover:text-[#595959]'}`}
+        extraClassName={`min-w-[180px] transition-all duration-300 ${selectedCategory ? "text-[#262626]" : "text-[#8c8c8c]"} ${selectedPropertyType ? "hover:text-[#595959]" : ""}`}
         customTextColor={true}
         popoverExtraClassName="max-w-[250px]"
         maxHeight="300"

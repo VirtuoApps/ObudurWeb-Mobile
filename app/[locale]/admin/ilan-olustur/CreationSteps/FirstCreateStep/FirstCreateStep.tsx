@@ -110,9 +110,14 @@ export default function FirstCreateStep() {
 
   // Handle property type selection
   const handlePropertyTypeSelect = (type: PropertyType) => {
+    if (!type) {
+      setEntranceType(null);
+      return;
+    }
+
     setEntranceType({
-      tr: type.name.tr,
-      en: type.name.en,
+      tr: type?.name.tr,
+      en: type?.name.en,
     });
 
     // Clear housing type if it's not in the new property type's categories
@@ -129,6 +134,11 @@ export default function FirstCreateStep() {
 
   // Handle category selection
   const handleCategorySelect = (category: Category) => {
+    if (!category) {
+      setHousingType(null);
+      return;
+    }
+
     setHousingType({
       tr: category.name.tr,
       en: category.name.en,
@@ -350,13 +360,11 @@ export default function FirstCreateStep() {
                   <GeneralSelect
                     selectedItem={listingType ? { name: listingType.tr, value: listingType } : null}
                     onSelect={(item) => {
-                      setListingType(item.value);
-                      setEntranceType(null);
-                      setHousingType(null);
+                      setListingType(item?.value ?? null);
                     }}
                     options={listingTypeOptions}
                     defaultText="İlan Tipi Seçin"
-                    extraClassName={`w-full text-[#595959] bg-white border ${errorFields.has("listingType") ? "border-[#EF1A28]" : "border-[#E0E0E0]"}`}
+                    extraClassName={`h-[56px] rounded-[16px] w-full text-[#595959] bg-white border ${errorFields.has("listingType") ? "border-[#EF1A28]" : "border-[#E0E0E0]"}`}
                     maxHeight="200"
                     customTextColor={true}
                   />
@@ -367,11 +375,12 @@ export default function FirstCreateStep() {
                   <GeneralSelect
                     selectedItem={entranceType ? { name: entranceType.tr, value: entranceType } : null}
                     onSelect={(item) => {
-                      handlePropertyTypeSelect(item.value);
+                      handlePropertyTypeSelect(item?.value ?? null);
+                      setHousingType(null); // Reset housing type when property type changes
                     }}
-                    options={listingType ? propertyTypeOptions : []}
-                    defaultText={listingType ? "Emlak Tipi Seçin" : "Önce ilan tipi seçin"}
-                    extraClassName={`w-full text-[#595959] bg-white border ${errorFields.has("entranceType") ? "border-[#EF1A28]" : "border-[#E0E0E0]"}`}
+                    options={propertyTypeOptions}
+                    defaultText={"Emlak Tipi Seçin"}
+                    extraClassName={`h-[56px] rounded-[16px] w-full text-[#595959] bg-white border ${errorFields.has("entranceType") ? "border-[#EF1A28]" : "border-[#E0E0E0]"}`}
                     maxHeight="200"
                     customTextColor={true}
                   />
@@ -382,13 +391,14 @@ export default function FirstCreateStep() {
                   <GeneralSelect
                     selectedItem={housingType ? { name: housingType.tr, value: housingType } : null}
                     onSelect={(item) => {
-                      handleCategorySelect(item.value);
+                      handleCategorySelect(item?.value ?? null);
                     }}
                     options={entranceType ? filteredCategoryOptions : []}
-                    defaultText={entranceType ? "Kategori Seçin" : "Önce emlak tipi seçin"}
-                    extraClassName={`w-full text-[#595959] bg-white border ${errorFields.has("housingType") ? "border-[#EF1A28]" : "border-[#E0E0E0]"}`}
+                    defaultText={"Kategori Seçin"}
+                    extraClassName={`h-[56px] !rounded-[16px] w-full text-[#595959] bg-white border ${entranceType ? "text-[#262626]" : "text-[#8c8c8c]"} ${housingType ? "hover:text-[#595959]" : ""} ${errorFields.has("housingType") ? "border-[#EF1A28]" : "border-[#E0E0E0]"}`}
                     maxHeight="200"
                     customTextColor={true}
+                    disabled={!entranceType} // Disable if no property type selected
                   />
                 </div>
               </div>
@@ -398,7 +408,7 @@ export default function FirstCreateStep() {
             <div className="mt-8 space-y-6">
               {/* Turkish Title */}
 
-              <h2 className="font-semibold mb-2 text-[#262626] text-2xl">
+              <h2 className="font-semibold mb-4 text-[#262626] text-2xl">
                 İlan Başlığı ve Açıklaması
               </h2>
               <div>
@@ -420,8 +430,8 @@ export default function FirstCreateStep() {
                           tr: e.target.value,
                         }))
                       }
-                      className={getFieldClassName("title", "tr")}
-                      placeholder=" İlan Başlığı"
+                      className={`${getFieldClassName("title", "tr")} h-[56px] !rounded-[16px]`}
+                      placeholder="İlan Başlığı"
                     />
                   </div>
 
@@ -435,8 +445,8 @@ export default function FirstCreateStep() {
                           tr: e.target.value,
                         }))
                       }
-                      className={getFieldClassName("description", "tr")}
-                      placeholder="  İlan Açıklaması"
+                      className={`${getFieldClassName("description", "tr")} !rounded-[16px]`}
+                      placeholder="İlan Açıklaması"
                     />
                   </div>
                 </div>
@@ -462,7 +472,7 @@ export default function FirstCreateStep() {
                           en: e.target.value,
                         }))
                       }
-                      className={getFieldClassName("title", "en")}
+                      className={`${getFieldClassName("title", "en")} h-[56px] !rounded-[16px]`}
                       placeholder="Title"
                     />
                   </div>
@@ -477,7 +487,7 @@ export default function FirstCreateStep() {
                           en: e.target.value,
                         }))
                       }
-                      className={getFieldClassName("description", "en")}
+                      className={`${getFieldClassName("description", "en")} !rounded-[16px]`}
                       placeholder="Description"
                     />
                   </div>
@@ -504,7 +514,7 @@ export default function FirstCreateStep() {
             <button
               type="button"
               onClick={handleContinue}
-              className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+              className="cursor-pointer w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
             >
               Devam Et
               <ChevronRightIcon className="w-5 h-5" />

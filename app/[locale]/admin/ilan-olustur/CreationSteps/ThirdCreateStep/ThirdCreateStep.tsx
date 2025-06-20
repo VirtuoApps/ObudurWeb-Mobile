@@ -849,12 +849,12 @@ export default function ThirdCreateStep() {
             )}
 
             <label className="font-semibold block mb-2 text-[#262626]">
-              Haritada Konum Seçin
+              Adres
             </label>
-            <p className="text-sm text-gray-500 mb-2">
+            {/* <p className="text-sm text-gray-500 mb-2">
               Konumu bulmak için arama yapabilir veya harita üzerinde tıklayarak
               tam konumu belirleyebilirsiniz.
-            </p>
+            </p> */}
 
             {/* Search Input with Autocomplete */}
             <div className="relative mb-6 ">
@@ -862,10 +862,10 @@ export default function ThirdCreateStep() {
                 <div className="relative flex-grow" ref={searchInputRef}>
                   <input
                     type="text"
-                    placeholder="Adres ara..."
+                    placeholder="Adres yazın"
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
-                    className="w-full h-12 pl-10 pr-4 rounded-lg border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                    className="w-full h-[56px] pl-4 pr-4 rounded-[16px] border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626] text-[14px]"
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {
                         e.preventDefault();
@@ -878,22 +878,28 @@ export default function ThirdCreateStep() {
                       }
                     }}
                   />
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  {/* <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
-                  </div>
+                  </div> */}
 
                   {/* Suggestions Dropdown */}
                   {showSuggestions && suggestions.length > 0 && (
-                    <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-300 rounded-[16px] shadow-lg z-10 max-h-60 overflow-y-auto py-2">
                       {suggestions.map((suggestion, index) => (
-                        <div
-                          key={index}
-                          className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-800"
-                          onClick={() =>
-                            handleSelectSuggestion(suggestion.placeId)
-                          }
-                        >
-                          {suggestion.description}
+                        <div className="flex flex-row gap-2 items-center hover:bg-gray-100 px-4 cursor-pointer">
+                          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.0001 18C10.0001 18 16.261 12.4348 16.261 8.26087C16.261 4.80309 13.4579 2 10.0001 2C6.54234 2 3.73926 4.80309 3.73926 8.26087C3.73926 12.4348 10.0001 18 10.0001 18Z" stroke="#262626" stroke-width="1.2" stroke-linecap="square"/>
+                            <path d="M12.0004 8.00013C12.0004 9.1047 11.105 10.0001 10.0004 10.0001C8.89581 10.0001 8.00038 9.1047 8.00038 8.00013C8.00038 6.89556 8.89581 6.00013 10.0004 6.00013C11.105 6.00013 12.0004 6.89556 12.0004 8.00013Z" stroke="#262626" stroke-width="1.2" stroke-linecap="square"/>
+                          </svg>
+                          <div
+                            key={index}
+                            className="py-2 text-gray-800 text-[12px]"
+                            onClick={() =>
+                              handleSelectSuggestion(suggestion.placeId)
+                            }
+                          >
+                            {suggestion.description}
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -918,7 +924,7 @@ export default function ThirdCreateStep() {
                   defaultText={
                     locale === "en" ? "Select Country" : "Ülke Seçin"
                   }
-                  extraClassName={`w-full h-12 border ${errorFields.has("country") ? "border-[#EF1A28]" : "border-gray-300"}`}
+                  extraClassName={`w-full h-[56px] rounded-[16px] border ${errorFields.has("country") ? "border-[#EF1A28]" : "border-gray-300"}`}
                   popoverMaxWidth="400"
                   maxHeight="200"
                   popoverExtraClassName="w-auto max-w-[420px]"
@@ -939,7 +945,7 @@ export default function ThirdCreateStep() {
                   defaultText={
                     locale === "en" ? "Select Province" : "Şehir Seçin"
                   }
-                  extraClassName="w-full h-12 border border-gray-300"
+                  extraClassName="w-full h-[56px] rounded-[16px] border border-gray-300"
                   popoverMaxWidth="400"
                   maxHeight="200"
                   popoverExtraClassName="w-auto max-w-[420px]"
@@ -963,7 +969,7 @@ export default function ThirdCreateStep() {
                   defaultText={
                     locale === "en" ? "Select District" : "İlçe Seçin"
                   }
-                  extraClassName="w-full h-12 border border-gray-300"
+                  extraClassName="w-full h-[56px] rounded-[16px] border border-gray-300"
                   popoverMaxWidth="200"
                   maxHeight="200"
                   popoverExtraClassName="w-auto max-w-[280px]"
@@ -982,7 +988,7 @@ export default function ThirdCreateStep() {
                   id="neighborhood"
                   value={neighborhood?.tr || ""}
                   onChange={(e) => handleNeighborhoodChange(e.target.value)}
-                  className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("neighborhood")}`}
+                  className={`w-full h-[56px] rounded-[16px] border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass("neighborhood")}`}
                   placeholder={locale === "en" ? "Neighborhood" : "Mahalle"}
                 />
               </div>
@@ -999,7 +1005,7 @@ export default function ThirdCreateStep() {
                   id="street"
                   value={street?.tr || ""}
                   onChange={(e) => handleStreetChange(e.target.value)}
-                  className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("street")}`}
+                  className={`w-full h-[56px] rounded-[16px] border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass("street")}`}
                   placeholder={locale === "en" ? "Street" : "Sokak"}
                 />
               </div>
@@ -1020,7 +1026,7 @@ export default function ThirdCreateStep() {
                     id="adaNo"
                     value={adaNo}
                     onChange={(e) => setAdaNo(e.target.value)}
-                    className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("adaNo")}`}
+                    className={`w-full h-[56px] rounded-[16px] border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass("adaNo")}`}
                     placeholder="Ada No"
                   />
                 </div>
@@ -1036,7 +1042,7 @@ export default function ThirdCreateStep() {
                     id="parselNo"
                     value={parselNo}
                     onChange={(e) => setParselNo(e.target.value)}
-                    className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("parselNo")}`}
+                    className={`w-full h-[56px] rounded-[16px] border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass("parselNo")}`}
                     placeholder="Parsel No"
                   />
                 </div>
@@ -1055,7 +1061,7 @@ export default function ThirdCreateStep() {
                     id="buildingNo"
                     value={buildingNo}
                     onChange={(e) => setBuildingNo(e.target.value)}
-                    className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("buildingNo")}`}
+                    className={`w-full h-[56px] rounded-[16px] border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass("buildingNo")}`}
                     placeholder="Bina No"
                   />
                 </div>
@@ -1071,7 +1077,7 @@ export default function ThirdCreateStep() {
                     id="apartmentNo"
                     value={apartmentNo}
                     onChange={(e) => setApartmentNo(e.target.value)}
-                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                    className="w-full h-[56px] rounded-[16px] border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626] text-[14px]"
                     placeholder="Daire No (opsiyonel)"
                   />
                 </div>
@@ -1087,7 +1093,7 @@ export default function ThirdCreateStep() {
                     id="postalCode"
                     value={postalCode}
                     onChange={(e) => setPostalCode(e.target.value)}
-                    className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass("postalCode")}`}
+                    className={`w-full h-[56px] rounded-[16px] border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass("postalCode")}`}
                     placeholder="Posta Kodu"
                   />
                 </div>
@@ -1167,7 +1173,7 @@ export default function ThirdCreateStep() {
           <button
             type="button"
             onClick={handleContinue}
-            className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+            className="cursor-pointer w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
           >
             Devam Et
             <ChevronRightIcon className="h-5 w-5" />
