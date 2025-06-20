@@ -99,9 +99,14 @@ export default function HomePage({
   const [accessibilityFeatures, setAccessibilityFeatures] = useState<any[]>([]);
   const [selectedFaceFeatures, setSelectedFaceFeatures] = useState<any[]>([]);
   const [faceFeatures, setFaceFeatures] = useState<any[]>([]);
-  const [selectedInfrastructureFeatures, setSelectedInfrastructureFeatures] = useState<any[]>([]);
-  const [infrastructureFeatures, setInfrastructureFeatures] = useState<any[]>([]);
-  const [selectedSceneryFeatures, setSelectedSceneryFeatures] = useState<any[]>([]);
+  const [selectedInfrastructureFeatures, setSelectedInfrastructureFeatures] =
+    useState<any[]>([]);
+  const [infrastructureFeatures, setInfrastructureFeatures] = useState<any[]>(
+    []
+  );
+  const [selectedSceneryFeatures, setSelectedSceneryFeatures] = useState<any[]>(
+    []
+  );
   const [sceneryFeatures, setSceneryFeatures] = useState<any[]>([]);
   const [currencyCode, setCurrencyCode] = useState("₺");
 
@@ -269,9 +274,10 @@ export default function HomePage({
           savedFilter.infrastructureFeatureIds &&
           savedFilter.infrastructureFeatureIds.length > 0
         ) {
-          const infrastructureFeatureData = savedFilter.infrastructureFeatureIds.map(
-            (id: string) => ({ _id: id })
-          );
+          const infrastructureFeatureData =
+            savedFilter.infrastructureFeatureIds.map((id: string) => ({
+              _id: id,
+            }));
           setSelectedInfrastructureFeatures(infrastructureFeatureData);
         }
 
@@ -394,6 +400,8 @@ export default function HomePage({
   let filteredHotels = hotels;
 
   if (selectedLocation) {
+    console.log("Selected Location:", selectedLocation);
+
     const isCity = cities.includes(selectedLocation.name);
     let isState = false;
 
@@ -412,7 +420,7 @@ export default function HomePage({
       const cityName = cityComponent?.long_name;
       if (cityName) {
         filteredHotels = filteredHotels.filter(
-          (hotel) => hotel.city?.tr === cityName
+          (hotel) => hotel.state?.tr === cityName
         );
       }
     } else if (isState) {
@@ -424,7 +432,7 @@ export default function HomePage({
       const stateName = stateComponent?.long_name;
       if (stateName) {
         filteredHotels = filteredHotels.filter(
-          (hotel) => hotel.state?.tr === stateName
+          (hotel) => hotel.city?.tr === stateName
         );
       }
     } else if (selectedLocation.coordinates) {
@@ -558,7 +566,10 @@ export default function HomePage({
       });
     }
 
-    if (filters.infrastructureFeatureIds && filters.infrastructureFeatureIds.length > 0) {
+    if (
+      filters.infrastructureFeatureIds &&
+      filters.infrastructureFeatureIds.length > 0
+    ) {
       filteredHotels = filteredHotels.filter((hotel) => {
         return filters.infrastructureFeatureIds!.every((featureId: string) =>
           hotel.featureIds.includes(featureId)

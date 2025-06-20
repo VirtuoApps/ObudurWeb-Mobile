@@ -80,6 +80,8 @@ export default function LocationSelect({
 
         const data = await response.json();
 
+        console.log("Autocomplete API response:", data); // Debug log
+
         if (data.status === "OK" && data.predictions) {
           const newSuggestions = data.predictions.map((prediction: any) => ({
             description: prediction.description,
@@ -213,7 +215,9 @@ export default function LocationSelect({
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
-              <div className={`flex items-center ${isMobileMenu ? "flex-1" : ""}`}>
+              <div
+                className={`flex items-center ${isMobileMenu ? "flex-1" : ""}`}
+              >
                 {isOpen && showSearch ? (
                   <>
                     <MagnifyingGlassIcon className="h-4 w-4 mr-1 text-gray-500 flex-shrink-0" />
@@ -263,7 +267,7 @@ export default function LocationSelect({
                       <button
                         type="button"
                         className="ml-2 p-1 rounded hover:bg-gray-100 transition"
-                        onClick={e => {
+                        onClick={(e) => {
                           e.stopPropagation();
                           setSelectedLocation(null);
                         }}
