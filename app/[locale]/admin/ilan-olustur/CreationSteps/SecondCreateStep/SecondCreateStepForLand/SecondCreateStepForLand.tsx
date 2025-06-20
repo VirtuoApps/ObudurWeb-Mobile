@@ -422,12 +422,9 @@ export default function SecondCreateStepForLand() {
 
             {/* Price */}
             <div className="mb-6">
-              <h2 className="font-semibold mb-2 text-[#262626] text-2xl">
-                Fiyat
-              </h2>
               <div className="flex flex-col sm:flex-row gap-4 mb-4">
                 <div className="w-full sm:w-1/2">
-                  <label className="font-medium block mb-2 text-[#262626]">
+                  <label className="font-semibold block mb-2 text-[#262626]">
                     Fiyat (TRY)
                   </label>
                   <div className="relative">
@@ -447,7 +444,7 @@ export default function SecondCreateStepForLand() {
                 </div>
 
                 <div className="w-full sm:w-1/2">
-                  <label className="font-medium block mb-2 text-[#262626]">
+                  <label className="font-semibold block mb-2 text-[#262626]">
                     Fiyat (USD)
                   </label>
                   <div className="relative">
