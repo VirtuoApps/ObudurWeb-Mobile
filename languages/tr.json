@@ -899,7 +899,18 @@
       "uploading": "Yükleniyor...",
       "fileUploaded": "Dosya yüklendi",
       "creationError": "İlan oluşturma hatası:",
-      "fixErrors": "Lütfen aşağıdaki hataları düzeltin:"
+      "fixErrors": "Lütfen aşağıdaki hataları düzeltin:",
+      "docUploadError": "{docName} yüklenemedi. Lütfen tekrar deneyin.",
+      "uploadingInProgress": "Yüklenmekte olan dökümanlar var, lütfen bekleyin.",
+      "genericSubmitError": "İlan {action} bir hata oluştu. Lütfen tekrar deneyin.",
+      "whileUpdating": "güncellenirken",
+      "whileCreating": "oluşturulurken",
+      "dropFile": "Dosyayı bırakın",
+      "fileTypes": "PDF, DOC, DOCX, JPG, JPEG, PNG",
+      "documentTypes": {
+        "floorPlan": "Kat Planı",
+        "offerForm": "Teklif Formu"
+      }
     },
     "step2_land": {
       "title": "Arsa özelliklerini belirtin.",

@@ -894,7 +894,18 @@
       "uploading": "Uploading...",
       "fileUploaded": "File uploaded",
       "creationError": "Listing creation error:",
-      "fixErrors": "Please fix the following errors:"
+      "fixErrors": "Please fix the following errors:",
+      "docUploadError": "{docName} could not be uploaded. Please try again.",
+      "uploadingInProgress": "There are documents being uploaded, please wait.",
+      "genericSubmitError": "An error occurred while {action} the listing. Please try again.",
+      "whileUpdating": "updating",
+      "whileCreating": "creating",
+      "dropFile": "Drop the file",
+      "fileTypes": "PDF, DOC, DOCX, JPG, JPEG, PNG",
+      "documentTypes": {
+        "floorPlan": "Floor Plan",
+        "offerForm": "Offer Form"
+      }
     },
     "step2_land": {
       "title": "Specify the properties of the land.",
