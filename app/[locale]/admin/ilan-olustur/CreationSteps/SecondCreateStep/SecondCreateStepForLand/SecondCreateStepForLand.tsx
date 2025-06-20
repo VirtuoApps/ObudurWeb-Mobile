@@ -353,8 +353,14 @@ export default function SecondCreateStepForLand() {
       setCurrentStep(3);
     } else {
       // Scroll form panel to top to see errors
-      if (formPanelRef.current) {
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (formPanelRef.current) {
         formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
   };
@@ -364,12 +370,20 @@ export default function SecondCreateStepForLand() {
     setCurrentStep(1);
   };
 
-  // Add scroll reset effect when step changes
+  // Add scroll reset effect when component mounts
   useEffect(() => {
-    if (formPanelRef.current) {
-      formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, []); // Empty dependency array means this runs once when component mounts
+    const scrollToTop = () => {
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (formPanelRef.current) {
+        formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+
+    scrollToTop();
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start p-4">

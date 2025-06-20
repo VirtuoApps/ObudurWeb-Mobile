@@ -460,6 +460,26 @@ export default function SecondCreateStepForHouse() {
     return newErrors.length === 0;
   };
 
+  // Handle going back to previous step
+  const handleBack = () => {
+    setCurrentStep(1);
+  };
+
+  // Add scroll reset effect when component mounts
+  useEffect(() => {
+    const scrollToTop = () => {
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (formPanelRef.current) {
+        formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+
+    scrollToTop();
+  }, []);
+
   // Handle form submission to next step
   const handleContinue = () => {
     // Clear previous errors
@@ -475,16 +495,17 @@ export default function SecondCreateStepForHouse() {
       // Move to the next step
       setCurrentStep(3);
     } else {
-      // Scroll form panel to top to see errors
-      if (formPanelRef.current) {
+      // Scroll to top to see errors - handle both mobile and desktop
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (formPanelRef.current) {
         formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
-  };
-
-  // Handle going back to previous step
-  const handleBack = () => {
-    setCurrentStep(1);
   };
 
   return (

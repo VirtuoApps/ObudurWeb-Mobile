@@ -455,6 +455,24 @@ export default function CreationSteps({
   // Set hotelId from hotelData if in update mode
   const hotelId = isUpdate && hotelData ? hotelData._id : null;
 
+  // Add scroll to top effect when step changes
+  useEffect(() => {
+    const scrollToTop = () => {
+      // Check if we're on mobile/tablet (responsive design)
+      const isMobile = window.innerWidth < 768; // md breakpoint
+
+      if (isMobile) {
+        // On mobile, scroll the window to top
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        // On desktop, also scroll window (individual components will handle their form panels)
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+
+    scrollToTop();
+  }, [currentStep]);
+
   // Effect to initialize form with hotel data when in update mode
   useEffect(() => {
     if (isUpdate && hotelData) {
