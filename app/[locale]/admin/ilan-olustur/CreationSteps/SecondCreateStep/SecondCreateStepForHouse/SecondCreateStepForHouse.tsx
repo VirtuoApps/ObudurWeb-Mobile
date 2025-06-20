@@ -61,7 +61,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
     <div className="relative" ref={dropdownRef}>
       <button
         type="button"
-        className={`w-full h-[56px] rounded-[16px] border bg-white px-4 flex items-center justify-between text-[#262626] focus:outline-none transition-colors ${
+        className={`w-full h-[56px] rounded-[16px] border bg-white px-4 flex items-center justify-between text-[#262626] focus:outline-none transition-colors cursor-pointer text-[14px] ${
           hasError
             ? "border-[#EF1A28] focus:border-[#EF1A28]"
             : "border-[#E2E2E2] focus:border-[#5D568D] hover:border-[#5D568D]"
@@ -538,24 +538,20 @@ export default function SecondCreateStepForHouse() {
 
             {/* Price */}
             <div className="mb-6">
-              <h2 className="font-semibold mb-2 text-[#262626] text-2xl">
-                Fiyat
-              </h2>
-
               <div className="flex flex-col sm:flex-row gap-4 mb-4">
                 <div className="w-full sm:w-1/2">
-                  <label className="font-medium block mb-2 text-[#262626]">
+                  <label className="block mb-2 text-[#262626] text-[16px] font-bold">
                     Fiyat (TRY)
                   </label>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium">
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium text-[14px]">
                       ₺
                     </span>
                     <input
                       type="text"
                       value={getPriceForCurrency("TRY") || ""}
                       onChange={(e) => handlePriceChange("TRY", e.target.value)}
-                      className={`w-full h-[56px] rounded-[16px] border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                      className={`w-full h-[56px] rounded-[16px] border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
                         "price-try"
                       )}`}
                       placeholder="Fiyat yazın"
@@ -564,18 +560,18 @@ export default function SecondCreateStepForHouse() {
                 </div>
 
                 <div className="w-full sm:w-1/2">
-                  <label className="font-medium block mb-2 text-[#262626]">
+                  <label className="block mb-2 text-[#262626] text-[16px] font-bold">
                     Fiyat (USD)
                   </label>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium">
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium text-[14px]">
                       $
                     </span>
                     <input
                       type="text"
                       value={getPriceForCurrency("USD") || ""}
                       onChange={(e) => handlePriceChange("USD", e.target.value)}
-                      className={`w-full h-[56px] rounded-[16px] border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                      className={`w-full h-[56px] rounded-[16px] border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
                         "price-usd"
                       )}`}
                       placeholder="Fiyat yazın"
@@ -607,7 +603,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="projectArea"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   Metrekare (Brüt)
                 </label>
@@ -624,7 +620,7 @@ export default function SecondCreateStepForHouse() {
                         : numericValue;
                     setProjectArea(parseFloat(validValue) || 0);
                   }}
-                  className={`w-full h-[56px] rounded-[16px] border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                  className={`w-full h-[56px] rounded-[16px] border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
                     "projectArea"
                   )}`}
                   placeholder="Buraya yazın"
@@ -633,7 +629,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="totalSize"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   Metrekare (Net)
                 </label>
@@ -650,7 +646,7 @@ export default function SecondCreateStepForHouse() {
                         : numericValue;
                     setTotalSize(parseFloat(validValue) || 0);
                   }}
-                  className={`w-full h-[56px] rounded-[16px] border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                  className={`w-full h-[56px] rounded-[16px] border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
                     "totalSize"
                   )}`}
                   placeholder="Buraya yazın"
@@ -659,7 +655,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="roomCount"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   Oda Sayısı
                 </label>
@@ -678,7 +674,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="bathroomCount"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   Banyo Sayısı
                 </label>
@@ -693,7 +689,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="floorCount"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   Kat Sayısı
                 </label>
@@ -708,7 +704,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="floorPosition"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   Bulunduğu Kat
                 </label>
@@ -740,7 +736,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="bedRoomCount"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   Balkon Sayısı
                 </label>
@@ -755,7 +751,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="kitchenType"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   Mutfak Tipi
                 </label>
@@ -797,7 +793,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="heatingType"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   Isıtma
                 </label>
@@ -849,7 +845,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="source"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   Kimden
                 </label>
@@ -887,7 +883,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="exchangeable"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   Takaslı
                 </label>
@@ -901,7 +897,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="isFurnished"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   Eşyalı
                 </label>
@@ -919,7 +915,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="creditEligible"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   Krediye Uygunluk
                 </label>
@@ -933,7 +929,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="buildingAge"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   Bina Yaşı
                 </label>
@@ -946,7 +942,7 @@ export default function SecondCreateStepForHouse() {
                 />
               </div>
               <div className="w-full lg:w-1/3">
-                <label className="font-semibold block mb-2 text-[#262626]">
+                <label className="font-bold block mb-2 text-[#262626] text-[16px]">
                   Aidat
                 </label>
                 <div className="flex gap-2">
@@ -968,7 +964,7 @@ export default function SecondCreateStepForHouse() {
                       onChange={(e) =>
                         handleDuesChange(selectedDuesCurrency, e.target.value)
                       }
-                      className="w-full h-[56px] rounded-[16px] border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                      className="w-full h-[56px] rounded-[16px] border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626] text-[14px]"
                       placeholder="Fiyat yazın"
                     />
                   </div>
@@ -981,7 +977,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/2">
                 <label
                   htmlFor="usageStatus"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   Kullanım Durumu
                 </label>
@@ -1022,7 +1018,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/2">
                 <label
                   htmlFor="deedStatus"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   Tapu Durumu
                 </label>

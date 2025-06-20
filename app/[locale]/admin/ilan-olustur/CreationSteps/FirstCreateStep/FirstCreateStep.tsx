@@ -430,7 +430,7 @@ export default function FirstCreateStep() {
                           tr: e.target.value,
                         }))
                       }
-                      className={`${getFieldClassName("title", "tr")} h-[56px] !rounded-[16px]`}
+                      className={`${getFieldClassName("title", "tr")} h-[56px] !rounded-[16px] text-[14px]`}
                       placeholder="İlan Başlığı"
                     />
                   </div>
@@ -445,7 +445,7 @@ export default function FirstCreateStep() {
                           tr: e.target.value,
                         }))
                       }
-                      className={`${getFieldClassName("description", "tr")} !rounded-[16px]`}
+                      className={`${getFieldClassName("description", "tr")} !rounded-[16px] text-[14px]`}
                       placeholder="İlan Açıklaması"
                     />
                   </div>
@@ -472,7 +472,7 @@ export default function FirstCreateStep() {
                           en: e.target.value,
                         }))
                       }
-                      className={`${getFieldClassName("title", "en")} h-[56px] !rounded-[16px]`}
+                      className={`${getFieldClassName("title", "en")} h-[56px] !rounded-[16px] text-[14px]`}
                       placeholder="Title"
                     />
                   </div>
@@ -487,7 +487,7 @@ export default function FirstCreateStep() {
                           en: e.target.value,
                         }))
                       }
-                      className={`${getFieldClassName("description", "en")} !rounded-[16px]`}
+                      className={`${getFieldClassName("description", "en")} !rounded-[16px] text-[14px]`}
                       placeholder="Description"
                     />
                   </div>
