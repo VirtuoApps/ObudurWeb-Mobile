@@ -564,7 +564,7 @@ export default function FilterList({
             </button>
             <button
               onClick={() => setIsSaveFilterSheetOpen(true)}
-              className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959]"
+              className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#262626]"
             >
               {filteringT("saveSearch")}
             </button>

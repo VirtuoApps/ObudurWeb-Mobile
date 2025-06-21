@@ -551,18 +551,21 @@ export default function HomePage({
       });
     }
 
-    if (
-      filters.isOnePlusOneSelected ||
-      filters.isTwoPlusOneSelected ||
-      filters.isThreePlusOneSelected
-    ) {
-      const selectedRoomTypes: string[] = [];
-      if (filters.isOnePlusOneSelected) selectedRoomTypes.push("1+1");
-      if (filters.isTwoPlusOneSelected) selectedRoomTypes.push("2+1");
-      if (filters.isThreePlusOneSelected) selectedRoomTypes.push("3+1");
-
+    if (filters.isOnePlusOneSelected) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return selectedRoomTypes.includes(hotel.roomAsText);
+        return hotel.roomCount === 1;
+      });
+    }
+
+    if (filters.isTwoPlusOneSelected) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return hotel.roomCount === 2;
+      });
+    }
+
+    if (filters.isThreePlusOneSelected) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return hotel.roomCount === 3;
       });
     }
   }
