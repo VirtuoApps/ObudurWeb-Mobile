@@ -11,7 +11,7 @@ import { FilterType } from "@/types/filter.type";
 import Footer from "../[locale]/resident/[slug]/Footer/Footer";
 import Header from "./Header/Header";
 import { Hotel } from "@/types/hotel.type";
-import ListView from "./ListView/ListView";
+import ListView, { getLocalizedText } from "./ListView/ListView";
 import NoResultFound from "./ListView/NoResultFound/NoResultFound";
 import PersonalInformationFormPopup from "../components/PersonalInformationsFormPopup/PersonalInformationsFormPopup";
 import SaveFilterPopup from "./SaveFilterPopup/SaveFilterPopup";
@@ -27,6 +27,9 @@ import { useScrollDirection } from "../hooks/useScrollDirection";
 import { useSelector } from "react-redux";
 import { useTranslations } from "next-intl";
 import Bowser from "bowser";
+import MapPropertyFloatingCard from "./MapView/MapPropertyFloatingCard/MapPropertyFloatingCard";
+import { getDisplayPrice } from "../utils/priceFormatter";
+import { formatAddress } from "../utils/addressFormatter";
 
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
@@ -118,6 +121,8 @@ export default function HomePage({
   const [showEmailVerifiedPopup, setShowEmailVerifiedPopup] = useState(false);
   const [showSignupEmailVerifySendPopup, setShowSignupEmailVerifySendPopup] =
     useState(false);
+  const [selectedHotel, setSelectedHotel] = useState<Hotel | null>(null);
+  const [hideSelectedHotel, setHideSelectedHotel] = useState(false);
 
   const [
     isPersonalInformationFormPopupOpen,
@@ -629,35 +634,6 @@ export default function HomePage({
         />
       )}
 
-      {!disableMapListButton && (
-        <div
-          className={`fixed left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-40 px-3 h-[40px] rounded-lg shadow-lg transition-all duration-300`}
-          style={{
-            bottom:
-              isPinSelected && currentView === "map"
-                ? browser === "Safari"
-                  ? "250px"
-                  : "172px"
-                : "16px",
-          }}
-          onClick={() => {
-            handleViewChange(currentView === "map" ? "list" : "map");
-            localStorage.setItem(
-              "currentView",
-              currentView === "map" ? "list" : "map"
-            );
-          }}
-        >
-          <img
-            src={currentView === "map" ? "/list.png" : "/map-03.png"}
-            className="w-5 h-5"
-          />
-          <p className="text-base text-[#262626] font-medium ml-2">
-            {currentView === "map" ? "Liste" : "Harita"}
-          </p>
-        </div>
-      )}
-
       <SaveFilterPopup
         isOpen={isSaveFilterPopupOpen}
         onClose={() => setIsSaveFilterPopupOpen(false)}
@@ -835,6 +811,10 @@ export default function HomePage({
                     selectedLocation={selectedLocation}
                     searchRadius={searchRadius}
                     onPinSelectionChange={handlePinSelectionChange}
+                    selectedHotel={selectedHotel}
+                    setSelectedHotel={setSelectedHotel}
+                    hideSelectedHotel={hideSelectedHotel}
+                    setHideSelectedHotel={setHideSelectedHotel}
                   />
                 </div>
               ) : (
@@ -860,6 +840,62 @@ export default function HomePage({
 
         {/* <ViewSwitcher currentView={currentView} setCurrentView={setCurrentView} /> */}
       </div>
+
+      {!disableMapListButton && (
+        <div className="fixed left-0 bottom-0 lg:hidden w-full z-40 px-4 pb-4">
+          <div
+            className={` bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-40 px-3 h-[40px]  rounded-lg shadow-lg transition-all duration-300`}
+            onClick={() => {
+              handleViewChange(currentView === "map" ? "list" : "map");
+              localStorage.setItem(
+                "currentView",
+                currentView === "map" ? "list" : "map"
+              );
+            }}
+            style={{
+              width: "88px",
+            }}
+          >
+            <img
+              src={currentView === "map" ? "/list.png" : "/map-03.png"}
+              className="w-5 h-5"
+            />
+            <p className="text-base text-[#262626] font-medium ml-2">
+              {currentView === "map" ? "Liste" : "Harita"}
+            </p>
+          </div>
+
+          {isMobile && selectedHotel && (
+            <MapPropertyFloatingCard
+              isVisible={!!selectedHotel && !hideSelectedHotel}
+              onClose={() => setSelectedHotel(null)}
+              key={selectedHotel._id}
+              hotelId={selectedHotel._id}
+              slug={selectedHotel.slug}
+              type={getLocalizedText(selectedHotel.listingType, "en")}
+              isOptinable={false}
+              residentTypeName={getLocalizedText(
+                selectedHotel.housingType,
+                "en"
+              )}
+              title={getLocalizedText(selectedHotel.title, "en")}
+              price={getDisplayPrice(selectedHotel.price, selectedCurrency)}
+              bedCount={selectedHotel.bedRoomCount.toString()}
+              floorCount={"2"}
+              area={`${selectedHotel.projectArea}m²`}
+              locationText={formatAddress(selectedHotel, "en ")}
+              image={selectedHotel.images[0]}
+              images={selectedHotel.images}
+              isFavorite={false}
+              roomAsText={selectedHotel.roomAsText}
+              roomCount={selectedHotel.roomCount || 0}
+              entranceType={selectedHotel.entranceType}
+              priceAsNumber={selectedHotel.price[0].amount}
+              areaAsNumber={+selectedHotel.projectArea}
+            />
+          )}
+        </div>
+      )}
     </>
   );
 }

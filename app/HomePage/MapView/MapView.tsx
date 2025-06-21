@@ -17,19 +17,25 @@ export default function GoogleMapView({
   selectedLocation,
   searchRadius,
   onPinSelectionChange,
+  selectedHotel,
+  setSelectedHotel,
+  hideSelectedHotel,
+  setHideSelectedHotel,
 }: {
   hotels: Hotel[];
   totalHotelsCount: number;
   selectedLocation?: any;
   searchRadius?: number;
   onPinSelectionChange?: (isSelected: boolean) => void;
+  selectedHotel?: Hotel | null;
+  setSelectedHotel?: (hotel: Hotel | null) => void;
+  hideSelectedHotel?: boolean;
+  setHideSelectedHotel?: (hide: boolean) => void;
 }) {
   const { isLoaded } = useGoogleMaps();
 
-  const [selectedHotel, setSelectedHotel] = useState<Hotel | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
   const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
-  const [hideSelectedHotel, setHideSelectedHotel] = useState(false);
   const [initialCenter, setInitialCenter] = useState<{
     lat: number;
     lng: number;
@@ -435,32 +441,6 @@ export default function GoogleMapView({
       </GoogleMap>
 
       {/* Mobile Floating Card */}
-      {isMobile && selectedHotel && (
-        <MapPropertyFloatingCard
-          isVisible={!!selectedHotel && !hideSelectedHotel}
-          onClose={() => setSelectedHotel(null)}
-          key={selectedHotel._id}
-          hotelId={selectedHotel._id}
-          slug={selectedHotel.slug}
-          type={getLocalizedText(selectedHotel.listingType, "en")}
-          isOptinable={false}
-          residentTypeName={getLocalizedText(selectedHotel.housingType, "en")}
-          title={getLocalizedText(selectedHotel.title, "en")}
-          price={getDisplayPrice(selectedHotel.price, selectedCurrency)}
-          bedCount={selectedHotel.bedRoomCount.toString()}
-          floorCount={"2"}
-          area={`${selectedHotel.projectArea}m²`}
-          locationText={formatAddress(selectedHotel, "en ")}
-          image={selectedHotel.images[0]}
-          images={selectedHotel.images}
-          isFavorite={false}
-          roomAsText={selectedHotel.roomAsText}
-          roomCount={selectedHotel.roomCount || 0}
-          entranceType={selectedHotel.entranceType}
-          priceAsNumber={selectedHotel.price[0].amount}
-          areaAsNumber={+selectedHotel.projectArea}
-        />
-      )}
     </>
   );
 }
