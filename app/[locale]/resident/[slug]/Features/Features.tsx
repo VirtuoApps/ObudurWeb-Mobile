@@ -101,6 +101,8 @@ export default function FeaturesEquipment() {
 
   const outsideFeatures = hotelData.populatedData.outsideFeatures;
 
+  const faceFeatures = hotelData.populatedData.faces;
+
   const infrastructureData: Feature[] =
     (hotelData as any).infrastructureFeatureIds
       ?.map((id: string) => {
@@ -128,7 +130,10 @@ export default function FeaturesEquipment() {
       .filter((v: Feature | null): v is Feature => v !== null) || [];
 
   return (
-    <section id="features-section" className="max-w-5xl mx-auto my-[24px] md:my-[72px]">
+    <section
+      id="features-section"
+      className="max-w-5xl mx-auto my-[24px] md:my-[72px]"
+    >
       <div>
         <h2 className="text-[#31286A] font-semibold tracking-tight text-3xl md:text-2xl">
           {t("title")}
@@ -137,6 +142,13 @@ export default function FeaturesEquipment() {
           {t("description")}
         </p>
       </div>
+      {faceFeatures.length > 0 && (
+        <FeatureGroup
+          title="Cephe"
+          features={faceFeatures}
+          locale={currentLocale}
+        />
+      )}
       {insideFeatures.length > 0 && (
         <FeatureGroup
           title={t("indoorTitle")}
