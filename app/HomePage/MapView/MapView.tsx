@@ -418,7 +418,7 @@ export default function GoogleMapView({
                   title={getLocalizedText(selectedHotel.title, "en")}
                   price={getDisplayPrice(selectedHotel.price, selectedCurrency)}
                   bedCount={selectedHotel.bedRoomCount.toString()}
-                  floorCount={"2"}
+                  floorCount={selectedHotel.floorCount?.toString()}
                   area={`${selectedHotel.projectArea}m2`}
                   locationText={formatAddress(selectedHotel, "en ")}
                   image={selectedHotel.images[0]}
@@ -448,7 +448,7 @@ export default function GoogleMapView({
           title={getLocalizedText(selectedHotel.title, "en")}
           price={getDisplayPrice(selectedHotel.price, selectedCurrency)}
           bedCount={selectedHotel.bedRoomCount.toString()}
-          floorCount={"2"}
+          floorCount={selectedHotel.floorCount?.toString()}
           area={`${selectedHotel.projectArea}m²`}
           locationText={formatAddress(selectedHotel, "en ")}
           image={selectedHotel.images[0]}

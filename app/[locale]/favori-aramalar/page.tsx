@@ -1,23 +1,24 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Header from "../admin/Header/Header";
-import Footer from "../resident/[slug]/Footer/Footer";
+import { SavedFilter, savedFiltersApi } from "../api/savedFilters";
+import { useLocale, useTranslations } from "next-intl";
+
+import { Feature } from "@/types/feature.type";
 import FilterBox from "./FilterBox/FilterBox";
 import FilterBoxSkeleton from "./FilterBoxSkeleton";
-import HeaderSection from "./HeaderSection/HeaderSection";
-import { savedFiltersApi, SavedFilter } from "../api/savedFilters";
-import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
 import { FilterOptions } from "@/types/filter-options.type";
+import Footer from "../resident/[slug]/Footer/Footer";
+import Header from "../admin/Header/Header";
+import HeaderSection from "./HeaderSection/HeaderSection";
 import { Hotel } from "@/types/hotel.type";
-import { Feature } from "@/types/feature.type";
-import axiosInstance from "@/axios";
-import { useRouter } from "@/app/utils/router";
 import ResidentBox from "@/app/HomePage/ListView/ResidentBox/ResidentBox";
-import { getLocalizedText } from "../favorilerim/page";
-import { useLocale, useTranslations } from "next-intl";
+import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
+import axiosInstance from "@/axios";
 import { formatAddress } from "@/app/utils/addressFormatter";
 import { getDisplayPrice } from "@/app/utils/priceFormatter";
+import { getLocalizedText } from "../favorilerim/page";
+import { useRouter } from "@/app/utils/router";
 
 export default function FavoriAramalarPage() {
   const [savedFilters, setSavedFilters] = useState<SavedFilter[]>([]);
@@ -182,7 +183,7 @@ export default function FavoriAramalarPage() {
                       title={getLocalizedText(hotel.title, selectedLanguage)}
                       price={getDisplayPrice(hotel.price, selectedCurrency)}
                       bedCount={hotel.bedRoomCount.toString()}
-                      floorCount={"2"}
+                      floorCount={hotel.floorCount?.toString()}
                       area={`${hotel.projectArea}m2`}
                       locationText={formatAddress(hotel, selectedLanguage)}
                       image={hotel.images[0]}

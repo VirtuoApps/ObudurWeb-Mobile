@@ -86,8 +86,8 @@ export default function Footer({
           `}
         ></div>
 
-        <div className="max-w-[1440px] mx-auto px-4 lg:px-0 py-12 lg:py-20">
-          <div className="flex flex-col lg:flex-row lg:justify-between pt-8 pb-10 gap-8 lg:gap-0 lg:px-4">
+        <div className="max-w-[1440px] mx-auto px-4 lg:px-0 py-14 lg:py-20">
+          <div className="flex flex-col lg:flex-row lg:justify-between pt-0 pb-0 gap-8 lg:gap-0 lg:px-4">
             {/* Newsletter Column - Move to top on mobile */}
             <div className="w-full lg:w-[342px] order-first lg:order-last">
               <form onSubmit={handleSubscribe}>
@@ -132,7 +132,7 @@ export default function Footer({
             </div>
 
             {/* Navigation Columns Container */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-28 w-full lg:w-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-28 w-full lg:w-auto">
               {/* Column 1 */}
               <nav className="col-span-1">
                 <ul className="space-y-2">
@@ -162,6 +162,8 @@ export default function Footer({
                   </li>
                 </ul>
               </nav>
+              
+              <div className="lg:hidden block border-b border-[#F0F0F0] h-[1px]"></div>
 
               {/* Column 2 */}
               <nav className="col-span-1">
@@ -201,6 +203,8 @@ export default function Footer({
                 </ul>
               </nav>
 
+              <div className="lg:hidden block border-b border-[#F0F0F0] h-[1px]"></div>
+
               {/* Column 3 */}
               <nav className="col-span-1">
                 <ul className="space-y-2">
@@ -238,6 +242,8 @@ export default function Footer({
                   </li>
                 </ul>
               </nav>
+
+              <div className="lg:hidden block border-b border-[#F0F0F0] h-[1px]"></div>
 
               {/* Column 4 */}
               <nav className="col-span-1">
@@ -279,19 +285,22 @@ export default function Footer({
         <div className="border-t border-[#C1BED4] max-w-[1440px] mx-auto"></div>
 
         {/* Bottom bar */}
-        <div className="max-w-[1440px] mx-auto px-4 lg:px-0">
+        <div className="max-w-[1440px] mx-auto px-4">
           <div className="flex justify-start items-center py-4 lg:py-12 text-xs text-slate-500">
-            <div className="flex items-center">
-              <Image
-                src="/obudur-icon.png"
-                alt="Obudur Logo"
-                width={32}
-                height={32}
-                className="mr-4"
-              />
-              <span className="text-[14px] font-medium mr-4">
-                {t_bottom("copyright")}
-              </span>
+            {/* justify-between and w-full should be applied only for mobile */}
+            <div className="flex items-center justify-between w-full lg:w-auto">
+              <div className="flex items-center">
+                <Image
+                  src="/obudur-icon.png"
+                  alt="Obudur Logo"
+                  width={32}
+                  height={32}
+                  className="mr-4"
+                />
+                <span className="text-[14px] font-medium mr-4">
+                  {t_bottom("copyright")}
+                </span>
+              </div>
               <span className="text-[14px] font-medium">
                 {t_bottom("companyInfo")}
               </span>

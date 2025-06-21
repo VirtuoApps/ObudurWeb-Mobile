@@ -37,6 +37,7 @@ export interface Hotel {
   bathroomCount: number;
   balconyCount: number;
   bedRoomCount: number;
+  floorCount: number;
   floorType: MultilingualText;
   housingType: MultilingualText;
   entranceType: MultilingualText;
