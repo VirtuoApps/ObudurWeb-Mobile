@@ -1,26 +1,27 @@
-import React, { useState, useEffect } from "react";
+import { AppDispatch, RootState } from "@/app/store/store";
 import {
-  MapPinIcon,
-  HomeIcon,
   ArrowsPointingOutIcon,
   BuildingOffice2Icon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  HomeIcon,
+  MapPinIcon,
 } from "@heroicons/react/24/outline";
-import { MdFavoriteBorder } from "react-icons/md";
-import { MdOutlineFavorite } from "react-icons/md";
-import LikeIcon from "@/app/svgIcons/likeIcon";
-import FloorCountIcon from "@/app/svgIcons/FloorCountIcon";
-import AreaIcon from "@/app/svgIcons/AreaIcon";
-import { useTranslations } from "next-intl";
-import { useRouter } from "@/app/utils/router";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "@/app/store/store";
-import AuthPopup from "@/app/components/AuthPopup/AuthPopup";
+import React, { useEffect, useState } from "react";
 import {
   addToFavorites,
   removeFromFavorites,
 } from "@/app/store/favoritesSlice";
+import { useDispatch, useSelector } from "react-redux";
+
+import AreaIcon from "@/app/svgIcons/AreaIcon";
+import AuthPopup from "@/app/components/AuthPopup/AuthPopup";
+import FloorCountIcon from "@/app/svgIcons/FloorCountIcon";
+import LikeIcon from "@/app/svgIcons/likeIcon";
+import { MdFavoriteBorder } from "react-icons/md";
+import { MdOutlineFavorite } from "react-icons/md";
+import { useRouter } from "@/app/utils/router";
+import { useTranslations } from "next-intl";
 
 interface ResidentBoxProps {
   isFavorite?: boolean;
@@ -204,12 +205,12 @@ export default function ResidentBox({
         <div className="p-4">
           {/* Property type */}
           <div className="flex flex-row items-center justify-between">
-            <p className="text-base text-[#8C8C8C] font-medium">
+            <p className="text-base text-[#8C8C8C] font-medium w-[max-content]">
               {residentTypeName}
             </p>
 
             {/* Price */}
-            <p className="text-base font-bold text-[#362C75] w-[200px] text-right">
+            <p className="text-base font-bold text-[#362C75] max-w-[200px] text-right w-[max-content]">
               {price}
             </p>
           </div>
