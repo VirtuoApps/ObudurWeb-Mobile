@@ -58,7 +58,7 @@ const FeatureItem: React.FC<FeatureItemProps> = ({ label, imageUrl }) => {
   return (
     <li className="flex items-center gap-2 md:gap-3 text-[#595959] min-w-0">
       <img src={imageUrl} alt={label} className="w-6 h-6 flex-shrink-0" />
-      <span className="text-[#595959] text-sm md:text-base font-medium truncate">
+      <span className="text-[#595959] text-sm md:text-[14px] font-medium truncate">
         {label}
       </span>
     </li>

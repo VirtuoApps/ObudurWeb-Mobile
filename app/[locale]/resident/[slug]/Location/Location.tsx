@@ -108,7 +108,7 @@ export default function Location() {
                   src={distance.iconUrl}
                   alt={distance.name[currentLocale]}
                 />
-                <span className="text-[#595959] text-sm md:text-base font-medium truncate">
+                <span className="text-[#595959] text-sm md:text-[14px] font-medium truncate">
                   {distance.name[currentLocale]}{" "}
                   <span className="text-gray-500 font-normal">
                     {distance.value % 1 === 0
