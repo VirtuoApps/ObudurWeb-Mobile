@@ -481,7 +481,7 @@ export default function FourthCreateStep() {
           {/* Right Form Panel */}
           <div
             ref={formPanelRef}
-            className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto md:border-l md:border-[#F0F0F0]"
+            className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[70vh] overflow-auto md:border-l md:border-[#F0F0F0]"
           >
             {/* Errors display */}
             {errors.length > 0 && (

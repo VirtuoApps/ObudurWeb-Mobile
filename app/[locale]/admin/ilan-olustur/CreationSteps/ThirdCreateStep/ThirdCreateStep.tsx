@@ -667,20 +667,16 @@ export default function ThirdCreateStep() {
       const lng = e.latLng.lng();
       setCoordinates([lng, lat]);
 
-
       // Perform reverse geocoding to get address details
       try {
         const response = await fetch(
           `/api/places/geocode?latlng=${lat},${lng}`
         );
 
-
         const data = await response.json();
-
 
         if (data.status === "OK" && data.results && data.results.length > 0) {
           const result = data.results[0];
-
 
           // Update address components from reverse geocoding result
           if (result.address_components) {
@@ -822,9 +818,9 @@ export default function ThirdCreateStep() {
   };
 
   return (
-    <div className="bg-[#ECEBF4] flex justify-center items-start p-4 py-6 h-[calc(100vh-72px)] lg:h-[calc(100vh-96px)]">
+    <div className="bg-[#ECEBF4] flex justify-center items-start p-4 py-6 ">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white h-full">
-        <div className="flex flex-col md:flex-row h-[inherit]">
+        <div className="flex flex-col md:flex-row h-[inherit] md:h-[67vh]  2xl:h-[73vh]">
           {/* Left Info Panel - 30% width on desktop */}
           <div className="w-full md:w-[30%] mb-8 md:mb-0 md:p-6 hidden flex-col md:flex justify-between">
             <div className="">
@@ -832,15 +828,9 @@ export default function ThirdCreateStep() {
                 {t("title")}
               </h1>
               <div className="mt-4 text-base text-[#595959] font-medium">
-                <p className="leading-[140%]">
-                  {t("description")}
-                </p>
+                <p className="leading-[140%]">{t("description")}</p>
               </div>
             </div>
-
-            <span className="text-sm text-gray-600 mt-4 sm:mt-0">
-              {t("stepCounter", { current: 3, total: 6 })}
-            </span>
           </div>
 
           {/* Right Form Panel - 70% width on desktop */}
@@ -850,33 +840,32 @@ export default function ThirdCreateStep() {
             className="flex-1 h-full flex flex-col"
           >
             <div className="p-6 flex-1 overflow-auto md:border-l border-[#F0F0F0]">
-
-                          {/* Errors display */}
-            {errors.length > 0 && (
-              <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <XCircleIcon
-                      className="h-5 w-5 text-red-400"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-red-800">
-                      {t("fixErrors")}
-                    </h3>
-                    <div className="mt-2 text-sm text-red-700">
-                      <ul className="list-disc pl-5 space-y-1">
-                        {errors.map((error) => (
-                          <li key={error}>{error}</li>
-                        ))}
-                      </ul>
+              {/* Errors display */}
+              {errors.length > 0 && (
+                <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0">
+                      <XCircleIcon
+                        className="h-5 w-5 text-red-400"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium text-red-800">
+                        {t("fixErrors")}
+                      </h3>
+                      <div className="mt-2 text-sm text-red-700">
+                        <ul className="list-disc pl-5 space-y-1">
+                          {errors.map((error) => (
+                            <li key={error}>{error}</li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
-            
+              )}
+
               <label
                 htmlFor="address"
                 className="font-semibold block mb-2 text-[#262626]"
@@ -1238,26 +1227,19 @@ export default function ThirdCreateStep() {
             </div>
 
             {/* Step counter and continue button */}
-            <div className="flex flex-col sm:flex-row justify-end items-center border-t md:border-l border-[#F0F0F0] p-6">
-              <div className="flex flex-row gap-4 sm:mt-0 w-full md:w-auto justify-end">
-                <button
-                  type="button"
-                  onClick={handleBack}
-                  className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-600 font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition border border-gray-300"
-                >
-                  {t("cancel")}
-                </button>
-                <button
-                  type="button"
-                  onClick={handleContinue}
-                  className="cursor-pointer w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
-                >
-                  {t("continue")}
-                  <ChevronRightIcon className="h-5 w-5 hidden sm:block" />
-                </button>
-              </div>
-            </div>
           </div>
+        </div>
+
+        <div className=" flex flex-col sm:flex-row justify-between items-center p-6">
+          <GoBackButton handleBack={handleBack} step={3} totalSteps={6} />
+          <button
+            type="button"
+            onClick={handleContinue}
+            className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+          >
+            {t("continue")}
+            <ChevronRightIcon className="h-5 w-5" />
+          </button>
         </div>
       </div>
     </div>

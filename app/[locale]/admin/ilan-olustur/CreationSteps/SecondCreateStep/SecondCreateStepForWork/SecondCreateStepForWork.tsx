@@ -1,12 +1,10 @@
-import {
-  ChevronRightIcon,
-  XCircleIcon,
-} from "@heroicons/react/24/solid";
+import { ChevronRightIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import React, { useEffect, useRef, useState } from "react";
 import { formatInputPrice, parseInputPrice } from "@/app/utils/priceFormatter";
 
 import { useListingForm } from "../../CreationSteps";
 import { useTranslations } from "next-intl";
+import GoBackButton from "../../../GoBackButton/GoBackButton";
 
 // Custom Select component that matches the design
 interface SelectOption {
@@ -476,9 +474,9 @@ export default function SecondCreateStepForWork() {
   }, []);
 
   return (
-    <div className="h-[calc(100vh-72px)] lg:h-[calc(100vh-96px)] bg-[#ECEBF4] flex justify-center items-start p-4 py-6">
-      <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white h-full">
-        <div className="flex flex-col md:flex-row h-full">
+    <div className=" bg-[#ECEBF4] flex justify-center items-start p-4 py-6">
+      <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white h-full ">
+        <div className="flex flex-col md:flex-row h-full md:h-[67vh]  2xl:h-[76vh]">
           {/* Left Info Panel */}
           <div className="w-full md:w-[30%] md:p-6 hidden flex-col md:flex justify-between">
             <div>
@@ -486,23 +484,15 @@ export default function SecondCreateStepForWork() {
                 {t("title")}
               </h1>
               <div className="mt-4 text-base text-[#595959] font-medium">
-                <p className="leading-[140%]">
-                  {t("description")}
-                </p>
+                <p className="leading-[140%]">{t("description")}</p>
               </div>
-            </div>
-            <div className="text-sm text-[#6B7280] mt-6">
-              {t("stepCounter", { current: 2, total: 6 })}
             </div>
           </div>
 
           {/* Right Form Panel */}
           <div className="flex-1 h-full flex flex-col">
             <div className="p-6 flex-1 overflow-auto md:border-l border-[#F0F0F0]">
-              <div
-                ref={formPanelRef}
-                className="h-full"
-              >
+              <div ref={formPanelRef} className="h-full">
                 {/* Errors display */}
                 {errors.length > 0 && (
                   <div className="bg-red-50 border border-red-200 rounded-md p-4 m-6">
@@ -529,51 +519,55 @@ export default function SecondCreateStepForWork() {
                   </div>
                 )}
 
-            {/* Price */}
-            <div className="mb-6">
-              <div className="flex flex-col sm:flex-row gap-4 mb-4">
-                <div className="w-full sm:w-1/2">
-                  <label className="font-bold block mb-2 text-[#262626] text-[16px]">
-                    {t("priceTRY")}
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium text-[14px]">
-                      ₺
-                    </span>
-                    <input
-                      type="text"
-                      value={getPriceForCurrency("TRY") || ""}
-                      onChange={(e) => handlePriceChange("TRY", e.target.value)}
-                      className={`w-full h-[56px] rounded-[16px] border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
-                        "price-try"
-                      )}`}
-                      placeholder={t("pricePlaceholder")}
-                    />
-                  </div>
-                </div>
+                {/* Price */}
+                <div className="mb-6">
+                  <div className="flex flex-col sm:flex-row gap-4 mb-4">
+                    <div className="w-full sm:w-1/2">
+                      <label className="font-bold block mb-2 text-[#262626] text-[16px]">
+                        {t("priceTRY")}
+                      </label>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium text-[14px]">
+                          ₺
+                        </span>
+                        <input
+                          type="text"
+                          value={getPriceForCurrency("TRY") || ""}
+                          onChange={(e) =>
+                            handlePriceChange("TRY", e.target.value)
+                          }
+                          className={`w-full h-[56px] rounded-[16px] border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
+                            "price-try"
+                          )}`}
+                          placeholder={t("pricePlaceholder")}
+                        />
+                      </div>
+                    </div>
 
-                <div className="w-full sm:w-1/2">
-                  <label className="font-bold block mb-2 text-[#262626] text-[16px]">
-                    {t("priceUSD")}
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium text-[14px]">
-                      $
-                    </span>
-                    <input
-                      type="text"
-                      value={getPriceForCurrency("USD") || ""}
-                      onChange={(e) => handlePriceChange("USD", e.target.value)}
-                      className={`w-full h-[56px] rounded-[16px] border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
-                        "price-usd"
-                      )}`}
-                      placeholder={t("pricePlaceholder")}
-                    />
+                    <div className="w-full sm:w-1/2">
+                      <label className="font-bold block mb-2 text-[#262626] text-[16px]">
+                        {t("priceUSD")}
+                      </label>
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium text-[14px]">
+                          $
+                        </span>
+                        <input
+                          type="text"
+                          value={getPriceForCurrency("USD") || ""}
+                          onChange={(e) =>
+                            handlePriceChange("USD", e.target.value)
+                          }
+                          className={`w-full h-[56px] rounded-[16px] border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
+                            "price-usd"
+                          )}`}
+                          placeholder={t("pricePlaceholder")}
+                        />
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
 
-              {/* <div className="text-xs text-gray-500">
+                  {/* <div className="text-xs text-gray-500">
                 <p>Her iki para biriminde fiyat belirtmeniz gerekmektedir.</p>
                 <div className="mt-1 text-sm">
                   {price?.map((p) => (
@@ -589,336 +583,334 @@ export default function SecondCreateStepForWork() {
                   ))}
                 </div>
               </div> */}
-            </div>
+                </div>
 
-            {/* Metrekare - Bölüm / Oda Sayısı - Kat Sayısı */}
-            <div className="flex flex-col lg:flex-row gap-4 mb-6">
-              <div className="w-full lg:w-1/3">
-                <label
-                  htmlFor="projectArea"
-                  className="font-bold block mb-2 text-[#262626] text-[16px]"
-                >
-                  {t("area")}
-                </label>
-                <input
-                  type="text"
-                  id="projectArea"
-                  value={projectArea || ""}
-                  onChange={(e) => {
-                    const numericValue = e.target.value.replace(/[^0-9.]/g, "");
-                    const parts = numericValue.split(".");
-                    const validValue =
-                      parts.length > 2
-                        ? parts[0] + "." + parts.slice(1).join("")
-                        : numericValue;
-                    setProjectArea(parseFloat(validValue) || 0);
-                  }}
-                  className="w-full h-[56px] rounded-[16px] border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626] text-[14px]"
-                  placeholder={t("areaPlaceholder")}
-                />
-              </div>
-              <div className="w-full lg:w-1/3">
-                <label
-                  htmlFor="roomCount"
-                  className="font-bold block mb-2 text-[#262626] text-[16px]"
-                >
-                  {t("roomCount")}
-                </label>
-                <CustomSelect
-                  options={roomCountOptions}
-                  value={roomCount || 0}
-                  onChange={(value) => setRoomCount(parseInt(value.toString()))}
-                  placeholder={t("selectPlaceholder")}
-                  hasError={errorFields.has("roomCount")}
-                />
-              </div>
-              <div className="w-full lg:w-1/3">
-                <label
-                  htmlFor="floorCount"
-                  className="font-bold block mb-2 text-[#262626] text-[16px]"
-                >
-                  {t("floorCount")}
-                </label>
-                <CustomSelect
-                  options={floorCountOptions}
-                  value={floorCount || 0}
-                  onChange={(value) =>
-                    setFloorCount(parseInt(value.toString()))
-                  }
-                  placeholder={t("selectPlaceholder")}
-                  hasError={errorFields.has("floorCount")}
-                />
-              </div>
-            </div>
-
-            {/* Bulunduğu Kat - Kimden - Takaslı */}
-            <div className="flex flex-col lg:flex-row gap-4 mb-6">
-              <div className="w-full lg:w-1/3">
-                <label
-                  htmlFor="floorPosition"
-                  className="font-bold block mb-2 text-[#262626] text-[16px]"
-                >
-                  {t("floorPosition")}
-                </label>
-                <CustomSelect
-                  options={floorPositionOptions.map((option) => ({
-                    value: option.tr,
-                    label: option.tr,
-                  }))}
-                  value={floorPosition?.tr || ""}
-                  onChange={(value) => {
-                    const selected = floorPositionOptions.find(
-                      (option) => option.tr === value
-                    );
-                    if (selected) {
-                      setFloorPosition({
-                        tr: selected.tr,
-                        en: selected.en,
-                      });
-                    }
-                  }}
-                  placeholder={t("selectPlaceholder")}
-                  hasError={errorFields.has("floorPosition")}
-                />
-              </div>
-              <div className="w-full lg:w-1/3">
-                <label
-                  htmlFor="source"
-                  className="font-bold block mb-2 text-[#262626] text-[16px]"
-                >
-                  {t("source")}
-                </label>
-                <CustomSelect
-                  options={sourceOptions}
-                  value={
-                    source?.tr
-                      ? sourceOptions.find(
-                          (option) => option.label === source.tr
-                        )?.value || ""
-                      : ""
-                  }
-                  onChange={(value) => {
-                    const selected = sourceOptions.find(
-                      (option) => option.value === value
-                    );
-                    if (selected) {
-                      setSource({
-                        tr: selected.label,
-                        en:
-                          selected.value === "fromOwner"
-                            ? "From Owner"
-                            : selected.value === "fromRealEstate"
-                            ? "From Real Estate Office"
-                            : selected.value === "fromConstruction"
-                            ? "From Construction Company"
-                            : "",
-                      });
-                    }
-                  }}
-                  placeholder={t("selectPlaceholder")}
-                  hasError={errorFields.has("source")}
-                />
-              </div>
-              <div className="w-full lg:w-1/3">
-                <label
-                  htmlFor="exchangeable"
-                  className="font-bold block mb-2 text-[#262626] text-[16px]"
-                >
-                  {t("exchangeable")}
-                </label>
-                <CustomSelect
-                  options={booleanOptions}
-                  value={exchangeable ? true : false}
-                  onChange={(value) => setExchangeable(value as any)}
-                  placeholder={t("selectPlaceholder")}
-                />
-              </div>
-            </div>
-
-            {/* Isıtma - Kullanım Durumu - Bina Yaşı */}
-            <div className="flex flex-col lg:flex-row gap-4 mb-6">
-              <div className="w-full lg:w-1/3">
-                <label
-                  htmlFor="heatingType"
-                  className="font-bold block mb-2 text-[#262626] text-[16px]"
-                >
-                  {t("heating")}
-                </label>
-                <CustomSelect
-                  options={heatingTypeOptions}
-                  value={
-                    heatingType?.tr
-                      ? heatingTypeOptions.find(
-                          (option) => option.label === heatingType.tr
-                        )?.value || ""
-                      : ""
-                  }
-                  onChange={(value) => {
-                    const selected = heatingTypeOptions.find(
-                      (option) => option.value === value
-                    );
-                    if (selected) {
-                      setHeatingType({
-                        tr: selected.label,
-                        en:
-                          selected.value === "none"
-                            ? "None"
-                            : selected.value === "stove"
-                            ? "Stove"
-                            : selected.value === "naturalGasStove"
-                            ? "Natural Gas Stove"
-                            : selected.value === "floorHeater"
-                            ? "Floor Heater"
-                            : selected.value === "naturalGasBoiler"
-                            ? "Natural Gas (Boiler)"
-                            : selected.value === "central"
-                            ? "Central"
-                            : selected.value === "airConditioning"
-                            ? "Air Conditioning"
-                            : selected.value === "solarEnergy"
-                            ? "Solar Energy"
-                            : "",
-                      });
-                    }
-                  }}
-                  placeholder={t("selectPlaceholder")}
-                  hasError={errorFields.has("heatingType")}
-                />
-              </div>
-              <div className="w-full lg:w-1/3">
-                <label
-                  htmlFor="usageStatus"
-                  className="font-bold block mb-2 text-[#262626] text-[16px]"
-                >
-                  {t("usageStatus")}
-                </label>
-                <CustomSelect
-                  options={usageStatusOptions}
-                  value={
-                    usageStatus?.get("tr")
-                      ? usageStatusOptions.find(
-                          (option) => option.label === usageStatus.get("tr")
-                        )?.value || ""
-                      : ""
-                  }
-                  onChange={(value) => {
-                    const selected = usageStatusOptions.find(
-                      (option) => option.value === value
-                    );
-                    if (selected) {
-                      const usageMap = new Map<string, string>();
-                      usageMap.set("tr", selected.label);
-                      usageMap.set(
-                        "en",
-                        selected.value === "empty"
-                          ? "Empty"
-                          : selected.value === "tenantOccupied"
-                          ? "Tenant Occupied"
-                          : selected.value === "ownerOccupied"
-                          ? "Owner Occupied"
-                          : ""
-                      );
-                      setUsageStatus(usageMap);
-                    }
-                  }}
-                  placeholder={t("selectPlaceholder")}
-                  hasError={errorFields.has("usageStatus")}
-                />
-              </div>
-              <div className="w-full lg:w-1/3">
-                <label
-                  htmlFor="buildingAge"
-                  className="font-bold block mb-2 text-[#262626] text-[16px]"
-                >
-                  {t("buildingAge")}
-                </label>
-                <CustomSelect
-                  options={buildingAgeOptions}
-                  value={buildingAge || 0}
-                  onChange={(value) =>
-                    setBuildingAge(parseInt(value.toString()))
-                  }
-                  placeholder={t("selectPlaceholder")}
-                  hasError={errorFields.has("buildingAge")}
-                />
-              </div>
-            </div>
-
-            {/* Krediye Uygunluk - Aidat */}
-            <div className="flex flex-col lg:flex-row gap-4 pb-6">
-              <div className="w-full lg:w-1/2">
-                <label
-                  htmlFor="creditEligible"
-                  className="font-bold block mb-2 text-[#262626] text-[16px]"
-                >
-                  {t("creditEligible")}
-                </label>
-                <CustomSelect
-                  options={booleanOptions}
-                  value={creditEligible ? true : false}
-                  onChange={(value) => setCreditEligible(value as any)}
-                  placeholder={t("selectPlaceholder")}
-                  openUpward={true}
-                />
-              </div>
-              <div className="w-full lg:w-1/2">
-                <label className="font-bold block mb-2 text-[#262626] text-[16px]">
-                  {t("dues")}
-                </label>
-                <div className="flex gap-2">
-                  <div className="w-24">
-                    <CustomSelect
-                      options={[
-                        { value: "TRY", label: "TRY" },
-                        { value: "USD", label: "USD" },
-                      ]}
-                      value={selectedDuesCurrency}
-                      onChange={(value) =>
-                        setSelectedDuesCurrency(value as string)
-                      }
-                      placeholder="TRY"
-                      openUpward={true}
-                    />
-                  </div>
-                  <div className="flex-1">
+                {/* Metrekare - Bölüm / Oda Sayısı - Kat Sayısı */}
+                <div className="flex flex-col lg:flex-row gap-4 mb-6">
+                  <div className="w-full lg:w-1/3">
+                    <label
+                      htmlFor="projectArea"
+                      className="font-bold block mb-2 text-[#262626] text-[16px]"
+                    >
+                      {t("area")}
+                    </label>
                     <input
                       type="text"
-                      value={getDuesForCurrency(selectedDuesCurrency) || ""}
-                      onChange={(e) =>
-                        handleDuesChange(selectedDuesCurrency, e.target.value)
+                      id="projectArea"
+                      value={projectArea || ""}
+                      onChange={(e) => {
+                        const numericValue = e.target.value.replace(
+                          /[^0-9.]/g,
+                          ""
+                        );
+                        const parts = numericValue.split(".");
+                        const validValue =
+                          parts.length > 2
+                            ? parts[0] + "." + parts.slice(1).join("")
+                            : numericValue;
+                        setProjectArea(parseFloat(validValue) || 0);
+                      }}
+                      className="w-full h-[56px] rounded-[16px] border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626] text-[14px]"
+                      placeholder={t("areaPlaceholder")}
+                    />
+                  </div>
+                  <div className="w-full lg:w-1/3">
+                    <label
+                      htmlFor="roomCount"
+                      className="font-bold block mb-2 text-[#262626] text-[16px]"
+                    >
+                      {t("roomCount")}
+                    </label>
+                    <CustomSelect
+                      options={roomCountOptions}
+                      value={roomCount || 0}
+                      onChange={(value) =>
+                        setRoomCount(parseInt(value.toString()))
                       }
-                      className="w-full h-[56px] rounded-[16px] border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                      placeholder={t("pricePlaceholder")}
+                      placeholder={t("selectPlaceholder")}
+                      hasError={errorFields.has("roomCount")}
+                    />
+                  </div>
+                  <div className="w-full lg:w-1/3">
+                    <label
+                      htmlFor="floorCount"
+                      className="font-bold block mb-2 text-[#262626] text-[16px]"
+                    >
+                      {t("floorCount")}
+                    </label>
+                    <CustomSelect
+                      options={floorCountOptions}
+                      value={floorCount || 0}
+                      onChange={(value) =>
+                        setFloorCount(parseInt(value.toString()))
+                      }
+                      placeholder={t("selectPlaceholder")}
+                      hasError={errorFields.has("floorCount")}
                     />
                   </div>
                 </div>
-              </div>
-            </div>
-              </div>
-            </div>
-            {/* Footer */}
-            <div className="border-t md:border-l border-[#F0F0F0] p-6">
-              <div className="flex flex-col sm:flex-row justify-end items-center">
-                <div className="flex flex-row gap-4 sm:mt-0 w-full md:w-auto justify-end">
-                  <button
-                    type="button"
-                    onClick={handleBack}
-                    className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-600 font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition border border-gray-300"
-                  >
-                    {t("cancel")}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleContinue}
-                    className="cursor-pointer w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
-                  >
-                    {t("continue")}
-                    <ChevronRightIcon className="h-5 w-5 hidden sm:block" />
-                  </button>
+
+                {/* Bulunduğu Kat - Kimden - Takaslı */}
+                <div className="flex flex-col lg:flex-row gap-4 mb-6">
+                  <div className="w-full lg:w-1/3">
+                    <label
+                      htmlFor="floorPosition"
+                      className="font-bold block mb-2 text-[#262626] text-[16px]"
+                    >
+                      {t("floorPosition")}
+                    </label>
+                    <CustomSelect
+                      options={floorPositionOptions.map((option) => ({
+                        value: option.tr,
+                        label: option.tr,
+                      }))}
+                      value={floorPosition?.tr || ""}
+                      onChange={(value) => {
+                        const selected = floorPositionOptions.find(
+                          (option) => option.tr === value
+                        );
+                        if (selected) {
+                          setFloorPosition({
+                            tr: selected.tr,
+                            en: selected.en,
+                          });
+                        }
+                      }}
+                      placeholder={t("selectPlaceholder")}
+                      hasError={errorFields.has("floorPosition")}
+                    />
+                  </div>
+                  <div className="w-full lg:w-1/3">
+                    <label
+                      htmlFor="source"
+                      className="font-bold block mb-2 text-[#262626] text-[16px]"
+                    >
+                      {t("source")}
+                    </label>
+                    <CustomSelect
+                      options={sourceOptions}
+                      value={
+                        source?.tr
+                          ? sourceOptions.find(
+                              (option) => option.label === source.tr
+                            )?.value || ""
+                          : ""
+                      }
+                      onChange={(value) => {
+                        const selected = sourceOptions.find(
+                          (option) => option.value === value
+                        );
+                        if (selected) {
+                          setSource({
+                            tr: selected.label,
+                            en:
+                              selected.value === "fromOwner"
+                                ? "From Owner"
+                                : selected.value === "fromRealEstate"
+                                ? "From Real Estate Office"
+                                : selected.value === "fromConstruction"
+                                ? "From Construction Company"
+                                : "",
+                          });
+                        }
+                      }}
+                      placeholder={t("selectPlaceholder")}
+                      hasError={errorFields.has("source")}
+                    />
+                  </div>
+                  <div className="w-full lg:w-1/3">
+                    <label
+                      htmlFor="exchangeable"
+                      className="font-bold block mb-2 text-[#262626] text-[16px]"
+                    >
+                      {t("exchangeable")}
+                    </label>
+                    <CustomSelect
+                      options={booleanOptions}
+                      value={exchangeable ? true : false}
+                      onChange={(value) => setExchangeable(value as any)}
+                      placeholder={t("selectPlaceholder")}
+                    />
+                  </div>
+                </div>
+
+                {/* Isıtma - Kullanım Durumu - Bina Yaşı */}
+                <div className="flex flex-col lg:flex-row gap-4 mb-6">
+                  <div className="w-full lg:w-1/3">
+                    <label
+                      htmlFor="heatingType"
+                      className="font-bold block mb-2 text-[#262626] text-[16px]"
+                    >
+                      {t("heating")}
+                    </label>
+                    <CustomSelect
+                      options={heatingTypeOptions}
+                      value={
+                        heatingType?.tr
+                          ? heatingTypeOptions.find(
+                              (option) => option.label === heatingType.tr
+                            )?.value || ""
+                          : ""
+                      }
+                      onChange={(value) => {
+                        const selected = heatingTypeOptions.find(
+                          (option) => option.value === value
+                        );
+                        if (selected) {
+                          setHeatingType({
+                            tr: selected.label,
+                            en:
+                              selected.value === "none"
+                                ? "None"
+                                : selected.value === "stove"
+                                ? "Stove"
+                                : selected.value === "naturalGasStove"
+                                ? "Natural Gas Stove"
+                                : selected.value === "floorHeater"
+                                ? "Floor Heater"
+                                : selected.value === "naturalGasBoiler"
+                                ? "Natural Gas (Boiler)"
+                                : selected.value === "central"
+                                ? "Central"
+                                : selected.value === "airConditioning"
+                                ? "Air Conditioning"
+                                : selected.value === "solarEnergy"
+                                ? "Solar Energy"
+                                : "",
+                          });
+                        }
+                      }}
+                      placeholder={t("selectPlaceholder")}
+                      hasError={errorFields.has("heatingType")}
+                    />
+                  </div>
+                  <div className="w-full lg:w-1/3">
+                    <label
+                      htmlFor="usageStatus"
+                      className="font-bold block mb-2 text-[#262626] text-[16px]"
+                    >
+                      {t("usageStatus")}
+                    </label>
+                    <CustomSelect
+                      options={usageStatusOptions}
+                      value={
+                        usageStatus?.get("tr")
+                          ? usageStatusOptions.find(
+                              (option) => option.label === usageStatus.get("tr")
+                            )?.value || ""
+                          : ""
+                      }
+                      onChange={(value) => {
+                        const selected = usageStatusOptions.find(
+                          (option) => option.value === value
+                        );
+                        if (selected) {
+                          const usageMap = new Map<string, string>();
+                          usageMap.set("tr", selected.label);
+                          usageMap.set(
+                            "en",
+                            selected.value === "empty"
+                              ? "Empty"
+                              : selected.value === "tenantOccupied"
+                              ? "Tenant Occupied"
+                              : selected.value === "ownerOccupied"
+                              ? "Owner Occupied"
+                              : ""
+                          );
+                          setUsageStatus(usageMap);
+                        }
+                      }}
+                      placeholder={t("selectPlaceholder")}
+                      hasError={errorFields.has("usageStatus")}
+                    />
+                  </div>
+                  <div className="w-full lg:w-1/3">
+                    <label
+                      htmlFor="buildingAge"
+                      className="font-bold block mb-2 text-[#262626] text-[16px]"
+                    >
+                      {t("buildingAge")}
+                    </label>
+                    <CustomSelect
+                      options={buildingAgeOptions}
+                      value={buildingAge || 0}
+                      onChange={(value) =>
+                        setBuildingAge(parseInt(value.toString()))
+                      }
+                      placeholder={t("selectPlaceholder")}
+                      hasError={errorFields.has("buildingAge")}
+                    />
+                  </div>
+                </div>
+
+                {/* Krediye Uygunluk - Aidat */}
+                <div className="flex flex-col lg:flex-row gap-4 pb-6">
+                  <div className="w-full lg:w-1/2">
+                    <label
+                      htmlFor="creditEligible"
+                      className="font-bold block mb-2 text-[#262626] text-[16px]"
+                    >
+                      {t("creditEligible")}
+                    </label>
+                    <CustomSelect
+                      options={booleanOptions}
+                      value={creditEligible ? true : false}
+                      onChange={(value) => setCreditEligible(value as any)}
+                      placeholder={t("selectPlaceholder")}
+                      openUpward={true}
+                    />
+                  </div>
+                  <div className="w-full lg:w-1/2">
+                    <label className="font-bold block mb-2 text-[#262626] text-[16px]">
+                      {t("dues")}
+                    </label>
+                    <div className="flex gap-2">
+                      <div className="w-24">
+                        <CustomSelect
+                          options={[
+                            { value: "TRY", label: "TRY" },
+                            { value: "USD", label: "USD" },
+                          ]}
+                          value={selectedDuesCurrency}
+                          onChange={(value) =>
+                            setSelectedDuesCurrency(value as string)
+                          }
+                          placeholder="TRY"
+                          openUpward={true}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <input
+                          type="text"
+                          value={getDuesForCurrency(selectedDuesCurrency) || ""}
+                          onChange={(e) =>
+                            handleDuesChange(
+                              selectedDuesCurrency,
+                              e.target.value
+                            )
+                          }
+                          className="w-full h-[56px] rounded-[16px] border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                          placeholder={t("pricePlaceholder")}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+
+        <div className=" flex flex-col sm:flex-row justify-between items-center p-6">
+          <GoBackButton handleBack={handleBack} step={2} totalSteps={6} />
+          <button
+            type="button"
+            onClick={handleContinue}
+            className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+          >
+            {t("continue")}
+            <ChevronRightIcon className="h-5 w-5" />
+          </button>
         </div>
       </div>
     </div>

@@ -606,6 +606,7 @@
     "step2_house": {
       "title": "Specify the properties of the house.",
       "description": "In this step, you can enter the basic features, price, and other important details of your listing. The accuracy of this information is critical to attract the interest of buyers or tenants.",
+      "stepCounter": "Step {current} / {total}",
       "fixErrors": "Please fix the following errors:",
       "priceTRY": "Price (TRY)",
       "priceUSD": "Price (USD)",
@@ -630,6 +631,7 @@
       "deedStatus": "Deed Status",
       "selectPlaceholder": "Select",
       "selectOption": "Select",
+      "cancel": "Cancel",
       "continue": "Continue",
       "validation": {
         "priceUSD": "Please specify the price in USD",
@@ -878,6 +880,8 @@
       "videoTitle": "Video",
       "videoDescription": "You can upload a video of maximum 1 minute length. (MP4, MOV)",
       "continue": "Continue",
+      "cancel": "Back",
+      "stepCounter": "Step {current} / {total}",
       "fixErrors": "Please fix the following errors:",
       "submitError": "An error occurred while submitting the form:",
       "validation": {
@@ -908,7 +912,9 @@
       "documentTypes": {
         "floorPlan": "Floor Plan",
         "offerForm": "Offer Form"
-      }
+      },
+      "cancel": "Back",
+      "stepCounter": "Step {current} / {total}"
     },
     "step2_land": {
       "title": "Specify the properties of the land.",
@@ -1018,6 +1024,8 @@
       "longitude": "Longitude:",
       "loadingMap": "Loading Map...",
       "continue": "Continue",
+      "cancel": "Cancel",
+      "stepCounter": "Step {current} / {total}",
       "validation": {
         "countryRequired": "Please enter the country information",
         "districtRequired": "Please enter the district information",
