@@ -417,9 +417,7 @@ export default function FifthCreateStep() {
                 {t("title")}
               </h1>
               <div className="mt-4 text-base text-[#595959] font-medium">
-                <p className="leading-[140%]">
-                  {t("description")}
-                </p>
+                <p className="leading-[140%]">{t("description")}</p>
               </div>
             </div>
 
@@ -435,49 +433,49 @@ export default function FifthCreateStep() {
           >
             <div className="p-6 flex-1 overflow-auto md:border-l border-[#F0F0F0]">
               {/* Error display */}
-            {errors.length > 0 && (
-              <div className="bg-red-50 border border-red-200 rounded-md p-4 m-6 mb-0">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <XCircleIcon
-                      className="h-5 w-5 text-red-400"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-red-800">
-                      {t("fixErrors")}
-                    </h3>
-                    <div className="mt-2 text-sm text-red-700">
-                      <ul className="list-disc pl-5 space-y-1">
-                        {errors.map((error, index) => (
-                          <li key={index}>{error}</li>
-                        ))}
-                      </ul>
+              {errors.length > 0 && (
+                <div className="bg-red-50 border border-red-200 rounded-md p-4 m-6 mb-0">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0">
+                      <XCircleIcon
+                        className="h-5 w-5 text-red-400"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium text-red-800">
+                        {t("fixErrors")}
+                      </h3>
+                      <div className="mt-2 text-sm text-red-700">
+                        <ul className="list-disc pl-5 space-y-1">
+                          {errors.map((error, index) => (
+                            <li key={index}>{error}</li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
-            {submitError && (
-              <div className="bg-red-50 border border-red-200 rounded-md p-4 m-6 mb-0">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <XCircleIcon
-                      className="h-5 w-5 text-red-400"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-red-800">
-                      {t("submitError")}
-                    </h3>
-                    <p className="mt-2 text-sm text-red-700">{submitError}</p>
+              )}
+              {submitError && (
+                <div className="bg-red-50 border border-red-200 rounded-md p-4 m-6 mb-0">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0">
+                      <XCircleIcon
+                        className="h-5 w-5 text-red-400"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium text-red-800">
+                        {t("submitError")}
+                      </h3>
+                      <p className="mt-2 text-sm text-red-700">{submitError}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-            
+              )}
+
               {/* Image Upload Section */}
               <div className="mb-8">
                 <h2 className="text-[16px] text-[#262626] font-bold">
@@ -606,159 +604,161 @@ export default function FifthCreateStep() {
                 )}
               </div>
 
-            {/* Video Upload Section */}
-            <div className="mb-8">
-              <h2 className="font-semibold text-lg mb-2 text-gray-700">
-                {t("videoTitle")}
-              </h2>
-              <p className="text-sm text-gray-500 mb-4">
-                {t("videoDescription")}
-              </p>
               {/* Video Upload Section */}
-              <div className="">
-                <h2 className="font-bold text-[16px] text-[#262626]">Video</h2>
+              <div className="mb-8">
+                <h2 className="font-semibold text-lg mb-2 text-gray-700">
+                  {t("videoTitle")}
+                </h2>
                 <p className="text-sm text-gray-500 mb-4">
-                  Maksimum 1 dakika uzunluğunda video yükleyebilirsiniz. (MP4,
-                  MOV)
+                  {t("videoDescription")}
                 </p>
-
-                {/* Drag and drop area for video */}
-                <div
-                  className="border-2 border-dashed border-gray-300 rounded-[16px] p-6 flex flex-col items-center justify-center bg-gray-50 cursor-pointer"
-                  onClick={() => videoInputRef.current?.click()}
-                  onDrop={handleVideoDrop}
-                  onDragOver={handleDragOver}
-                >
-                  <input
-                    type="file"
-                    ref={videoInputRef}
-                    onChange={handleVideoSelect}
-                    accept="video/mp4,video/quicktime"
-                    className="hidden"
-                  />
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-8 h-8 text-gray-400"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 4.5v15m7.5-7.5h-15"
-                    />
-                  </svg>
-                  <p className="mt-2 text-sm text-gray-600">
-                    {t("dropzoneText")}
+                {/* Video Upload Section */}
+                <div className="">
+                  <h2 className="font-bold text-[16px] text-[#262626]">
+                    Video
+                  </h2>
+                  <p className="text-sm text-gray-500 mb-4">
+                    Maksimum 1 dakika uzunluğunda video yükleyebilirsiniz. (MP4,
+                    MOV)
                   </p>
-                </div>
 
-                {/* Video preview */}
-                {selectedVideo && (
-                  <div className="mt-4 relative group">
-                    <video
-                      src={selectedVideo.url}
-                      className={`w-full h-40 object-cover rounded-lg ${
-                        selectedVideo.error
-                          ? "opacity-50 border border-red-500"
-                          : ""
-                      }`}
-                      controls
+                  {/* Drag and drop area for video */}
+                  <div
+                    className="border-2 border-dashed border-gray-300 rounded-[16px] p-6 flex flex-col items-center justify-center bg-gray-50 cursor-pointer"
+                    onClick={() => videoInputRef.current?.click()}
+                    onDrop={handleVideoDrop}
+                    onDragOver={handleDragOver}
+                  >
+                    <input
+                      type="file"
+                      ref={videoInputRef}
+                      onChange={handleVideoSelect}
+                      accept="video/mp4,video/quicktime"
+                      className="hidden"
                     />
-                    {selectedVideo.uploading ? (
-                      <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-lg">
-                        <svg
-                          className="animate-spin h-8 w-8 text-white"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
-                      </div>
-                    ) : (
-                      <div
-                        className="absolute top-2 right-2 p-1 bg-white rounded-full cursor-pointer"
-                        onClick={removeVideo}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-5 h-5 text-gray-600"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                      </div>
-                    )}
-                    {selectedVideo.error && (
-                      <div className="absolute bottom-2 right-2 bg-white rounded-full p-1">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-5 h-5 text-red-600"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
-                          />
-                        </svg>
-                      </div>
-                    )}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-8 h-8 text-gray-400"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 4.5v15m7.5-7.5h-15"
+                      />
+                    </svg>
+                    <p className="mt-2 text-sm text-gray-600">
+                      {t("dropzoneText")}
+                    </p>
                   </div>
-                )}
-              </div>
-            </div>
 
-            {/* Step counter and continue button */}
-            <div className="flex flex-col-reverse sm:flex-row justify-end items-center border-t md:border-l border-[#F0F0F0] p-6">
-              <div className="flex flex-row gap-4 sm:mt-0 w-full md:w-auto justify-end">
-                <button
-                  type="button"
-                  onClick={handleBack}
-                  className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-600 font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition border border-gray-300"
-                >
-                  Geri
-                </button>
-                <button
-                  type="button"
-                  onClick={handleSubmit}
-                  disabled={isSubmitting}
-                  className="cursor-pointer w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition disabled:opacity-50"
-                >
-                  {t("continue")}
-                  <ChevronRightIcon className="w-5 h-5 hidden sm:block" />
-                </button>
+                  {/* Video preview */}
+                  {selectedVideo && (
+                    <div className="mt-4 relative group">
+                      <video
+                        src={selectedVideo.url}
+                        className={`w-full h-40 object-cover rounded-lg ${
+                          selectedVideo.error
+                            ? "opacity-50 border border-red-500"
+                            : ""
+                        }`}
+                        controls
+                      />
+                      {selectedVideo.uploading ? (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-lg">
+                          <svg
+                            className="animate-spin h-8 w-8 text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
+                        </div>
+                      ) : (
+                        <div
+                          className="absolute top-2 right-2 p-1 bg-white rounded-full cursor-pointer"
+                          onClick={removeVideo}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-5 h-5 text-gray-600"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </div>
+                      )}
+                      {selectedVideo.error && (
+                        <div className="absolute bottom-2 right-2 bg-white rounded-full p-1">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-5 h-5 text-red-600"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+                            />
+                          </svg>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Step counter and continue button */}
+              <div className="flex flex-col-reverse sm:flex-row justify-end items-center border-t md:border-l border-[#F0F0F0] p-6">
+                <div className="flex flex-row gap-4 sm:mt-0 w-full md:w-auto justify-end">
+                  <button
+                    type="button"
+                    onClick={handleBack}
+                    className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-600 font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition border border-gray-300"
+                  >
+                    {t("cancel")}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSubmit}
+                    disabled={isSubmitting}
+                    className="cursor-pointer w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition disabled:opacity-50"
+                  >
+                    {t("continue")}
+                    <ChevronRightIcon className="w-5 h-5 hidden sm:block" />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   );
 }

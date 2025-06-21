@@ -611,6 +611,7 @@
     "step2_house": {
       "title": "Evin özelliklerini belirtin.",
       "description": "Bu adımda, ilanınızın temel özelliklerini, fiyatını ve diğer önemli detayları girebilirsiniz. Bu bilgilerin doğruluğu, alıcıların veya kiracıların ilgisini çekmek için kritiktir.",
+      "stepCounter": "Adım {current} / {total}",
       "fixErrors": "Lütfen aşağıdaki hataları düzeltin:",
       "priceTRY": "Fiyat (TRY)",
       "priceUSD": "Fiyat (USD)",
@@ -635,6 +636,7 @@
       "deedStatus": "Tapu Durumu",
       "selectPlaceholder": "Seçiniz",
       "selectOption": "Seçin",
+      "cancel": "Vazgeç",
       "continue": "Devam Et",
       "validation": {
         "priceUSD": "Lütfen USD para biriminde fiyat belirtin",
@@ -883,6 +885,8 @@
       "videoTitle": "Video",
       "videoDescription": "Maksimum 1 dakika uzunluğunda video yükleyebilirsiniz. (MP4, MOV)",
       "continue": "Devam Et",
+      "cancel": "Geri",
+      "stepCounter": "Adım {current} / {total}",
       "fixErrors": "Lütfen aşağıdaki hataları düzeltin:",
       "submitError": "Form gönderilirken bir hata oluştu:",
       "validation": {
@@ -913,7 +917,9 @@
       "documentTypes": {
         "floorPlan": "Kat Planı",
         "offerForm": "Teklif Formu"
-      }
+      },
+      "cancel": "Geri",
+      "stepCounter": "Adım {current} / {total}"
     },
     "step2_land": {
       "title": "Arsa özelliklerini belirtin.",
@@ -1023,6 +1029,8 @@
       "longitude": "Boylam:",
       "loadingMap": "Harita Yükleniyor...",
       "continue": "Devam Et",
+      "cancel": "Vazgeç",
+      "stepCounter": "Adım {current} / {total}",
       "validation": {
         "countryRequired": "Lütfen ülke bilgisini girin",
         "districtRequired": "Lütfen ilçe bilgisini girin",
