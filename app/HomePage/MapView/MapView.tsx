@@ -173,19 +173,19 @@ export default function GoogleMapView({
     if (mapInstance && !selectedHotel) {
       // Only run this effect when no hotel is selected
       // If selectedLocation is provided, center on it with appropriate zoom
-      if (
-        selectedLocation &&
-        selectedLocation.coordinates &&
-        selectedLocation.coordinates.length === 2
-      ) {
-        const position = {
-          lat: selectedLocation.coordinates[1],
-          lng: selectedLocation.coordinates[0],
-        };
-        mapInstance.setCenter(position);
-        mapInstance.setZoom(13); // Good zoom level for selected location
-        return;
-      }
+      // if (
+      //   selectedLocation &&
+      //   selectedLocation.coordinates &&
+      //   selectedLocation.coordinates.length === 2
+      // ) {
+      //   const position = {
+      //     lat: selectedLocation.coordinates[1],
+      //     lng: selectedLocation.coordinates[0],
+      //   };
+      //   mapInstance.setCenter(position);
+      //   mapInstance.setZoom(13); // Good zoom level for selected location
+      //   return;
+      // }
 
       const validHotels = hotels.filter(
         (hotel) =>
