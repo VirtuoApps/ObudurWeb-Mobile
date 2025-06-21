@@ -81,10 +81,6 @@ export default function ResidentBox({
 
   const router = useRouter();
 
-  console.log({
-    type,
-  });
-
   // Use images array if provided, otherwise create array from single image
   const imageArray = images.length > 0 ? images : [image];
 

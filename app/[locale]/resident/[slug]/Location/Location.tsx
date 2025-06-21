@@ -47,10 +47,6 @@ export default function Location() {
     lng: hotelData.hotelDetails.location.coordinates[0],
   };
 
-  console.log({
-    center,
-  });
-
   const containerStyle = {
     width: "100%",
     height: "500px",

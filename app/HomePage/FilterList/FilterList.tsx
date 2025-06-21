@@ -1000,7 +1000,7 @@ export default function FilterList({
                 if (+roomCount === 1) {
                   setRoomCount("");
                 } else {
-                  setRoomCount(1);
+                  setRoomCount("1");
                 }
               }}
               iconUrl="/1+1.png"
@@ -1012,7 +1012,7 @@ export default function FilterList({
                 if (+roomCount === 2) {
                   setRoomCount("");
                 } else {
-                  setRoomCount(2);
+                  setRoomCount("2");
                 }
               }}
               iconUrl="/2+1.png"
@@ -1024,7 +1024,7 @@ export default function FilterList({
                 if (+roomCount === 3) {
                   setRoomCount("");
                 } else {
-                  setRoomCount(3);
+                  setRoomCount("3");
                 }
               }}
               iconUrl="/3+1.png"

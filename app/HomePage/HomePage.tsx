@@ -405,8 +405,6 @@ export default function HomePage({
   let filteredHotels = hotels;
 
   if (selectedLocation) {
-    console.log("Selected Location:", selectedLocation);
-
     const isCity = cities.includes(selectedLocation.name);
     let isState = false;
 
@@ -681,6 +679,9 @@ export default function HomePage({
   const noResultFound =
     (filters || selectedLocation) && filteredHotels.length === 0;
 
+  console.log("Filtered Hotels: ", +Math.random() * 100);
+  console.log({ filteredHotels });
+
   // Disable body scroll when component mounts
   useEffect(() => {
     // Disable scroll on body
@@ -758,7 +759,7 @@ export default function HomePage({
       <div
         className={`bg-white ${
           isScrolled && isMobile ? "pt-[72px]" : ""
-        } transition-all duration-300`}
+        } transition-all duration-300 z-50`}
       >
         <Header
           setFilters={setFilters}
