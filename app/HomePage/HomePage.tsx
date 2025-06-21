@@ -141,6 +141,10 @@ export default function HomePage({
     }
   }, [searchParams]);
 
+  console.log({
+    selectedFeatures,
+  });
+
   const handleCloseEmailVerifiedPopup = () => {
     setShowEmailVerifiedPopup(false);
     const newParams = new URLSearchParams(searchParams.toString());
@@ -565,20 +569,28 @@ export default function HomePage({
 
   if (selectedFeatures.length > 0) {
     filteredHotels = filteredHotels.filter((hotel) =>
-      selectedFeatures.every((selectedFeature) =>
-        hotel.featureIds.some((hotelFeature: string | { _id: string }) => {
-          // Assuming hotel.features is an array of feature objects with _id
-          if (
-            typeof hotelFeature === "object" &&
-            hotelFeature !== null &&
-            "_id" in hotelFeature
-          ) {
-            return hotelFeature._id === selectedFeature._id;
+      selectedFeatures.every((selectedFeature) => {
+        const isHousingTypeMatch =
+          hotel.housingType.tr === selectedFeature.name.tr;
+
+        const isFeatureMatch = hotel.featureIds.some(
+          (hotelFeature: string | { _id: string }) => {
+            // Assuming hotel.features is an array of feature objects with _id
+
+            if (
+              typeof hotelFeature === "object" &&
+              hotelFeature !== null &&
+              "_id" in hotelFeature
+            ) {
+              return hotelFeature._id === selectedFeature._id;
+            }
+            // Assuming hotel.features is an array of feature IDs (strings)
+            return hotelFeature === selectedFeature._id;
           }
-          // Assuming hotel.features is an array of feature IDs (strings)
-          return hotelFeature === selectedFeature._id;
-        })
-      )
+        );
+
+        return isHousingTypeMatch || isFeatureMatch;
+      })
     );
   }
 
