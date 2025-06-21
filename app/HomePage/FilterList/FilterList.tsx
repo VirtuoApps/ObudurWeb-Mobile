@@ -560,11 +560,11 @@ export default function FilterList({
               onClick={() => setIsFilterPopupOpen(true)}
               className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-r border-[#F0F0F0]"
             >
-              {filteringT("filters")} ({countActiveFilters()})
+              {filteringT("filters", { count: countActiveFilters() })}
             </button>
             <button
               onClick={() => setIsSaveFilterSheetOpen(true)}
-              className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#262626]"
+              className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959]"
             >
               {filteringT("saveSearch")}
             </button>
@@ -573,7 +573,6 @@ export default function FilterList({
                 onClick={() => {
                   setIsSheetOpen(true);
                 }}
-
                 className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-l border-[#F0F0F0]"
               >
                 <p className="text-sm text-gray-500 font-semibold">
@@ -1009,8 +1008,7 @@ export default function FilterList({
           onClick={() => setIsFilterPopupOpen(true)}
         >
           <p className="text-xs font-bold   text-gray-600 whitespace-nowrap hover:bg-[#F5F5F5] transition-all duration-300 p-2 rounded-lg ml-3 mr-3">
-            {t("allFilters")}{" "}
-            {countActiveFilters() > 0 && `(${countActiveFilters()})`}
+            {t("allFilters", { count: countActiveFilters() })}
           </p>
         </div>
       </div>

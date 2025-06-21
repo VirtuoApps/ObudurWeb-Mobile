@@ -111,7 +111,7 @@
     "zoomOut": "Uzaklaştır"
   },
   "filterList": {
-    "allFilters": "Tüm Filtreler",
+    "allFilters": "{count, plural, =0 {Tüm Filtreler} other {Tüm Filtreler ({count})}}",
     "clear": "Temizle"
   },
   "viewSwitcher": {
@@ -474,7 +474,7 @@
     "noMessages": "Bu ilanla ilgili henüz mesaj yok"
   },
   "filtering": {
-    "filters": "Filtreler ({count})",
+    "filters": "{count, plural, =0 {Filtreler} other {Filtreler ({count})}}",
     "sort": "Sırala",
     "save": "Kaydet",
     "saveSearch": "Aramayı Kaydet",
