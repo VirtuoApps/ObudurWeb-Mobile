@@ -422,6 +422,12 @@ export default function HomePage({
     }
   }
 
+  if (roomCount !== undefined && roomCount !== null && +roomCount > 0) {
+    filteredHotels = filteredHotels.filter((hotel) => {
+      return hotel.roomCount === +roomCount;
+    });
+  }
+
   if (filters) {
     if (filters.propertyType) {
       filteredHotels = filteredHotels.filter((hotel) =>
@@ -466,15 +472,9 @@ export default function HomePage({
       });
     }
 
-    if (
-      filters.roomCount !== undefined &&
-      filters.roomCount !== null &&
-      filters.roomCount > 0
-    ) {
-      filteredHotels = filteredHotels.filter((hotel) => {
-        return hotel.roomCount === filters.roomCount;
-      });
-    }
+    console.log({
+      roomCount: filters.roomCount,
+    });
 
     if (
       filters.bathroomCount !== undefined &&
