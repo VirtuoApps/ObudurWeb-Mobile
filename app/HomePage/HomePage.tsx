@@ -568,10 +568,6 @@ export default function HomePage({
       });
     }
 
-    console.log({
-      interiorFeatureIds: filters.interiorFeatureIds,
-    });
-
     if (filters.interiorFeatureIds && filters.interiorFeatureIds.length > 0) {
       filteredHotels = filteredHotels.filter((hotel) => {
         return filters.interiorFeatureIds!.every((featureId) =>

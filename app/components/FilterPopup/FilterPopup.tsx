@@ -257,10 +257,45 @@ export default function FilterPopup({
       setTempMinArea(minArea);
       setTempMaxArea(maxArea);
       setTempBathroomCount(bathroomCount);
-      setTempSelectedExteriorFeatures(selectedExteriorFeatures);
-      setTempInteriorFeatures(interiorFeatures);
-      setTempSelectedAccessibilityFeatures(selectedAccessibilityFeatures);
-      setTempSelectedFaceFeatures(selectedFaceFeatures);
+
+      if (filters?.exteriorFeatureIds) {
+        const exteriorFeaturesWithFilter = filterOptions.outsideFeatures.filter(
+          (feature) => filters.exteriorFeatureIds.includes(feature._id)
+        );
+        setTempSelectedExteriorFeatures(exteriorFeaturesWithFilter);
+      } else {
+        setTempSelectedExteriorFeatures(selectedExteriorFeatures);
+      }
+
+      if (filters?.interiorFeatureIds) {
+        const interiorFeaturesWithFilter =
+          filterOptions.interiorFeatures.filter((feature) =>
+            filters.interiorFeatureIds.includes(feature._id)
+          );
+        setTempInteriorFeatures(interiorFeaturesWithFilter);
+      } else {
+        setTempInteriorFeatures(interiorFeatures);
+      }
+
+      if (filters?.accessibilityFeatureIds) {
+        const accessibilityFeaturesWithFilter =
+          filterOptions.accessibilityFeatures.filter((feature) =>
+            filters.accessibilityFeatureIds.includes(feature._id)
+          );
+        setTempSelectedAccessibilityFeatures(accessibilityFeaturesWithFilter);
+      } else {
+        setTempSelectedAccessibilityFeatures(selectedAccessibilityFeatures);
+      }
+
+      if (filters?.faceFeatureIds) {
+        const faceFeaturesWithFilter = filterOptions.faceFeatures.filter(
+          (feature) => filters.faceFeatureIds.includes(feature._id)
+        );
+        setTempSelectedFaceFeatures(faceFeaturesWithFilter);
+      } else {
+        setTempSelectedFaceFeatures(selectedFaceFeatures);
+      }
+
       setTempRoomCount(roomCount);
     }
   }, [
@@ -737,7 +772,15 @@ export default function FilterPopup({
     setSelectedPropertyType &&
       setSelectedPropertyType(tempSelectedPropertyType);
     setSelectedCategory && setSelectedCategory(tempSelectedCategory);
-    setFilters(tempFilters);
+    setFilters({
+      ...tempFilters,
+      interiorFeatureIds: tempInteriorFeatures.map((f: any) => f._id),
+      exteriorFeatureIds: tempSelectedExteriorFeatures.map((f: any) => f._id),
+      accessibilityFeatureIds: tempSelectedAccessibilityFeatures.map(
+        (f: any) => f._id
+      ),
+      faceFeatureIds: tempSelectedFaceFeatures.map((f: any) => f._id),
+    });
     setMinPrice(tempMinPrice);
     setMaxPrice(tempMaxPrice);
     setMinArea(tempMinArea);
