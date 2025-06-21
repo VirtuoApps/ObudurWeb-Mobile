@@ -480,7 +480,7 @@ export default function FourthCreateStep() {
             </div>
 
             <span className="text-sm text-gray-600 mt-4 sm:mt-0">
-              Adım 4 / 6
+              {t("stepCounter", { current: 4, total: 6 })}
             </span>
           </div>
 

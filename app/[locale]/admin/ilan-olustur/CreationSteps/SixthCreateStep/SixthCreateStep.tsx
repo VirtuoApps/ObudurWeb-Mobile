@@ -423,7 +423,7 @@ export default function SixthCreateStep() {
             </div>
 
             <span className="text-sm text-gray-600 mt-4 sm:mt-0">
-              Adım 6 / 6
+              {t("stepCounter", { current: 6, total: 6 })}
             </span>
           </div>
 
@@ -683,7 +683,7 @@ export default function SixthCreateStep() {
                   onClick={() => setCurrentStep(5)}
                   className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-600 font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition border border-gray-300"
                 >
-                  Geri
+                  {t("cancel")}
                 </button>
                 <button
                   type="button"

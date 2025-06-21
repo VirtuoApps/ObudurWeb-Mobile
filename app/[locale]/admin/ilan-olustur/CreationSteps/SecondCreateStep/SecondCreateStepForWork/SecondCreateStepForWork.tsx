@@ -492,7 +492,7 @@ export default function SecondCreateStepForWork() {
               </div>
             </div>
             <div className="text-sm text-[#6B7280] mt-6">
-              Adım 2 / 6
+              {t("stepCounter", { current: 2, total: 6 })}
             </div>
           </div>
 

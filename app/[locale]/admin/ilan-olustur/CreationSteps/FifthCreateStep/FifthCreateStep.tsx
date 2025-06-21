@@ -424,7 +424,7 @@ export default function FifthCreateStep() {
             </div>
 
             <span className="text-sm text-gray-600 mt-4 sm:mt-0">
-              Adım 5 / 6
+              {t("stepCounter", { current: 5, total: 6 })}
             </span>
           </div>
 
@@ -758,6 +758,7 @@ export default function FifthCreateStep() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

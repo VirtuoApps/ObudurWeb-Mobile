@@ -842,7 +842,7 @@ export default function ThirdCreateStep() {
             </div>
 
             <span className="text-sm text-gray-600 mt-4 sm:mt-0">
-              Adım 3 / 6
+              {t("stepCounter", { current: 3, total: 6 })}
             </span>
           </div>
 
@@ -1248,14 +1248,14 @@ export default function ThirdCreateStep() {
                   onClick={handleBack}
                   className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-600 font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition border border-gray-300"
                 >
-                  Geri
+                  {t("cancel")}
                 </button>
                 <button
                   type="button"
                   onClick={handleContinue}
                   className="cursor-pointer w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
                 >
-                  Devam Et
+                  {t("continue")}
                   <ChevronRightIcon className="h-5 w-5 hidden sm:block" />
                 </button>
               </div>
