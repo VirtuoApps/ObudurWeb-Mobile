@@ -106,7 +106,7 @@
     "zoomOut": "Zoom Out"
   },
   "filterList": {
-    "allFilters": "All Filters",
+    "allFilters": "{count, plural, =0 {All Filters} other {All Filters ({count})}}",
     "clear": "Clear"
   },
   "viewSwitcher": {
@@ -277,6 +277,9 @@
     "description": "Detailed information about the interior and exterior equipment, structural features, and living spaces offered by the residence.",
     "indoorTitle": "Interior Features",
     "outdoorTitle": "Exterior Features",
+    "facadeTitle": "Facade",
+    "infrastructureTitle": "Infrastructure Features",
+    "viewTitle": "View",
     "cableTV": "Cable TV",
     "wifi": "Wi-Fi",
     "alarm": "Alarm",
@@ -469,7 +472,7 @@
     "noMessages": "No messages yet for this listing"
   },
   "filtering": {
-    "filters": "Filters ({count})",
+    "filters": "{count, plural, =0 {Filters} other {Filters ({count})}}",
     "sort": "Sort",
     "save": "Save",
     "saveSearch": "Save Search",

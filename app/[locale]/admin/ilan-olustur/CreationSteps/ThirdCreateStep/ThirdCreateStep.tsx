@@ -579,10 +579,7 @@ export default function ThirdCreateStep() {
     // Extract neighborhood - Türkiye için çeşitli sublocality türleri denenecek
     const neighborhoodComponent = addressComponents.find(
       (component: { types: string[]; long_name: string }) =>
-        component.types.includes("sublocality") ||
-        component.types.includes("sublocality_level_1") ||
-        component.types.includes("sublocality_level_2") ||
-        component.types.includes("neighborhood")
+        component.types.includes("administrative_area_level_4")
     );
     if (neighborhoodComponent) {
       setNeighborhood({

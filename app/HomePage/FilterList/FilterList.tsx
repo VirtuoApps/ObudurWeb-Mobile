@@ -608,7 +608,7 @@ export default function FilterList({
               onClick={() => setIsFilterPopupOpen(true)}
               className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-r border-[#F0F0F0]"
             >
-              {filteringT("filters")} ({countActiveFilters()})
+              {filteringT("filters", { count: countActiveFilters() })}
             </button>
             <button
               onClick={() => setIsSaveFilterSheetOpen(true)}
@@ -995,35 +995,20 @@ export default function FilterList({
           >
             <NewFilterItem filters={filters} setFilters={setFilters} />
             <SizeFilterItem
-              isSelected={filters?.isOnePlusOneSelected || false}
-              onToggleSelected={() =>
-                setFilters({
-                  ...filters,
-                  isOnePlusOneSelected: !filters?.isOnePlusOneSelected,
-                })
-              }
+              isSelected={+roomCount === 1}
+              onToggleSelected={() => setRoomCount(1)}
               iconUrl="/1+1.png"
               text="1+1"
             />
             <SizeFilterItem
-              isSelected={filters?.isTwoPlusOneSelected || false}
-              onToggleSelected={() =>
-                setFilters({
-                  ...filters,
-                  isTwoPlusOneSelected: !filters?.isTwoPlusOneSelected,
-                })
-              }
+              isSelected={+roomCount === 2}
+              onToggleSelected={() => setRoomCount(2)}
               iconUrl="/2+1.png"
               text="2+1"
             />
             <SizeFilterItem
-              isSelected={filters?.isThreePlusOneSelected || false}
-              onToggleSelected={() =>
-                setFilters({
-                  ...filters,
-                  isThreePlusOneSelected: !filters?.isThreePlusOneSelected,
-                })
-              }
+              isSelected={+roomCount === 3}
+              onToggleSelected={() => setRoomCount(3)}
               iconUrl="/3+1.png"
               text="3+1"
             />
@@ -1064,8 +1049,7 @@ export default function FilterList({
           onClick={() => setIsFilterPopupOpen(true)}
         >
           <p className="text-xs font-bold   text-gray-600 whitespace-nowrap hover:bg-[#F5F5F5] transition-all duration-300 p-2 rounded-lg ml-3 mr-3">
-            {t("allFilters")}{" "}
-            {countActiveFilters() > 0 && `(${countActiveFilters()})`}
+            {t("allFilters", { count: countActiveFilters() })}
           </p>
         </div>
       </div>

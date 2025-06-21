@@ -119,6 +119,7 @@ interface PopulatedData {
   outsideFeatures: Feature[];
   quickFilters: Feature[];
   distances: Distance[];
+  faces: Feature[];
 }
 
 interface HotelResponse {
