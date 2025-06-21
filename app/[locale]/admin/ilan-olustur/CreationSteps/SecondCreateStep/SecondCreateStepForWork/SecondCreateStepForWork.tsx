@@ -1,14 +1,10 @@
 import {
-  ChevronDownIcon,
-  ChevronLeftIcon,
   ChevronRightIcon,
-  ChevronUpIcon,
+  XCircleIcon,
 } from "@heroicons/react/24/solid";
 import React, { useEffect, useRef, useState } from "react";
 import { formatInputPrice, parseInputPrice } from "@/app/utils/priceFormatter";
 
-import GoBackButton from "../../../GoBackButton/GoBackButton";
-import { XCircleIcon } from "@heroicons/react/24/solid";
 import { useListingForm } from "../../CreationSteps";
 
 // Custom Select component that matches the design
@@ -427,51 +423,61 @@ export default function SecondCreateStepForWork() {
   };
 
   return (
-    <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start p-4">
-      <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">
-        <div className="flex flex-col md:flex-row p-10">
+    <div className="h-[calc(100vh-72px)] lg:h-[calc(100vh-96px)] bg-[#ECEBF4] flex justify-center items-start p-4 py-6">
+      <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white h-full">
+        <div className="flex flex-col md:flex-row h-full">
           {/* Left Info Panel */}
-          <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 flex flex-col">
-            <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
-              İş yerinin özelliklerini belirtin.
-            </h1>
-            <div className="mt-4 text-base text-[#595959] font-medium">
-              <p className="leading-[140%]">
-                Bu adımda, iş yerinin temel özelliklerini, fiyatını ve diğer
-                önemli detayları girebilirsiniz. Bu bilgilerin doğruluğu,
-                potansiyel alıcı veya kiracıların ilgisini çekmek için
-                kritiktir.
-              </p>
+          <div className="w-full md:w-[30%] md:p-6 hidden flex-col md:flex justify-between">
+            <div>
+              <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
+                İş yerinin özelliklerini belirtin.
+              </h1>
+              <div className="mt-4 text-base text-[#595959] font-medium">
+                <p className="leading-[140%]">
+                  Bu adımda, iş yerinin temel özelliklerini, fiyatını ve diğer
+                  önemli detayları girebilirsiniz. Bu bilgilerin doğruluğu,
+                  potansiyel alıcı veya kiracıların ilgisini çekmek için
+                  kritiktir.
+                </p>
+              </div>
+            </div>
+            <div className="text-sm text-[#6B7280] mt-6">
+              Adım 2 / 6
             </div>
           </div>
 
           {/* Right Form Panel */}
-          <div ref={formPanelRef} className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto md:border-l md:border-[#F0F0F0]">
-            {/* Errors display */}
-            {errors.length > 0 && (
-              <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <XCircleIcon
-                      className="h-5 w-5 text-red-400"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-red-800">
-                      Lütfen aşağıdaki hataları düzeltin:
-                    </h3>
-                    <div className="mt-2 text-sm text-red-700">
-                      <ul className="list-disc pl-5 space-y-1">
-                        {errors.map((error, index) => (
-                          <li key={index}>{error}</li>
-                        ))}
-                      </ul>
+          <div className="flex-1 h-full flex flex-col">
+            <div className="p-6 flex-1 overflow-auto md:border-l border-[#F0F0F0]">
+              <div
+                ref={formPanelRef}
+                className="h-full"
+              >
+                {/* Errors display */}
+                {errors.length > 0 && (
+                  <div className="bg-red-50 border border-red-200 rounded-md p-4 m-6">
+                    <div className="flex items-start">
+                      <div className="flex-shrink-0">
+                        <XCircleIcon
+                          className="h-5 w-5 text-red-400"
+                          aria-hidden="true"
+                        />
+                      </div>
+                      <div className="ml-3">
+                        <h3 className="text-sm font-medium text-red-800">
+                          Lütfen aşağıdaki hataları düzeltin:
+                        </h3>
+                        <div className="mt-2 text-sm text-red-700">
+                          <ul className="list-disc pl-5 space-y-1">
+                            {errors.map((error, index) => (
+                              <li key={index}>{error}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            )}
+                )}
 
             {/* Price */}
             <div className="mb-6">
@@ -488,7 +494,9 @@ export default function SecondCreateStepForWork() {
                       type="text"
                       value={getPriceForCurrency("TRY") || ""}
                       onChange={(e) => handlePriceChange("TRY", e.target.value)}
-                      className={`w-full h-[56px] rounded-[16px] border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass("price-try")}`}
+                      className={`w-full h-[56px] rounded-[16px] border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
+                        "price-try"
+                      )}`}
                       placeholder="Fiyat yazın"
                     />
                   </div>
@@ -506,7 +514,9 @@ export default function SecondCreateStepForWork() {
                       type="text"
                       value={getPriceForCurrency("USD") || ""}
                       onChange={(e) => handlePriceChange("USD", e.target.value)}
-                      className={`w-full h-[56px] rounded-[16px] border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass("price-usd")}`}
+                      className={`w-full h-[56px] rounded-[16px] border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
+                        "price-usd"
+                      )}`}
                       placeholder="Fiyat yazın"
                     />
                   </div>
@@ -778,7 +788,7 @@ export default function SecondCreateStepForWork() {
             </div>
 
             {/* Krediye Uygunluk - Aidat */}
-            <div className="flex flex-col lg:flex-row gap-4 mb-6">
+            <div className="flex flex-col lg:flex-row gap-4 pb-6">
               <div className="w-full lg:w-1/2">
                 <label
                   htmlFor="creditEligible"
@@ -827,18 +837,31 @@ export default function SecondCreateStepForWork() {
                 </div>
               </div>
             </div>
+              </div>
+            </div>
+            {/* Footer */}
+            <div className="border-t md:border-l border-[#F0F0F0] p-6">
+              <div className="flex flex-col sm:flex-row justify-end items-center">
+                <div className="flex flex-row gap-4 sm:mt-0 w-full md:w-auto justify-end">
+                  <button
+                    type="button"
+                    onClick={handleBack}
+                    className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-600 font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition border border-gray-300"
+                  >
+                    Geri
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleContinue}
+                    className="cursor-pointer w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+                  >
+                    Devam Et
+                    <ChevronRightIcon className="h-5 w-5 hidden sm:block" />
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className=" flex flex-col sm:flex-row justify-between items-center p-6">
-          <GoBackButton handleBack={handleBack} step={2} totalSteps={6} />
-          <button
-            type="button"
-            onClick={handleContinue}
-            className="cursor-pointer w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
-          >
-            Devam Et
-            <ChevronRightIcon className="h-5 w-5" />
-          </button>
         </div>
       </div>
     </div>
