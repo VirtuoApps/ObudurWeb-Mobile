@@ -144,7 +144,7 @@ export default function FeaturesEquipment() {
       </div>
       {faceFeatures.length > 0 && (
         <FeatureGroup
-          title="Cephe"
+          title={t("facadeTitle")}
           features={faceFeatures}
           locale={currentLocale}
         />
@@ -165,14 +165,14 @@ export default function FeaturesEquipment() {
       )}
       {infrastructureData.length > 0 && (
         <FeatureGroup
-          title="Altyapı Özellikleri"
+          title={t("infrastructureTitle")}
           features={infrastructureData}
           locale={currentLocale}
         />
       )}
       {viewData.length > 0 && (
         <FeatureGroup
-          title="Manzara"
+          title={t("viewTitle")}
           features={viewData}
           locale={currentLocale}
         />
