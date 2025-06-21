@@ -440,7 +440,6 @@ export default function SecondCreateStep() {
                 metni.
               </p>
             </div>
-            <GoBackButton handleBack={handleBack} step={2} totalSteps={5} />
           </div>
 
           {/* Right Form Panel - 70% width on desktop */}
@@ -1010,6 +1009,18 @@ export default function SecondCreateStep() {
               </button>
             </div>
           </div>
+        </div>
+
+        <div className=" flex flex-col sm:flex-row justify-between items-center p-6">
+          <GoBackButton handleBack={handleBack} step={4} totalSteps={6} />
+          <button
+            type="button"
+            onClick={handleContinue}
+            className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+          >
+            {t("continue")}
+            <ChevronRightIcon className="h-5 w-5" />
+          </button>
         </div>
       </div>
     </div>
