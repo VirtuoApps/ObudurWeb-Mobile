@@ -30,14 +30,14 @@ export default function DetailsForWork() {
 
       <div className="mt-10 grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-12">
         {/* First Column */}
-        <div className="flex flex-col md:gap-4 gap-2 sm:border-r">
+        <div className="flex flex-col md:gap-3 gap-2 sm:border-r">
           {/* Kimden */}
           {hotelData.hotelDetails.source ? (
             <div className="flex items-baseline">
-              <span className="sm:w-40 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-40 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("source", { default: "Kimden" })}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#0F0F0F] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.source[currentLocale]}
               </span>
             </div>
@@ -47,10 +47,10 @@ export default function DetailsForWork() {
           {hotelData.hotelDetails.floorCount !== undefined &&
           hotelData.hotelDetails.floorCount !== null ? (
             <div className="flex items-baseline">
-              <span className="sm:w-40 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-40 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("floorCount", { default: "Kat Sayısı" })}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#0F0F0F] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.floorCount}
               </span>
             </div>
@@ -60,10 +60,10 @@ export default function DetailsForWork() {
           {hotelData.hotelDetails.buildingAge !== undefined &&
           hotelData.hotelDetails.buildingAge !== null ? (
             <div className="flex items-baseline">
-              <span className="sm:w-40 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-40 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("buildingAge", { default: "Bina Yaşı" })}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#0F0F0F] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.buildingAge}
               </span>
             </div>
@@ -71,14 +71,14 @@ export default function DetailsForWork() {
         </div>
 
         {/* Second Column */}
-        <div className="flex flex-col md:gap-4 gap-2 sm:border-r">
+        <div className="flex flex-col md:gap-3 gap-2 md:border-r">
           {/* Kullanım Durumu */}
           {hotelData.hotelDetails.usageStatus ? (
             <div className="flex items-baseline">
-              <span className="sm:w-40 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-40 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("usageStatus", { default: "Kullanım Durumu" })}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#0F0F0F] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.usageStatus[currentLocale]}
               </span>
             </div>
@@ -88,10 +88,10 @@ export default function DetailsForWork() {
           {hotelData.hotelDetails.roomCount !== undefined &&
           hotelData.hotelDetails.roomCount !== null ? (
             <div className="flex items-baseline">
-              <span className="sm:w-40 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-40 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("roomCount", { default: "Bölüm/Oda Sayısı" })}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#0F0F0F] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.roomCount}
               </span>
             </div>
@@ -100,10 +100,10 @@ export default function DetailsForWork() {
           {/* Isıtma */}
           {hotelData.hotelDetails.heatingType ? (
             <div className="flex items-baseline">
-              <span className="sm:w-40 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-40 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("heatingType", { default: "Isıtma" })}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#0F0F0F] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.heatingType[currentLocale]}
               </span>
             </div>
@@ -115,10 +115,10 @@ export default function DetailsForWork() {
           {/* M2 */}
           {hotelData.hotelDetails.projectArea ? (
             <div className="flex items-baseline">
-              <span className="sm:w-40 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-40 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 M2:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#0F0F0F] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.projectArea} m2
               </span>
             </div>
@@ -128,10 +128,10 @@ export default function DetailsForWork() {
           {hotelData.hotelDetails.exchangeable !== undefined &&
           hotelData.hotelDetails.exchangeable !== null ? (
             <div className="flex items-baseline">
-              <span className="sm:w-40 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-40 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("exchangeable", { default: "Takaslı" })}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#0F0F0F] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.exchangeable ? yesNo.yes : yesNo.no}
               </span>
             </div>
@@ -140,10 +140,10 @@ export default function DetailsForWork() {
           {/* Aidat */}
           {hotelData.hotelDetails.dues ? (
             <div className="flex items-baseline">
-              <span className="sm:w-40 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-40 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("dues", { default: "Aidat" })}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#0F0F0F] sm:text-[14px] text-xs">
                 {Array.isArray(hotelData.hotelDetails.dues)
                   ? `${hotelData.hotelDetails.dues[0]?.amount || ""}₺`
                   : hotelData.hotelDetails.dues}

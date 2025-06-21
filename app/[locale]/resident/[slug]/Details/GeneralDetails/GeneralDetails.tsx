@@ -23,45 +23,45 @@ export default function GeneralDetails() {
         </p>
       </div>
 
-      <div className="mt-10 grid grid-cols-2 md:grid-cols-3 md:gap-8 gap-4 lg:gap-12">
+      <div className="mt-6 md:mt-10 grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6">
         {/* First Column */}
-        <div className="flex flex-col md:gap-4 gap-2 sm:border-r">
+        <div className="flex flex-col md:gap-3 gap-2 sm:border-r">
           {hotelData.hotelDetails.projectArea ? (
             <div className="flex items-baseline">
-              <span className="sm:w-32 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-32 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("projectArea")}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#0F0F0F] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.projectArea} m2
               </span>
             </div>
           ) : null}
           {hotelData.hotelDetails.totalSize ? (
             <div className="flex items-baseline">
-              <span className="sm:w-32 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-32 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("area")}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#0F0F0F] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.totalSize} m2
               </span>
             </div>
           ) : null}
           {hotelData.hotelDetails.buildYear ? (
             <div className="flex items-baseline">
-              <span className="sm:w-32 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-32 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("constructionYear")}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#0F0F0F] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.buildYear}
               </span>
             </div>
           ) : null}
           {hotelData.hotelDetails.architect ? (
             <div className="flex items-baseline">
-              <span className="sm:w-32 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-32 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("architect")}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#0F0F0F] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.architect}
               </span>
             </div>
@@ -69,20 +69,20 @@ export default function GeneralDetails() {
 
           {hotelData.hotelDetails?.floorType ? (
             <div className="flex items-baseline">
-              <span className="sm:w-32 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-32 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("floor")}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#0F0F0F] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails?.floorType?.[currentLocale]}
               </span>
             </div>
           ) : null}
           {hotelData.hotelDetails.entranceType ? (
             <div className="flex items-baseline">
-              <span className="sm:w-32 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-32 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("entrance")}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#0F0F0F] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.entranceType[currentLocale]}
               </span>
             </div>
@@ -90,64 +90,64 @@ export default function GeneralDetails() {
         </div>
 
         {/* Second Column */}
-        <div className="flex flex-col md:gap-4 gap-2 sm:border-r">
+        <div className="flex flex-col md:gap-3 gap-2 md:border-r">
           {hotelData.hotelDetails.kitchenType &&
           hotelData.hotelDetails.kitchenType[currentLocale] ? (
             <div className="flex items-baseline">
-              <span className="sm:w-32 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-32 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("kitchen")}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#262626] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.kitchenType[currentLocale]}
               </span>
             </div>
           ) : null}
           {hotelData.hotelDetails.roomCount ? (
             <div className="flex items-baseline">
-              <span className="sm:w-32 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-32 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("bedrooms")}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#262626] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.roomCount}
               </span>
             </div>
           ) : null}
           {hotelData.hotelDetails.bathroomCount ? (
             <div className="flex items-baseline">
-              <span className="sm:w-32 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-32 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("bathrooms")}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#262626] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.bathroomCount}
               </span>
             </div>
           ) : null}
           {hotelData.hotelDetails.balconyCount ? (
             <div className="flex items-baseline">
-              <span className="sm:w-32 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-32 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("balconies")}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#262626] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.balconyCount}
               </span>
             </div>
           ) : null}
           {hotelData.hotelDetails.housingType ? (
             <div className="flex items-baseline">
-              <span className="sm:w-32 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-32 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("propertyType")}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#262626] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.housingType[currentLocale]}
               </span>
             </div>
           ) : null}
           {hotelData.hotelDetails.listingType ? (
             <div className="flex items-baseline">
-              <span className="sm:w-32 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-32 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("listingType")}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#262626] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.listingType[currentLocale]}
               </span>
             </div>
@@ -158,40 +158,40 @@ export default function GeneralDetails() {
         <div className="hidden md:flex sm:flex-col flex-row flex-wrap md:gap-4 gap-2">
           {hotelData.hotelDetails?.floorType ? (
             <div className="flex items-baseline">
-              <span className="sm:w-32 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-32 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("floor")}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#262626] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails?.floorType?.[currentLocale]}
               </span>
             </div>
           ) : null}
           {hotelData.hotelDetails.housingType ? (
             <div className="flex items-baseline">
-              <span className="sm:w-32 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-32 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("propertyType")}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#262626] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.housingType[currentLocale]}
               </span>
             </div>
           ) : null}
           {hotelData.hotelDetails.entranceType ? (
             <div className="flex items-baseline">
-              <span className="sm:w-32 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-32 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("entrance")}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#262626] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.entranceType[currentLocale]}
               </span>
             </div>
           ) : null}
           {hotelData.hotelDetails.listingType ? (
             <div className="flex items-baseline">
-              <span className="sm:w-32 shrink-0 font-medium text-gray-600 sm:text-base text-xs">
+              <span className="sm:w-32 shrink-0 font-medium text-[#595959] sm:text-[14px] text-xs">
                 {t("listingType")}:
               </span>
-              <span className="font-semibold text-[#0F0F0F] sm:text-base text-xs">
+              <span className="font-bold text-[#262626] sm:text-[14px] text-xs">
                 {hotelData.hotelDetails.listingType[currentLocale]}
               </span>
             </div>
