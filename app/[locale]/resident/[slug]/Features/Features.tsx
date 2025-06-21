@@ -142,35 +142,35 @@ export default function FeaturesEquipment() {
           {t("description")}
         </p>
       </div>
-      {faceFeatures.length > 0 && (
+      {faceFeatures?.length > 0 && (
         <FeatureGroup
           title={t("facadeTitle")}
           features={faceFeatures}
           locale={currentLocale}
         />
       )}
-      {insideFeatures.length > 0 && (
+      {insideFeatures?.length > 0 && (
         <FeatureGroup
           title={t("indoorTitle")}
           features={insideFeatures}
           locale={currentLocale}
         />
       )}
-      {outsideFeatures.length > 0 && (
+      {outsideFeatures?.length > 0 && (
         <FeatureGroup
           title={t("outdoorTitle")}
           features={outsideFeatures}
           locale={currentLocale}
         />
       )}
-      {infrastructureData.length > 0 && (
+      {infrastructureData?.length > 0 && (
         <FeatureGroup
           title={t("infrastructureTitle")}
           features={infrastructureData}
           locale={currentLocale}
         />
       )}
-      {viewData.length > 0 && (
+      {viewData?.length > 0 && (
         <FeatureGroup
           title={t("viewTitle")}
           features={viewData}

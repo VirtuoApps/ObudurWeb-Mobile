@@ -1,16 +1,18 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+
+import React, { useEffect, useRef, useState } from "react";
+
+import AuthPopup from "@/app/components/AuthPopup/AuthPopup";
 import { FaChevronDown } from "react-icons/fa";
 import { Switch } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import axiosInstance from "@/axios";
 import { countryCodes } from "./countryCodes";
+import { useAppSelector } from "@/app/store/hooks";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTranslations } from "next-intl";
-import { useAppSelector } from "@/app/store/hooks";
-import axiosInstance from "@/axios";
-import AuthPopup from "@/app/components/AuthPopup/AuthPopup";
-import { XMarkIcon } from "@heroicons/react/24/outline";
 
 // Define the type for form data
 type ContactFormData = {
@@ -223,14 +225,48 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
       .join(" ");
   };
 
+  const formatPhoneNumber = (phone: string) => {
+    // Remove all non-digit characters except the leading +
+    const cleaned = phone.replace(/[^\d+]/g, '');
+    
+    // Handle different country code formats
+    if (cleaned.startsWith('+')) {
+      const withoutPlus = cleaned.slice(1);
+      
+      // For Turkish numbers (+90)
+      if (withoutPlus.startsWith('90') && withoutPlus.length === 13) {
+        return `+90 ${withoutPlus.slice(2, 5)} ${withoutPlus.slice(5, 8)} ${withoutPlus.slice(8, 10)} ${withoutPlus.slice(10)}`;
+      }
+      
+      // Generic international format - try to add spaces every 3 digits after country code
+      const countryCodeLength = withoutPlus.length > 10 ? 2 : 1;
+      const countryCode = withoutPlus.slice(0, countryCodeLength);
+      const remaining = withoutPlus.slice(countryCodeLength);
+      
+      if (remaining.length <= 10) {
+        // Format as groups of 3
+        const formatted = remaining.match(/.{1,3}/g)?.join(' ') || remaining;
+        return `+${countryCode} ${formatted}`;
+      }
+    }
+    
+    // Fallback: just add the original format with minimal spacing
+    return cleaned.replace(/(\+\d{1,3})(\d{3})(\d{3})(\d+)/, '$1 $2 $3 $4');
+  };
+
   const maskPhone = (phone: string) => {
-    return phone
-      .split(" ")
-      .map((part) => {
+    const formatted = formatPhoneNumber(phone);
+    const parts = formatted.split(" ");
+    
+    return parts
+      .map((part, index) => {
         if (!part) return "";
-        return `${part.slice(0, 4)}${Array(part.length - 4)
-          .fill("*")
-          .join("")}`;
+        // Don't mask the country code (first part with +)
+        if (index === 0 && part.startsWith('+')) return part;
+        // Keep the first segment after country code visible (e.g., "512")
+        if (index === 1) return part;
+        // Mask all other segments completely
+        return Array(part.length).fill("*").join("");
       })
       .join(" ");
   };
@@ -293,7 +329,7 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
       {/* Agent Info Section */}
       <div className="bg-[#31286A] p-4 rounded-xl">
         <div className="flex flex-row items-center">
-          <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-300 mr-4 flex-shrink-0">
+          <div className="w-12 h-12 rounded-xl overflow-hidden bg-gray-300 mr-4 flex-shrink-0">
             <img
               src={
                 hotelData.manager.profilePicture ||
@@ -309,29 +345,29 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
             />
           </div>
           <div className="text-white">
-            <h3 className="font-bold text-lg">
+            <h3 className="font-bold text-[16px]">
               {isLoginned ? managerName : maskName(managerName)}
             </h3>
             {isLoginned && managerAgency && (
-              <p className="text-white/80 text-md">{managerAgency}</p>
+              <p className="text-[14px] font-medium">{managerAgency}</p>
             )}
           </div>
         </div>
 
-        <div className="flex gap-2 mt-5">
+        <div className="flex gap-2 mt-4">
           <button
             onClick={() => {
               if (isLoginned) {
                 copyPhoneToClipboard();
               }
             }}
-            className="flex-1 bg-[#EC755D] text-white py-2 px-4 rounded-xl font-medium cursor-pointer"
+            className="flex-1 bg-[#EC755D] text-[#FCFCFC] py-2 px-4 rounded-xl font-medium cursor-pointer text-[12px] max-h-[36px]"
           >
             {isLoginned
-              ? managerPhone
-              : maskPhone(managerPhone || "0539 000 00 00")}
+              ? formatPhoneNumber(managerPhone)
+              : maskPhone(managerPhone || "+90 539 000 00 00")}
           </button>
-          <button className="flex-1 bg-[#FCFCFC] text-gray-800 py-2 px-4 rounded-xl border border-gray-200 font-medium cursor-pointer">
+          <button className="flex-1 bg-[#FCFCFC] text-[#262626] py-2 px-4 rounded-xl border border-gray-200 cursor-pointer text-[14px] max-h-[36px]">
             {t("allListings")}
           </button>
         </div>
@@ -350,24 +386,24 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
 
       {/* Contact Form */}
       {!isLoginned && (
-        <div className="p-4">
-          <h4 className="font-bold text-xl text-[#595959] mb-4">
+        <div className="mt-6">
+          <h4 className="font-bold text-[16px] text-[#262626] my-2">
             {t("loginPromptTitle")}
           </h4>
-          <p className="text-gray-500 text-base">
+          <p className="text-[#595959] text-[14px]">
             {t("loginPromptDescription")}
           </p>
           <button
             onClick={() => setIsAuthPopupOpen(true)}
-            className={`w-full py-3 rounded-xl font-medium cursor-pointer bg-[#5E5691] text-white mt-7`}
+            className={`w-full py-3 rounded-xl font-medium cursor-pointer bg-[#5E5691] text-white mt-6`}
           >
             {t("loginButton")}
           </button>
         </div>
       )}
       {isLoginned && (
-        <div className="p-4">
-          <h4 className="font-medium text-gray-800 mb-4">{t("getMoreInfo")}</h4>
+        <div className="mt-6">
+          <h4 className="text-gray-800 mb-4 font-bold text-[14px]">{t("getMoreInfo")}</h4>
 
           {existingMessage ? (
             <div className="bg-green-50 p-4 rounded-xl border border-green-200 mb-4">
@@ -387,51 +423,56 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
           )}
 
           <form onSubmit={handleSubmit(onSubmit as any)}>
-            <div className="mb-3">
-              <input
-                type="text"
-                id="firstName"
-                placeholder={t("firstName")}
-                {...register("firstName")}
-                disabled={loading || !!existingMessage}
-                className={`w-full border ${
-                  errors.firstName ? "border-red-500" : "border-gray-300"
-                } rounded-2xl text-sm placeholder:text-gray-400 text-[#262626] font-semibold py-4 px-3 ${
-                  loading || !!existingMessage
-                    ? "bg-gray-100 cursor-not-allowed"
-                    : ""
-                }`}
-              />
-              {errors.firstName && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.firstName.message}
-                </p>
-              )}
+            <div className="mb-2 flex gap-2">
+              <div className="">
+                <input
+                  type="text"
+                  id="firstName"
+                  placeholder={t("firstName")}
+                  {...register("firstName")}
+                  disabled={loading || !!existingMessage}
+                  className={`w-full border ${
+                    errors.firstName ? "border-red-500" : "border-gray-300"
+                  } rounded-[16px] text-sm placeholder:text-gray-400 text-[#262626] font-semibold py-4 px-3 ${
+                    loading || !!existingMessage
+                      ? "bg-gray-100 cursor-not-allowed"
+                      : ""
+                  }`}
+                />
+                {errors.firstName && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.firstName.message}
+                  </p>
+                )}
+              </div>
+              <div className="">
+                <input
+                  type="text"
+                  id="lastName"
+                  placeholder={t("lastName")}
+                  {...register("lastName")}
+                  disabled={loading || !!existingMessage}
+                  className={`w-full border ${
+                    errors.lastName ? "border-red-500" : "border-gray-300"
+                  } rounded-[16px] text-sm placeholder:text-gray-400 text-[#262626] font-semibold py-4 px-3 ${
+                    loading || !!existingMessage
+                      ? "bg-gray-100 cursor-not-allowed"
+                      : ""
+                  }`}
+                />
+                {errors.lastName && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.lastName.message}
+                  </p>
+                )}
+              </div>
             </div>
 
-            <div className="mb-3">
-              <input
-                type="text"
-                id="lastName"
-                placeholder={t("lastName")}
-                {...register("lastName")}
-                disabled={loading || !!existingMessage}
-                className={`w-full border ${
-                  errors.lastName ? "border-red-500" : "border-gray-300"
-                } rounded-2xl text-sm placeholder:text-gray-400 text-[#262626] font-semibold py-4 px-3 ${
-                  loading || !!existingMessage
-                    ? "bg-gray-100 cursor-not-allowed"
-                    : ""
-                }`}
-              />
-              {errors.lastName && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.lastName.message}
-                </p>
-              )}
+            <div className="mb-2">
+
             </div>
 
-            <div className="mb-3">
+            <div className="mb-2">
               <input
                 type="email"
                 id="email"
@@ -440,7 +481,7 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
                 disabled={loading || !!existingMessage}
                 className={`w-full border ${
                   errors.email ? "border-red-500" : "border-gray-300"
-                } rounded-2xl text-sm placeholder:text-gray-400 text-[#262626] font-semibold py-4 px-3 ${
+                } rounded-[16px] text-sm placeholder:text-gray-400 text-[#262626] font-semibold py-4 px-3 ${
                   loading || !!existingMessage
                     ? "bg-gray-100 cursor-not-allowed"
                     : ""
@@ -453,13 +494,7 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
               )}
             </div>
 
-            <div className="mb-3">
-              <label
-                htmlFor="phone"
-                className="block text-sm text-[#262626] font-semibold mb-1"
-              >
-                {t("phone")}
-              </label>
+            <>
               <div className="flex gap-2">
                 <div className="relative">
                   <select
@@ -467,7 +502,7 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
                     value={countryCode}
                     onChange={handleCountryCodeChange}
                     disabled={loading || !!existingMessage}
-                    className={`bg-white border border-gray-300 rounded-2xl text-sm text-[#262626] font-semibold py-4 px-2 w-24 appearance-none pr-8 ${
+                    className={`bg-white border border-gray-300 rounded-[16px] text-sm text-[#262626] font-semibold py-4 px-2 w-24 appearance-none pr-8 ${
                       loading || !!existingMessage
                         ? "bg-gray-100 cursor-not-allowed"
                         : ""
@@ -494,7 +529,7 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
                   disabled={loading || !!existingMessage}
                   className={`w-full border ${
                     errors.phone ? "border-red-500" : "border-gray-300"
-                  } rounded-2xl text-sm placeholder:text-gray-400 text-[#262626] font-semibold py-4 px-3 ${
+                  } rounded-[16px] text-sm placeholder:text-gray-400 text-[#262626] font-semibold py-4 px-3 ${
                     loading || !!existingMessage
                       ? "bg-gray-100 cursor-not-allowed"
                       : ""
@@ -506,16 +541,16 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
                   {errors.phone.message}
                 </p>
               )}
-            </div>
+            </>
 
-            <div className="mb-3 flex items-center mt-4">
+            <div className="flex items-center my-6">
               <Switch
                 checked={wantsVisit}
                 onChange={toggleVisit}
                 disabled={loading || !!existingMessage}
                 className={`${
-                  wantsVisit ? "bg-[#31286A]" : "bg-gray-200"
-                } relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                  wantsVisit ? "bg-[#1EB173]" : "bg-gray-200"
+                } relative inline-flex h-6 w-11 items-center rounded-[8px] transition-colors cursor-pointer ${
                   loading || !!existingMessage
                     ? "opacity-60 cursor-not-allowed"
                     : ""
@@ -536,10 +571,10 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
               </label>
             </div>
 
-            <div className="mb-4 mt-8">
+            <div className="mb-6">
               <label
                 htmlFor="message"
-                className="block text-sm text-gray-400 -mb-8 ml-3"
+                className="absolute text-sm text-gray-400 mt-4 ml-4"
               >
                 {t("message")}
               </label>
@@ -548,9 +583,9 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
                 {...register("message")}
                 rows={4}
                 disabled={loading || !!existingMessage}
-                className={`w-full px-3 py-2 border ${
+                className={`w-full px-4 py-2 border ${
                   errors.message ? "border-red-500" : "border-gray-300"
-                } rounded-2xl text-sm resize-none placeholder:text-gray-400 text-[#262626] font-semibold pt-10 ${
+                } rounded-[16px] text-sm resize-none placeholder:text-gray-400 text-[#262626] font-semibold pt-10 ${
                   loading || !!existingMessage
                     ? "bg-gray-100 cursor-not-allowed"
                     : ""
@@ -563,12 +598,20 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
               )}
             </div>
 
+            {!(!isValid || loading || !!existingMessage) && (
+              <div className="mb-6">
+                <p className="px-4 text-[12px] text-[#8C8C8C]">
+                  “Mesaj Gönder” butonuna tıklayarak bilgilerinizin ilan veren taraf ile paylaşılmasını ve Kullanıcı Sözleşmesi’ni kabul etmiş olursunuz.
+                </p>
+              </div>
+            )}
+
             <button
               type="submit"
               disabled={!isValid || loading || !!existingMessage}
               className={`w-full py-3 rounded-xl font-medium cursor-pointer ${
                 isValid && !loading && !existingMessage
-                  ? "bg-[#31286A] text-white"
+                  ? "bg-[#5E5691] text-white"
                   : "bg-[#F0F0F0] text-gray-700 cursor-not-allowed"
               }`}
             >
