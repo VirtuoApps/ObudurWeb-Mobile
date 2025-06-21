@@ -1,11 +1,12 @@
-import { useState, useEffect, useRef } from "react";
-import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import {
   ChevronDownIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
 import { MapPinIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useTranslations, useLocale } from "next-intl";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+import { useEffect, useRef, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+
 import { FilterOptions } from "@/types/filter-options.type";
 
 type LocationSelectProps = {
@@ -266,7 +267,7 @@ export default function LocationSelect({
                     {selectedLocation && !isMobileMenu && isHovered && (
                       <button
                         type="button"
-                        className="ml-2 p-1 rounded hover:bg-gray-100 transition"
+                        className="ml-2 p-1 rounded hover:bg-gray-100 transition cursor-pointer"
                         onClick={(e) => {
                           e.stopPropagation();
                           setSelectedLocation(null);

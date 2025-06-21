@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from "react";
-import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+import { useEffect, useRef, useState } from "react";
+
 import { useTranslations } from "next-intl";
 
 type GeneralSelectProps = {
@@ -143,7 +144,7 @@ export default function GeneralSelect({
               {selectedItem && !popoverExtraClassName?.includes("mobile") ? (
                 <button
                   type="button"
-                  className="ml-2 p-1 rounded hover:bg-gray-100 transition"
+                  className="ml-2 p-1 rounded hover:bg-gray-100 transition cursor-pointer"
                   onClick={handleClear}
                   tabIndex={-1}
                   disabled={disabled}

@@ -112,9 +112,14 @@ export default function FirstCreateStep() {
 
   // Handle property type selection
   const handlePropertyTypeSelect = (type: PropertyType) => {
+    if (!type) {
+      setEntranceType(null);
+      return;
+    }
+
     setEntranceType({
-      tr: type.name.tr,
-      en: type.name.en,
+      tr: type?.name.tr,
+      en: type?.name.en,
     });
 
     // Clear housing type if it's not in the new property type's categories
@@ -131,6 +136,11 @@ export default function FirstCreateStep() {
 
   // Handle category selection
   const handleCategorySelect = (category: Category) => {
+    if (!category) {
+      setHousingType(null);
+      return;
+    }
+
     setHousingType({
       tr: category.name.tr,
       en: category.name.en,
@@ -311,32 +321,38 @@ export default function FirstCreateStep() {
     : [];
 
   return (
-    <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start p-4">
-      <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">
-        <div className="flex flex-col md:flex-row p-10">
+    <div className="bg-[#ECEBF4] flex justify-center items-start p-4 py-6 h-[calc(100vh-72px)] lg:h-[calc(100vh-96px)]">
+      <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white h-full">
+        <div className="flex flex-col md:flex-row h-[inherit]">
           {/* Left Info Panel - 30% width on desktop */}
-          <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 hidden flex-col md:flex">
-            <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
-              {t("title")}
-            </h1>
-            <div className="mt-4 text-base  text-[#595959] font-medium">
-              <p className="leading-[140%]">
-                {t("subtitle")}
-                <br />
-                <br />
-                {t("description")}
-              </p>
+          <div className="w-full md:w-[30%] mb-8 md:mb-0 md:p-6 hidden flex-col md:flex justify-between">
+            <div className="">
+              <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
+                {t("title")}
+              </h1>
+              <div className="mt-4 text-base  text-[#595959] font-medium">
+                <p className="leading-[140%]">
+                  {t("subtitle")}
+                  <br />
+                  <br />
+                  {t("description")}
+                </p>
+              </div>
             </div>
+
+            <span className="text-sm text-gray-600 mt-4 sm:mt-0">
+              {t("stepCounter", { current: 1, total: 6 })}
+            </span>
           </div>
 
           {/* Right Form Panel - 70% width on desktop */}
           <div
             ref={formPanelRef}
-            className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto md:border-l md:border-[#F0F0F0]"
+            className="flex-1 h-full flex flex-col"
           >
             {/* Errors display */}
             {errors.length > 0 && (
-              <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
+              <div className="bg-red-50 border border-red-200 rounded-md p-4 m-6 mb-0">
                 <div className="flex items-start">
                   <div className="flex-shrink-0">
                     <XCircleIcon
@@ -360,215 +376,219 @@ export default function FirstCreateStep() {
               </div>
             )}
 
-            {/* Sale or Rent - Dropdown, Property Type - Dropdown, Category - Dropdown: Tek satırda yan yana */}
-            <div className="mb-6">
-              <h2 className="font-semibold mb-4 text-[#262626] text-2xl">
-                {t("categoriesTitle")}
-              </h2>
-              <div className="flex flex-col md:flex-row gap-4 w-full">
-                {/* İlan Tipi */}
-                <div className="flex-1 min-w-[180px]">
-                  <span className="block font-semibold mb-2 text-[#262626] text-base">
-                    {t("listingType")}
-                  </span>
-                  <GeneralSelect
-                    selectedItem={
-                      listingType
-                        ? { name: listingType.tr, value: listingType }
-                        : null
-                    }
-                    onSelect={(item) => {
-                      setListingType(item.value);
-                      setEntranceType(null);
-                      setHousingType(null);
-                    }}
-                    options={listingTypeOptions}
-                    defaultText={t("selectListingType")}
-                    extraClassName={`w-full text-[#595959] bg-white border ${
-                      errorFields.has("listingType")
-                        ? "border-[#EF1A28]"
-                        : "border-[#E0E0E0]"
-                    }`}
-                    maxHeight="200"
-                    customTextColor={true}
-                  />
-                </div>
-                {/* Emlak Tipi */}
-                <div className="flex-1 min-w-[180px]">
-                  <span className="block font-semibold mb-2 text-[#262626] text-base">
-                    {t("propertyType")}
-                  </span>
-                  <GeneralSelect
-                    selectedItem={
-                      entranceType
-                        ? { name: entranceType.tr, value: entranceType }
-                        : null
-                    }
-                    onSelect={(item) => {
-                      handlePropertyTypeSelect(item.value);
-                    }}
-                    options={listingType ? propertyTypeOptions : []}
-                    defaultText={
-                      listingType
-                        ? t("selectPropertyType")
-                        : t("selectPropertyFirst")
-                    }
-                    extraClassName={`w-full text-[#595959] bg-white border ${
-                      errorFields.has("entranceType")
-                        ? "border-[#EF1A28]"
-                        : "border-[#E0E0E0]"
-                    }`}
-                    maxHeight="200"
-                    customTextColor={true}
-                  />
-                </div>
-                {/* Kategori */}
-                <div className="flex-1 min-w-[180px]">
-                  <span className="block font-semibold mb-2 text-[#262626] text-base">
-                    {t("category")}
-                  </span>
-                  <GeneralSelect
-                    selectedItem={
-                      housingType
-                        ? { name: housingType.tr, value: housingType }
-                        : null
-                    }
-                    onSelect={(item) => {
-                      handleCategorySelect(item.value);
-                    }}
-                    options={entranceType ? filteredCategoryOptions : []}
-                    defaultText={
-                      entranceType
-                        ? t("selectCategory")
-                        : t("selectCategoryFirst")
-                    }
-                    extraClassName={`w-full text-[#595959] bg-white border ${
-                      errorFields.has("housingType")
-                        ? "border-[#EF1A28]"
-                        : "border-[#E0E0E0]"
-                    }`}
-                    maxHeight="200"
-                    customTextColor={true}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Listing Title */}
-            <div className="mt-8 space-y-6">
-              {/* Turkish Title */}
-
-              <h2 className="font-semibold mb-2 text-[#262626] text-2xl">
-                {t("titleAndDescription")}
-              </h2>
-              <div>
-                <h3 className="font-semibold text-base mb-4 text-[#262626]">
-                  {t("turkish")}{" "}
-                  <span className="text-[#595959] text-base font-normal">
-                    {t("required")}
-                  </span>
-                </h3>
-                <div className="space-y-4">
-                  <div>
-                    <input
-                      type="text"
-                      id="title-tr"
-                      value={title?.tr || ""}
-                      onChange={(e) =>
-                        setTitle((prev) => ({
-                          ...prev,
-                          tr: e.target.value,
-                        }))
+            <div className="p-6 flex-1 overflow-auto md:border-l border-[#F0F0F0]">
+              {/* Sale or Rent - Dropdown, Property Type - Dropdown, Category - Dropdown: Tek satırda yan yana */}
+              <div className="mb-6">
+                <h2 className="mb-4 text-[#262626] text-2xl font-bold">
+                  {t("categoriesTitle")}
+                </h2>
+                <div className="flex flex-col lg:flex-row gap-4 w-full">
+                  {/* İlan Tipi */}
+                  <div className="flex-1 min-w-[180px]">
+                    <span className="block font-semibold mb-2 text-[#262626] text-base">
+                      {t("listingType")}
+                    </span>
+                    <GeneralSelect
+                      selectedItem={
+                        listingType
+                          ? { name: listingType.tr, value: listingType }
+                          : null
                       }
-                      className={getFieldClassName("title", "tr")}
-                      placeholder={t("titlePlaceholder")}
+                      onSelect={(item) => {
+                        setListingType(item?.value ?? null);
+                      }}
+                      options={listingTypeOptions}
+                      defaultText={t("selectListingType")}
+                      extraClassName={`h-[56px] rounded-[16px] w-full text-[#595959] bg-white border ${
+                        errorFields.has("listingType")
+                          ? "border-[#EF1A28]"
+                          : "border-[#E0E0E0]"
+                      }`}
+                      maxHeight="200"
+                      customTextColor={true}
                     />
                   </div>
-
-                  <div>
-                    <textarea
-                      id="description-tr"
-                      value={description?.tr || ""}
-                      onChange={(e) =>
-                        setDescription((prev) => ({
-                          ...prev,
-                          tr: e.target.value,
-                        }))
+                  {/* Emlak Tipi */}
+                  <div className="flex-1 min-w-[180px]">
+                    <span className="block font-semibold mb-2 text-[#262626] text-base">
+                      {t("propertyType")}
+                    </span>
+                    <GeneralSelect
+                      selectedItem={
+                        entranceType
+                          ? { name: entranceType.tr, value: entranceType }
+                          : null
                       }
-                      className={getFieldClassName("description", "tr")}
-                      placeholder={t("descriptionPlaceholder")}
+                      onSelect={(item) => {
+                        handlePropertyTypeSelect(item?.value ?? null);
+                        setHousingType(null); // Reset housing type when property type changes
+                      }}
+                      options={propertyTypeOptions}
+                      defaultText={t("selectPropertyType")}
+                      extraClassName={`h-[56px] rounded-[16px] w-full text-[#595959] bg-white border ${
+                        errorFields.has("entranceType")
+                          ? "border-[#EF1A28]"
+                          : "border-[#E0E0E0]"
+                      }`}
+                      maxHeight="200"
+                      customTextColor={true}
+                    />
+                  </div>
+                  {/* Kategori */}
+                  <div className="flex-1 min-w-[180px]">
+                    <span className="block font-semibold mb-2 text-[#262626] text-base">
+                      {t("category")}
+                    </span>
+                    <GeneralSelect
+                      selectedItem={
+                        housingType
+                          ? { name: housingType.tr, value: housingType }
+                          : null
+                      }
+                      onSelect={(item) => {
+                        handleCategorySelect(item?.value ?? null);
+                      }}
+                      options={entranceType ? filteredCategoryOptions : []}
+                      defaultText={t("selectCategory")}
+                      extraClassName={`h-[56px] !rounded-[16px] w-full text-[#595959] bg-white border ${
+                        entranceType ? "text-[#262626]" : "text-[#8c8c8c]"
+                      } ${housingType ? "hover:text-[#595959]" : ""} ${
+                        errorFields.has("housingType")
+                          ? "border-[#EF1A28]"
+                          : "border-[#E0E0E0]"
+                      }`}
+                      maxHeight="200"
+                      customTextColor={true}
+                      disabled={!entranceType} // Disable if no property type selected
                     />
                   </div>
                 </div>
               </div>
 
-              {/* English Title */}
-              <div>
-                <h3 className="font-semibold text-base mb-4 text-[#262626]">
-                  {t("english")}{" "}
-                  <span className="text-[#595959] text-base font-normal">
-                    {t("required")}
-                  </span>
-                </h3>
-                <div className="space-y-4">
-                  <div>
-                    <input
-                      type="text"
-                      id="title-en"
-                      value={title?.en || ""}
-                      onChange={(e) =>
-                        setTitle((prev) => ({
-                          ...prev,
-                          en: e.target.value,
-                        }))
-                      }
-                      className={getFieldClassName("title", "en")}
-                      placeholder={t("titleEnglishPlaceholder")}
-                    />
-                  </div>
+              {/* Listing Title */}
+              <div className="mt-6 space-y-6">
+                {/* Turkish Title */}
 
-                  <div>
-                    <textarea
-                      id="description-en"
-                      value={description?.en || ""}
-                      onChange={(e) =>
-                        setDescription((prev) => ({
-                          ...prev,
-                          en: e.target.value,
-                        }))
-                      }
-                      className={getFieldClassName("description", "en")}
-                      placeholder={t("descriptionEnglishPlaceholder")}
-                    />
+                <h2 className="font-bold mb-4 text-[#262626] text-2xl">
+                  {t("titleAndDescription")}
+                </h2>
+                <div>
+                  <h3 className="font-semibold text-base mb-4 text-[#262626]">
+                    {t("turkish")}{" "}
+                    <span className="text-[#595959] text-base font-normal">
+                      {t("required")}
+                    </span>
+                  </h3>
+                  <div className="space-y-4">
+                    <div>
+                      <input
+                        type="text"
+                        id="title-tr"
+                        value={title?.tr || ""}
+                        onChange={(e) =>
+                          setTitle((prev) => ({
+                            ...prev,
+                            tr: e.target.value,
+                          }))
+                        }
+                        className={`${getFieldClassName(
+                          "title",
+                          "tr"
+                        )} h-[56px] !rounded-[16px] text-[14px]`}
+                        placeholder={t("titlePlaceholder")}
+                      />
+                    </div>
+
+                    <div>
+                      <textarea
+                        id="description-tr"
+                        value={description?.tr || ""}
+                        onChange={(e) =>
+                          setDescription((prev) => ({
+                            ...prev,
+                            tr: e.target.value,
+                          }))
+                        }
+                        className={`${getFieldClassName(
+                          "description",
+                          "tr"
+                        )} !rounded-[16px] text-[14px]`}
+                        placeholder={t("descriptionPlaceholder")}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* English Title */}
+                <div>
+                  <h3 className="font-semibold text-base mb-4 text-[#262626]">
+                    {t("english")}{" "}
+                    <span className="text-[#595959] text-base font-normal">
+                      {t("required")}
+                    </span>
+                  </h3>
+                  <div className="space-y-4">
+                    <div>
+                      <input
+                        type="text"
+                        id="title-en"
+                        value={title?.en || ""}
+                        onChange={(e) =>
+                          setTitle((prev) => ({
+                            ...prev,
+                            en: e.target.value,
+                          }))
+                        }
+                        className={`${getFieldClassName(
+                          "title",
+                          "en"
+                        )} h-[56px] !rounded-[16px] text-[14px]`}
+                        placeholder={t("titleEnglishPlaceholder")}
+                      />
+                    </div>
+
+                    <div>
+                      <textarea
+                        id="description-en"
+                        value={description?.en || ""}
+                        onChange={(e) =>
+                          setDescription((prev) => ({
+                            ...prev,
+                            en: e.target.value,
+                          }))
+                        }
+                        className={`${getFieldClassName(
+                          "description",
+                          "en"
+                        )} !rounded-[16px] text-[14px]`}
+                        placeholder={t("descriptionEnglishPlaceholder")}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Step counter and continue button */}
-          </div>
-        </div>
-
-        <div className="flex flex-col-reverse sm:flex-row justify-between items-center p-6 border-t border-[#F0F0F0]">
-          <span className="text-sm text-gray-600 mt-4 sm:mt-0">
-            {t("stepCounter", { current: 1, total: 6 })}
-          </span>
-          <div className="flex flex-row gap-4 mt-4 sm:mt-0 w-full md:w-auto">
-            <button
-              type="button"
-              onClick={() => window.history.back()}
-              className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-600 font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition border border-gray-300"
-            >
-              {t("cancel")}
-            </button>
-            <button
-              type="button"
-              onClick={handleContinue}
-              className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
-            >
-              {t("continue")}
-              <ChevronRightIcon className="w-5 h-5" />
-            </button>
+            <div className="flex flex-col-reverse sm:flex-row items-center border-t md:border-l border-[#F0F0F0] p-6 justify-end">
+              <div className="flex flex-row gap-4 sm:mt-0 w-full md:w-auto justify-end">
+                <button
+                  type="button"
+                  onClick={() => window.history.back()}
+                  className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-600 font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition border border-gray-300"
+                >
+                  {t("cancel")}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleContinue}
+                  className="cursor-pointer w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+                >
+                  {t("continue")}
+                  <ChevronRightIcon className="w-5 h-5 hidden sm:block" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -65,8 +65,8 @@ export default function Header() {
   }
 
   return (
-    <header className="relative border-b border-[#F0F0F0] py-4 bg-white h-[80px] w-full">
-      <div className=" mx-auto flex flex-wrap items-center justify-between px-5 h-full">
+    <header className="relative border-b border-[#F0F0F0] py-4 bg-white h-[72px] lg:h-[96px] w-full">
+      <div className=" mx-auto flex flex-wrap items-center justify-between px-6 h-full">
         {/* Logo */}
         <div
           className="flex items-center cursor-pointer"
@@ -75,8 +75,8 @@ export default function Header() {
           <Image
             src="/obudur-logo.png"
             alt="oBudur Logo"
-            width={120}
-            height={40}
+            width={144}
+            height={32}
             priority
           />
         </div>
