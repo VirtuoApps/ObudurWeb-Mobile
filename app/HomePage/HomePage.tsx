@@ -150,10 +150,6 @@ export default function HomePage({
     }
   }, [searchParams]);
 
-  console.log({
-    selectedFeatures,
-  });
-
   const handleCloseEmailVerifiedPopup = () => {
     setShowEmailVerifiedPopup(false);
     const newParams = new URLSearchParams(searchParams.toString());
@@ -488,9 +484,13 @@ export default function HomePage({
     });
   }
 
-  console.log({
-    selectedAccessibilityFeatures,
-  });
+  if (selectedFaceFeatures.length > 0) {
+    filteredHotels = filteredHotels.filter((hotel) => {
+      return selectedFaceFeatures.every((feature) =>
+        hotel.faces.includes(feature._id)
+      );
+    });
+  }
 
   if (selectedAccessibilityFeatures.length > 0) {
     filteredHotels = filteredHotels.filter((hotel) => {
@@ -601,8 +601,8 @@ export default function HomePage({
 
     if (filters.faceFeatureIds && filters.faceFeatureIds.length > 0) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return filters.faceFeatureIds!.some(
-          (featureId: string) => hotel.face === featureId
+        return filters.faceFeatureIds!.some((featureId: string) =>
+          hotel.faces.includes(featureId)
         );
       });
     }

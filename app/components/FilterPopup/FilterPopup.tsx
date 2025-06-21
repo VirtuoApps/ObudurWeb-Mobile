@@ -652,8 +652,8 @@ export default function FilterPopup({
       filtersForCount.faceFeatureIds.length > 0
     ) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return filtersForCount.faceFeatureIds!.some(
-          (featureId: string) => hotel.face === featureId
+        return filtersForCount.faceFeatureIds!.some((featureId: string) =>
+          hotel.faces.includes(featureId)
         );
       });
     }
