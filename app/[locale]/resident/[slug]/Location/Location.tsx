@@ -101,7 +101,7 @@ export default function Location() {
             {hotelData.populatedData.distances.map((distance) => (
               <li
                 key={distance._id}
-                className="flex items-center gap-2 md:gap-3 text-[#595959] min-w-0"
+                className="flex items-center gap-2 text-[#595959] min-w-0"
               >
                 <img
                   className="w-6 h-6 flex-shrink-0"
