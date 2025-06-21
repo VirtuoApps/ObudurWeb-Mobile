@@ -321,9 +321,9 @@ export default function FirstCreateStep() {
     : [];
 
   return (
-    <div className="bg-[#ECEBF4] flex justify-center items-start p-4 py-6 h-[calc(100vh-72px)] lg:h-[calc(100vh-96px)]">
+    <div className="bg-[#ECEBF4] flex justify-center items-start p-4 py-6 ">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white h-full">
-        <div className="flex flex-col md:flex-row h-[inherit]">
+        <div className="flex flex-col md:flex-row h-[inherit] md:h-[67vh]  2xl:h-[86vh]">
           {/* Left Info Panel - 30% width on desktop */}
           <div className="w-full md:w-[30%] mb-8 md:mb-0 md:p-6 hidden flex-col md:flex justify-between">
             <div className="">
@@ -346,10 +346,7 @@ export default function FirstCreateStep() {
           </div>
 
           {/* Right Form Panel - 70% width on desktop */}
-          <div
-            ref={formPanelRef}
-            className="flex-1 h-full flex flex-col"
-          >
+          <div ref={formPanelRef} className="flex-1 h-full flex flex-col">
             {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 m-6 mb-0">
