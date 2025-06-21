@@ -340,7 +340,7 @@ export default function GeneralInfo() {
             <div className="text-gray-500 text-xs sm:text-sm hidden md:block">
               {t("listingNumber", { id: no.toString() })}
             </div>
-            <div className="text-[#362C75] md:text-2xl sm:text-3xl font-bold">
+            <div className="text-[#362C75] md:text-2xl font-bold w-[max-content]">
               {formattedPrice}
             </div>
           </div>
