@@ -705,35 +705,6 @@ export default function HomePage({
         />
       )}
 
-      {!disableMapListButton && (
-        <div
-          className={`fixed left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-40 px-3 h-[40px] rounded-lg shadow-lg transition-all duration-300`}
-          style={{
-            bottom:
-              isPinSelected && currentView === "map"
-                ? browser === "Safari"
-                  ? "250px"
-                  : "172px"
-                : "16px",
-          }}
-          onClick={() => {
-            handleViewChange(currentView === "map" ? "list" : "map");
-            localStorage.setItem(
-              "currentView",
-              currentView === "map" ? "list" : "map"
-            );
-          }}
-        >
-          <img
-            src={currentView === "map" ? "/list.png" : "/map-03.png"}
-            className="w-5 h-5"
-          />
-          <p className="text-base text-[#262626] font-medium ml-2">
-            {currentView === "map" ? "Liste" : "Harita"}
-          </p>
-        </div>
-      )}
-
       <SaveFilterPopup
         isOpen={isSaveFilterPopupOpen}
         onClose={() => setIsSaveFilterPopupOpen(false)}
@@ -977,7 +948,7 @@ export default function HomePage({
             </p>
           </div>
 
-          {isMobile && selectedHotel && (
+          {isMobile && selectedHotel && currentView !== "list" && (
             <MapPropertyFloatingCard
               isVisible={!!selectedHotel && !hideSelectedHotel}
               onClose={() => setSelectedHotel(null)}
