@@ -656,7 +656,10 @@ export default function HomePage({
   // Disable body scroll when component mounts
   useEffect(() => {
     // Disable scroll on body
-    if ((currentView === "map" && !noResultFound) || isFilterPopupOpen) {
+    if (
+      (currentView === "map" && !noResultFound && filteredHotels.length > 0) ||
+      isFilterPopupOpen
+    ) {
       console.log("disable scroll");
       document.body.style.overflow = "hidden";
     } else {
@@ -667,7 +670,7 @@ export default function HomePage({
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [currentView, noResultFound, isFilterPopupOpen]);
+  }, [currentView, noResultFound, isFilterPopupOpen, filteredHotels]);
 
   useEffect(() => {
     const browser = Bowser.getParser(window.navigator.userAgent);
@@ -701,7 +704,6 @@ export default function HomePage({
           }}
         />
       )}
-
 
       {!disableMapListButton && (
         <div

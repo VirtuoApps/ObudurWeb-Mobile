@@ -996,19 +996,37 @@ export default function FilterList({
             <NewFilterItem filters={filters} setFilters={setFilters} />
             <SizeFilterItem
               isSelected={+roomCount === 1}
-              onToggleSelected={() => setRoomCount(1)}
+              onToggleSelected={() => {
+                if (+roomCount === 1) {
+                  setRoomCount("");
+                } else {
+                  setRoomCount(1);
+                }
+              }}
               iconUrl="/1+1.png"
               text="1+1"
             />
             <SizeFilterItem
               isSelected={+roomCount === 2}
-              onToggleSelected={() => setRoomCount(2)}
+              onToggleSelected={() => {
+                if (+roomCount === 2) {
+                  setRoomCount("");
+                } else {
+                  setRoomCount(2);
+                }
+              }}
               iconUrl="/2+1.png"
               text="2+1"
             />
             <SizeFilterItem
               isSelected={+roomCount === 3}
-              onToggleSelected={() => setRoomCount(3)}
+              onToggleSelected={() => {
+                if (+roomCount === 3) {
+                  setRoomCount("");
+                } else {
+                  setRoomCount(3);
+                }
+              }}
               iconUrl="/3+1.png"
               text="3+1"
             />
