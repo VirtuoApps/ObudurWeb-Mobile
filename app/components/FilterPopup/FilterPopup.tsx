@@ -102,6 +102,16 @@ type FilterPopupProps = {
   setFaceFeatures: React.Dispatch<React.SetStateAction<any[]>>;
   selectedFaceFeatures: any[];
   setSelectedFaceFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  infrastructureFeatures: any[];
+  setInfrastructureFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  selectedInfrastructureFeatures: any[];
+  setSelectedInfrastructureFeatures: React.Dispatch<
+    React.SetStateAction<any[]>
+  >;
+  sceneryFeatures: any[];
+  setSceneryFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  selectedSceneryFeatures: any[];
+  setSelectedSceneryFeatures: React.Dispatch<React.SetStateAction<any[]>>;
   hotels: Hotel[];
   selectedCurrency: string;
   searchRadius: number;
@@ -149,6 +159,14 @@ export default function FilterPopup({
   setFaceFeatures,
   selectedFaceFeatures,
   setSelectedFaceFeatures,
+  infrastructureFeatures,
+  setInfrastructureFeatures,
+  selectedInfrastructureFeatures,
+  setSelectedInfrastructureFeatures,
+  sceneryFeatures,
+  setSceneryFeatures,
+  selectedSceneryFeatures,
+  setSelectedSceneryFeatures,
   hotels,
   selectedCurrency,
   searchRadius,
@@ -187,6 +205,12 @@ export default function FilterPopup({
   ] = useState<any[]>(selectedAccessibilityFeatures);
   const [tempSelectedFaceFeatures, setTempSelectedFaceFeatures] =
     useState<any[]>(selectedFaceFeatures);
+  const [
+    tempSelectedInfrastructureFeatures,
+    setTempSelectedInfrastructureFeatures,
+  ] = useState<any[]>(selectedInfrastructureFeatures);
+  const [tempSelectedSceneryFeatures, setTempSelectedSceneryFeatures] =
+    useState<any[]>(selectedSceneryFeatures);
 
   // Location search state variables - similar to LocationSelect.tsx
   const [suggestions, setSuggestions] = useState<any[]>([]);
@@ -262,6 +286,8 @@ export default function FilterPopup({
       setTempSelectedAccessibilityFeatures(selectedAccessibilityFeatures);
       setTempSelectedFaceFeatures(selectedFaceFeatures);
       setTempRoomCount(roomCount);
+      setTempSelectedInfrastructureFeatures(selectedInfrastructureFeatures);
+      setTempSelectedSceneryFeatures(selectedSceneryFeatures);
     }
   }, [
     isOpen,
@@ -280,6 +306,8 @@ export default function FilterPopup({
     interiorFeatures,
     selectedAccessibilityFeatures,
     selectedFaceFeatures,
+    selectedInfrastructureFeatures,
+    selectedSceneryFeatures,
   ]);
 
   // Fetch hotel types from API
@@ -305,6 +333,8 @@ export default function FilterPopup({
       fetchHotelTypes();
     }
   }, [isOpen, filterOptions]);
+
+  console.log("Hotel Types:", hotelTypes);
 
   // Remove locale-based locations - we only want Google Places suggestions
   // const locations = filterOptions.state.map((state) => ({
@@ -444,6 +474,22 @@ export default function FilterPopup({
     );
   };
 
+  const toggleInfrastructureFeature = (feature: Feature) => {
+    setTempSelectedInfrastructureFeatures((prev: any[]) =>
+      prev.some((f: any) => f._id === feature._id)
+        ? prev.filter((f: any) => f._id !== feature._id)
+        : [...prev, feature]
+    );
+  };
+
+  const toggleSceneryFeature = (feature: Feature) => {
+    setTempSelectedSceneryFeatures((prev: any[]) =>
+      prev.some((f: any) => f._id === feature._id)
+        ? prev.filter((f: any) => f._id !== feature._id)
+        : [...prev, feature]
+    );
+  };
+
   const resetFeatures = () => {
     setInteriorFeatures([]);
   };
@@ -471,6 +517,32 @@ export default function FilterPopup({
   const [accessibilityFeaturesCollapsed, setAccessibilityFeaturesCollapsed] =
     useState(true);
   const [faceFeaturesCollapsed, setFaceFeaturesCollapsed] = useState(true);
+  const [infrastructureFeaturesCollapsed, setInfrastructureFeaturesCollapsed] =
+    useState(true);
+  const [sceneryFeaturesCollapsed, setSceneryFeaturesCollapsed] =
+    useState(true);
+
+  // Check if property type requires resetting certain features
+  const isKonutOrIsYeri =
+    tempSelectedPropertyType?.originalData?.name?.tr === "Konut" ||
+    tempSelectedPropertyType?.originalData?.name?.tr === "İş Yeri";
+  const isInfrastructureOrSceneryType =
+    tempSelectedPropertyType?.originalData?.name?.tr === "Arsa";
+
+  // Reset features based on property type
+  React.useEffect(() => {
+    if (isKonutOrIsYeri) {
+      // Reset infrastructure and scenery features for Konut/İş Yeri
+      setTempSelectedInfrastructureFeatures([]);
+      setTempSelectedSceneryFeatures([]);
+    } else if (isInfrastructureOrSceneryType) {
+      // Reset other features for Infrastructure/Scenery types
+      setTempInteriorFeatures([]);
+      setTempSelectedExteriorFeatures([]);
+      setTempSelectedAccessibilityFeatures([]);
+      setTempSelectedFaceFeatures([]);
+    }
+  }, [tempSelectedPropertyType]);
 
   // Calculate filtered results count - Updated to match HomePage.tsx logic
   const getFilteredResultsCount = () => {
@@ -522,6 +594,14 @@ export default function FilterPopup({
       faceFeatureIds:
         tempSelectedFaceFeatures.length > 0
           ? tempSelectedFaceFeatures.map((f: any) => f._id)
+          : null,
+      infrastructureFeatureIds:
+        tempSelectedInfrastructureFeatures.length > 0
+          ? tempSelectedInfrastructureFeatures.map((f: any) => f._id)
+          : null,
+      sceneryFeatureIds:
+        tempSelectedSceneryFeatures.length > 0
+          ? tempSelectedSceneryFeatures.map((f: any) => f._id)
           : null,
       isNewSelected: tempFilters?.isNewSelected || false,
       isOnePlusOneSelected: tempFilters?.isOnePlusOneSelected || false,
@@ -658,6 +738,30 @@ export default function FilterPopup({
       });
     }
 
+    // Filter by infrastructure features
+    if (
+      filtersForCount.infrastructureFeatureIds &&
+      filtersForCount.infrastructureFeatureIds.length > 0
+    ) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return filtersForCount.infrastructureFeatureIds!.every(
+          (featureId: string) => hotel.featureIds.includes(featureId)
+        );
+      });
+    }
+
+    // Filter by scenery features
+    if (
+      filtersForCount.sceneryFeatureIds &&
+      filtersForCount.sceneryFeatureIds.length > 0
+    ) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return filtersForCount.sceneryFeatureIds!.every((featureId: string) =>
+          hotel.featureIds.includes(featureId)
+        );
+      });
+    }
+
     if (filtersForCount.isNewSelected) {
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
@@ -719,6 +823,8 @@ export default function FilterPopup({
       tempSelectedExteriorFeatures.length > 0 ||
       tempSelectedAccessibilityFeatures.length > 0 ||
       tempSelectedFaceFeatures.length > 0 ||
+      tempSelectedInfrastructureFeatures.length > 0 ||
+      tempSelectedSceneryFeatures.length > 0 ||
       tempSelectedLocation ||
       tempSelectedPropertyType ||
       tempSelectedCategory ||
@@ -748,6 +854,8 @@ export default function FilterPopup({
     setInteriorFeatures(tempInteriorFeatures);
     setSelectedAccessibilityFeatures(tempSelectedAccessibilityFeatures);
     setSelectedFaceFeatures(tempSelectedFaceFeatures);
+    setSelectedInfrastructureFeatures(tempSelectedInfrastructureFeatures);
+    setSelectedSceneryFeatures(tempSelectedSceneryFeatures);
 
     // Update quick filters (selectedFeatures) based on interior and exterior features
     const newSelectedFeatures = [
@@ -776,6 +884,8 @@ export default function FilterPopup({
     setTempSelectedExteriorFeatures([]);
     setTempSelectedAccessibilityFeatures([]);
     setTempSelectedFaceFeatures([]);
+    setTempSelectedInfrastructureFeatures([]);
+    setTempSelectedSceneryFeatures([]);
     setTempSelectedLocation(null);
     setTempSelectedPropertyType(null);
     setTempSelectedCategory(null);
@@ -792,6 +902,8 @@ export default function FilterPopup({
   };
 
   if (!isOpen) return null;
+
+  console.log("propertyType:", tempSelectedPropertyType);
 
   return (
     <div className="fixed inset-0 z-[99999] flex items-start pt-[104px] md:items-center justify-center lg:p-4 overflow-y-auto">
@@ -1114,6 +1226,8 @@ export default function FilterPopup({
                     setTempSelectedPropertyType(propertyType);
                     // Reset category when property type changes
                     setTempSelectedCategory(null);
+                    setTempRoomCount("");
+                    setTempBathroomCount("");
                   }}
                   options={hotelTypes.map((hotelType) => ({
                     _id: hotelType._id,
@@ -1316,36 +1430,39 @@ export default function FilterPopup({
                   extraClassName="w-full bg-white border border-gray-200 h-[56px] text-base md:text-sm text-gray-700"
                   popoverExtraClassName=" md:max-w-[300px] max-w-[190px]"
                 />
-              </div>
-            </div>
 
-            {/* Bathroom Count Section */}
-            <div className="mt-6 w-1/2">
-              <div className="flex items-center justify-between">
-                <h3 className="text-base font-semibold text-gray-700">
-                  {t("bathrooms") || "Bathrooms"}
-                </h3>
               </div>
-              <div className="mt-3">
-                <GeneralSelect
-                  selectedItem={
-                    tempBathroomCount ? { name: tempBathroomCount } : null
-                  }
-                  onSelect={(bathroom) => {
-                    if (bathroom) setTempBathroomCount(bathroom.name);
-                    else setTempBathroomCount(""); // Reset if no bathroom selected
-                  }}
-                  options={[0, 1, 2, 3, 4, 5].map((bathroom: number) => ({
-                    name: bathroom.toString(),
-                    href: "#",
-                  }))}
-                  defaultText={t("bathroomsSelect") || "Select Bathroom Count"}
-                  extraClassName="w-full bg-white border border-gray-200 h-[56px] text-base md:text-sm text-gray-700"
-                  popoverExtraClassName=" md:max-w-[300px] max-w-[190px]"
-                />
+
+              {/* Bathroom Count Section */}
+              <div className="mt-6 w-1/2">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-base font-semibold text-gray-700">
+                    {t("bathrooms") || "Bathrooms"}
+                  </h3>
+                </div>
+                <div className="mt-3">
+                  <GeneralSelect
+                    selectedItem={
+                      tempBathroomCount ? { name: tempBathroomCount } : null
+                    }
+                    onSelect={(bathroom) => {
+                      if (bathroom) setTempBathroomCount(bathroom.name);
+                      else setTempBathroomCount(""); // Reset if no bathroom selected
+                    }}
+                    options={[0, 1, 2, 3, 4, 5].map((bathroom: number) => ({
+                      name: bathroom.toString(),
+                      href: "#",
+                    }))}
+                    defaultText={
+                      t("bathroomsSelect") || "Select Bathroom Count"
+                    }
+                    extraClassName="w-full bg-white border border-gray-200 h-[56px] text-base md:text-sm text-gray-700"
+                    popoverExtraClassName=" md:max-w-[300px] max-w-[190px]"
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Area Section */}
           <div className="mt-6">
@@ -1468,7 +1585,8 @@ export default function FilterPopup({
           </div>
 
           {/* Face Features Section */}
-          {filterOptions.faceFeatures &&
+          {!isInfrastructureOrSceneryType &&
+            filterOptions.faceFeatures &&
             filterOptions.faceFeatures.length > 0 && (
               <div className="mt-6 border-b border-t border-[#F0F0F0] pb-8 pt-10">
                 <div
@@ -1529,119 +1647,124 @@ export default function FilterPopup({
             )}
 
           {/* Interior Features Section */}
-          <div className="mt-6 border-b border-[#F0F0F0] pb-8">
-            <div
-              className="flex items-center justify-between cursor-pointer"
-              onClick={() =>
-                setInteriorFeaturesCollapsed(!interiorFeaturesCollapsed)
-              }
-            >
-              <h3 className="text-base font-semibold text-gray-700">
-                {t("interiorFeatures")}{" "}
-                {tempInteriorFeatures.length > 0 ? (
-                  <span className="text-base md:text-sm font-normal text-[#595959]">
-                    ({tempInteriorFeatures.length})
-                  </span>
-                ) : null}
-              </h3>
-              <button className="text-base md:text-sm text-[#8c8c8c] hover:underline cursor-pointer">
-                <img
-                  src="/chevron-down.png"
-                  className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
-                    !interiorFeaturesCollapsed ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-            </div>
-            {!interiorFeaturesCollapsed && (
-              <div className="mt-3 ">
-                <div className="flex flex-wrap gap-2 ">
-                  {filterOptions.interiorFeatures.map((feature) => {
-                    const isSelected = tempInteriorFeatures.find(
-                      (f: any) => f._id === feature._id
-                    );
-
-                    return (
-                      <button
-                        key={feature._id}
-                        onClick={() => toggleFeature(feature)}
-                        className={`inline-flex items-center ${
-                          isSelected
-                            ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
-                            : "bg-white border-gray-100 text-gray-600"
-                        } border rounded-[16px] h-[40px] px-3 py-1 text-base md:text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
-                      >
-                        <img
-                          src={feature.iconUrl}
-                          className="w-[24px] h-[24px] mr-2"
-                        />
-                        {feature.name.tr}
-                      </button>
-                    );
-                  })}
-                </div>
+          {!isInfrastructureOrSceneryType && (
+            <div className="mt-6 border-b border-[#F0F0F0] pb-8">
+              <div
+                className="flex items-center justify-between cursor-pointer"
+                onClick={() =>
+                  setInteriorFeaturesCollapsed(!interiorFeaturesCollapsed)
+                }
+              >
+                <h3 className="text-base font-semibold text-gray-700">
+                  {t("interiorFeatures")}{" "}
+                  {tempInteriorFeatures.length > 0 ? (
+                    <span className="text-base md:text-sm font-normal text-[#595959]">
+                      ({tempInteriorFeatures.length})
+                    </span>
+                  ) : null}
+                </h3>
+                <button className="text-base md:text-sm text-[#8c8c8c] hover:underline cursor-pointer">
+                  <img
+                    src="/chevron-down.png"
+                    className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
+                      !interiorFeaturesCollapsed ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
               </div>
-            )}
-          </div>
+              {!interiorFeaturesCollapsed && (
+                <div className="mt-3 ">
+                  <div className="flex flex-wrap gap-2 ">
+                    {filterOptions.interiorFeatures.map((feature) => {
+                      const isSelected = tempInteriorFeatures.find(
+                        (f: any) => f._id === feature._id
+                      );
+
+                      return (
+                        <button
+                          key={feature._id}
+                          onClick={() => toggleFeature(feature)}
+                          className={`inline-flex items-center ${
+                            isSelected
+                              ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                              : "bg-white border-gray-100 text-gray-600"
+                          } border rounded-[16px] h-[40px] px-3 py-1 text-base md:text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
+                        >
+                          <img
+                            src={feature.iconUrl}
+                            className="w-[24px] h-[24px] mr-2"
+                          />
+                          {feature.name.tr}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Exterior Features Section */}
-          <div className="mt-6 border-b border-[#F0F0F0] pb-8">
-            <div
-              className="flex items-center justify-between cursor-pointer"
-              onClick={() =>
-                setExteriorFeaturesCollapsed(!exteriorFeaturesCollapsed)
-              }
-            >
-              <h3 className="text-base font-semibold text-gray-700">
-                {t("exteriorFeatures") || "Dış Özellikler"}{" "}
-                {tempSelectedExteriorFeatures.length > 0 ? (
-                  <span className="text-base md:text-sm font-normal text-[#595959]">
-                    ({tempSelectedExteriorFeatures.length})
-                  </span>
-                ) : null}
-              </h3>
-              <button className="text-base md:text-sm text-[#8c8c8c] hover:underline cursor-pointer">
-                <img
-                  src="/chevron-down.png"
-                  className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
-                    !exteriorFeaturesCollapsed ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-            </div>
-            {!exteriorFeaturesCollapsed && (
-              <div className="mt-3 ">
-                <div className="flex flex-wrap gap-2">
-                  {filterOptions.outsideFeatures.map((feature) => {
-                    const isSelected = tempSelectedExteriorFeatures.find(
-                      (f: any) => f._id === feature._id
-                    );
-
-                    return (
-                      <button
-                        key={feature._id}
-                        onClick={() => toggleExteriorFeature(feature)}
-                        className={`inline-flex items-center ${
-                          isSelected
-                            ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
-                            : "bg-white border-gray-100 text-gray-600"
-                        } border rounded-[16px] h-[40px] px-3 py-1 text-base md:text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
-                      >
-                        <img
-                          src={feature.iconUrl}
-                          className="w-[24px] h-[24px] mr-2"
-                        />
-                        {feature.name.tr}
-                      </button>
-                    );
-                  })}
-                </div>
+          {!isInfrastructureOrSceneryType && (
+            <div className="mt-6 border-b border-[#F0F0F0] pb-8">
+              <div
+                className="flex items-center justify-between cursor-pointer"
+                onClick={() =>
+                  setExteriorFeaturesCollapsed(!exteriorFeaturesCollapsed)
+                }
+              >
+                <h3 className="text-base font-semibold text-gray-700">
+                  {t("exteriorFeatures") || "Dış Özellikler"}{" "}
+                  {tempSelectedExteriorFeatures.length > 0 ? (
+                    <span className="text-base md:text-sm font-normal text-[#595959]">
+                      ({tempSelectedExteriorFeatures.length})
+                    </span>
+                  ) : null}
+                </h3>
+                <button className="text-base md:text-sm text-[#8c8c8c] hover:underline cursor-pointer">
+                  <img
+                    src="/chevron-down.png"
+                    className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
+                      !exteriorFeaturesCollapsed ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
               </div>
-            )}
-          </div>
+              {!exteriorFeaturesCollapsed && (
+                <div className="mt-3 ">
+                  <div className="flex flex-wrap gap-2">
+                    {filterOptions.outsideFeatures.map((feature) => {
+                      const isSelected = tempSelectedExteriorFeatures.find(
+                        (f: any) => f._id === feature._id
+                      );
+
+                      return (
+                        <button
+                          key={feature._id}
+                          onClick={() => toggleExteriorFeature(feature)}
+                          className={`inline-flex items-center ${
+                            isSelected
+                              ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                              : "bg-white border-gray-100 text-gray-600"
+                          } border rounded-[16px] h-[40px] px-3 py-1 text-base md:text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
+                        >
+                          <img
+                            src={feature.iconUrl}
+                            className="w-[24px] h-[24px] mr-2"
+                          />
+                          {feature.name.tr}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Accessibility Features Section */}
-          {filterOptions.accessibilityFeatures &&
+          {!isInfrastructureOrSceneryType &&
+            filterOptions.accessibilityFeatures &&
             filterOptions.accessibilityFeatures.length > 0 && (
               <div className="mt-6 border-b border-[#F0F0F0] pb-8">
                 <div
@@ -1703,6 +1826,137 @@ export default function FilterPopup({
                           );
                         }
                       )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+          {/* Infrastructure Features Section */}
+          {!isKonutOrIsYeri &&
+            filterOptions.infrastructureFeatures &&
+            filterOptions.infrastructureFeatures.length > 0 && (
+              <div className="mt-6 border-b border-[#F0F0F0] pb-8">
+                <div
+                  className="flex items-center justify-between cursor-pointer"
+                  onClick={() =>
+                    setInfrastructureFeaturesCollapsed(
+                      !infrastructureFeaturesCollapsed
+                    )
+                  }
+                >
+                  <h3 className="text-base font-semibold text-gray-700">
+                    {t("infrastructureFeatures") || "Altyapı"}
+                    {tempSelectedInfrastructureFeatures.length > 0 ? (
+                      <span className="text-base md:text-sm font-normal text-[#595959]">
+                        ({tempSelectedInfrastructureFeatures.length})
+                      </span>
+                    ) : null}
+                  </h3>
+                  <button className="text-base md:text-sm text-[#8c8c8c] hover:underline cursor-pointer">
+                    <img
+                      src="/chevron-down.png"
+                      className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
+                        !infrastructureFeaturesCollapsed ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                </div>
+                {!infrastructureFeaturesCollapsed && (
+                  <div className="mt-3 ">
+                    <div className="flex flex-wrap gap-2">
+                      {(filterOptions.infrastructureFeatures || []).map(
+                        (feature) => {
+                          const isSelected =
+                            tempSelectedInfrastructureFeatures.find(
+                              (f: any) => f._id === feature._id
+                            );
+
+                          return (
+                            <button
+                              key={feature._id}
+                              onClick={() =>
+                                toggleInfrastructureFeature(feature)
+                              }
+                              className={`inline-flex items-center ${
+                                isSelected
+                                  ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                                  : "bg-white border-gray-100 text-gray-600"
+                              } border rounded-[16px] h-[40px] px-3 py-1 text-base md:text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
+                            >
+                              {feature.iconUrl && (
+                                <img
+                                  src={feature.iconUrl}
+                                  className="w-[24px] h-[24px] mr-2"
+                                />
+                              )}
+                              {feature.name.tr}
+                            </button>
+                          );
+                        }
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+          {/* Scenery Features Section */}
+          {!isKonutOrIsYeri &&
+            filterOptions.sceneryFeatures &&
+            filterOptions.sceneryFeatures.length > 0 && (
+              <div className="mt-6 border-b border-[#F0F0F0] pb-8">
+                <div
+                  className="flex items-center justify-between cursor-pointer"
+                  onClick={() =>
+                    setSceneryFeaturesCollapsed(!sceneryFeaturesCollapsed)
+                  }
+                >
+                  <h3 className="text-base font-semibold text-gray-700">
+                    {t("sceneryFeatures") || "Manzara"}{" "}
+                    {tempSelectedSceneryFeatures.length > 0 ? (
+                      <span className="text-base md:text-sm font-normal text-[#595959]">
+                        ({tempSelectedSceneryFeatures.length})
+                      </span>
+                    ) : null}
+                  </h3>
+                  <button className="text-base md:text-sm text-[#8c8c8c] hover:underline cursor-pointer">
+                    <img
+                      src="/chevron-down.png"
+                      className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
+                        !sceneryFeaturesCollapsed ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                </div>
+                {!sceneryFeaturesCollapsed && (
+                  <div className="mt-3 ">
+                    <div className="flex flex-wrap gap-2">
+                      {(filterOptions.sceneryFeatures || []).map((feature) => {
+                        const isSelected = tempSelectedSceneryFeatures.find(
+                          (f: any) => f._id === feature._id
+                        );
+
+                        return (
+                          <button
+                            key={feature._id}
+                            onClick={() => toggleSceneryFeature(feature)}
+                            className={`inline-flex items-center ${
+                              isSelected
+                                ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                                : "bg-white border-gray-100 text-gray-600"
+                            } border rounded-[16px] h-[40px] px-3 py-1 text-base md:text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
+                          >
+                            {feature.iconUrl && (
+                              <img
+                                src={feature.iconUrl}
+                                className="w-[24px] h-[24px] mr-2"
+                              />
+                            )}
+                            {feature.name.tr}
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
                 )}

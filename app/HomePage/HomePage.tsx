@@ -102,6 +102,15 @@ export default function HomePage({
   const [accessibilityFeatures, setAccessibilityFeatures] = useState<any[]>([]);
   const [selectedFaceFeatures, setSelectedFaceFeatures] = useState<any[]>([]);
   const [faceFeatures, setFaceFeatures] = useState<any[]>([]);
+  const [selectedInfrastructureFeatures, setSelectedInfrastructureFeatures] =
+    useState<any[]>([]);
+  const [infrastructureFeatures, setInfrastructureFeatures] = useState<any[]>(
+    []
+  );
+  const [selectedSceneryFeatures, setSelectedSceneryFeatures] = useState<any[]>(
+    []
+  );
+  const [sceneryFeatures, setSceneryFeatures] = useState<any[]>([]);
   const [currencyCode, setCurrencyCode] = useState("₺");
 
   const [selectedLocation, setSelectedLocation] = useState<any | null>(null);
@@ -270,6 +279,27 @@ export default function HomePage({
           setSelectedFaceFeatures(faceFeatureData);
         }
 
+        if (
+          savedFilter.infrastructureFeatureIds &&
+          savedFilter.infrastructureFeatureIds.length > 0
+        ) {
+          const infrastructureFeatureData =
+            savedFilter.infrastructureFeatureIds.map((id: string) => ({
+              _id: id,
+            }));
+          setSelectedInfrastructureFeatures(infrastructureFeatureData);
+        }
+
+        if (
+          savedFilter.sceneryFeatureIds &&
+          savedFilter.sceneryFeatureIds.length > 0
+        ) {
+          const sceneryFeatureData = savedFilter.sceneryFeatureIds.map(
+            (id: string) => ({ _id: id })
+          );
+          setSelectedSceneryFeatures(sceneryFeatureData);
+        }
+
         // Switch to list view to show results
         setCurrentView("list");
 
@@ -329,6 +359,8 @@ export default function HomePage({
     setSelectedExteriorFeatures([]);
     setSelectedAccessibilityFeatures([]);
     setSelectedFaceFeatures([]);
+    setSelectedInfrastructureFeatures([]);
+    setSelectedSceneryFeatures([]);
     setSelectedLocation(null);
     setSelectedPropertyType && setSelectedPropertyType(null);
     setSelectedCategory && setSelectedCategory(null);
@@ -377,6 +409,8 @@ export default function HomePage({
   let filteredHotels = hotels;
 
   if (selectedLocation) {
+    console.log("Selected Location:", selectedLocation);
+
     const isCity = cities.includes(selectedLocation.name);
     let isState = false;
 
@@ -395,7 +429,7 @@ export default function HomePage({
       const cityName = cityComponent?.long_name;
       if (cityName) {
         filteredHotels = filteredHotels.filter(
-          (hotel) => hotel.city?.tr === cityName
+          (hotel) => hotel.state?.tr === cityName
         );
       }
     } else if (isState) {
@@ -407,7 +441,7 @@ export default function HomePage({
       const stateName = stateComponent?.long_name;
       if (stateName) {
         filteredHotels = filteredHotels.filter(
-          (hotel) => hotel.state?.tr === stateName
+          (hotel) => hotel.city?.tr === stateName
         );
       }
     } else if (selectedLocation.coordinates) {
@@ -541,6 +575,25 @@ export default function HomePage({
       });
     }
 
+    if (
+      filters.infrastructureFeatureIds &&
+      filters.infrastructureFeatureIds.length > 0
+    ) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return filters.infrastructureFeatureIds!.every((featureId: string) =>
+          hotel.featureIds.includes(featureId)
+        );
+      });
+    }
+
+    if (filters.sceneryFeatureIds && filters.sceneryFeatureIds.length > 0) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return filters.sceneryFeatureIds!.every((featureId: string) =>
+          hotel.featureIds.includes(featureId)
+        );
+      });
+    }
+
     if (filters.isNewSelected) {
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
@@ -649,6 +702,36 @@ export default function HomePage({
         />
       )}
 
+
+      {!disableMapListButton && (
+        <div
+          className={`fixed left-4 lg:hidden bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-40 px-3 h-[40px] rounded-lg shadow-lg transition-all duration-300`}
+          style={{
+            bottom:
+              isPinSelected && currentView === "map"
+                ? browser === "Safari"
+                  ? "250px"
+                  : "172px"
+                : "16px",
+          }}
+          onClick={() => {
+            handleViewChange(currentView === "map" ? "list" : "map");
+            localStorage.setItem(
+              "currentView",
+              currentView === "map" ? "list" : "map"
+            );
+          }}
+        >
+          <img
+            src={currentView === "map" ? "/list.png" : "/map-03.png"}
+            className="w-5 h-5"
+          />
+          <p className="text-base text-[#262626] font-medium ml-2">
+            {currentView === "map" ? "Liste" : "Harita"}
+          </p>
+        </div>
+      )}
+
       <SaveFilterPopup
         isOpen={isSaveFilterPopupOpen}
         onClose={() => setIsSaveFilterPopupOpen(false)}
@@ -743,6 +826,14 @@ export default function HomePage({
           setSelectedFaceFeatures={setSelectedFaceFeatures}
           faceFeatures={faceFeatures}
           setFaceFeatures={setFaceFeatures}
+          infrastructureFeatures={infrastructureFeatures}
+          setInfrastructureFeatures={setInfrastructureFeatures}
+          selectedInfrastructureFeatures={selectedInfrastructureFeatures}
+          setSelectedInfrastructureFeatures={setSelectedInfrastructureFeatures}
+          sceneryFeatures={sceneryFeatures}
+          setSceneryFeatures={setSceneryFeatures}
+          selectedSceneryFeatures={selectedSceneryFeatures}
+          setSelectedSceneryFeatures={setSelectedSceneryFeatures}
           currencyCode={currencyCode}
           setCurrencyCode={setCurrencyCode}
           interiorFeatures={interiorFeatures}
@@ -792,6 +883,10 @@ export default function HomePage({
                   setAccessibilityFeatures([]);
                   setSelectedFaceFeatures([]);
                   setFaceFeatures([]);
+                  setSelectedInfrastructureFeatures([]);
+                  setInfrastructureFeatures([]);
+                  setSelectedSceneryFeatures([]);
+                  setSceneryFeatures([]);
                   setMinPrice("");
                   setMaxPrice("");
                   setMinArea("");

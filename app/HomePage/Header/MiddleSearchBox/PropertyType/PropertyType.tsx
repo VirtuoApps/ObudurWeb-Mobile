@@ -76,12 +76,9 @@ const PropertyType = forwardRef(function PropertyType(
       onSelect={handlePropertyTypeSelect}
       options={propertyTypes}
       defaultText={t("propertyType")}
-      extraClassName="min-w-[150px] text-[#8c8c8c] hover:text-[#595959] transition-all duration-300"
+      extraClassName={`min-w-[150px] text-[#8c8c8c] hover:text-[#595959] transition-all duration-300 ${selectedPropertyType ? "text-[#262626]" : "text-[#8c8c8c] hover:text-[#595959]"}`}
       popoverExtraClassName="max-w-[250px]"
       customTextColor={true}
-      isOpen={isOpen}
-      setIsOpen={setIsOpen}
-      buttonRef={buttonRef}
     />
   );
 });

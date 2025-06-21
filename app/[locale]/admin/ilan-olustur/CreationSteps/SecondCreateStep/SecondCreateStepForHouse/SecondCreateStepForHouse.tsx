@@ -1,14 +1,10 @@
 import {
-  ChevronDownIcon,
-  ChevronLeftIcon,
   ChevronRightIcon,
-  ChevronUpIcon,
+  XCircleIcon,
 } from "@heroicons/react/24/solid";
 import React, { useEffect, useRef, useState } from "react";
 import { formatInputPrice, parseInputPrice } from "@/app/utils/priceFormatter";
 
-import GoBackButton from "../../../GoBackButton/GoBackButton";
-import { XCircleIcon } from "@heroicons/react/24/solid";
 import { useListingForm } from "../../CreationSteps";
 import { useTranslations } from "next-intl";
 
@@ -62,7 +58,7 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
     <div className="relative" ref={dropdownRef}>
       <button
         type="button"
-        className={`w-full h-12 rounded-lg border bg-white px-4 flex items-center justify-between text-[#262626] focus:outline-none transition-colors ${
+        className={`w-full h-[56px] rounded-[16px] border bg-white px-4 flex items-center justify-between text-[#262626] focus:outline-none transition-colors cursor-pointer text-[14px] ${
           hasError
             ? "border-[#EF1A28] focus:border-[#EF1A28]"
             : "border-[#E2E2E2] focus:border-[#5D568D] hover:border-[#5D568D]"
@@ -553,66 +549,75 @@ export default function SecondCreateStepForHouse() {
   };
 
   return (
-    <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start p-4">
-      <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">
-        <div className="flex flex-col md:flex-row p-10">
+    <div className="h-[calc(100vh-72px)] lg:h-[calc(100vh-96px)] bg-[#ECEBF4] flex justify-center items-start p-4 py-6">
+      <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white h-full">
+        <div className="flex flex-col md:flex-row h-full">
           {/* Left Info Panel */}
-          <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 flex flex-col">
-            <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
-              {t("title")}
-            </h1>
-            <div className="mt-4 text-base text-[#595959] font-medium">
-              <p className="leading-[140%]">{t("description")}</p>
+          <div className="w-full md:w-[30%] md:p-6 hidden flex-col md:flex justify-between">
+            <div>
+              <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
+                {t("title")}
+              </h1>
+              <div className="mt-4 text-base text-[#595959] font-medium">
+                <p className="leading-[140%]">
+                  {t("description")}
+                </p>
+              </div>
+            </div>
+            <div className="text-sm text-[#6B7280] mt-6">
+              {t("stepCounter", { current: 2, total: 6 })}
             </div>
           </div>
 
           {/* Right Form Panel */}
-          <div
-            ref={formPanelRef}
-            className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto md:border-l md:border-[#F0F0F0]"
-          >
-            {/* Errors display */}
-            {errors.length > 0 && (
-              <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <XCircleIcon
-                      className="h-5 w-5 text-red-400"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-red-800">
-                      {t("fixErrors")}
-                    </h3>
-                    <div className="mt-2 text-sm text-red-700">
-                      <ul className="list-disc pl-5 space-y-1">
-                        {errors.map((error, index) => (
-                          <li key={index}>{error}</li>
-                        ))}
-                      </ul>
+          <div className="flex-1 h-full flex flex-col">
+            <div className="p-6 flex-1 overflow-auto md:border-l border-[#F0F0F0]">
+              <div
+                ref={formPanelRef}
+                className="h-full"
+              >
+                {/* Errors display */}
+                {errors.length > 0 && (
+                  <div className="bg-red-50 border border-red-200 rounded-md p-4 m-0 mb-6">
+                    <div className="flex items-start">
+                      <div className="flex-shrink-0">
+                        <XCircleIcon
+                          className="h-5 w-5 text-red-400"
+                          aria-hidden="true"
+                        />
+                      </div>
+                      <div className="ml-3">
+                        <h3 className="text-sm font-medium text-red-800">
+                          {t("fixErrors")}
+                        </h3>
+                        <div className="mt-2 text-sm text-red-700">
+                          <ul className="list-disc pl-5 space-y-1">
+                            {errors.map((error, index) => (
+                              <li key={index}>{error}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            )}
+                )}
 
             {/* Price */}
             <div className="mb-6">
               <div className="flex flex-col sm:flex-row gap-4 mb-4">
                 <div className="w-full sm:w-1/2">
-                  <label className="font-semibold block mb-2 text-[#262626]">
+                  <label className="block mb-2 text-[#262626] text-[16px] font-bold">
                     {t("priceTRY")}
                   </label>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium">
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium text-[14px]">
                       ₺
                     </span>
                     <input
                       type="text"
                       value={getPriceForCurrency("TRY") || ""}
                       onChange={(e) => handlePriceChange("TRY", e.target.value)}
-                      className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                      className={`w-full h-[56px] rounded-[16px] border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
                         "price-try"
                       )}`}
                       placeholder={t("pricePlaceholder")}
@@ -621,18 +626,18 @@ export default function SecondCreateStepForHouse() {
                 </div>
 
                 <div className="w-full sm:w-1/2">
-                  <label className="font-semibold block mb-2 text-[#262626]">
+                  <label className="block mb-2 text-[#262626] text-[16px] font-bold">
                     {t("priceUSD")}
                   </label>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium">
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium text-[14px]">
                       $
                     </span>
                     <input
                       type="text"
                       value={getPriceForCurrency("USD") || ""}
                       onChange={(e) => handlePriceChange("USD", e.target.value)}
-                      className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                      className={`w-full h-[56px] rounded-[16px] border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
                         "price-usd"
                       )}`}
                       placeholder={t("pricePlaceholder")}
@@ -664,7 +669,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="projectArea"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   {t("grossArea")}
                 </label>
@@ -681,7 +686,7 @@ export default function SecondCreateStepForHouse() {
                         : numericValue;
                     setProjectArea(parseFloat(validValue) || 0);
                   }}
-                  className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                  className={`w-full h-[56px] rounded-[16px] border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
                     "projectArea"
                   )}`}
                   placeholder={t("areaPlaceholder")}
@@ -690,7 +695,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="totalSize"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   {t("netArea")}
                 </label>
@@ -707,7 +712,7 @@ export default function SecondCreateStepForHouse() {
                         : numericValue;
                     setTotalSize(parseFloat(validValue) || 0);
                   }}
-                  className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                  className={`w-full h-[56px] rounded-[16px] border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
                     "totalSize"
                   )}`}
                   placeholder={t("areaPlaceholder")}
@@ -716,7 +721,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="roomCount"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   {t("roomCount")}
                 </label>
@@ -735,7 +740,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="bathroomCount"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   {t("bathroomCount")}
                 </label>
@@ -750,7 +755,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="floorCount"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   {t("floorCount")}
                 </label>
@@ -765,7 +770,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="floorPosition"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   {t("floorPosition")}
                 </label>
@@ -797,7 +802,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="bedRoomCount"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   {t("balconyCount")}
                 </label>
@@ -812,7 +817,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="kitchenType"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   {t("kitchenType")}
                 </label>
@@ -854,7 +859,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="heatingType"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   {t("heating")}
                 </label>
@@ -906,7 +911,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="source"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   {t("source")}
                 </label>
@@ -944,7 +949,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="exchangeable"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   {t("exchangeable")}
                 </label>
@@ -958,7 +963,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="isFurnished"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   {t("furnished")}
                 </label>
@@ -976,7 +981,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="creditEligible"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   {t("creditEligible")}
                 </label>
@@ -990,7 +995,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/3">
                 <label
                   htmlFor="buildingAge"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   {t("buildingAge")}
                 </label>
@@ -1003,7 +1008,7 @@ export default function SecondCreateStepForHouse() {
                 />
               </div>
               <div className="w-full lg:w-1/3">
-                <label className="font-semibold block mb-2 text-[#262626]">
+                <label className="font-bold block mb-2 text-[#262626] text-[16px]">
                   {t("dues")}
                 </label>
                 <div className="flex gap-2">
@@ -1025,7 +1030,7 @@ export default function SecondCreateStepForHouse() {
                       onChange={(e) =>
                         handleDuesChange(selectedDuesCurrency, e.target.value)
                       }
-                      className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
+                      className="w-full h-[56px] rounded-[16px] border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626] text-[14px]"
                       placeholder={t("pricePlaceholder")}
                     />
                   </div>
@@ -1034,11 +1039,11 @@ export default function SecondCreateStepForHouse() {
             </div>
 
             {/* Kullanım Durumu - Tapu Durumu - Krediye Uygunluk */}
-            <div className="flex flex-col lg:flex-row gap-4 mb-6">
+            <div className="flex flex-col lg:flex-row gap-4 pb-6">
               <div className="w-full lg:w-1/2">
                 <label
                   htmlFor="usageStatus"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   {t("usageStatus")}
                 </label>
@@ -1079,7 +1084,7 @@ export default function SecondCreateStepForHouse() {
               <div className="w-full lg:w-1/2">
                 <label
                   htmlFor="deedStatus"
-                  className="font-semibold block mb-2 text-[#262626]"
+                  className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
                   {t("deedStatus")}
                 </label>
@@ -1130,18 +1135,31 @@ export default function SecondCreateStepForHouse() {
                 />
               </div>
             </div>
+              </div>
+            </div>
+            {/* Footer */}
+            <div className="border-t md:border-l border-[#F0F0F0] p-6">
+              <div className="flex flex-col sm:flex-row justify-end items-center">
+                <div className="flex flex-row gap-4 sm:mt-0 w-full md:w-auto justify-end">
+                  <button
+                    type="button"
+                    onClick={handleBack}
+                    className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-600 font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition border border-gray-300"
+                  >
+                    {t("cancel")}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleContinue}
+                    className="cursor-pointer w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+                  >
+                    {t("continue")}
+                    <ChevronRightIcon className="h-5 w-5 hidden sm:block" />
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className=" flex flex-col sm:flex-row justify-between items-center p-6">
-          <GoBackButton handleBack={handleBack} step={2} totalSteps={6} />
-          <button
-            type="button"
-            onClick={handleContinue}
-            className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
-          >
-            {t("continue")}
-            <ChevronRightIcon className="h-5 w-5" />
-          </button>
         </div>
       </div>
     </div>

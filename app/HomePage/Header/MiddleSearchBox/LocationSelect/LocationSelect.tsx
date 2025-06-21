@@ -1,11 +1,12 @@
-import { useState, useEffect, useRef } from "react";
-import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import {
   ChevronDownIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
 import { MapPinIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useTranslations, useLocale } from "next-intl";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+import { useEffect, useRef, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+
 import { FilterOptions } from "@/types/filter-options.type";
 
 type LocationSelectProps = {
@@ -79,6 +80,8 @@ export default function LocationSelect({
         );
 
         const data = await response.json();
+
+        console.log("Autocomplete API response:", data); // Debug log
 
         if (data.status === "OK" && data.predictions) {
           const newSuggestions = data.predictions.map((prediction: any) => ({
@@ -213,7 +216,9 @@ export default function LocationSelect({
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
-              <div className={`flex items-center ${isMobileMenu ? "flex-1" : ""}`}>
+              <div
+                className={`flex items-center ${isMobileMenu ? "flex-1" : ""}`}
+              >
                 {isOpen && showSearch ? (
                   <>
                     <MagnifyingGlassIcon className="h-4 w-4 mr-1 text-gray-500 flex-shrink-0" />
@@ -262,8 +267,8 @@ export default function LocationSelect({
                     {selectedLocation && !isMobileMenu && isHovered && (
                       <button
                         type="button"
-                        className="ml-2 p-1 rounded hover:bg-gray-100 transition"
-                        onClick={e => {
+                        className="ml-2 p-1 rounded hover:bg-gray-100 transition cursor-pointer"
+                        onClick={(e) => {
                           e.stopPropagation();
                           setSelectedLocation(null);
                         }}

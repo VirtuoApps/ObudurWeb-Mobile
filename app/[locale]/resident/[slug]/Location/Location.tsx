@@ -59,7 +59,10 @@ export default function Location() {
   const { isLoaded } = useGoogleMaps();
 
   return (
-    <section id="location-section" className="max-w-5xl mx-auto my-[24px] md:my-[72px]">
+    <section
+      id="location-section"
+      className="max-w-5xl mx-auto my-[24px] md:my-[72px]"
+    >
       <h2 className="text-[#31286A] font-semibold tracking-tight text-3xl md:text-2xl">
         {t("title")}
       </h2>
@@ -108,7 +111,10 @@ export default function Location() {
                 <span className="text-[#595959] text-sm md:text-base font-medium truncate">
                   {distance.name[currentLocale]}{" "}
                   <span className="text-gray-500 font-normal">
-                    {distance.value} km
+                    {distance.value % 1 === 0
+                      ? distance.value.toString() + " "
+                      : distance.value.toFixed(1) + " "}
+                    km
                   </span>
                 </span>
               </li>

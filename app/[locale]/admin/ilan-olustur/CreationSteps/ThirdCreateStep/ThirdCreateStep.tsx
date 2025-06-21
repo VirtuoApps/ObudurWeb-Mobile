@@ -1,9 +1,4 @@
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  MagnifyingGlassIcon,
-  XCircleIcon,
-} from "@heroicons/react/24/solid";
+import { ChevronRightIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { GetCity, GetCountries, GetState } from "react-country-state-city";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -521,6 +516,13 @@ export default function ThirdCreateStep() {
         types: comp.types,
       }))
     );
+    console.log(
+      "Address components:",
+      addressComponents.map((comp) => ({
+        name: comp.long_name,
+        types: comp.types,
+      }))
+    );
     // Extract country
     const countryComponent = addressComponents.find(
       (component: { types: string[]; long_name: string }) =>
@@ -665,16 +667,20 @@ export default function ThirdCreateStep() {
       const lng = e.latLng.lng();
       setCoordinates([lng, lat]);
 
+
       // Perform reverse geocoding to get address details
       try {
         const response = await fetch(
           `/api/places/geocode?latlng=${lat},${lng}`
         );
 
+
         const data = await response.json();
+
 
         if (data.status === "OK" && data.results && data.results.length > 0) {
           const result = data.results[0];
+
 
           // Update address components from reverse geocoding result
           if (result.address_components) {
@@ -816,25 +822,36 @@ export default function ThirdCreateStep() {
   };
 
   return (
-    <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start p-4">
-      <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">
-        <div className="flex flex-col md:flex-row p-10">
-          {/* Left Info Panel */}
-          <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 flex flex-col">
-            <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
-              {t("title")}
-            </h1>
-            <div className="mt-4 text-base text-[#595959] font-medium">
-              <p className="leading-[140%]">{t("description")}</p>
+    <div className="bg-[#ECEBF4] flex justify-center items-start p-4 py-6 h-[calc(100vh-72px)] lg:h-[calc(100vh-96px)]">
+      <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white h-full">
+        <div className="flex flex-col md:flex-row h-[inherit]">
+          {/* Left Info Panel - 30% width on desktop */}
+          <div className="w-full md:w-[30%] mb-8 md:mb-0 md:p-6 hidden flex-col md:flex justify-between">
+            <div className="">
+              <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
+                {t("title")}
+              </h1>
+              <div className="mt-4 text-base text-[#595959] font-medium">
+                <p className="leading-[140%]">
+                  {t("description")}
+                </p>
+              </div>
             </div>
+
+            <span className="text-sm text-gray-600 mt-4 sm:mt-0">
+              {t("stepCounter", { current: 3, total: 6 })}
+            </span>
           </div>
 
-          {/* Right Form Panel */}
+          {/* Right Form Panel - 70% width on desktop */}
           <div
             ref={formPanelRef}
-            className="w-full md:w-[70%] md:pl-6 h-auto md:h-[67vh]  2xl:h-[73vh] overflow-auto md:border-l md:border-[#F0F0F0]"
+            // className="w-full md:w-[70%] overflow-auto md:border-l md:border-[#F0F0F0] h-full"
+            className="flex-1 h-full flex flex-col"
           >
-            {/* Errors display */}
+            <div className="p-6 flex-1 overflow-auto md:border-l border-[#F0F0F0]">
+
+                          {/* Errors display */}
             {errors.length > 0 && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
                 <div className="flex items-start">
@@ -850,8 +867,8 @@ export default function ThirdCreateStep() {
                     </h3>
                     <div className="mt-2 text-sm text-red-700">
                       <ul className="list-disc pl-5 space-y-1">
-                        {errors.map((error, index) => (
-                          <li key={index}>{error}</li>
+                        {errors.map((error) => (
+                          <li key={error}>{error}</li>
                         ))}
                       </ul>
                     </div>
@@ -859,357 +876,388 @@ export default function ThirdCreateStep() {
                 </div>
               </div>
             )}
+            
+              <label
+                htmlFor="address"
+                className="font-semibold block mb-2 text-[#262626]"
+              >
+                {t("mapLocationSelect")}
+              </label>
 
-            <label className="font-semibold block mb-2 text-[#262626]">
-              {t("mapLocationSelect")}
-            </label>
-            <p className="text-sm text-gray-500 mb-2">
-              {t("mapLocationDescription")}
-            </p>
-
-            {/* Search Input with Autocomplete */}
-            <div className="relative mb-6 ">
-              <div className="flex">
-                <div className="relative flex-grow" ref={searchInputRef}>
-                  <input
-                    type="text"
-                    placeholder={tCommon("addressSearchPlaceholder")}
-                    value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                    className="w-full h-12 pl-10 pr-4 rounded-lg border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        searchLocation();
-                      }
-                    }}
-                    onFocus={() => {
-                      if (suggestions.length > 0) {
-                        setShowSuggestions(true);
-                      }
-                    }}
-                  />
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
-                  </div>
-
-                  {/* Suggestions Dropdown */}
-                  {showSuggestions && suggestions.length > 0 && (
-                    <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
-                      {suggestions.map((suggestion, index) => (
-                        <div
-                          key={index}
-                          className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-800"
-                          onClick={() =>
-                            handleSelectSuggestion(suggestion.placeId)
-                          }
-                        >
-                          {suggestion.description}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Country and Province */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <div className="w-full sm:w-1/2">
-                <label
-                  htmlFor="country"
-                  className="font-semibold block mb-2 text-[#262626]"
-                >
-                  {t("country")}
-                </label>
-                <GeneralSelect
-                  selectedItem={getSelectedCountry()}
-                  onSelect={handleCountrySelect}
-                  options={countriesList}
-                  defaultText={t("selectCountry")}
-                  extraClassName={`w-full h-12 border ${
-                    errorFields.has("country")
-                      ? "border-[#EF1A28]"
-                      : "border-gray-300"
-                  }`}
-                  popoverMaxWidth="400"
-                  maxHeight="200"
-                  popoverExtraClassName="w-auto max-w-[420px]"
-                />
-              </div>
-
-              <div className="w-full sm:w-1/2">
-                <label
-                  htmlFor="state"
-                  className="font-semibold block mb-2 text-[#262626]"
-                >
-                  {t("province")}
-                </label>
-                <GeneralSelect
-                  selectedItem={getSelectedState()}
-                  onSelect={handleStateSelect}
-                  options={statesList}
-                  defaultText={t("selectProvince")}
-                  extraClassName={`w-full h-12 border ${
-                    errorFields.has("state")
-                      ? "border-[#EF1A28]"
-                      : "border-gray-300"
-                  }`}
-                  popoverMaxWidth="400"
-                  maxHeight="200"
-                  popoverExtraClassName="w-auto max-w-[420px]"
-                />
-              </div>
-            </div>
-
-            {/* District, Neighborhood and Street */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <div className="w-full sm:w-1/3">
-                <label
-                  htmlFor="city"
-                  className="font-semibold block mb-2 text-[#262626]"
-                >
-                  {t("district")}
-                </label>
-                <GeneralSelect
-                  selectedItem={getSelectedCity()}
-                  onSelect={handleCitySelect}
-                  options={citiesList}
-                  defaultText={t("selectDistrict")}
-                  extraClassName={`w-full h-12 border ${
-                    errorFields.has("city")
-                      ? "border-[#EF1A28]"
-                      : "border-gray-300"
-                  }`}
-                  popoverMaxWidth="200"
-                  maxHeight="200"
-                  popoverExtraClassName="w-auto max-w-[280px]"
-                />
-              </div>
-
-              <div className="w-full sm:w-1/3">
-                <label
-                  htmlFor="neighborhood"
-                  className="font-semibold block mb-2 text-[#262626]"
-                >
-                  {t("neighborhood")}
-                </label>
-                <input
-                  type="text"
-                  id="neighborhood"
-                  value={neighborhood?.tr || ""}
-                  onChange={(e) => handleNeighborhoodChange(e.target.value)}
-                  className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
-                    "neighborhood"
-                  )}`}
-                  placeholder={t("neighborhood")}
-                />
-              </div>
-
-              <div className="w-full sm:w-1/3">
-                <label
-                  htmlFor="street"
-                  className="font-semibold block mb-2 text-[#262626]"
-                >
-                  {t("street")}
-                </label>
-                <input
-                  type="text"
-                  id="street"
-                  value={street?.tr || ""}
-                  onChange={(e) => handleStreetChange(e.target.value)}
-                  className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
-                    "street"
-                  )}`}
-                  placeholder={t("street")}
-                />
-              </div>
-            </div>
-
-            {/* Building / Parcel information conditional */}
-            {entranceType?.tr === "Arsa" ? (
-              <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                <div className="w-full sm:w-1/2">
-                  <label
-                    htmlFor="adaNo"
-                    className="font-semibold block mb-2 text-[#262626]"
-                  >
-                    {t("adaNo")}
-                  </label>
-                  <input
-                    type="text"
-                    id="adaNo"
-                    value={adaNo}
-                    onChange={(e) => setAdaNo(e.target.value)}
-                    className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
-                      "adaNo"
-                    )}`}
-                    placeholder={t("adaNo")}
-                  />
-                </div>
-                <div className="w-full sm:w-1/2">
-                  <label
-                    htmlFor="parselNo"
-                    className="font-semibold block mb-2 text-[#262626]"
-                  >
-                    {t("parselNo")}
-                  </label>
-                  <input
-                    type="text"
-                    id="parselNo"
-                    value={parselNo}
-                    onChange={(e) => setParselNo(e.target.value)}
-                    className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
-                      "parselNo"
-                    )}`}
-                    placeholder={t("parselNo")}
-                  />
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                <div className="w-full sm:w-1/3">
-                  <label
-                    htmlFor="buildingNo"
-                    className="font-semibold block mb-2 text-[#262626]"
-                  >
-                    {t("buildingNo")}
-                  </label>
-                  <input
-                    type="text"
-                    id="buildingNo"
-                    value={buildingNo}
-                    onChange={(e) => setBuildingNo(e.target.value)}
-                    className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
-                      "buildingNo"
-                    )}`}
-                    placeholder={t("buildingNo")}
-                  />
-                </div>
-                <div className="w-full sm:w-1/3">
-                  <label
-                    htmlFor="apartmentNo"
-                    className="font-semibold block mb-2 text-[#262626]"
-                  >
-                    {t("apartmentNo")}
-                  </label>
-                  <input
-                    type="text"
-                    id="apartmentNo"
-                    value={apartmentNo}
-                    onChange={(e) => setApartmentNo(e.target.value)}
-                    className="w-full h-12 rounded-lg border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                    placeholder={t("apartmentNoPlaceholder")}
-                  />
-                </div>
-                <div className="w-full sm:w-1/3">
-                  <label
-                    htmlFor="postalCode"
-                    className="font-semibold block mb-2 text-[#262626]"
-                  >
-                    {t("postalCode")}
-                  </label>
-                  <input
-                    type="text"
-                    id="postalCode"
-                    value={postalCode}
-                    onChange={(e) => setPostalCode(e.target.value)}
-                    className={`w-full h-12 rounded-lg border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
-                      "postalCode"
-                    )}`}
-                    placeholder={t("postalCode")}
-                  />
-                </div>
-              </div>
-            )}
-
-            {isLoaded ? (
-              <div className="space-y-8">
-                {/* Map Section */}
-                <div>
-                  <div className="h-[400px] w-full rounded-lg overflow-hidden border border-gray-300">
-                    <GoogleMap
-                      mapContainerStyle={containerStyle}
-                      center={center}
-                      zoom={12}
-                      onClick={handleMapClick}
-                      onLoad={onLoad}
-                      onUnmount={onUnmount}
-                      options={{
-                        streetViewControl: false,
-                        mapTypeControl: false,
+              {/* Search Input with Autocomplete */}
+              <div className="relative mb-6 ">
+                <div className="flex">
+                  <div className="relative flex-grow" ref={searchInputRef}>
+                    {" "}
+                    <input
+                      type="text"
+                      id="address"
+                      placeholder={tCommon("addressSearchPlaceholder")}
+                      value={searchInput}
+                      onChange={(e) => setSearchInput(e.target.value)}
+                      className="w-full h-[56px] pl-4 pr-4 rounded-[16px] border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626] text-[14px]"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          searchLocation();
+                        }
                       }}
-                    >
-                      <Marker
-                        position={{ lat: coordinates[1], lng: coordinates[0] }}
-                        draggable={true}
-                        onDragEnd={async (e) => {
-                          if (e.latLng) {
-                            const lat = e.latLng.lat();
-                            const lng = e.latLng.lng();
-                            setCoordinates([lng, lat]);
-
-                            // Perform reverse geocoding to get address details
-                            try {
-                              const response = await fetch(
-                                `/api/places/geocode?latlng=${lat},${lng}`
-                              );
-
-                              const data = await response.json();
-
-                              if (
-                                data.status === "OK" &&
-                                data.results &&
-                                data.results.length > 0
-                              ) {
-                                const result = data.results[0];
-
-                                // Update address components from reverse geocoding result
-                                if (result.address_components) {
-                                  updateAddressFromComponents(
-                                    result.address_components
-                                  );
-                                }
+                      onFocus={() => {
+                        if (suggestions.length > 0) {
+                          setShowSuggestions(true);
+                        }
+                      }}
+                    />
+                    {/* <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+                  </div> */}
+                    {/* Suggestions Dropdown */}
+                    {showSuggestions && suggestions.length > 0 && (
+                      <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-300 rounded-[16px] shadow-lg z-10 max-h-60 overflow-y-auto py-2">
+                        {suggestions.map((suggestion) => (
+                          <div
+                            key={suggestion.placeId}
+                            className="flex flex-row gap-2 items-center hover:bg-gray-100 px-4 cursor-pointer"
+                          >
+                            <svg
+                              width="20"
+                              height="20"
+                              viewBox="0 0 20 20"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M10.0001 18C10.0001 18 16.261 12.4348 16.261 8.26087C16.261 4.80309 13.4579 2 10.0001 2C6.54234 2 3.73926 4.80309 3.73926 8.26087C3.73926 12.4348 10.0001 18 10.0001 18Z"
+                                stroke="#262626"
+                                strokeWidth="1.2"
+                                strokeLinecap="square"
+                              />
+                              <path
+                                d="M12.0004 8.00013C12.0004 9.1047 11.105 10.0001 10.0004 10.0001C8.89581 10.0001 8.00038 9.1047 8.00038 8.00013C8.00038 6.89556 8.89581 6.00013 10.0004 6.00013C11.105 6.00013 12.0004 6.89556 12.0004 8.00013Z"
+                                stroke="#262626"
+                                strokeWidth="1.2"
+                                strokeLinecap="square"
+                              />
+                            </svg>
+                            <div
+                              className="py-2 text-gray-800 text-[12px]"
+                              onClick={() =>
+                                handleSelectSuggestion(suggestion.placeId)
                               }
-                            } catch (error) {
-                              console.error(
-                                "Error reverse geocoding location:",
-                                error
-                              );
-                            }
-                          }
-                        }}
-                      />
-                    </GoogleMap>
-                  </div>
-
-                  <div className="mt-2 text-sm grid grid-cols-2 gap-4">
-                    <div>
-                      <span className="font-medium">{t("latitude")}</span>{" "}
-                      {coordinates[1].toFixed(6)}
-                    </div>
-                    <div>
-                      <span className="font-medium">{t("longitude")}</span>{" "}
-                      {coordinates[0].toFixed(6)}
-                    </div>
+                            >
+                              {suggestion.description}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
-            ) : (
-              <div>{t("loadingMap")}</div>
-            )}
+
+              {/* Country and Province */}
+              <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                <div className="w-full sm:w-1/2">
+                  <label
+                    htmlFor="country"
+                    className="font-semibold block mb-2 text-[#262626]"
+                  >
+                    {t("country")}
+                  </label>
+                  <GeneralSelect
+                    selectedItem={getSelectedCountry()}
+                    onSelect={handleCountrySelect}
+                    options={countriesList}
+                    defaultText={t("selectCountry")}
+                    extraClassName={`w-full h-[56px] rounded-[16px] border ${
+                      errorFields.has("country")
+                        ? "border-[#EF1A28]"
+                        : "border-gray-300"
+                    }`}
+                    popoverMaxWidth="400"
+                    maxHeight="200"
+                    popoverExtraClassName="w-auto max-w-[420px]"
+                  />
+                </div>
+
+                <div className="w-full sm:w-1/2">
+                  <label
+                    htmlFor="state"
+                    className="font-semibold block mb-2 text-[#262626]"
+                  >
+                    {t("province")}
+                  </label>
+                  <GeneralSelect
+                    selectedItem={getSelectedState()}
+                    onSelect={handleStateSelect}
+                    options={statesList}
+                    defaultText={t("selectProvince")}
+                    extraClassName="w-full h-[56px] rounded-[16px] border border-gray-300"
+                    popoverMaxWidth="400"
+                    maxHeight="200"
+                    popoverExtraClassName="w-auto max-w-[420px]"
+                  />
+                </div>
+              </div>
+
+              {/* District, Neighborhood and Street */}
+              <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                <div className="w-full sm:w-1/3">
+                  <label
+                    htmlFor="city"
+                    className="font-semibold block mb-2 text-[#262626]"
+                  >
+                    {t("district")}
+                  </label>
+                  <GeneralSelect
+                    selectedItem={getSelectedCity()}
+                    onSelect={handleCitySelect}
+                    options={citiesList}
+                    defaultText={t("selectDistrict")}
+                    extraClassName="w-full h-[56px] rounded-[16px] border border-gray-300"
+                    popoverMaxWidth="200"
+                    maxHeight="200"
+                    popoverExtraClassName="w-auto max-w-[280px]"
+                  />
+                </div>
+
+                <div className="w-full sm:w-1/3">
+                  <label
+                    htmlFor="neighborhood"
+                    className="font-semibold block mb-2 text-[#262626]"
+                  >
+                    {t("neighborhood")}
+                  </label>
+                  <input
+                    type="text"
+                    id="neighborhood"
+                    value={neighborhood?.tr || ""}
+                    onChange={(e) => handleNeighborhoodChange(e.target.value)}
+                    className={`w-full h-[56px] rounded-[16px] border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
+                      "neighborhood"
+                    )}`}
+                    placeholder={t("neighborhood")}
+                  />
+                </div>
+
+                <div className="w-full sm:w-1/3">
+                  <label
+                    htmlFor="street"
+                    className="font-semibold block mb-2 text-[#262626]"
+                  >
+                    {t("street")}
+                  </label>
+                  <input
+                    type="text"
+                    id="street"
+                    value={street?.tr || ""}
+                    onChange={(e) => handleStreetChange(e.target.value)}
+                    className={`w-full h-[56px] rounded-[16px] border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
+                      "street"
+                    )}`}
+                    placeholder={t("street")}
+                  />
+                </div>
+              </div>
+
+              {/* Building / Parcel information conditional */}
+              {entranceType?.tr === "Arsa" ? (
+                <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                  <div className="w-full sm:w-1/2">
+                    <label
+                      htmlFor="adaNo"
+                      className="font-semibold block mb-2 text-[#262626]"
+                    >
+                      {t("adaNo")}
+                    </label>
+                    <input
+                      type="text"
+                      id="adaNo"
+                      value={adaNo}
+                      onChange={(e) => setAdaNo(e.target.value)}
+                      className={`w-full h-[56px] rounded-[16px] border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
+                        "adaNo"
+                      )}`}
+                      placeholder={t("adaNo")}
+                    />
+                  </div>
+                  <div className="w-full sm:w-1/2">
+                    <label
+                      htmlFor="parselNo"
+                      className="font-semibold block mb-2 text-[#262626]"
+                    >
+                      {t("parselNo")}
+                    </label>
+                    <input
+                      type="text"
+                      id="parselNo"
+                      value={parselNo}
+                      onChange={(e) => setParselNo(e.target.value)}
+                      className={`w-full h-[56px] rounded-[16px] border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
+                        "parselNo"
+                      )}`}
+                      placeholder={t("parselNo")}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                  <div className="w-full sm:w-1/3">
+                    <label
+                      htmlFor="buildingNo"
+                      className="font-semibold block mb-2 text-[#262626]"
+                    >
+                      {t("buildingNo")}
+                    </label>
+                    <input
+                      type="text"
+                      id="buildingNo"
+                      value={buildingNo}
+                      onChange={(e) => setBuildingNo(e.target.value)}
+                      className={`w-full h-[56px] rounded-[16px] border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
+                        "buildingNo"
+                      )}`}
+                      placeholder={t("buildingNo")}
+                    />
+                  </div>
+                  <div className="w-full sm:w-1/3">
+                    <label
+                      htmlFor="apartmentNo"
+                      className="font-semibold block mb-2 text-[#262626]"
+                    >
+                      {t("apartmentNo")}
+                    </label>
+                    <input
+                      type="text"
+                      id="apartmentNo"
+                      value={apartmentNo}
+                      onChange={(e) => setApartmentNo(e.target.value)}
+                      className="w-full h-[56px] rounded-[16px] border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626] text-[14px]"
+                      placeholder={t("apartmentNoPlaceholder")}
+                    />
+                  </div>
+                  <div className="w-full sm:w-1/3">
+                    <label
+                      htmlFor="postalCode"
+                      className="font-semibold block mb-2 text-[#262626]"
+                    >
+                      {t("postalCode")}
+                    </label>
+                    <input
+                      type="text"
+                      id="postalCode"
+                      value={postalCode}
+                      onChange={(e) => setPostalCode(e.target.value)}
+                      className={`w-full h-[56px] rounded-[16px] border px-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
+                        "postalCode"
+                      )}`}
+                      placeholder={t("postalCode")}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {isLoaded ? (
+                <div className="space-y-8">
+                  {/* Map Section */}
+                  <div>
+                    <div className="h-[400px] w-full rounded-lg overflow-hidden border border-gray-300">
+                      <GoogleMap
+                        mapContainerStyle={containerStyle}
+                        center={center}
+                        zoom={12}
+                        onClick={handleMapClick}
+                        onLoad={onLoad}
+                        onUnmount={onUnmount}
+                        options={{
+                          streetViewControl: false,
+                          mapTypeControl: false,
+                        }}
+                      >
+                        <Marker
+                          position={{
+                            lat: coordinates[1],
+                            lng: coordinates[0],
+                          }}
+                          draggable={true}
+                          onDragEnd={async (e) => {
+                            if (e.latLng) {
+                              const lat = e.latLng.lat();
+                              const lng = e.latLng.lng();
+                              setCoordinates([lng, lat]);
+
+                              // Perform reverse geocoding to get address details
+                              try {
+                                const response = await fetch(
+                                  `/api/places/geocode?latlng=${lat},${lng}`
+                                );
+
+                                const data = await response.json();
+
+                                if (
+                                  data.status === "OK" &&
+                                  data.results &&
+                                  data.results.length > 0
+                                ) {
+                                  const result = data.results[0];
+
+                                  // Update address components from reverse geocoding result
+                                  if (result.address_components) {
+                                    updateAddressFromComponents(
+                                      result.address_components
+                                    );
+                                  }
+                                }
+                              } catch (error) {
+                                console.error(
+                                  "Error reverse geocoding location:",
+                                  error
+                                );
+                              }
+                            }
+                          }}
+                        />
+                      </GoogleMap>
+                    </div>
+
+                    <div className="mt-2 text-sm grid grid-cols-2 gap-4">
+                      <div>
+                        <span className="font-medium">{t("latitude")}</span>{" "}
+                        {coordinates[1].toFixed(6)}
+                      </div>
+                      <div>
+                        <span className="font-medium">{t("longitude")}</span>{" "}
+                        {coordinates[0].toFixed(6)}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div>Loading Map...</div>
+              )}
+            </div>
+
+            {/* Step counter and continue button */}
+            <div className="flex flex-col sm:flex-row justify-end items-center border-t md:border-l border-[#F0F0F0] p-6">
+              <div className="flex flex-row gap-4 sm:mt-0 w-full md:w-auto justify-end">
+                <button
+                  type="button"
+                  onClick={handleBack}
+                  className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-600 font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition border border-gray-300"
+                >
+                  {t("cancel")}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleContinue}
+                  className="cursor-pointer w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+                >
+                  {t("continue")}
+                  <ChevronRightIcon className="h-5 w-5 hidden sm:block" />
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className=" flex flex-col sm:flex-row justify-between items-center p-6">
-          <GoBackButton handleBack={handleBack} step={3} totalSteps={6} />
-          <button
-            type="button"
-            onClick={handleContinue}
-            className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
-          >
-            {t("continue")}
-            <ChevronRightIcon className="h-5 w-5" />
-          </button>
         </div>
       </div>
     </div>
