@@ -308,7 +308,7 @@ export default function GoogleMapView({
               key={hotel._id || index}
               position={position}
               label={{
-                text: getDisplayPrice(hotel.price, selectedCurrency),
+                text: getDisplayPrice(hotel.price, selectedCurrency, true),
                 color: "white",
                 fontSize: "12px",
                 fontWeight: "bold",
@@ -319,7 +319,8 @@ export default function GoogleMapView({
                 path: "M12,0 L188,0 Q200,0 200,12 L200,38 Q200,50 188,50 L12,50 Q0,50 0,38 L0,12 Q0,0 12,0 Z",
                 fillColor: isSelected ? "#171231" : "#5E5691",
                 fillOpacity: 1,
-                strokeWeight: 0,
+                strokeWeight: 1,
+                strokeColor: "#EBEAF1",
                 scale: 0.4,
                 // 'anchor' is the point of the icon which will be placed at the
                 // marker's position (lat/lng). (100,25) = center of a 200x50 rect.
@@ -382,7 +383,7 @@ export default function GoogleMapView({
           !hideSelectedHotel && (
             <InfoWindow
               position={{
-                lat: selectedHotel.location.coordinates[1] + 0.001, // Minimal offset to keep InfoWindow close to marker
+                lat: selectedHotel.location.coordinates[1], // Minimal offset to keep InfoWindow close to marker
                 lng: selectedHotel.location.coordinates[0],
               }}
               onCloseClick={() => setSelectedHotel(null)}
@@ -401,6 +402,7 @@ export default function GoogleMapView({
                   border: "none",
                   padding: "0",
                   margin: "0",
+                  marginBottom: "8px",
                 }}
               >
                 <ResidentBox

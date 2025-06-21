@@ -91,6 +91,14 @@ export default function FilterList({
   sortOption,
   setSortOption,
   resultCount,
+  infrastructureFeatures,
+  setInfrastructureFeatures,
+  selectedInfrastructureFeatures,
+  setSelectedInfrastructureFeatures,
+  sceneryFeatures,
+  setSceneryFeatures,
+  selectedSceneryFeatures,
+  setSelectedSceneryFeatures,
 }: {
   onChangeCurrentView: () => void;
   currentView: "map" | "list";
@@ -148,12 +156,23 @@ export default function FilterList({
     >
   >;
   resultCount: number;
+  infrastructureFeatures: any[];
+  setInfrastructureFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  selectedInfrastructureFeatures: any[];
+  setSelectedInfrastructureFeatures: React.Dispatch<
+    React.SetStateAction<any[]>
+  >;
+  sceneryFeatures: any[];
+  setSceneryFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  selectedSceneryFeatures: any[];
+  setSelectedSceneryFeatures: React.Dispatch<React.SetStateAction<any[]>>;
 }) {
   const dispatch = useDispatch();
   const isFilterApplied = useSelector(
     (state: any) => state.favorites.isFilterApplied
   ); // Adjust state path
   const t = useTranslations("filterList");
+  const filteringT = useTranslations("filtering");
   const locale = useLocale();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
@@ -250,6 +269,8 @@ export default function FilterList({
     const hasInteriorFeatures = interiorFeatures.length > 0;
     const hasAccessibilityFeatures = selectedAccessibilityFeatures.length > 0;
     const hasFaceFeatures = selectedFaceFeatures.length > 0;
+    const hasInfrastructureFeatures = selectedInfrastructureFeatures.length > 0;
+    const hasSceneryFeatures = selectedSceneryFeatures.length > 0;
     const hasSizeFilters =
       filters?.isOnePlusOneSelected ||
       filters?.isTwoPlusOneSelected ||
@@ -269,6 +290,8 @@ export default function FilterList({
       hasInteriorFeatures ||
       hasAccessibilityFeatures ||
       hasFaceFeatures ||
+      hasInfrastructureFeatures ||
+      hasSceneryFeatures ||
       hasSizeFilters ||
       isNewSelected
     );
@@ -323,6 +346,14 @@ export default function FilterList({
     // Face features
     if (selectedFaceFeatures.length > 0) count += selectedFaceFeatures.length;
 
+    // Infrastructure features
+    if (selectedInfrastructureFeatures.length > 0)
+      count += selectedInfrastructureFeatures.length;
+
+    // Scenery features
+    if (selectedSceneryFeatures.length > 0)
+      count += selectedSceneryFeatures.length;
+
     return count;
   };
 
@@ -349,6 +380,8 @@ export default function FilterList({
     setInteriorFeatures([]);
     setSelectedAccessibilityFeatures([]);
     setSelectedFaceFeatures([]);
+    setSelectedInfrastructureFeatures([]);
+    setSelectedSceneryFeatures([]);
     setFilters({
       ...filters,
       isOnePlusOneSelected: false,
@@ -439,6 +472,14 @@ export default function FilterList({
           selectedFaceFeatures.map((f) => f._id).length > 0
             ? selectedFaceFeatures.map((f) => f._id)
             : filters?.faceFeatureIds || null,
+        infrastructureFeatureIds:
+          selectedInfrastructureFeatures.map((f) => f._id).length > 0
+            ? selectedInfrastructureFeatures.map((f) => f._id)
+            : filters?.infrastructureFeatureIds || null,
+        sceneryFeatureIds:
+          selectedSceneryFeatures.map((f) => f._id).length > 0
+            ? selectedSceneryFeatures.map((f) => f._id)
+            : filters?.sceneryFeatureIds || null,
         locationFeatureIds: null,
         isNewSelected: filters?.isNewSelected || null,
         isOnePlusOneSelected: filters?.isOnePlusOneSelected || null,
@@ -540,9 +581,17 @@ export default function FilterList({
           hotels={hotels}
           selectedCurrency={selectedCurrency}
           searchRadius={searchRadius}
+          selectedInfrastructureFeatures={selectedInfrastructureFeatures}
+          setSelectedInfrastructureFeatures={setSelectedInfrastructureFeatures}
+          selectedSceneryFeatures={selectedSceneryFeatures}
+          setSelectedSceneryFeatures={setSelectedSceneryFeatures}
+          infrastructureFeatures={infrastructureFeatures}
+          setInfrastructureFeatures={setInfrastructureFeatures}
+          sceneryFeatures={sceneryFeatures}
+          setSceneryFeatures={setSceneryFeatures}
         />
         <div
-          className={`bg-white flex flex-row transition-all duration-350 ease-in-out ${
+          className={`bg-white flex flex-row transition-all duration-350 ease-in-out z-[9999] ${
             currentView === "map"
               ? `fixed lg:top-28 ${
                   isScrolled && isMobile ? "top-[72px]" : "top-[71px]"
@@ -559,20 +608,26 @@ export default function FilterList({
               onClick={() => setIsFilterPopupOpen(true)}
               className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-r border-[#F0F0F0]"
             >
-              Filtreler ({countActiveFilters()})
+              {filteringT("filters")} ({countActiveFilters()})
             </button>
             <button
               onClick={() => setIsSaveFilterSheetOpen(true)}
               className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#262626]"
             >
-              Aramayı Kaydet
+              {filteringT("saveSearch")}
             </button>
-            <button
-              onClick={() => setIsSheetOpen(true)}
-              className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-l border-[#F0F0F0]"
-            >
-              <p className="text-sm text-gray-500 font-semibold">Sırala</p>
-            </button>
+            {currentView !== "map" && (
+              <button
+                onClick={() => {
+                  setIsSheetOpen(true);
+                }}
+                className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-l border-[#F0F0F0]"
+              >
+                <p className="text-sm text-gray-500 font-semibold">
+                  {filteringT("sort")}
+                </p>
+              </button>
+            )}
 
             {isSheetOpen && (
               <div className="fixed inset-0 z-[99999] flex items-end md:items-center justify-center lg:p-4 overflow-y-auto">
@@ -615,7 +670,9 @@ export default function FilterList({
                             <div className="w-[10px] h-[10px] rounded-full bg-[#362C75]"></div>
                           )}
                         </div>
-                        <p className="text-sm">Önce en düşük fiyat</p>
+                        <p className="text-sm">
+                          {filteringT("sortOptions.lowestPrice")}
+                        </p>
                       </div>
                       <div
                         className={`px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold rounded-2xl flex items-center gap-2 outline ${
@@ -630,7 +687,9 @@ export default function FilterList({
                             <div className="w-[10px] h-[10px] rounded-full bg-[#362C75]"></div>
                           )}
                         </div>
-                        <p className="text-sm">Önce en yüksek fiyat</p>
+                        <p className="text-sm">
+                          {filteringT("sortOptions.highestPrice")}
+                        </p>
                       </div>
                       <div
                         className={`px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold rounded-2xl flex items-center gap-2 outline ${
@@ -645,7 +704,9 @@ export default function FilterList({
                             <div className="w-[10px] h-[10px] rounded-full bg-[#362C75]"></div>
                           )}
                         </div>
-                        <p className="text-sm">Önce en yeni ilan</p>
+                        <p className="text-sm">
+                          {filteringT("sortOptions.newest")}
+                        </p>
                       </div>
                       {/* <div
                   className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
@@ -659,10 +720,10 @@ export default function FilterList({
 
                     <button
                       type="button"
-                      className={`mb-[16px] h-[54px] justify-center w-full inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer bg-[#5E5691] border-[0.5px] border-[#362C75] text-[#362C75]"}`}
+                      className={`mb-[16px] h-[54px] justify-center w-full inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer bg-[#5E5691] border-[0.5px] border-[#362C75] text-[#fcfcfc]`}
                       onClick={handleSortSelection}
                     >
-                      Sırala
+                      {filteringT("sort")}
                     </button>
                   </div>
                 </div>
@@ -693,7 +754,7 @@ export default function FilterList({
                 <>
                   <div className="flex justify-between items-start p-4">
                     <h2 className="text-2xl font-bold text-[#262626]">
-                      Kaydedildi!
+                      {filteringT("saved")}
                     </h2>
                     <button
                       onClick={() => {
@@ -713,11 +774,10 @@ export default function FilterList({
 
                   <div className="p-4 space-y-2">
                     <h2 className="text-[#262626] font-kumbh font-bold text-base leading-[140%] tracking-[0%] align-start">
-                      Arama filtreleriniz başarılı bir şekilde kaydedildi.
+                      {filteringT("saveSuccess.title")}
                     </h2>
                     <p className="text-[#595959] font-kumbh font-medium text-base leading-[140%] tracking-[0%] align-start">
-                      Artık profilinizden kayıtlı aramalarınıza ulaşabilir,
-                      dilerseniz bildirim ayarlarını değiştirebilirsiniz.
+                      {filteringT("saveSuccess.description")}
                     </p>
 
                     <button
@@ -732,7 +792,7 @@ export default function FilterList({
                         backgroundColor: "#5E5691",
                       }}
                     >
-                      Kapat
+                      {filteringT("close")}
                     </button>
                   </div>
                 </>
@@ -741,7 +801,7 @@ export default function FilterList({
                   <div className="sticky top-0 bg-white z-10 px-4 py-[22px] rounded-t-[24px] relative">
                     <div className="flex items-center justify-between">
                       <h2 className="md:text-lg text-2xl font-bold text-[#262626]">
-                        Aramayı Kaydet
+                        {filteringT("saveSearch")}
                       </h2>
                       <button
                         onClick={() => {
@@ -860,9 +920,17 @@ export default function FilterList({
         setFaceFeatures={setFaceFeatures}
         selectedFaceFeatures={selectedFaceFeatures}
         setSelectedFaceFeatures={setSelectedFaceFeatures}
+        selectedInfrastructureFeatures={selectedInfrastructureFeatures}
+        setSelectedInfrastructureFeatures={setSelectedInfrastructureFeatures}
+        selectedSceneryFeatures={selectedSceneryFeatures}
+        setSelectedSceneryFeatures={setSelectedSceneryFeatures}
         hotels={hotels}
         selectedCurrency={selectedCurrency}
         searchRadius={searchRadius}
+        infrastructureFeatures={infrastructureFeatures}
+        setInfrastructureFeatures={setInfrastructureFeatures}
+        sceneryFeatures={sceneryFeatures}
+        setSceneryFeatures={setSceneryFeatures}
       />
       <div
         className={`bg-white flex flex-row transition-all duration-350 ease-in-out ${

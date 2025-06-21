@@ -15,6 +15,8 @@ export type FilterType = {
   exteriorFeatureIds?: string[] | null;
   accessibilityFeatureIds?: string[] | null;
   faceFeatureIds?: string[] | null;
+  infrastructureFeatureIds?: string[] | null;
+  sceneryFeatureIds?: string[] | null;
   locationFeatureIds?: string[] | null;
   isNewSelected?: boolean | null;
   isOnePlusOneSelected?: boolean | null;

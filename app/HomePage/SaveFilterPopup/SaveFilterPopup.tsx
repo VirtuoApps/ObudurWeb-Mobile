@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axiosInstance from "@/axios";
 import { FilterType } from "@/types/filter.type";
 import { Feature } from "@/types/feature.type";
+import { useTranslations } from "next-intl";
 
 interface SaveFilterPopupProps {
   isOpen: boolean;
@@ -54,6 +55,7 @@ export default function SaveFilterPopup({
   resultCount,
 }: SaveFilterPopupProps) {
   const [searchName, setSearchName] = useState("");
+  const t = useTranslations("filtering");
   const [inAppNotifications, setInAppNotifications] = useState(false);
   const [emailNotifications, setEmailNotifications] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -188,7 +190,9 @@ export default function SaveFilterPopup({
           // Success view
           <>
             <div className="flex justify-between items-start mb-10">
-              <h2 className="text-2xl font-bold text-[#262626]">Kaydedildi!</h2>
+              <h2 className="text-2xl font-bold text-[#262626]">
+                {t("saved")}
+              </h2>
               <button
                 onClick={handleClosePopup}
                 className="w-6 h-6 flex items-center justify-center cursor-pointer "
@@ -203,11 +207,10 @@ export default function SaveFilterPopup({
 
             <div className=" space-y-2">
               <h2 className="text-[#262626] font-kumbh font-bold text-base leading-[140%] tracking-[0%] align-start">
-                Arama filtreleriniz başarılı bir şekilde kaydedildi.
+                {t("saveSuccess.title")}
               </h2>
               <p className="text-[#595959] font-kumbh font-medium text-base leading-[140%] tracking-[0%] align-start">
-                Artık profilinizden kayıtlı aramalarınıza ulaşabilir, dilerseniz
-                bildirim ayarlarını değiştirebilirsiniz.
+                {t("saveSuccess.description")}
               </p>
 
               <button
@@ -218,7 +221,7 @@ export default function SaveFilterPopup({
                   backgroundColor: "#5E5691",
                 }}
               >
-                Kapat
+                {t("close")}
               </button>
             </div>
           </>
@@ -229,7 +232,7 @@ export default function SaveFilterPopup({
             <div className="px-4">
               <div className="flex justify-between items-start mb-10">
                 <h2 className="text-2xl font-bold text-[#262626]">
-                  Aramayı Kaydet
+                  {t("saveSearch")}
                 </h2>
                 <button
                   onClick={handleClosePopup}
@@ -246,13 +249,13 @@ export default function SaveFilterPopup({
               {/* Search Name Section */}
               <div className="mb-10">
                 <label className="block text-lg font-bold text-[#262626] mb-1">
-                  Arama Adı
+                  {t("searchName")}
                 </label>
                 <input
                   type="text"
                   value={searchName}
                   onChange={(e) => setSearchName(e.target.value)}
-                  placeholder="Yeni aramam"
+                  placeholder={t("searchNamePlaceholder")}
                   className="w-full px-6 py-4 bg-[#FCFCFC] border border-[#D9D9D9] rounded-2xl 
                          text-[#8C8C8C] placeholder-[#8C8C8C] focus:outline-none focus:border-[#262626]
                          focus:text-[#262626] transition-colors"
@@ -333,7 +336,7 @@ export default function SaveFilterPopup({
                          text-[#262626] font-medium hover:bg-gray-50 transition-colors cursor-pointer
                          disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Vazgeç
+                {t("cancel")}
               </button>
               <button
                 onClick={handleSave}
@@ -344,7 +347,7 @@ export default function SaveFilterPopup({
                     : "bg-[#F0F0F0] text-[#8C8C8C] cursor-not-allowed"
                 }`}
               >
-                {isLoading ? "Kaydediliyor..." : "Kaydet"}
+                {isLoading ? t("saving") : t("save")}
               </button>
             </div>
           </>

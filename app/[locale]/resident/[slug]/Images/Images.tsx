@@ -5,6 +5,7 @@ import Image from "next/image";
 import { FaRegImages } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 import GridIcon from "@/app/svgIcons/GridIcon";
 import { useHotelData } from "../hotelContext";
 import { useTranslations } from "next-intl";
@@ -60,7 +61,7 @@ export default function Images() {
 
   const handleTouchEnd = () => {
     if (!touchStartX || !touchEndX) return;
-    
+
     const distance = touchStartX - touchEndX;
     const isLeftSwipe = distance > 50;
     const isRightSwipe = distance < -50;
@@ -77,19 +78,19 @@ export default function Images() {
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (!isModalOpen) return;
-      
-      if (event.key === 'ArrowLeft') {
+
+      if (event.key === "ArrowLeft") {
         goToPrevImage();
-      } else if (event.key === 'ArrowRight') {
+      } else if (event.key === "ArrowRight") {
         goToNextImage();
-      } else if (event.key === 'Escape') {
+      } else if (event.key === "Escape") {
         closeModal();
       }
     };
 
-    window.addEventListener('keydown', handleKeyPress);
+    window.addEventListener("keydown", handleKeyPress);
     return () => {
-      window.removeEventListener('keydown', handleKeyPress);
+      window.removeEventListener("keydown", handleKeyPress);
     };
   }, [isModalOpen]);
 
@@ -103,7 +104,7 @@ export default function Images() {
           <div className="hidden md:grid md:grid-cols-2 gap-2 p-1 w-full">
             {/* Large image - responsive width x 520px height */}
             <div
-              className="relative w-full h-[520px] overflow-hidden shadow-md cursor-pointer"
+              className="relative w-full h-[516.5px] overflow-hidden cursor-pointer"
               onClick={() => openModal(0)}
             >
               <Image
@@ -118,7 +119,7 @@ export default function Images() {
             {/* 2 images stacked - responsive width x 254px height each */}
             <div className="flex flex-col gap-2">
               <div
-                className="relative w-full h-[254px] overflow-hidden shadow-md cursor-pointer"
+                className="relative w-full h-[254px] overflow-hidden cursor-pointer"
                 onClick={() => openModal(1)}
               >
                 <Image
@@ -129,7 +130,7 @@ export default function Images() {
                 />
               </div>
               <div
-                className="relative w-full h-[254px] overflow-hidden shadow-md cursor-pointer"
+                className="relative w-full h-[254px] overflow-hidden cursor-pointer"
                 onClick={() => openModal(2)}
               >
                 <Image
@@ -154,7 +155,7 @@ export default function Images() {
           <div className="md:hidden p-1 w-full">
             {/* Single main image with counter */}
             <div
-              className="relative w-full h-[240px] mb-2 overflow-hidden rounded-lg shadow-md cursor-pointer"
+              className="relative w-full h-[240px] mb-2 overflow-hidden rounded-lg cursor-pointer"
               onClick={() => openModal(0)}
             >
               <Image
@@ -182,7 +183,7 @@ export default function Images() {
           <div className="hidden md:grid md:grid-cols-[2fr_1fr] gap-2 p-1 w-full">
             {/* Large image - responsive width x 520px height */}
             <div
-              className="relative w-full h-[520px] overflow-hidden shadow-md cursor-pointer"
+              className="relative w-full h-[524px] overflow-hidden cursor-pointer"
               onClick={() => openModal(0)}
             >
               <Image
@@ -197,7 +198,7 @@ export default function Images() {
             {/* 3 images stacked - responsive width x 169px height each */}
             <div className="flex flex-col gap-2 w-full">
               <div
-                className="relative w-full h-[169px] overflow-hidden shadow-md cursor-pointer"
+                className="relative w-full h-[169px] overflow-hidden cursor-pointer"
                 onClick={() => openModal(1)}
               >
                 <Image
@@ -208,7 +209,7 @@ export default function Images() {
                 />
               </div>
               <div
-                className="relative w-full h-[169px] overflow-hidden shadow-md cursor-pointer"
+                className="relative w-full h-[169px] overflow-hidden cursor-pointer"
                 onClick={() => openModal(2)}
               >
                 <Image
@@ -219,7 +220,7 @@ export default function Images() {
                 />
               </div>
               <div
-                className="relative w-full h-[169px] overflow-hidden shadow-md cursor-pointer"
+                className="relative w-full h-[169px] overflow-hidden cursor-pointer"
                 onClick={() => openModal(3)}
               >
                 <Image
@@ -244,7 +245,7 @@ export default function Images() {
           <div className="md:hidden p-1 w-full">
             {/* Single main image with counter */}
             <div
-              className="relative w-full h-[240px] mb-2 overflow-hidden rounded-lg shadow-md cursor-pointer"
+              className="relative w-full h-[240px] mb-2 overflow-hidden rounded-lg cursor-pointer"
               onClick={() => openModal(0)}
             >
               <Image
@@ -271,7 +272,7 @@ export default function Images() {
         <div className="hidden md:grid md:grid-cols-5 gap-2 p-1 w-full">
           {/* Large image - responsive width x 520px height (spans 2 rows and 3 columns) */}
           <div
-            className="relative md:col-span-3 w-full h-[520px] md:row-span-2 overflow-hidden shadow-md cursor-pointer"
+            className="relative md:col-span-3 w-full h-[516.5px] md:row-span-2 overflow-hidden cursor-pointer"
             onClick={() => openModal(0)}
           >
             <Image
@@ -286,7 +287,7 @@ export default function Images() {
           {/* 2x2 grid on the right - each responsive width x 254px height */}
           <div className="md:col-span-2 grid grid-cols-2 gap-2 h-full">
             <div
-              className="relative w-full h-[254px] overflow-hidden shadow-md cursor-pointer"
+              className="relative w-full h-[254px] overflow-hidden cursor-pointer"
               onClick={() => openModal(1)}
             >
               <Image
@@ -297,7 +298,7 @@ export default function Images() {
               />
             </div>
             <div
-              className="relative w-full h-[254px] overflow-hidden shadow-md cursor-pointer"
+              className="relative w-full h-[254px] overflow-hidden cursor-pointer"
               onClick={() => openModal(2)}
             >
               <Image
@@ -308,7 +309,7 @@ export default function Images() {
               />
             </div>
             <div
-              className="relative w-full h-[254px] overflow-hidden shadow-md cursor-pointer"
+              className="relative w-full h-[254px] overflow-hidden cursor-pointer"
               onClick={() => openModal(3)}
             >
               <Image
@@ -319,7 +320,7 @@ export default function Images() {
               />
             </div>
             <div
-              className="relative w-full h-[254px] overflow-hidden shadow-md cursor-pointer"
+              className="relative w-full h-[254px] overflow-hidden cursor-pointer"
               onClick={() => openModal(4)}
             >
               <Image
@@ -361,11 +362,11 @@ export default function Images() {
             <div
               className="absolute bottom-2 right-2 bg-[#FCFCFC] text-[#262626] px-2 py-1 rounded"
               style={{
-                fontFamily: 'Kumbh Sans',
-                fontSize: '14px',
+                fontFamily: "Kumbh Sans",
+                fontSize: "14px",
                 fontWeight: 400,
-                lineHeight: '140%',
-                letterSpacing: '0%',
+                lineHeight: "140%",
+                letterSpacing: "0%",
               }}
             >
               {currentImageIndex + 1} / {originalImageCount}
@@ -385,14 +386,14 @@ export default function Images() {
       {isModalOpen && (
         <div
           className="fixed inset-0 z-50 bg-black flex justify-center items-center transition-opacity duration-300"
-          style={{ backgroundColor: '#000' }}
+          style={{ backgroundColor: "#000" }}
           onClick={closeModal}
         >
           {/* X butonu */}
           <button
             onClick={closeModal}
             className="absolute top-6 right-4 z-10 w-8 h-8 rounded-xl bg-[#FCFCFC] flex items-center justify-center cursor-pointer shadow"
-            style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}
+            style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}
           >
             <IoMdClose size={20} color="#595959" />
           </button>
@@ -421,20 +422,53 @@ export default function Images() {
                 src={hotelData.hotelDetails.images[currentImageIndex]}
                 alt={`Property image ${currentImageIndex + 1}`}
                 className="w-full h-auto object-contain select-none"
-                style={{ display: 'block' }}
+                style={{ display: "block" }}
               />
             </div>
           </div>
-          {/* Counter - tam ekran alt ortada */}
-          <div className="fixed left-1/2 bottom-6 -translate-x-1/2 bg-[#FCFCFC] text-[#262626] px-4 py-2 rounded-full z-50"
-            style={{
-              fontFamily: 'Kumbh Sans',
-              fontSize: '14px',
-              fontWeight: 400,
-              lineHeight: '140%',
-              letterSpacing: '0%'
-            }}>
-            {currentImageIndex + 1} / {originalImageCount}
+
+          {/* Navigation Controls - Bottom Center */}
+          <div className="fixed left-1/2 bottom-6 -translate-x-1/2 flex items-center gap-2 z-50">
+            {/* Previous Button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                goToPrevImage();
+              }}
+              disabled={originalImageCount <= 1}
+              className="bg-[#FCFCFC] text-[#262626] w-9 h-9 rounded-md flex items-center justify-center cursor-pointer shadow disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 transition-colors"
+              style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}
+            >
+              <IoChevronBack size={16} color="#595959" />
+            </button>
+
+            {/* Counter */}
+            <div
+              className="bg-[#FCFCFC] text-[#262626] px-4 py-2 rounded-md"
+              style={{
+                fontFamily: "Kumbh Sans",
+                fontSize: "14px",
+                fontWeight: 400,
+                lineHeight: "140%",
+                letterSpacing: "0%",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+              }}
+            >
+              {currentImageIndex + 1} / {originalImageCount}
+            </div>
+
+            {/* Next Button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                goToNextImage();
+              }}
+              disabled={originalImageCount <= 1}
+              className="bg-[#FCFCFC] text-[#262626] w-9 h-9 rounded-md flex items-center justify-center cursor-pointer shadow disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 transition-colors"
+              style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}
+            >
+              <IoChevronForward size={16} color="#595959" />
+            </button>
           </div>
         </div>
       )}

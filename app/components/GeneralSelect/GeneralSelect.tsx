@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from "react";
-import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+import { useEffect, useRef, useState } from "react";
+
 import { useTranslations } from "next-intl";
 
 type GeneralSelectProps = {
@@ -97,9 +98,21 @@ export default function GeneralSelect({
     };
   }, [isOpen, options]);
 
-  const handleSelect = (option: any) => {
-    buttonRef.current?.click();
+  const handleSelect = (option: any, shouldClose: boolean = true) => {
+    if (shouldClose) {
+      buttonRef.current?.click();
+    }
     onSelect(option);
+  };
+
+  const handleClear = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    onSelect(null);
+    // Force close the popover without triggering button click
+    if (buttonRef.current) {
+      buttonRef.current.blur();
+    }
   };
 
   return (
@@ -116,7 +129,9 @@ export default function GeneralSelect({
                 open ? "bg-[#F5F5F5]" : ""
               } flex items-center justify-between shrink-0 px-3 py-3 text-sm ${extraClassName} ${
                 !customTextColor ? "text-gray-700" : ""
-              } cursor-pointer rounded-[8px] outline-none ${disabled ? 'cursor-not-allowed opacity-60' : ''}`}
+              } cursor-pointer rounded-[8px] outline-none ${
+                disabled ? "cursor-not-allowed opacity-60" : ""
+              }`}
               disabled={disabled}
               onClick={disabled ? (e) => e.preventDefault() : undefined}
               tabIndex={disabled ? -1 : 0}
@@ -126,14 +141,11 @@ export default function GeneralSelect({
                   {selectedItem ? selectedItem.name : defaultText}
                 </span>
               </div>
-              {selectedItem && !popoverExtraClassName?.includes('mobile') ? (
+              {selectedItem && !popoverExtraClassName?.includes("mobile") ? (
                 <button
                   type="button"
                   className="ml-2 p-1 rounded hover:bg-gray-100 transition cursor-pointer"
-                  onClick={e => {
-                    e.stopPropagation();
-                    handleSelect(null);
-                  }}
+                  onClick={handleClear}
                   tabIndex={-1}
                   disabled={disabled}
                 >
@@ -142,7 +154,9 @@ export default function GeneralSelect({
               ) : (
                 <img
                   src="/chevron-down.png"
-                  className={`w-[24px] h-[24px] ${open ? "rotate-180" : ""} ${disabled ? 'opacity-60' : ''}`}
+                  className={`w-[24px] h-[24px] ${open ? "rotate-180" : ""} ${
+                    disabled ? "opacity-60" : ""
+                  }`}
                 />
               )}
             </PopoverButton>

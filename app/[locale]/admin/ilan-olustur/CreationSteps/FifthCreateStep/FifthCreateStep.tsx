@@ -8,9 +8,11 @@ import React, { useEffect, useRef, useState } from "react";
 import axiosInstance from "@/axios";
 import { useListingForm } from "../CreationSteps";
 import { useRouter } from "@/app/utils/router";
+import { useTranslations } from "next-intl";
 
 export default function FifthCreateStep() {
   const router = useRouter();
+  const t = useTranslations("adminCreation.step5");
   const {
     setCurrentStep,
     images,
@@ -86,6 +88,21 @@ export default function FifthCreateStep() {
       });
     }
   }, [isUpdate, images, video]);
+
+  // Add scroll reset effect when step changes
+  useEffect(() => {
+    const scrollToTop = () => {
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (formPanelRef.current) {
+        formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+
+    scrollToTop();
+  }, []); // Empty dependency array means this runs once when component mounts
 
   // Upload a single image
   const uploadImage = async (file: File, index: number) => {
@@ -202,7 +219,7 @@ export default function FifthCreateStep() {
 
     const files = Array.from(event.target.files);
     if (selectedImages.length + files.length > 15) {
-      setErrors(["Maksimum 15 görsel yükleyebilirsiniz."]);
+      setErrors([t("validation.maxImages")]);
       setTimeout(() => {
         setErrors([]);
       }, 3000);
@@ -257,7 +274,7 @@ export default function FifthCreateStep() {
     );
 
     if (selectedImages.length + files.length > 15) {
-      setErrors(["Maksimum 15 görsel yükleyebilirsiniz."]);
+      setErrors([t("validation.maxImages")]);
       return;
     }
 
@@ -336,33 +353,31 @@ export default function FifthCreateStep() {
 
     // Check minimum image requirement (3 images)
     if (selectedImages.length < 3 && images.length < 3) {
-      newErrors.push("Lütfen en az 3 görsel yükleyin.");
+      newErrors.push(t("validation.minImages"));
     }
 
     // Check maximum image requirement (15 images)
     if (selectedImages.length > 15 || images.length > 15) {
-      newErrors.push("Maksimum 15 görsel yükleyebilirsiniz.");
+      newErrors.push(t("validation.maxImages"));
     }
 
     // Check if there are no images at all (neither in selectedImages nor in context)
     if (selectedImages.length === 0 && images.length === 0) {
-      newErrors.push("Lütfen en az 3 görsel yükleyin.");
+      newErrors.push(t("validation.noImages"));
     }
 
     const hasUploadingImages = selectedImages.some((img) => img.uploading);
     if (hasUploadingImages) {
-      newErrors.push("Yüklenmekte olan görseller var, lütfen bekleyin.");
+      newErrors.push(t("validation.uploadingImages"));
     }
 
     const hasErrorImages = selectedImages.some((img) => img.error);
     if (hasErrorImages) {
-      newErrors.push(
-        "Bazı görseller yüklenemedi. Lütfen tekrar deneyin veya bu görselleri kaldırın."
-      );
+      newErrors.push(t("validation.imageErrors"));
     }
 
     if (selectedVideo?.uploading) {
-      newErrors.push("Video yükleniyor, lütfen bekleyin.");
+      newErrors.push(t("validation.uploadingVideo"));
     }
 
     if (newErrors.length === 0) {
@@ -372,12 +387,20 @@ export default function FifthCreateStep() {
       setCurrentStep(6);
     } else {
       setErrors(newErrors);
-      // Scroll to top to see errors
-      if (formPanelRef.current) {
+      // Scroll to top to see errors - handle both mobile and desktop
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (formPanelRef.current) {
         formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
   };
+
+  console.log("Selected Images:", selectedImages);
 
   const handleBack = () => {
     setCurrentStep(4);
@@ -391,14 +414,11 @@ export default function FifthCreateStep() {
           <div className="w-full md:w-[30%] mb-8 md:mb-0 md:p-6 hidden flex-col md:flex justify-between">
             <div className="">
               <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
-                İlanınız için görseller ve video ekleyin.
+                {t("title")}
               </h1>
               <div className="mt-4 text-base text-[#595959] font-medium">
                 <p className="leading-[140%]">
-                  Bu adımda, mülkünüzün fotoğraflarını ve tanıtım videosunu
-                  yükleyebilirsiniz. Kaliteli ve çeşitli görseller, potansiyel
-                  alıcıların ve kiracıların ilgisini çekmede en önemli
-                  faktörlerdendir.
+                  {t("description")}
                 </p>
               </div>
             </div>
@@ -426,7 +446,7 @@ export default function FifthCreateStep() {
                   </div>
                   <div className="ml-3">
                     <h3 className="text-sm font-medium text-red-800">
-                      Lütfen aşağıdaki hataları düzeltin:
+                      {t("fixErrors")}
                     </h3>
                     <div className="mt-2 text-sm text-red-700">
                       <ul className="list-disc pl-5 space-y-1">
@@ -450,7 +470,7 @@ export default function FifthCreateStep() {
                   </div>
                   <div className="ml-3">
                     <h3 className="text-sm font-medium text-red-800">
-                      Form gönderilirken bir hata oluştu:
+                      {t("submitError")}
                     </h3>
                     <p className="mt-2 text-sm text-red-700">{submitError}</p>
                   </div>
@@ -461,10 +481,10 @@ export default function FifthCreateStep() {
               {/* Image Upload Section */}
               <div className="mb-8">
                 <h2 className="text-[16px] text-[#262626] font-bold">
-                  Görseller
+                  {t("imageTitle")}
                 </h2>
                 <p className="text-sm text-gray-500 mb-4">
-                  En az 3, en fazla 15 görsel yükleyebilirsiniz. (JPG, PNG)
+                  {t("imageDescription")}
                 </p>
 
                 {/* Drag and drop area for images */}
@@ -479,7 +499,7 @@ export default function FifthCreateStep() {
                     ref={imageInputRef}
                     onChange={handleImageSelect}
                     multiple
-                    accept="image/jpeg,image/png"
+                    accept="image/jpeg,image/png,image/heic,image/jpg,image/heif"
                     className="hidden"
                   />
                   <svg
@@ -497,13 +517,13 @@ export default function FifthCreateStep() {
                     />
                   </svg>
                   <p className="mt-2 text-sm text-gray-600">
-                    Bilgisayardan yükle veya sürükle bırak
+                    {t("dropzoneText")}
                   </p>
                 </div>
 
                 {/* Image preview area */}
                 {selectedImages.length > 0 && (
-                  <div className="mt-4 grid grid-cols-4 gap-6">
+                  <div className="mt-4 grid grid-cols-2 lg:grid-cols-4 gap-6">
                     {selectedImages.map((image, index) => (
                       <div key={index} className="relative group">
                         <img
@@ -586,6 +606,14 @@ export default function FifthCreateStep() {
                 )}
               </div>
 
+            {/* Video Upload Section */}
+            <div className="mb-8">
+              <h2 className="font-semibold text-lg mb-2 text-gray-700">
+                {t("videoTitle")}
+              </h2>
+              <p className="text-sm text-gray-500 mb-4">
+                {t("videoDescription")}
+              </p>
               {/* Video Upload Section */}
               <div className="">
                 <h2 className="font-bold text-[16px] text-[#262626]">Video</h2>
@@ -623,7 +651,7 @@ export default function FifthCreateStep() {
                     />
                   </svg>
                   <p className="mt-2 text-sm text-gray-600">
-                    Bilgisayardan yükle veya sürükle bırak
+                    {t("dropzoneText")}
                   </p>
                 </div>
 
@@ -722,7 +750,7 @@ export default function FifthCreateStep() {
                   disabled={isSubmitting}
                   className="cursor-pointer w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition disabled:opacity-50"
                 >
-                  Devam Et
+                  {t("continue")}
                   <ChevronRightIcon className="w-5 h-5 hidden sm:block" />
                 </button>
               </div>

@@ -353,9 +353,9 @@ export default function CreationSteps({
   );
   const [projectArea, setProjectArea] = useState<number>(0);
   const [totalSize, setTotalSize] = useState<number>(0);
-  const [roomCount, setRoomCount] = useState<number>(0);
-  const [bathroomCount, setBathroomCount] = useState<number>(0);
-  const [bedRoomCount, setBedRoomCount] = useState<number>(0);
+  const [roomCount, setRoomCount] = useState<number>(-1);
+  const [bathroomCount, setBathroomCount] = useState<number>(-1);
+  const [bedRoomCount, setBedRoomCount] = useState<number>(-1);
   const [floorCount, setFloorCount] = useState<number>(0);
   const [buildYear, setBuildYear] = useState<number>(0);
   const [kitchenType, setKitchenType] = useState<MultilangText>({
@@ -366,7 +366,7 @@ export default function CreationSteps({
   // New fields state
   const [exchangeable, setExchangeable] = useState<boolean>(false);
   const [creditEligible, setCreditEligible] = useState<any>("");
-  const [buildingAge, setBuildingAge] = useState<number>(0);
+  const [buildingAge, setBuildingAge] = useState<number>(-1);
   const [isFurnished, setIsFurnished] = useState<boolean>(false);
   const [dues, setDues] = useState<{ amount: number; currency: string }[]>([]);
   const [usageStatus, setUsageStatus] = useState<Map<string, string>>(
@@ -448,10 +448,30 @@ export default function CreationSteps({
   const [parselNo, setParselNo] = useState<string>(hotelData?.parselNo || "");
 
   // Floor position state
-  const [floorPosition, setFloorPosition] = useState<MultilangText>(hotelData?.floorPosition || { tr: "", en: "" });
+  const [floorPosition, setFloorPosition] = useState<MultilangText>(
+    hotelData?.floorPosition || { tr: "", en: "" }
+  );
 
   // Set hotelId from hotelData if in update mode
   const hotelId = isUpdate && hotelData ? hotelData._id : null;
+
+  // Add scroll to top effect when step changes
+  useEffect(() => {
+    const scrollToTop = () => {
+      // Check if we're on mobile/tablet (responsive design)
+      const isMobile = window.innerWidth < 768; // md breakpoint
+
+      if (isMobile) {
+        // On mobile, scroll the window to top
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        // On desktop, also scroll window (individual components will handle their form panels)
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+
+    scrollToTop();
+  }, [currentStep]);
 
   // Effect to initialize form with hotel data when in update mode
   useEffect(() => {
@@ -467,9 +487,9 @@ export default function CreationSteps({
       setPrice(hotelData.price || []);
       setProjectArea(hotelData.projectArea || 0);
       setTotalSize(hotelData.totalSize || 0);
-      setRoomCount(hotelData.roomCount || 0);
-      setBathroomCount(hotelData.bathroomCount || 0);
-      setBedRoomCount(hotelData.bedRoomCount || 0);
+      setRoomCount(hotelData.roomCount || -1);
+      setBathroomCount(hotelData.bathroomCount || -1);
+      setBedRoomCount(hotelData.bedRoomCount || -1);
       setFloorCount(hotelData.floorCount || 0);
       setBuildYear(hotelData.buildYear || 0);
       setKitchenType(hotelData.kitchenType || { tr: "", en: "" });
@@ -683,10 +703,6 @@ export default function CreationSteps({
     isUpdate,
     hotelId,
   };
-
-  console.log({
-    entranceType,
-  });
 
   return (
     <ListingFormContext.Provider value={contextValue}>

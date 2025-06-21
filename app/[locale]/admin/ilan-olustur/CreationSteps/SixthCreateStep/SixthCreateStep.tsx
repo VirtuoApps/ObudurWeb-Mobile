@@ -1,18 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
 
+import GoBackButton from "../../GoBackButton/GoBackButton";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import axiosInstance from "@/axios";
 import { useListingForm } from "../CreationSteps";
 import { useRouter } from "@/app/utils/router";
+import { useTranslations } from "next-intl";
 
 // Predefined document types
 const DOCUMENT_TYPES = [
-  { tr: "Kat Planı", en: "Floor Plan" },
-  { tr: "Teklif Formu", en: "Offer Form" },
+  { tr: "Kat Planı", en: "Floor Plan", tKey: "floorPlan" },
+  { tr: "Teklif Formu", en: "Offer Form", tKey: "offerForm" },
 ];
 
 export default function SixthCreateStep() {
   const router = useRouter();
+  const t = useTranslations("adminCreation.step6");
+  const tShared = useTranslations("adminCreation.step5");
+  const tAdmin = useTranslations("adminInterface");
   const {
     setCurrentStep,
     images,
@@ -87,8 +92,13 @@ export default function SixthCreateStep() {
     if (isUpdate && documents.length > 0) {
       const links: { [key: string]: string } = {};
       documents.forEach((doc: any) => {
-        const docKey = `${doc.name.tr}_${doc.name.en}`;
-        links[docKey] = doc.file;
+        const docType = DOCUMENT_TYPES.find(
+          (dt) => dt.tr === doc.name.tr && dt.en === doc.name.en
+        );
+        if (docType) {
+          const docKey = `${docType.tr}_${docType.en}`;
+          links[docKey] = doc.file;
+        }
       });
       setDocumentLinks(links);
     }
@@ -140,7 +150,7 @@ export default function SixthCreateStep() {
       }));
       setErrors((prev) => [
         ...prev,
-        `${docType.tr} yüklenemedi. Lütfen tekrar deneyin.`,
+        t("docUploadError", { docName: t(`documentTypes.${docType.tKey}`) }),
       ]);
       return null;
     }
@@ -342,9 +352,9 @@ export default function SixthCreateStep() {
       console.error(`Hotel ${isUpdate ? "update" : "creation"} error:`, error);
       setSubmitError(
         error.response?.data?.message ||
-          `İlan ${
-            isUpdate ? "güncellenirken" : "oluşturulurken"
-          } bir hata oluştu. Lütfen tekrar deneyin.`
+          t("genericSubmitError", {
+            action: isUpdate ? t("whileUpdating") : t("whileCreating"),
+          })
       );
     } finally {
       setIsSubmitting(false);
@@ -359,9 +369,16 @@ export default function SixthCreateStep() {
       (uploading) => uploading
     );
     if (hasUploadingDocs) {
-      setErrors(["Yüklenmekte olan dökümanlar var, lütfen bekleyin."]);
-      if (formPanelRef.current) {
+      setErrors([t("uploadingInProgress")]);
+      // Scroll to top to see errors - handle both mobile and desktop
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (formPanelRef.current) {
         formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
       return;
     }
@@ -369,6 +386,21 @@ export default function SixthCreateStep() {
     // Submit the hotel creation or update
     submitHotelCreation();
   };
+
+  // Add scroll reset effect when step changes
+  useEffect(() => {
+    const scrollToTop = () => {
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (formPanelRef.current) {
+        formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+
+    scrollToTop();
+  }, []); // Empty dependency array means this runs once when component mounts
 
   return (
     <div className="bg-[#ECEBF4] flex justify-center items-start p-4 py-6 h-[calc(100vh-72px)] lg:h-[calc(100vh-96px)]">
@@ -378,15 +410,14 @@ export default function SixthCreateStep() {
           <div className="w-full md:w-[30%] mb-8 md:mb-0 md:p-6 hidden flex-col md:flex justify-between">
             <div className="">
               <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
-                Dökümanlar
+                {t("title")}
               </h1>
               <div className="mt-4 text-base text-[#595959] font-medium">
                 <p className="leading-[140%]">
-                  İlan vereceğiniz mülkün dökümanlarını yükleyin.
+                  {t("subtitle")}
                   <br />
                   <br />
-                  Dökümanları dosya olarak yükleyebilir veya link olarak
-                  ekleyebilirsiniz.
+                  {t("description")}
                 </p>
               </div>
             </div>
@@ -414,7 +445,7 @@ export default function SixthCreateStep() {
                   </div>
                   <div className="ml-3">
                     <h3 className="text-sm font-medium text-red-800">
-                      Lütfen aşağıdaki hataları düzeltin:
+                      {t("fixErrors")}
                     </h3>
                     <div className="mt-2 text-sm text-red-700">
                       <ul className="list-disc pl-5 space-y-1">
@@ -440,7 +471,7 @@ export default function SixthCreateStep() {
                   </div>
                   <div className="ml-3">
                     <h3 className="text-sm font-medium text-red-800">
-                      İlan oluşturma hatası:
+                      {t("creationError")}
                     </h3>
                     <div className="mt-2 text-sm text-red-700">
                       {submitError}
@@ -460,7 +491,7 @@ export default function SixthCreateStep() {
                 return (
                   <div key={index} className="mb-8">
                     <h2 className="font-bold text-[16px] mb-4 text-[#262626]">
-                      {docType.tr}
+                      {t(`documentTypes.${docType.tKey}`)}
                     </h2>
 
                     {/* Link input */}
@@ -468,7 +499,7 @@ export default function SixthCreateStep() {
                       <img src="/link-angled.png" className="w-6 h-6" />
                       <input
                         className="border border-[#D9D9D9] rounded-[16px] p-4 flex items-center gap-2 w-full text-[#8C8C8C] pl-12 pr-12 -ml-10 placeholder:text-gray-400 text-[14px] font-medium"
-                        placeholder="Dosya linkini girin"
+                        placeholder={t("linkPlaceholder")}
                         value={isLink ? documentLinks[docKey] : ""}
                         onChange={(e) =>
                           handleDocumentLink(docType, e.target.value)
@@ -551,7 +582,7 @@ export default function SixthCreateStep() {
                               ></path>
                             </svg>
                             <span className="text-sm text-gray-600">
-                              Yükleniyor...
+                              {t("uploading")}
                             </span>
                           </div>
                         ) : hasDocument ? (
@@ -571,7 +602,7 @@ export default function SixthCreateStep() {
                               />
                             </svg>
                             <p className="text-sm text-green-600">
-                              Dosya yüklendi
+                              {t("fileUploaded")}
                             </p>
                             <button
                               type="button"
@@ -625,12 +656,12 @@ export default function SixthCreateStep() {
                               } transition-colors`}
                             >
                               {dragActive[docKey]
-                                ? "Dosyayı bırakın"
-                                : "Bilgisayardan yükle veya sürükle bırak"}
+                              ? t("dropFile")
+                              : tShared("dropzoneText")}
                             </p>
                             {dragActive[docKey] && (
                               <p className="mt-1 text-xs text-blue-500">
-                                PDF, DOC, DOCX, JPG, JPEG, PNG
+                                {t("fileTypes")}
                               </p>
                             )}
                           </>
@@ -686,10 +717,10 @@ export default function SixthCreateStep() {
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                         ></path>
                       </svg>
-                      <span>İşleniyor...</span>
+                      <span>{tAdmin("processing")}</span>
                     </div>
                   ) : (
-                    <span>{isUpdate ? "Güncelle" : "Tamamla"}</span>
+                    <span>{isUpdate ? tAdmin("update") : tAdmin("create")}</span>
                   )}
                 </button>
               </div>

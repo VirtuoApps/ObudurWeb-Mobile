@@ -5,6 +5,7 @@ import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import GeneralSelect from "@/app/components/GeneralSelect/GeneralSelect";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import axiosInstance from "@/axios";
+import { useTranslations } from "next-intl";
 
 interface Language {
   _id: string;
@@ -45,6 +46,7 @@ export default function FirstCreateStep() {
   const [errors, setErrors] = useState<string[]>([]);
   const [errorFields, setErrorFields] = useState<Set<string>>(new Set());
   const formPanelRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations("adminCreation.step1");
 
   // Use context instead of local state
   const {
@@ -177,41 +179,51 @@ export default function FirstCreateStep() {
 
     // Check if listing type is selected
     if (!listingType || Object.keys(listingType).length === 0) {
-      newErrors.push("Lütfen ilan tipini seçin (Satılık veya Kiralık)");
+      newErrors.push(t("validationErrors.listingTypeRequired"));
       newErrorFields.add("listingType");
     }
 
     // Check if entrance type is selected
     if (!entranceType || Object.keys(entranceType).length === 0) {
-      newErrors.push("Lütfen emlak tipini seçin");
+      newErrors.push(t("validationErrors.propertyTypeRequired"));
       newErrorFields.add("entranceType");
     }
 
     // Check if housing type is selected
     if (!housingType || Object.keys(housingType).length === 0) {
-      newErrors.push("Lütfen kategori seçin");
+      newErrors.push(t("validationErrors.categoryRequired"));
       newErrorFields.add("housingType");
     }
 
     // Check titles in both languages
     if (!title?.tr || title.tr.trim() === "") {
-      newErrors.push("İlan başlığını (Türkçe) dilinde doldurun");
+      newErrors.push(t("validationErrors.titleTurkishRequired"));
+      newErrorFields.add("title-tr");
+    }
+
+    if (title?.tr.trim().length > 80) {
+      newErrors.push("İlan başlığı (Türkçe) 80 karakterden fazla olamaz");
       newErrorFields.add("title-tr");
     }
 
     if (!title?.en || title.en.trim() === "") {
-      newErrors.push("İlan başlığını (English) dilinde doldurun");
+      newErrors.push(t("validationErrors.titleEnglishRequired"));
+      newErrorFields.add("title-en");
+    }
+
+    if (title?.en.trim().length > 80) {
+      newErrors.push("İlan başlığı (English) 80 karakterden fazla olamaz");
       newErrorFields.add("title-en");
     }
 
     // Check descriptions in both languages
     if (!description?.tr || description.tr.trim() === "") {
-      newErrors.push("İlan açıklamasını (Türkçe) dilinde doldurun");
+      newErrors.push(t("validationErrors.descriptionTurkishRequired"));
       newErrorFields.add("description-tr");
     }
 
     if (!description?.en || description.en.trim() === "") {
-      newErrors.push("İlan açıklamasını (English) dilinde doldurun");
+      newErrors.push(t("validationErrors.descriptionEnglishRequired"));
       newErrorFields.add("description-en");
     }
 
@@ -242,9 +254,15 @@ export default function FirstCreateStep() {
       // Move to the next step
       setCurrentStep(2);
     } else {
-      // Scroll form panel to top to see errors
-      if (formPanelRef.current) {
+      // Scroll to top to see errors - handle both mobile and desktop
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (formPanelRef.current) {
         formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
   };
@@ -310,16 +328,14 @@ export default function FirstCreateStep() {
           <div className="w-full md:w-[30%] mb-8 md:mb-0 md:p-6 hidden flex-col md:flex justify-between">
             <div className="">
               <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
-                İlan kategorilerini belirleyin.
+                {t("title")}
               </h1>
               <div className="mt-4 text-base  text-[#595959] font-medium">
                 <p className="leading-[140%]">
-                  İlan vereceğiniz mülkün kategorilerini belirtin.
+                  {t("subtitle")}
                   <br />
                   <br />
-                  İlan Başlığı ve İlan Açıklaması için farklı dillerde
-                  yapacağınız girişler ilanın anlaşılırlığını artıracaktır gibi
-                  bir açıklama metni.
+                  {t("description")}
                 </p>
               </div>
             </div>
@@ -332,7 +348,6 @@ export default function FirstCreateStep() {
           {/* Right Form Panel - 70% width on desktop */}
           <div
             ref={formPanelRef}
-            // className="w-full md:w-[70%] overflow-auto md:border-l md:border-[#F0F0F0] h-full"
             className="flex-1 h-full flex flex-col"
           >
             {/* Errors display */}
@@ -347,7 +362,7 @@ export default function FirstCreateStep() {
                   </div>
                   <div className="ml-3">
                     <h3 className="text-sm font-medium text-red-800">
-                      Lütfen aşağıdaki hataları düzeltin:
+                      {t("fixErrors")}
                     </h3>
                     <div className="mt-2 text-sm text-red-700">
                       <ul className="list-disc pl-5 space-y-1">
@@ -365,13 +380,13 @@ export default function FirstCreateStep() {
               {/* Sale or Rent - Dropdown, Property Type - Dropdown, Category - Dropdown: Tek satırda yan yana */}
               <div className="mb-6">
                 <h2 className="mb-4 text-[#262626] text-2xl font-bold">
-                  İlan Kategorileri
+                  {t("categoriesTitle")}
                 </h2>
                 <div className="flex flex-col lg:flex-row gap-4 w-full">
                   {/* İlan Tipi */}
                   <div className="flex-1 min-w-[180px]">
                     <span className="block font-semibold mb-2 text-[#262626] text-base">
-                      İlan Tipi
+                      {t("listingType")}
                     </span>
                     <GeneralSelect
                       selectedItem={
@@ -383,7 +398,7 @@ export default function FirstCreateStep() {
                         setListingType(item?.value ?? null);
                       }}
                       options={listingTypeOptions}
-                      defaultText="İlan Tipi Seçin"
+                      defaultText={t("selectListingType")}
                       extraClassName={`h-[56px] rounded-[16px] w-full text-[#595959] bg-white border ${
                         errorFields.has("listingType")
                           ? "border-[#EF1A28]"
@@ -396,7 +411,7 @@ export default function FirstCreateStep() {
                   {/* Emlak Tipi */}
                   <div className="flex-1 min-w-[180px]">
                     <span className="block font-semibold mb-2 text-[#262626] text-base">
-                      Emlak Tipi
+                      {t("propertyType")}
                     </span>
                     <GeneralSelect
                       selectedItem={
@@ -409,7 +424,7 @@ export default function FirstCreateStep() {
                         setHousingType(null); // Reset housing type when property type changes
                       }}
                       options={propertyTypeOptions}
-                      defaultText={"Emlak Tipi Seçin"}
+                      defaultText={t("selectPropertyType")}
                       extraClassName={`h-[56px] rounded-[16px] w-full text-[#595959] bg-white border ${
                         errorFields.has("entranceType")
                           ? "border-[#EF1A28]"
@@ -422,7 +437,7 @@ export default function FirstCreateStep() {
                   {/* Kategori */}
                   <div className="flex-1 min-w-[180px]">
                     <span className="block font-semibold mb-2 text-[#262626] text-base">
-                      Kategori
+                      {t("category")}
                     </span>
                     <GeneralSelect
                       selectedItem={
@@ -434,7 +449,7 @@ export default function FirstCreateStep() {
                         handleCategorySelect(item?.value ?? null);
                       }}
                       options={entranceType ? filteredCategoryOptions : []}
-                      defaultText={"Kategori Seçin"}
+                      defaultText={t("selectCategory")}
                       extraClassName={`h-[56px] !rounded-[16px] w-full text-[#595959] bg-white border ${
                         entranceType ? "text-[#262626]" : "text-[#8c8c8c]"
                       } ${housingType ? "hover:text-[#595959]" : ""} ${
@@ -455,13 +470,13 @@ export default function FirstCreateStep() {
                 {/* Turkish Title */}
 
                 <h2 className="font-bold mb-4 text-[#262626] text-2xl">
-                  İlan Başlığı ve Açıklaması
+                  {t("titleAndDescription")}
                 </h2>
                 <div>
                   <h3 className="font-semibold text-base mb-4 text-[#262626]">
-                    Türkçe{" "}
+                    {t("turkish")}{" "}
                     <span className="text-[#595959] text-base font-normal">
-                      Zorunlu
+                      {t("required")}
                     </span>
                   </h3>
                   <div className="space-y-4">
@@ -480,7 +495,7 @@ export default function FirstCreateStep() {
                           "title",
                           "tr"
                         )} h-[56px] !rounded-[16px] text-[14px]`}
-                        placeholder="İlan Başlığı"
+                        placeholder={t("titlePlaceholder")}
                       />
                     </div>
 
@@ -498,7 +513,7 @@ export default function FirstCreateStep() {
                           "description",
                           "tr"
                         )} !rounded-[16px] text-[14px]`}
-                        placeholder="İlan Açıklaması"
+                        placeholder={t("descriptionPlaceholder")}
                       />
                     </div>
                   </div>
@@ -507,9 +522,9 @@ export default function FirstCreateStep() {
                 {/* English Title */}
                 <div>
                   <h3 className="font-semibold text-base mb-4 text-[#262626]">
-                    English{" "}
+                    {t("english")}{" "}
                     <span className="text-[#595959] text-base font-normal">
-                      Zorunlu
+                      {t("required")}
                     </span>
                   </h3>
                   <div className="space-y-4">
@@ -528,7 +543,7 @@ export default function FirstCreateStep() {
                           "title",
                           "en"
                         )} h-[56px] !rounded-[16px] text-[14px]`}
-                        placeholder="Title"
+                        placeholder={t("titleEnglishPlaceholder")}
                       />
                     </div>
 
@@ -546,7 +561,7 @@ export default function FirstCreateStep() {
                           "description",
                           "en"
                         )} !rounded-[16px] text-[14px]`}
-                        placeholder="Description"
+                        placeholder={t("descriptionEnglishPlaceholder")}
                       />
                     </div>
                   </div>
@@ -562,14 +577,14 @@ export default function FirstCreateStep() {
                   onClick={() => window.history.back()}
                   className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-600 font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition border border-gray-300"
                 >
-                  Vazgeç
+                  {t("cancel")}
                 </button>
                 <button
                   type="button"
                   onClick={handleContinue}
                   className="cursor-pointer w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
                 >
-                  Devam Et
+                  {t("continue")}
                   <ChevronRightIcon className="w-5 h-5 hidden sm:block" />
                 </button>
               </div>

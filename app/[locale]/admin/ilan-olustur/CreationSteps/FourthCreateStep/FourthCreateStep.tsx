@@ -15,6 +15,7 @@ import Image from "next/image";
 import axiosInstance from "@/axios";
 import { infrastructureFeatures } from "../../../../../utils/infrastructureFeatures";
 import { useListingForm } from "../CreationSteps";
+import { useTranslations } from "next-intl";
 import { views } from "../../../../../utils/views";
 
 interface Feature {
@@ -67,6 +68,7 @@ interface OrientationOption {
 }
 
 export default function FourthCreateStep() {
+  const t = useTranslations("adminCreation.step4");
   const formPanelRef = useRef<HTMLDivElement>(null);
   const [features, setFeatures] = useState<Feature[]>([]);
   const [distanceTypes, setDistanceTypes] = useState<DistanceType[]>([]);
@@ -248,13 +250,13 @@ export default function FourthCreateStep() {
           setNewDistanceTypeId("");
           setNewDistanceValue("");
         } else {
-          setErrors(["Bu uzaklık tipi zaten eklenmiş"]);
+          setErrors([t("validation.distanceTypeExists")]);
         }
       } else {
-        setErrors(["Lütfen geçerli bir uzaklık değeri girin"]);
+        setErrors([t("validation.invalidDistanceValue")]);
       }
     } else {
-      setErrors(["Lütfen uzaklık tipi ve değeri girin"]);
+      setErrors([t("validation.distanceTypeAndValueRequired")]);
     }
   };
 
@@ -355,7 +357,7 @@ export default function FourthCreateStep() {
 
     // Optional: Check if at least one feature is selected
     if (featureIds.length === 0 && entranceType?.tr !== "Arsa") {
-      newErrors.push("En az bir özellik seçmelisiniz");
+      newErrors.push(t("validation.atLeastOneFeature"));
     }
 
     return newErrors;
@@ -377,9 +379,15 @@ export default function FourthCreateStep() {
       // Move to the next step
       setCurrentStep(5);
     } else {
-      // Scroll form panel to top to see errors
-      if (formPanelRef.current) {
+      // Scroll to top to see errors - handle both mobile and desktop
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (formPanelRef.current) {
         formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
   };
@@ -439,6 +447,21 @@ export default function FourthCreateStep() {
     setCurrentStep(3);
   };
 
+  // Add scroll reset effect when step changes
+  useEffect(() => {
+    const scrollToTop = () => {
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (formPanelRef.current) {
+        formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+
+    scrollToTop();
+  }, []); // Empty dependency array means this runs once when component mounts
+
   return (
     <div className="bg-[#ECEBF4] flex justify-center items-start p-4 py-6 h-[calc(100vh-72px)] lg:h-[calc(100vh-96px)]">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white h-full">
@@ -447,14 +470,11 @@ export default function FourthCreateStep() {
           <div className="w-full md:w-[30%] mb-8 md:mb-0 md:p-6 hidden flex-col md:flex justify-between">
             <div className="">
               <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
-                İlanın özelliklerini ve çevresel bilgilerini ekleyin.
+                {t("title")}
               </h1>
               <div className="mt-4 text-base text-[#595959] font-medium">
                 <p className="leading-[140%]">
-                  Bu adımda, mülkünüzün sahip olduğu iç, dış ve genel
-                  özellikleri, manzarayı, cepheyi ve çevresindeki önemli
-                  noktalara olan uzaklıkları belirtebilirsiniz. Detaylı bilgi,
-                  ilanı daha çekici kılar.
+                  {t("description")}
                 </p>
               </div>
             </div>
@@ -482,7 +502,7 @@ export default function FourthCreateStep() {
                     </div>
                     <div className="ml-3">
                       <h3 className="text-sm font-medium text-red-800">
-                        Lütfen aşağıdaki hataları düzeltin:
+                        {t("fixErrors")}
                       </h3>
                       <div className="mt-2 text-sm text-red-700">
                         <ul className="list-disc pl-5 space-y-1">
@@ -501,7 +521,7 @@ export default function FourthCreateStep() {
                 {entranceType?.tr !== "Arsa" && (
                   <div>
                     <h2 className="font-bold mb-4 text-[#262626] text-[16px]">
-                      Cephe
+                      {t("facade")}
                     </h2>
                     <div className="flex flex-wrap gap-2">
                       {orientationOptions.map((option) => (
@@ -548,7 +568,7 @@ export default function FourthCreateStep() {
                 {/* Interior Features */}
                 {entranceType?.tr !== "Arsa" && (
                   <FeatureSection
-                    title="İç Özellikler"
+                    title={t("interiorFeatures")}
                     features={insideFeatures}
                   />
                 )}
@@ -556,7 +576,7 @@ export default function FourthCreateStep() {
                 {/* Exterior Features */}
                 {entranceType?.tr !== "Arsa" && (
                   <FeatureSection
-                    title="Dış Özellikler"
+                    title={t("exteriorFeatures")}
                     features={outsideFeatures}
                   />
                 )}
@@ -564,7 +584,7 @@ export default function FourthCreateStep() {
                 {/* Elderly and Disabled Features */}
                 {entranceType?.tr !== "Arsa" && (
                   <FeatureSection
-                    title="Engelliye ve Yaşlıya Yönelik Özellikler"
+                    title={t("elderlyDisabledFeatures")}
                     features={elderlyDisabledFeatures}
                   />
                 )}
@@ -575,7 +595,7 @@ export default function FourthCreateStep() {
                     {" "}
                     <div className="mt-6">
                       <h2 className="font-semibold mb-4 text-[#262626]">
-                        Altyapı Özellikleri
+                        {t("infrastructureFeatures")}
                       </h2>
                       <div className="flex flex-wrap gap-2">
                         {Object.entries(infrastructureFeatures).map(
@@ -618,7 +638,7 @@ export default function FourthCreateStep() {
                     {/* View (Manzara) Section */}
                     <div className="mt-8">
                       <h2 className="font-semibold mb-4 text-[#262626]">
-                        Manzara
+                        {t("view")}
                       </h2>
                       <div className="flex flex-wrap gap-4">
                         {Object.entries(views).map(([key, view]) => {
@@ -657,10 +677,10 @@ export default function FourthCreateStep() {
                 {/* Distances */}
                 <div>
                   <h2 className="text-[16px] font-bold text-[#181818]">
-                    Lokasyon Özellikleri
+                    {t("locationFeatures")}
                   </h2>
                   <p className="text-[14px] text-[#6C6C6C] mb-4">
-                    Gayrimenkulün merkezi lokasyonlara olan uzaklığını belirtin.
+                    {t("locationFeaturesDescription")}
                   </p>
 
                   {/* Add new distance form */}
@@ -687,7 +707,7 @@ export default function FourthCreateStep() {
                               }))}
                             value={newDistanceTypeId}
                             onChange={(value) => setNewDistanceTypeId(value)}
-                            placeholder="Uzaklık Tipi"
+                            placeholder={t("distanceType")}
                           />
                         </div>
                         <div className="w-full">
@@ -696,7 +716,7 @@ export default function FourthCreateStep() {
                             step="0.1"
                             min="0"
                             className="w-full h-[56px] px-4 border border-[#E2E2E2] rounded-[16px] placeholder:text-gray-400 text-gray-700 focus:outline-none focus:border-[#5D568D] text-[14px]"
-                            placeholder="Lokasyona olan uzaklığı yazın (Km)"
+                            placeholder={t("distancePlaceholder")}
                             value={newDistanceValue}
                             onChange={(e) =>
                               setNewDistanceValue(e.target.value)
@@ -709,12 +729,12 @@ export default function FourthCreateStep() {
                           className="px-6 py-2 bg-[#5D568D] text-white rounded-lg flex items-center justify-center gap-2 hover:bg-[#4A4570] transition-colors cursor-pointer"
                         >
                           <PlusIcon className="h-5 w-5" />
-                          Ekle
+                          {t("add")}
                         </button>
                       </>
                     ) : (
                       <div className="text-center py-4 text-gray-500">
-                        <p>Tüm lokasyon tipleri eklenmiştir.</p>
+                        <p>{t("allDistanceTypesAdded")}</p>
                       </div>
                     )}
                   </div>
@@ -780,14 +800,14 @@ export default function FourthCreateStep() {
                   onClick={handleBack}
                   className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-600 font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition border border-gray-300"
                 >
-                  Geri
+                  {t("cancel")}
                 </button>
                 <button
                   type="button"
                   onClick={handleContinue}
                   className="cursor-pointer w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
                 >
-                  Devam Et
+                  {t("continue")}
                   <ChevronRightIcon className="w-5 h-5 hidden sm:block" />
                 </button>
               </div>

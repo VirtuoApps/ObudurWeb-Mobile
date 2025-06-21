@@ -109,7 +109,7 @@ export default function LoginForm({
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg p-6 w-full max-w-md mx-4"
+        className="bg-white rounded-[24px] p-6 w-full max-w-md mx-4"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex flex-row items-center justify-between mb-6">
@@ -117,7 +117,7 @@ export default function LoginForm({
             {t("title")}
           </h2>
           <button
-            className="text-gray-500 hover:text-gray-700"
+            className="text-[#262626] hover:text-gray-700 cursor-pointer"
             onClick={onClose}
           >
             <XMarkIcon className="w-6 h-6" />
@@ -140,8 +140,8 @@ export default function LoginForm({
               type="email"
               placeholder={t("emailPlaceholder")}
               {...register("email")}
-              className={`w-full px-3 py-2 pl-1 border-b outline-none text-gray-600  placeholder:text-gray-400 ${
-                errors.email ? "border-red-500" : "border-gray-300"
+              className={`w-full rounded-[16px] h-14 border py-2 px-3 text-[#262626] focus:outline-none focus:ring-none placeholder:text-gray-400 ${
+                errors.email ? "border-red-500" : "border-[#D9D9D9]"
               }`}
             />
             {errors.email && (
@@ -157,7 +157,7 @@ export default function LoginForm({
               type="password"
               placeholder={t("passwordPlaceholder")}
               {...register("password")}
-              className={`w-full px-3 py-2 pl-1 border-b placeholder:text-gray-400 text-gray-600 outline-none  ${
+              className={`w-full rounded-[16px] h-14 border py-2 px-3 text-[#262626] focus:outline-none focus:ring-none placeholder:text-gray-400 outline-none  ${
                 errors.password ? "border-red-500" : "border-gray-300"
               }`}
             />

@@ -158,7 +158,7 @@ export default async function ResidentPage({
   return (
     <ClientWrapper hotelData={hotelData} locale={currentLocale}>
       <div className="hidden min-[1240px]:block">
-      <Header />
+        <Header />
       </div>
       <div className="w-full block min-[1240px]:hidden">
         <SimpleHeader showBackButton showFavoriteButton />

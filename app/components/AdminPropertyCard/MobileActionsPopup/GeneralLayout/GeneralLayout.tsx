@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslations } from "next-intl";
 
 interface Price {
   amount: number;
@@ -60,6 +61,7 @@ export default function GeneralLayout({
   onLocationClick,
   onClose,
 }: GeneralLayoutProps) {
+  const t = useTranslations("adminInterface");
   const shouldShowPause = property.isPublished;
   const shouldShowPublish = !property.isPublished;
 
@@ -72,7 +74,7 @@ export default function GeneralLayout({
   return (
     <>
       <div className="flex flex-row items-center justify-between">
-        <p className="font-bold text-2xl text-[#262626]">İşlemler</p>
+        <p className="font-bold text-2xl text-[#262626]">{t("actions")}</p>
 
         <img
           src="/close-button-ani.png"
@@ -88,7 +90,7 @@ export default function GeneralLayout({
             onClick={onPause}
           >
             <img src="/pause-icon.png" className="w-6 h-6" />
-            <p className="text-base font-medium text-[#FA9441]">Duraklat</p>
+            <p className="text-base font-medium text-[#FA9441]">{t("pause")}</p>
           </div>
         )}
 
@@ -98,7 +100,9 @@ export default function GeneralLayout({
             onClick={onPause}
           >
             <img src="/publish-icon.png" className="w-6 h-6" />
-            <p className="text-base font-medium text-[#1EB173]">Yayınla</p>
+            <p className="text-base font-medium text-[#1EB173]">
+              {t("publish")}
+            </p>
           </div>
         )}
 
@@ -107,7 +111,7 @@ export default function GeneralLayout({
           onClick={() => onEdit(property._id)}
         >
           <img src="/edit-contained.png" className="w-6 h-6" />
-          <p className="text-base font-medium text-[#262626]">Düzenle</p>
+          <p className="text-base font-medium text-[#262626]">{t("edit")}</p>
         </div>
 
         <div
@@ -115,7 +119,7 @@ export default function GeneralLayout({
           onClick={onShare}
         >
           <img src="/share.png" className="w-6 h-6" />
-          <p className="text-base font-medium text-[#262626]">Paylaş</p>
+          <p className="text-base font-medium text-[#262626]">{t("share")}</p>
         </div>
       </div>
 
@@ -125,7 +129,7 @@ export default function GeneralLayout({
       >
         <img src="/marker-02.png" className="w-6 h-6" />
         <p className="text-base font-medium text-[#262626] ml-4">
-          Haritada Gör
+          {t("viewOnMap")}
         </p>
       </div>
 
@@ -134,7 +138,9 @@ export default function GeneralLayout({
         onClick={onDelete}
       >
         <img src="/trash-01.png" className="w-6 h-6" />
-        <p className="text-base font-medium text-[#F24853] ml-4">İlanı Sil</p>
+        <p className="text-base font-medium text-[#F24853] ml-4">
+          {t("deleteListing")}
+        </p>
       </div>
 
       <div className="mt-auto flex flex-row items-center gap-3">
@@ -142,7 +148,7 @@ export default function GeneralLayout({
           className="bg-[#FCFCFC] rounded-2xl border border-[#BFBFBF] h-[54px] w-full"
           onClick={onClose}
         >
-          <p className="text-[#262626] text-base font-medium">Kapat</p>
+          <p className="text-[#262626] text-base font-medium">{t("close")}</p>
         </button>
       </div>
     </>

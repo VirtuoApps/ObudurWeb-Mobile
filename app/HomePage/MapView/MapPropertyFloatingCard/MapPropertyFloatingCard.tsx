@@ -1,5 +1,5 @@
 import { AppDispatch, RootState } from "@/app/store/store";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   addToFavorites,
   removeFromFavorites,
@@ -13,6 +13,7 @@ import FloorCountIcon from "@/app/svgIcons/FloorCountIcon";
 import LikeIcon from "@/app/svgIcons/likeIcon";
 import { useRouter } from "@/app/utils/router";
 import { useTranslations } from "next-intl";
+import Bowser from "bowser";
 
 interface MapPropertyFloatingCardProps {
   isVisible: boolean;
@@ -71,6 +72,8 @@ export default function MapPropertyFloatingCard({
   const favorites = useSelector(
     (state: RootState) => state.favorites.favorites
   );
+  const [browser, setBrowser] = useState<string | null>(null);
+  const [isMobileSafari, setIsMobileSafari] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -108,16 +111,30 @@ export default function MapPropertyFloatingCard({
     window.open(`/resident/${slug}`, "_blank");
   };
 
+  useEffect(() => {
+    const browser = Bowser.getParser(window.navigator.userAgent);
+    const browserName = browser.getBrowserName();
+    setBrowser(browserName);
+  }, []);
+
   if (!isVisible) return null;
 
   return (
     <>
       {/* Floating Card */}
       <div
-        className={`fixed bottom-4 left-4 right-4 bg-white rounded-lg shadow-lg transform transition-all duration-300 ease-out z-30 ${
+        className={`bg-white rounded-lg shadow-lg transform transition-all duration-300 ease-out z-30 ${
           isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+        } ${
+          browser === "Safari"
+            ? "fixed left-4 right-4"
+            : "fixed bottom-4 left-4 right-4"
         }`}
-        style={{ height: "auto", minHeight: "136px" }}
+        style={{
+          height: "auto",
+          minHeight: "136px",
+          bottom: browser === "Safari" ? "100px" : "16px",
+        }}
         onClick={handleCardClick}
       >
         {/* Content */}
@@ -208,9 +225,7 @@ export default function MapPropertyFloatingCard({
                         strokeLinejoin="round"
                       />
                     </svg>
-                    <span>
-                      {roomCount}
-                    </span>
+                    <span>{roomCount}</span>
                   </div>
 
                   <div className="w-px h-4 bg-[#D9D9D9]"></div>

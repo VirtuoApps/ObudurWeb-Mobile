@@ -6,8 +6,11 @@ import FormSection from "./FormSection/FormSection";
 import OfficesSection from "./OfficesSection/OfficesSection";
 import React from "react";
 import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
+import { useTranslations } from "next-intl";
 
 export default function contact() {
+  const t = useTranslations("contactPage");
+
   return (
     <>
       <div className="w-full h-full bg-[#ebeaf1]">
@@ -16,19 +19,16 @@ export default function contact() {
         <div className="bg-[#ebeaf1] w-full min-h-screen pt-20   max-w-[1440px] mx-auto px-4 md:px-0 pb-24 -mb-12">
           <div className="flex flex-col items-center justify-center text-center md:py-10 -mt-12 md:mt-0">
             <h1 className="  text-[24px] md:text-[56px] font-bold text-[#362C75] mb-3">
-              Obudur’a ulaşmak çok kolay!
+              {t("title")}
             </h1>
             <p className="text-[16px] md:text-[24px] text-[#262626] mb-3  md:text-left text-center">
-              Obudur, işini büyütmek isteyen bağımsız emlakçılara güvenilir bir
-              zemin sunar.
+              {t("subtitle")}
             </p>
             <p className="text-xs md:text-base text-[#595959] font-medium">
-              Eğitimden teknolojiye, pazarlamadan kurumsal kimliğe kadar her
-              adımda yanındayız.
+              {t("description1")}
             </p>
             <p className="text-xs md:text-base text-[#595959] font-medium">
-              Kendi ofisini açarken yalnız kalmak istemiyorsan, başvurunu
-              yap: aradığın o destek, O Budur.
+              {t("description2")}
             </p>
           </div>
 
@@ -51,10 +51,10 @@ export default function contact() {
             className="text-[#262626] font-extrabold text-4xl mt-20"
             id="offices-section"
           >
-            Gayrimenkül Ofislerimiz
+            {t("officesTitle")}
           </p>
           <p className="text-[#595959] text-base font-medium">
-            Obudur ile birlikte çalışan markalarımızın ofisleri.
+            {t("officesSubtitle")}
           </p>
           <OfficesSection />
         </div>

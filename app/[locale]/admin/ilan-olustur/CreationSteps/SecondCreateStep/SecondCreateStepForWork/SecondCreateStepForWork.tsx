@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { formatInputPrice, parseInputPrice } from "@/app/utils/priceFormatter";
 
 import { useListingForm } from "../../CreationSteps";
+import { useTranslations } from "next-intl";
 
 // Custom Select component that matches the design
 interface SelectOption {
@@ -114,6 +115,7 @@ export default function SecondCreateStepForWork() {
   const [selectedDuesCurrency, setSelectedDuesCurrency] =
     useState<string>("TRY");
   const formPanelRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations("adminCreation.step2_work");
 
   // Use context for form state and navigation
   const {
@@ -220,99 +222,129 @@ export default function SecondCreateStepForWork() {
 
   // Heating type options
   const heatingTypeOptions = [
-    { value: "none", label: "Yok" },
-    { value: "stove", label: "Soba" },
-    { value: "naturalGasStove", label: "Doğalgaz Sobası" },
-    { value: "floorHeater", label: "Kat Kaloriferi" },
-    { value: "naturalGasBoiler", label: "Doğalgaz (kombi)" },
-    { value: "central", label: "Merkezi" },
-    { value: "airConditioning", label: "Klima" },
-    { value: "solarEnergy", label: "Güneş Enerjisi" },
+    { value: "none", label: t("options.heatingTypes.none") },
+    { value: "stove", label: t("options.heatingTypes.stove") },
+    {
+      value: "naturalGasStove",
+      label: t("options.heatingTypes.naturalGasStove"),
+    },
+    { value: "floorHeater", label: t("options.heatingTypes.floorHeater") },
+    {
+      value: "naturalGasBoiler",
+      label: t("options.heatingTypes.naturalGasBoiler"),
+    },
+    { value: "central", label: t("options.heatingTypes.central") },
+    {
+      value: "airConditioning",
+      label: t("options.heatingTypes.airConditioning"),
+    },
+    { value: "solarEnergy", label: t("options.heatingTypes.solarEnergy") },
   ];
 
   // Source options
   const sourceOptions = [
-    { value: "fromOwner", label: "Sahibinden" },
-    { value: "fromRealEstate", label: "Emlak Ofisinden" },
-    { value: "fromConstruction", label: "İnşaat Firmasından" },
+    { value: "fromOwner", label: t("options.sources.fromOwner") },
+    { value: "fromRealEstate", label: t("options.sources.fromRealEstate") },
+    {
+      value: "fromConstruction",
+      label: t("options.sources.fromConstruction"),
+    },
   ];
 
   // Usage status options
   const usageStatusOptions = [
-    { value: "empty", label: "Boş" },
-    { value: "tenantOccupied", label: "Kiracılı" },
-    { value: "ownerOccupied", label: "Mülk Sahibi" },
+    { value: "empty", label: t("options.usageStatuses.empty") },
+    {
+      value: "tenantOccupied",
+      label: t("options.usageStatuses.tenantOccupied"),
+    },
+    {
+      value: "ownerOccupied",
+      label: t("options.usageStatuses.ownerOccupied"),
+    },
   ];
 
   // Building age options
   const buildingAgeOptions = [
-    { value: 0, label: "0" },
-    { value: 1, label: "1" },
-    { value: 2, label: "2" },
-    { value: 3, label: "3" },
-    { value: 4, label: "4" },
-    { value: 5, label: "5" },
-    { value: 10, label: "10" },
-    { value: 15, label: "15" },
-    { value: 20, label: "20+" },
+    { value: 0, label: t("options.buildingAges.0") },
+    { value: 1, label: t("options.buildingAges.1") },
+    { value: 2, label: t("options.buildingAges.2") },
+    { value: 3, label: t("options.buildingAges.3") },
+    { value: 4, label: t("options.buildingAges.4") },
+    { value: 5, label: t("options.buildingAges.5") },
+    { value: 10, label: t("options.buildingAges.10") },
+    { value: 15, label: t("options.buildingAges.15") },
+    { value: 20, label: t("options.buildingAges.20+") },
   ];
 
   // Boolean options
   const booleanOptions = [
-    { value: "true", label: "Evet" },
-    { value: "false", label: "Hayır" },
+    { value: "true", label: t("options.booleans.true") },
+    { value: "false", label: t("options.booleans.false") },
   ];
 
   const roomCountOptions = [
-    { value: 1, label: "1" },
-    { value: 2, label: "2" },
-    { value: 3, label: "3" },
-    { value: 4, label: "4" },
-    { value: 5, label: "5" },
-    { value: 6, label: "5+" },
+    { value: 1, label: t("options.roomCounts.1") },
+    { value: 2, label: t("options.roomCounts.2") },
+    { value: 3, label: t("options.roomCounts.3") },
+    { value: 4, label: t("options.roomCounts.4") },
+    { value: 5, label: t("options.roomCounts.5") },
+    { value: 6, label: t("options.roomCounts.5+") },
   ];
 
   const floorCountOptions = [
-    { value: 1, label: "1" },
-    { value: 2, label: "2" },
-    { value: 3, label: "3" },
-    { value: 4, label: "4" },
-    { value: 5, label: "5" },
-    { value: 10, label: "10" },
+    { value: 1, label: t("options.floorCounts.1") },
+    { value: 2, label: t("options.floorCounts.2") },
+    { value: 3, label: t("options.floorCounts.3") },
+    { value: 4, label: t("options.floorCounts.4") },
+    { value: 5, label: t("options.floorCounts.5") },
+    { value: 10, label: t("options.floorCounts.10") },
   ];
 
   // Floor position options
   const floorPositionOptions = [
-    { tr: "Kot 4", en: "Level 4 Basement" },
-    { tr: "Kot 3", en: "Level 3 Basement" },
-    { tr: "Kot 2", en: "Level 2 Basement" },
-    { tr: "Kot 1", en: "Level 1 Basement" },
-    { tr: "Zemin Kat", en: "Ground Floor" },
-    { tr: "Bodrum Kat", en: "Basement Floor" },
-    { tr: "Bahçe Katı", en: "Garden Floor" },
-    { tr: "Giriş", en: "Entrance" },
-    { tr: "Yüksek Giriş", en: "High Entrance" },
-    { tr: "Çatı Katı", en: "Roof Floor" },
-    { tr: "1", en: "1" },
-    { tr: "2", en: "2" },
-    { tr: "3", en: "3" },
-    { tr: "4", en: "4" },
-    { tr: "5", en: "5" },
-    { tr: "6", en: "6" },
-    { tr: "7", en: "7" },
-    { tr: "8", en: "8" },
-    { tr: "9", en: "9" },
-    { tr: "10", en: "10" },
-    { tr: "11", en: "11" },
-    { tr: "12", en: "12" },
-    { tr: "13", en: "13" },
-    { tr: "14", en: "14" },
-    { tr: "15", en: "15" },
-    { tr: "16", en: "16" },
-    { tr: "17", en: "17" },
-    { tr: "18", en: "18" },
-    { tr: "19", en: "19" },
-    { tr: "20+", en: "20+" },
+    {
+      tr: t("options.floorPositions.level4Basement"),
+      en: "Level 4 Basement",
+    },
+    {
+      tr: t("options.floorPositions.level3Basement"),
+      en: "Level 3 Basement",
+    },
+    {
+      tr: t("options.floorPositions.level2Basement"),
+      en: "Level 2 Basement",
+    },
+    {
+      tr: t("options.floorPositions.level1Basement"),
+      en: "Level 1 Basement",
+    },
+    { tr: t("options.floorPositions.groundFloor"), en: "Ground Floor" },
+    { tr: t("options.floorPositions.basementFloor"), en: "Basement Floor" },
+    { tr: t("options.floorPositions.gardenFloor"), en: "Garden Floor" },
+    { tr: t("options.floorPositions.entrance"), en: "Entrance" },
+    { tr: t("options.floorPositions.highEntrance"), en: "High Entrance" },
+    { tr: t("options.floorPositions.roofFloor"), en: "Roof Floor" },
+    { tr: t("options.floorPositions.1"), en: "1" },
+    { tr: t("options.floorPositions.2"), en: "2" },
+    { tr: t("options.floorPositions.3"), en: "3" },
+    { tr: t("options.floorPositions.4"), en: "4" },
+    { tr: t("options.floorPositions.5"), en: "5" },
+    { tr: t("options.floorPositions.6"), en: "6" },
+    { tr: t("options.floorPositions.7"), en: "7" },
+    { tr: t("options.floorPositions.8"), en: "8" },
+    { tr: t("options.floorPositions.9"), en: "9" },
+    { tr: t("options.floorPositions.10"), en: "10" },
+    { tr: t("options.floorPositions.11"), en: "11" },
+    { tr: t("options.floorPositions.12"), en: "12" },
+    { tr: t("options.floorPositions.13"), en: "13" },
+    { tr: t("options.floorPositions.14"), en: "14" },
+    { tr: t("options.floorPositions.15"), en: "15" },
+    { tr: t("options.floorPositions.16"), en: "16" },
+    { tr: t("options.floorPositions.17"), en: "17" },
+    { tr: t("options.floorPositions.18"), en: "18" },
+    { tr: t("options.floorPositions.19"), en: "19" },
+    { tr: t("options.floorPositions.20+"), en: "20+" },
   ];
 
   // Helper function to get error styling for fields
@@ -339,54 +371,54 @@ export default function SecondCreateStepForWork() {
     const tryPrice = price?.find((p) => p.currency === "TRY");
 
     if (!usdPrice || usdPrice.amount <= 0) {
-      newErrors.push("Lütfen USD para biriminde fiyat belirtin");
+      newErrors.push(t("validation.priceUSD"));
       newErrorFields.add("price-usd");
     }
 
     if (!tryPrice || tryPrice.amount <= 0) {
-      newErrors.push("Lütfen TRY para biriminde fiyat belirtin");
+      newErrors.push(t("validation.priceTRY"));
       newErrorFields.add("price-try");
     }
 
     // Check area fields
     if (!projectArea || projectArea <= 0) {
-      newErrors.push("Lütfen metrekare değerini girin");
+      newErrors.push(t("validation.area"));
       newErrorFields.add("projectArea");
     }
 
     // Validate room counts for real estate (may not apply to land)
-    if (!roomCount && roomCount !== 0) {
-      newErrors.push("Lütfen bölüm / oda sayısını seçin");
+    if (!roomCount || roomCount < 0) {
+      newErrors.push(t("validation.roomCount"));
       newErrorFields.add("roomCount");
     }
 
-    if (!floorCount && floorCount !== 0) {
-      newErrors.push("Lütfen kat sayısını seçin");
+    if (!floorCount || floorCount <= 0) {
+      newErrors.push(t("validation.floorCount"));
       newErrorFields.add("floorCount");
     }
 
-    if (!buildingAge && buildingAge !== 0) {
-      newErrors.push("Lütfen bina yaşını seçin");
+    if ((!buildingAge && buildingAge !== 0) || buildingAge < 0) {
+      newErrors.push(t("validation.buildingAge"));
       newErrorFields.add("buildingAge");
     }
 
     if (!heatingType || heatingType.tr === "" || heatingType.en === "") {
-      newErrors.push("Lütfen ısıtma tipini seçin");
+      newErrors.push(t("validation.heatingType"));
       newErrorFields.add("heatingType");
     }
 
     if (!source || source.tr === "" || source.en === "") {
-      newErrors.push("Lütfen kimden bilgisini seçin");
+      newErrors.push(t("validation.source"));
       newErrorFields.add("source");
     }
 
     if (!usageStatus || !usageStatus.get("tr") || !usageStatus.get("en")) {
-      newErrors.push("Lütfen kullanım durumunu seçin");
+      newErrors.push(t("validation.usageStatus"));
       newErrorFields.add("usageStatus");
     }
 
     if (!floorPosition || floorPosition.tr === "" || floorPosition.en === "") {
-      newErrors.push("Lütfen bulunduğu katı seçin");
+      newErrors.push(t("validation.floorPosition"));
       newErrorFields.add("floorPosition");
     }
 
@@ -411,8 +443,14 @@ export default function SecondCreateStepForWork() {
       setCurrentStep(3);
     } else {
       // Scroll form panel to top to see errors
-      if (formPanelRef.current) {
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (formPanelRef.current) {
         formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
   };
@@ -422,6 +460,21 @@ export default function SecondCreateStepForWork() {
     setCurrentStep(1);
   };
 
+  // Add scroll reset effect when component mounts
+  useEffect(() => {
+    const scrollToTop = () => {
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (formPanelRef.current) {
+        formPanelRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    };
+
+    scrollToTop();
+  }, []);
+
   return (
     <div className="h-[calc(100vh-72px)] lg:h-[calc(100vh-96px)] bg-[#ECEBF4] flex justify-center items-start p-4 py-6">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white h-full">
@@ -430,14 +483,11 @@ export default function SecondCreateStepForWork() {
           <div className="w-full md:w-[30%] md:p-6 hidden flex-col md:flex justify-between">
             <div>
               <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
-                İş yerinin özelliklerini belirtin.
+                {t("title")}
               </h1>
               <div className="mt-4 text-base text-[#595959] font-medium">
                 <p className="leading-[140%]">
-                  Bu adımda, iş yerinin temel özelliklerini, fiyatını ve diğer
-                  önemli detayları girebilirsiniz. Bu bilgilerin doğruluğu,
-                  potansiyel alıcı veya kiracıların ilgisini çekmek için
-                  kritiktir.
+                  {t("description")}
                 </p>
               </div>
             </div>
@@ -465,7 +515,7 @@ export default function SecondCreateStepForWork() {
                       </div>
                       <div className="ml-3">
                         <h3 className="text-sm font-medium text-red-800">
-                          Lütfen aşağıdaki hataları düzeltin:
+                          {t("fixErrors")}
                         </h3>
                         <div className="mt-2 text-sm text-red-700">
                           <ul className="list-disc pl-5 space-y-1">
@@ -484,7 +534,7 @@ export default function SecondCreateStepForWork() {
               <div className="flex flex-col sm:flex-row gap-4 mb-4">
                 <div className="w-full sm:w-1/2">
                   <label className="font-bold block mb-2 text-[#262626] text-[16px]">
-                    Fiyat (TRY)
+                    {t("priceTRY")}
                   </label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium text-[14px]">
@@ -497,14 +547,14 @@ export default function SecondCreateStepForWork() {
                       className={`w-full h-[56px] rounded-[16px] border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
                         "price-try"
                       )}`}
-                      placeholder="Fiyat yazın"
+                      placeholder={t("pricePlaceholder")}
                     />
                   </div>
                 </div>
 
                 <div className="w-full sm:w-1/2">
                   <label className="font-bold block mb-2 text-[#262626] text-[16px]">
-                    Fiyat (USD)
+                    {t("priceUSD")}
                   </label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#262626] font-medium text-[14px]">
@@ -517,7 +567,7 @@ export default function SecondCreateStepForWork() {
                       className={`w-full h-[56px] rounded-[16px] border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
                         "price-usd"
                       )}`}
-                      placeholder="Fiyat yazın"
+                      placeholder={t("pricePlaceholder")}
                     />
                   </div>
                 </div>
@@ -548,7 +598,7 @@ export default function SecondCreateStepForWork() {
                   htmlFor="projectArea"
                   className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
-                  Metrekare
+                  {t("area")}
                 </label>
                 <input
                   type="text"
@@ -564,7 +614,7 @@ export default function SecondCreateStepForWork() {
                     setProjectArea(parseFloat(validValue) || 0);
                   }}
                   className="w-full h-[56px] rounded-[16px] border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626] text-[14px]"
-                  placeholder="m²"
+                  placeholder={t("areaPlaceholder")}
                 />
               </div>
               <div className="w-full lg:w-1/3">
@@ -572,13 +622,14 @@ export default function SecondCreateStepForWork() {
                   htmlFor="roomCount"
                   className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
-                  Bölüm / Oda Sayısı
+                  {t("roomCount")}
                 </label>
                 <CustomSelect
                   options={roomCountOptions}
                   value={roomCount || 0}
                   onChange={(value) => setRoomCount(parseInt(value.toString()))}
-                  placeholder="Seçiniz"
+                  placeholder={t("selectPlaceholder")}
+                  hasError={errorFields.has("roomCount")}
                 />
               </div>
               <div className="w-full lg:w-1/3">
@@ -586,7 +637,7 @@ export default function SecondCreateStepForWork() {
                   htmlFor="floorCount"
                   className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
-                  Kat Sayısı
+                  {t("floorCount")}
                 </label>
                 <CustomSelect
                   options={floorCountOptions}
@@ -594,7 +645,8 @@ export default function SecondCreateStepForWork() {
                   onChange={(value) =>
                     setFloorCount(parseInt(value.toString()))
                   }
-                  placeholder="Seçiniz"
+                  placeholder={t("selectPlaceholder")}
+                  hasError={errorFields.has("floorCount")}
                 />
               </div>
             </div>
@@ -606,7 +658,7 @@ export default function SecondCreateStepForWork() {
                   htmlFor="floorPosition"
                   className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
-                  Bulunduğu Kat
+                  {t("floorPosition")}
                 </label>
                 <CustomSelect
                   options={floorPositionOptions.map((option) => ({
@@ -625,7 +677,8 @@ export default function SecondCreateStepForWork() {
                       });
                     }
                   }}
-                  placeholder="Seçiniz"
+                  placeholder={t("selectPlaceholder")}
+                  hasError={errorFields.has("floorPosition")}
                 />
               </div>
               <div className="w-full lg:w-1/3">
@@ -633,7 +686,7 @@ export default function SecondCreateStepForWork() {
                   htmlFor="source"
                   className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
-                  Kimden
+                  {t("source")}
                 </label>
                 <CustomSelect
                   options={sourceOptions}
@@ -662,7 +715,8 @@ export default function SecondCreateStepForWork() {
                       });
                     }
                   }}
-                  placeholder="Seçiniz"
+                  placeholder={t("selectPlaceholder")}
+                  hasError={errorFields.has("source")}
                 />
               </div>
               <div className="w-full lg:w-1/3">
@@ -670,13 +724,13 @@ export default function SecondCreateStepForWork() {
                   htmlFor="exchangeable"
                   className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
-                  Takaslı
+                  {t("exchangeable")}
                 </label>
                 <CustomSelect
                   options={booleanOptions}
                   value={exchangeable ? true : false}
                   onChange={(value) => setExchangeable(value as any)}
-                  placeholder="Seçiniz"
+                  placeholder={t("selectPlaceholder")}
                 />
               </div>
             </div>
@@ -688,7 +742,7 @@ export default function SecondCreateStepForWork() {
                   htmlFor="heatingType"
                   className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
-                  Isıtma
+                  {t("heating")}
                 </label>
                 <CustomSelect
                   options={heatingTypeOptions}
@@ -727,7 +781,8 @@ export default function SecondCreateStepForWork() {
                       });
                     }
                   }}
-                  placeholder="Seçiniz"
+                  placeholder={t("selectPlaceholder")}
+                  hasError={errorFields.has("heatingType")}
                 />
               </div>
               <div className="w-full lg:w-1/3">
@@ -735,7 +790,7 @@ export default function SecondCreateStepForWork() {
                   htmlFor="usageStatus"
                   className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
-                  Kullanım Durumu
+                  {t("usageStatus")}
                 </label>
                 <CustomSelect
                   options={usageStatusOptions}
@@ -766,7 +821,8 @@ export default function SecondCreateStepForWork() {
                       setUsageStatus(usageMap);
                     }
                   }}
-                  placeholder="Seçiniz"
+                  placeholder={t("selectPlaceholder")}
+                  hasError={errorFields.has("usageStatus")}
                 />
               </div>
               <div className="w-full lg:w-1/3">
@@ -774,7 +830,7 @@ export default function SecondCreateStepForWork() {
                   htmlFor="buildingAge"
                   className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
-                  Bina Yaşı
+                  {t("buildingAge")}
                 </label>
                 <CustomSelect
                   options={buildingAgeOptions}
@@ -782,7 +838,8 @@ export default function SecondCreateStepForWork() {
                   onChange={(value) =>
                     setBuildingAge(parseInt(value.toString()))
                   }
-                  placeholder="Seçiniz"
+                  placeholder={t("selectPlaceholder")}
+                  hasError={errorFields.has("buildingAge")}
                 />
               </div>
             </div>
@@ -794,19 +851,19 @@ export default function SecondCreateStepForWork() {
                   htmlFor="creditEligible"
                   className="font-bold block mb-2 text-[#262626] text-[16px]"
                 >
-                  Krediye Uygunluk
+                  {t("creditEligible")}
                 </label>
                 <CustomSelect
                   options={booleanOptions}
                   value={creditEligible ? true : false}
                   onChange={(value) => setCreditEligible(value as any)}
-                  placeholder="Seçiniz"
+                  placeholder={t("selectPlaceholder")}
                   openUpward={true}
                 />
               </div>
               <div className="w-full lg:w-1/2">
                 <label className="font-bold block mb-2 text-[#262626] text-[16px]">
-                  Aidat
+                  {t("dues")}
                 </label>
                 <div className="flex gap-2">
                   <div className="w-24">
@@ -831,7 +888,7 @@ export default function SecondCreateStepForWork() {
                         handleDuesChange(selectedDuesCurrency, e.target.value)
                       }
                       className="w-full h-[56px] rounded-[16px] border border-gray-300 px-4 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#6656AD]/40 text-[#262626]"
-                      placeholder="Fiyat yazın"
+                      placeholder={t("pricePlaceholder")}
                     />
                   </div>
                 </div>
@@ -848,14 +905,14 @@ export default function SecondCreateStepForWork() {
                     onClick={handleBack}
                     className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-600 font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition border border-gray-300"
                   >
-                    Geri
+                    {t("cancel")}
                   </button>
                   <button
                     type="button"
                     onClick={handleContinue}
                     className="cursor-pointer w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
                   >
-                    Devam Et
+                    {t("continue")}
                     <ChevronRightIcon className="h-5 w-5 hidden sm:block" />
                   </button>
                 </div>

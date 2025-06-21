@@ -14,13 +14,60 @@ export const currencySymbols: Record<string, string> = {
  * @param currency - The currency code
  * @returns Formatted price string
  */
-export const formatPrice = (amount: number, currency: string): string => {
+export const formatPrice = (
+  amount: number,
+  currency: string,
+  isMarker: boolean = false
+): string => {
   const symbol = currencySymbols[currency] || currency;
 
   switch (currency) {
     case "TRY":
-      // Turkish formatting: Use Turkish locale for number formatting
-      return `${amount.toLocaleString("tr-TR")} ${symbol}`;
+      if (isMarker) {
+        if (amount < 1000) {
+          // Yüzler ve altı: "999 ₺"
+          return `${amount} ${symbol}`;
+        } else if (amount < 10000) {
+          // Binler: "9.500 ₺"
+          return `${amount.toLocaleString("tr-TR")} ${symbol}`;
+        } else if (amount < 100000) {
+          // On Binler: "99 Bin ₺"
+          const thousands = Math.floor(amount / 1000);
+          const remainder = amount % 1000;
+          if (remainder === 0) {
+            return `${thousands} Bin ${symbol}`;
+          } else {
+            // If there's a remainder, show decimal: "99,5 Bin ₺"
+            const decimal = (amount / 1000).toFixed(1).replace(".", ",");
+            return `${decimal} Bin ${symbol}`;
+          }
+        } else if (amount < 1000000) {
+          // Yüz Binler: "999 Bin ₺"
+          const thousands = Math.floor(amount / 1000);
+          const remainder = amount % 1000;
+          if (remainder === 0) {
+            return `${thousands} Bin ${symbol}`;
+          } else {
+            // If there's a remainder, show decimal: "999,5 Bin ₺"
+            const decimal = (amount / 1000).toFixed(1).replace(".", ",");
+            return `${decimal} Bin ${symbol}`;
+          }
+        } else if (amount < 100000000) {
+          // Milyon: "9,5 M ₺"
+          const millions = (amount / 1000000).toFixed(1).replace(".", ",");
+          return `${millions} M ${symbol}`;
+        } else if (amount < 1000000000) {
+          // Yüz Milyonlar: "999,5 M ₺"
+          const millions = (amount / 1000000).toFixed(1).replace(".", ",");
+          return `${millions} M ${symbol}`;
+        } else {
+          // Milyar: "1,5 Milyar ₺"
+          const billions = (amount / 1000000000).toFixed(1).replace(".", ",");
+          return `${billions} Milyar ${symbol}`;
+        }
+      } else {
+        return `${amount.toLocaleString("tr-TR")} ${symbol}`;
+      }
 
     case "EUR":
       // European formatting: Amount followed by symbol with space
@@ -78,7 +125,10 @@ export const formatInputPrice = (amount: number, currency: string): string => {
  * @param currency - The currency code
  * @returns Parsed number value
  */
-export const parseInputPrice = (formattedValue: string, currency: string): number => {
+export const parseInputPrice = (
+  formattedValue: string,
+  currency: string
+): number => {
   if (!formattedValue || formattedValue.trim() === "") return 0;
 
   // Remove all non-numeric characters except decimal separators
@@ -116,13 +166,16 @@ export const parseInputPrice = (formattedValue: string, currency: string): numbe
  * @param currency - The currency code
  * @returns Object with formatted display value and numeric value
  */
-export const handlePriceInput = (inputValue: string, currency: string): { displayValue: string; numericValue: number } => {
+export const handlePriceInput = (
+  inputValue: string,
+  currency: string
+): { displayValue: string; numericValue: number } => {
   // Parse the current input to get numeric value
   const numericValue = parseInputPrice(inputValue, currency);
-  
+
   // Format for display
   const displayValue = formatInputPrice(numericValue, currency);
-  
+
   return { displayValue, numericValue };
 };
 
@@ -134,7 +187,8 @@ export const handlePriceInput = (inputValue: string, currency: string): { displa
  */
 export const getDisplayPrice = (
   prices: Price[],
-  selectedCurrency: string = "USD"
+  selectedCurrency: string = "USD",
+  isMarker: boolean = false
 ): string => {
   if (!prices || prices.length === 0) return "";
 
@@ -145,7 +199,7 @@ export const getDisplayPrice = (
   const usdPrice = prices.find((p) => p.currency === "USD");
   const price = selectedPrice || usdPrice || prices[0];
 
-  return formatPrice(price.amount, price.currency);
+  return formatPrice(price.amount, price.currency, isMarker);
 };
 
 /**

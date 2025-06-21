@@ -34,6 +34,8 @@ export default function Header({
   setIsFilterPopupOpen,
   setShowIsPersonalInformationFormPopup,
   resetFilters,
+  disableMapListButton = false,
+  setDisableMapListButton = () => {},
 }: {
   setFilters: (filters: FilterType) => void;
   filterOptions: FilterOptions;
@@ -50,6 +52,8 @@ export default function Header({
   setIsFilterPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setShowIsPersonalInformationFormPopup: (show: boolean) => void;
   resetFilters?: any;
+  disableMapListButton?: boolean;
+  setDisableMapListButton?: (isOpen: boolean) => void;
 }) {
   const dispatch = useDispatch();
   const t = useTranslations("header");
@@ -67,7 +71,9 @@ export default function Header({
       <header
         className={`${
           isFilterApplied ? "applied" : "not-applied"
-        } relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-0 lg:py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex ${isMobile ? "sticky top-0 z-40" : ""}`}
+        } relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-0 lg:py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex ${
+          isMobile ? "sticky top-0 z-40" : ""
+        }`}
       >
         <div className="w-full flex items-center px-4 sm:px-6 gap-3">
           <div className="xl:hidden flex items-center shrink-0 w-[32px]">
@@ -94,7 +100,10 @@ export default function Header({
           </div>
 
           <div className="flex items-center xl:hidden shrink-0">
-            <AuthBox />
+            <AuthBox
+              disableMapListButton={disableMapListButton}
+              setDisableMapListButton={setDisableMapListButton}
+            />
           </div>
         </div>
       </header>
@@ -103,7 +112,9 @@ export default function Header({
 
   return (
     <header
-      className={`relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex ${isMobile ? "sticky top-0 z-40" : ""}`}
+      className={`relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex ${
+        isMobile ? "sticky top-0 z-40" : ""
+      }`}
     >
       <div className="w-full flex items-center px-4 sm:px-6 gap-3">
         {/* Logo - Sabit genişlik */}
@@ -164,13 +175,18 @@ export default function Header({
             setShowIsPersonalInformationFormPopup={
               setShowIsPersonalInformationFormPopup
             }
+            disableMapListButton={disableMapListButton}
+            setDisableMapListButton={setDisableMapListButton}
           />
           <LanguageSwitcher />
         </div>
 
         {/* Mobile Right Side - Sabit genişlik */}
         <div className="flex items-center xl:hidden shrink-0">
-          <AuthBox />
+          <AuthBox
+            disableMapListButton={disableMapListButton}
+            setDisableMapListButton={setDisableMapListButton}
+          />
           <div className="hidden lg:flex ml-2">
             <LanguageSwitcher />
           </div>
@@ -198,7 +214,10 @@ export default function Header({
             />
           </div>
           <div className="flex flex-row justify-between gap-4">
-            <AuthBox />
+            <AuthBox
+              disableMapListButton={disableMapListButton}
+              setDisableMapListButton={setDisableMapListButton}
+            />
             <LanguageSwitcher />
           </div>
         </div>
