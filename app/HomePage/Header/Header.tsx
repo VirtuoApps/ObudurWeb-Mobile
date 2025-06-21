@@ -15,8 +15,8 @@ import MobileSearchBox from "./MobileSearchBox/MobileSearchBox";
 import { setIsFilterApplied } from "@/app/store/favoritesSlice";
 import { useAppSelector } from "@/app/store/hooks";
 import { useDeviceDetection } from "@/app/store/useDeviceDetection";
-import { useTranslations } from "next-intl";
 import { useScrollDirection } from "../../hooks/useScrollDirection";
+import { useTranslations } from "next-intl";
 
 export default function Header({
   setFilters,
@@ -141,7 +141,7 @@ export default function Header({
 
         {/* Center Navigation - Search alanı dinamik genişlik */}
         <div className="hidden xl:flex flex-1 justify-center min-w-0">
-          <div className="w-full max-w-3xl">
+          <div className="w-full max-w-[max-content]">
             <MiddleSearchBox
               setFilters={setFilters}
               filterOptions={filterOptions}

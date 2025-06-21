@@ -1,11 +1,12 @@
-import { useTranslations } from "next-intl";
-import React, { useState, useEffect } from "react";
-import ResidentBox from "../ResidentBox/ResidentBox";
-import { Hotel } from "@/types/hotel.type";
-import { formatAddress } from "@/app/utils/addressFormatter";
+import React, { useEffect, useState } from "react";
 import { getDisplayPrice, getNumericPrice } from "@/app/utils/priceFormatter";
-import { useLocale } from "next-intl";
+
 import Footer from "@/app/[locale]/resident/[slug]/Footer/Footer";
+import { Hotel } from "@/types/hotel.type";
+import ResidentBox from "../ResidentBox/ResidentBox";
+import { formatAddress } from "@/app/utils/addressFormatter";
+import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 
 // Helper function to get localized text
 export const getLocalizedText = (textObj: any, selectedLanguage: string) => {
@@ -101,7 +102,7 @@ export default function NoResultFound({
                 title={getLocalizedText(hotel.title, selectedLanguage)}
                 price={getDisplayPrice(hotel.price, selectedCurrency)}
                 bedCount={hotel.bedRoomCount.toString()}
-                floorCount={"2"}
+                floorCount={hotel.floorCount?.toString()}
                 area={`${hotel.projectArea}m2`}
                 locationText={formatAddress(hotel, selectedLanguage)}
                 image={hotel.images[0]}

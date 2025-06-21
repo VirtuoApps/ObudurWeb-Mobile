@@ -1,16 +1,17 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
-import { removeFromFavorites } from "@/app/store/favoritesSlice";
-import ResidentBox from "@/app/HomePage/ListView/ResidentBox/ResidentBox";
-import { useTranslations } from "next-intl";
-import { useLocale } from "next-intl";
+
 import { Hotel } from "@/types/hotel.type";
+import ResidentBox from "@/app/HomePage/ListView/ResidentBox/ResidentBox";
 import axiosInstance from "@/axios";
 import { formatAddress } from "@/app/utils/addressFormatter";
 import { getDisplayPrice } from "@/app/utils/priceFormatter";
+import { removeFromFavorites } from "@/app/store/favoritesSlice";
+import { useLocale } from "next-intl";
+import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 // Helper function to get localized text
 export const getLocalizedText = (textObj: any, selectedLanguage: string) => {
@@ -295,7 +296,7 @@ export default function FavoritesPage() {
                 bedCount={
                   favorite.hotelDetails!.bedRoomCount?.toString() || "0"
                 }
-                floorCount={"2"}
+                floorCount={favorite.hotelDetails!.floorCount?.toString()}
                 area={`${favorite.hotelDetails!.projectArea}m2`}
                 locationText={formatAddress(
                   favorite.hotelDetails!,
@@ -339,7 +340,7 @@ export default function FavoritesPage() {
                   title={getLocalizedText(hotel.title, selectedLanguage)}
                   price={getDisplayPrice(hotel.price, selectedCurrency)}
                   bedCount={hotel.bedRoomCount?.toString() || "0"}
-                  floorCount={"2"}
+                  floorCount={hotel.floorCount?.toString()}
                   area={`${hotel.projectArea}m2`}
                   locationText={formatAddress(hotel, selectedLanguage)}
                   image={hotel.images[0]}
