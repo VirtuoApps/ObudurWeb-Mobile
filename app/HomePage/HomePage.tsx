@@ -428,6 +428,16 @@ export default function HomePage({
     });
   }
 
+  if (
+    bathroomCount !== undefined &&
+    bathroomCount !== null &&
+    +bathroomCount > 0
+  ) {
+    filteredHotels = filteredHotels.filter((hotel) => {
+      return hotel.bathroomCount === +bathroomCount;
+    });
+  }
+
   if (filters) {
     if (filters.propertyType) {
       filteredHotels = filteredHotels.filter((hotel) =>
@@ -475,16 +485,6 @@ export default function HomePage({
     console.log({
       roomCount: filters.roomCount,
     });
-
-    if (
-      filters.bathroomCount !== undefined &&
-      filters.bathroomCount !== null &&
-      filters.bathroomCount > 0
-    ) {
-      filteredHotels = filteredHotels.filter((hotel) => {
-        return hotel.bathroomCount === filters.bathroomCount;
-      });
-    }
 
     if (
       filters.minProjectArea !== undefined &&
