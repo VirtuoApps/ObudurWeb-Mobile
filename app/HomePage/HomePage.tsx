@@ -472,6 +472,34 @@ export default function HomePage({
     });
   }
 
+  if (interiorFeatures.length > 0) {
+    filteredHotels = filteredHotels.filter((hotel) => {
+      return interiorFeatures.every((feature) =>
+        hotel.featureIds.includes(feature._id)
+      );
+    });
+  }
+
+  if (selectedExteriorFeatures.length > 0) {
+    filteredHotels = filteredHotels.filter((hotel) => {
+      return selectedExteriorFeatures.every((feature) =>
+        hotel.featureIds.includes(feature._id)
+      );
+    });
+  }
+
+  console.log({
+    selectedAccessibilityFeatures,
+  });
+
+  if (selectedAccessibilityFeatures.length > 0) {
+    filteredHotels = filteredHotels.filter((hotel) => {
+      return selectedAccessibilityFeatures.every((feature) =>
+        hotel.featureIds.includes(feature._id)
+      );
+    });
+  }
+
   if (filters) {
     if (filters.propertyType) {
       filteredHotels = filteredHotels.filter((hotel) =>
@@ -539,6 +567,10 @@ export default function HomePage({
         return hotel.projectArea <= filters.maxProjectArea!;
       });
     }
+
+    console.log({
+      interiorFeatureIds: filters.interiorFeatureIds,
+    });
 
     if (filters.interiorFeatureIds && filters.interiorFeatureIds.length > 0) {
       filteredHotels = filteredHotels.filter((hotel) => {
