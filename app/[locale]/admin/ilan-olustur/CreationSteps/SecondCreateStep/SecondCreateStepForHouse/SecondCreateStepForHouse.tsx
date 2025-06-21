@@ -392,7 +392,7 @@ export default function SecondCreateStepForHouse() {
 
   const generateRoomCountOptions = (): SelectOption[] => {
     return [
-      { value: 0, label: t("options.roomCounts.studio") },
+      { value: 9999999, label: t("options.roomCounts.studio") },
       { value: 1, label: t("options.roomCounts.1+1") },
       { value: 2, label: t("options.roomCounts.2+1") },
       { value: 3, label: t("options.roomCounts.3+1") },

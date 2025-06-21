@@ -939,35 +939,20 @@ export default function FilterList({
           >
             <NewFilterItem filters={filters} setFilters={setFilters} />
             <SizeFilterItem
-              isSelected={filters?.isOnePlusOneSelected || false}
-              onToggleSelected={() =>
-                setFilters({
-                  ...filters,
-                  isOnePlusOneSelected: !filters?.isOnePlusOneSelected,
-                })
-              }
+              isSelected={+roomCount === 1}
+              onToggleSelected={() => setRoomCount(1)}
               iconUrl="/1+1.png"
               text="1+1"
             />
             <SizeFilterItem
-              isSelected={filters?.isTwoPlusOneSelected || false}
-              onToggleSelected={() =>
-                setFilters({
-                  ...filters,
-                  isTwoPlusOneSelected: !filters?.isTwoPlusOneSelected,
-                })
-              }
+              isSelected={+roomCount === 2}
+              onToggleSelected={() => setRoomCount(2)}
               iconUrl="/2+1.png"
               text="2+1"
             />
             <SizeFilterItem
-              isSelected={filters?.isThreePlusOneSelected || false}
-              onToggleSelected={() =>
-                setFilters({
-                  ...filters,
-                  isThreePlusOneSelected: !filters?.isThreePlusOneSelected,
-                })
-              }
+              isSelected={+roomCount === 3}
+              onToggleSelected={() => setRoomCount(3)}
               iconUrl="/3+1.png"
               text="3+1"
             />

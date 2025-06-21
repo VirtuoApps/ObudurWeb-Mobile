@@ -207,7 +207,7 @@ export default function FilterPopup({
 
   const generateRoomCountOptions = () => {
     return [
-      { value: 0, label: tForRoomCounts("options.roomCounts.studio") },
+      { value: 9999999, label: tForRoomCounts("options.roomCounts.studio") },
       { value: 1, label: tForRoomCounts("options.roomCounts.1+1") },
       { value: 2, label: tForRoomCounts("options.roomCounts.2+1") },
       { value: 3, label: tForRoomCounts("options.roomCounts.3+1") },
