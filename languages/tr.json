@@ -111,7 +111,7 @@
     "zoomOut": "Uzaklaştır"
   },
   "filterList": {
-    "allFilters": "Tüm Filtreler",
+    "allFilters": "{count, plural, =0 {Tüm Filtreler} other {Tüm Filtreler ({count})}}",
     "clear": "Temizle"
   },
   "viewSwitcher": {
@@ -282,6 +282,9 @@
     "description": "Konutun iç ve dış mekandaki donanımları, yapı özellikleri ve sunduğu yaşam alanları hakkında detaylı bilgiler.",
     "indoorTitle": "İç Özellikler",
     "outdoorTitle": "Dış Özellikler",
+    "facadeTitle": "Cephe",
+    "infrastructureTitle": "Altyapı Özellikleri",
+    "viewTitle": "Manzara",
     "cableTV": "Kablo Tv",
     "wifi": "Wi-Fi",
     "alarm": "Alarm",
@@ -474,7 +477,7 @@
     "noMessages": "Bu ilanla ilgili henüz mesaj yok"
   },
   "filtering": {
-    "filters": "Filtreler ({count})",
+    "filters": "{count, plural, =0 {Filtreler} other {Filtreler ({count})}}",
     "sort": "Sırala",
     "save": "Kaydet",
     "saveSearch": "Aramayı Kaydet",

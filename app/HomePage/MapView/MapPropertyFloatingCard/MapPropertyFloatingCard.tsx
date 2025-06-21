@@ -123,12 +123,8 @@ export default function MapPropertyFloatingCard({
     <>
       {/* Floating Card */}
       <div
-        className={`bg-white rounded-lg shadow-lg transform transition-all duration-300 ease-out z-30 ${
-          isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
-        } ${
-          browser === "Safari"
-            ? "fixed left-4 right-4"
-            : "fixed bottom-4 left-4 right-4"
+        className={`bg-white rounded-lg shadow-lg transform transition-all duration-300 ease-out z-30 mt-4 ${
+          isVisible ? "translate-y-0 opacity-100" : " opacity-0"
         }`}
         style={{
           height: "auto",

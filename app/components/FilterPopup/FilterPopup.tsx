@@ -227,6 +227,24 @@ export default function FilterPopup({
   const [touchStartY, setTouchStartY] = useState<number | null>(null);
   const [translateY, setTranslateY] = useState(0);
 
+  const tForRoomCounts = useTranslations("adminCreation.step2_house");
+
+  const generateRoomCountOptions = () => {
+    return [
+      { value: 9999999, label: tForRoomCounts("options.roomCounts.studio") },
+      { value: 1, label: tForRoomCounts("options.roomCounts.1+1") },
+      { value: 2, label: tForRoomCounts("options.roomCounts.2+1") },
+      { value: 3, label: tForRoomCounts("options.roomCounts.3+1") },
+      { value: 4, label: tForRoomCounts("options.roomCounts.4+1") },
+      { value: 5, label: tForRoomCounts("options.roomCounts.5+1") },
+      { value: 6, label: tForRoomCounts("options.roomCounts.6+1") },
+      { value: 7, label: tForRoomCounts("options.roomCounts.7+1") },
+      { value: 8, label: tForRoomCounts("options.roomCounts.8+1") },
+      { value: 9, label: tForRoomCounts("options.roomCounts.9+1") },
+      { value: 10, label: tForRoomCounts("options.roomCounts.10+") },
+    ];
+  };
+
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     // Only enable on mobile (screen width < 768px)
     if (window.innerWidth >= 768) return;
@@ -262,12 +280,12 @@ export default function FilterPopup({
       setTempMaxPrice(maxPrice);
       setTempMinArea(minArea);
       setTempMaxArea(maxArea);
-      setTempRoomCount(roomCount);
       setTempBathroomCount(bathroomCount);
       setTempSelectedExteriorFeatures(selectedExteriorFeatures);
       setTempInteriorFeatures(interiorFeatures);
       setTempSelectedAccessibilityFeatures(selectedAccessibilityFeatures);
       setTempSelectedFaceFeatures(selectedFaceFeatures);
+      setTempRoomCount(roomCount);
       setTempSelectedInfrastructureFeatures(selectedInfrastructureFeatures);
       setTempSelectedSceneryFeatures(selectedSceneryFeatures);
     }
@@ -1380,55 +1398,39 @@ export default function FilterPopup({
             </div>
           </div>
 
-          {tempSelectedPropertyType?.originalData?.name?.tr === "Konut" && (
-            <div className="flex flex-row justify-between gap-2">
-              {/* Room Count Section */}
-              <div className="mt-6 w-1/2">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-base font-semibold text-gray-700">
-                    {t("rooms")}
-                  </h3>
-                </div>
-                <div className="mt-3">
-                  <GeneralSelect
-                    selectedItem={
-                      tempRoomCount ? { name: tempRoomCount } : null
-                    }
-                    onSelect={(room) => {
-                      if (room) setTempRoomCount(room.value.toString());
-                      else setTempRoomCount(""); // Reset if no room selected
-                    }}
-                    options={[
-                      {
-                        name: "Stüdyo",
-                        value: 0,
-                      },
-                      {
-                        name: "1+1",
-                        value: 1,
-                      },
-                      {
-                        name: "2+1",
-                        value: 2,
-                      },
-                      {
-                        name: "3+1",
-                        value: 3,
-                      },
-                      {
-                        name: "4+1",
-                        value: 4,
-                      },
-                    ].map((room) => ({
-                      name: room.name,
-                      value: room.value,
-                      href: "#",
-                    }))}
-                    defaultText={t("roomsSelect") || "Select Room Count"}
-                    extraClassName="w-full bg-white border border-gray-200 h-[56px] text-base md:text-sm text-gray-700"
-                    popoverExtraClassName=" md:max-w-[300px] max-w-[190px]"
-                  />
-                </div>
+          <div className="flex flex-row justify-between gap-2">
+            {/* Room Count Section */}
+            <div className="mt-6 w-1/2">
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-semibold text-gray-700">
+                  {t("rooms")}
+                </h3>
+              </div>
+              <div className="mt-3">
+                <GeneralSelect
+                  selectedItem={
+                    tempRoomCount
+                      ? {
+                          name: generateRoomCountOptions().find(
+                            (option) => option.value === +tempRoomCount
+                          )?.label,
+                        }
+                      : null
+                  }
+                  onSelect={(room) => {
+                    if (room) setTempRoomCount(room.value.toString());
+                    else setTempRoomCount(""); // Reset if no room selected
+                  }}
+                  options={generateRoomCountOptions().map((room) => ({
+                    name: room.label,
+                    value: room.value,
+                    href: "#",
+                  }))}
+                  defaultText={t("roomsSelect") || "Select Room Count"}
+                  extraClassName="w-full bg-white border border-gray-200 h-[56px] text-base md:text-sm text-gray-700"
+                  popoverExtraClassName=" md:max-w-[300px] max-w-[190px]"
+                />
+
               </div>
 
               {/* Bathroom Count Section */}

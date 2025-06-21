@@ -153,7 +153,6 @@ export default function AuthBox({
     dispatch(clearUser());
     // Close dropdown
     closeDropdownHandler();
-
     window.location.href = "/";
   };
 
@@ -682,6 +681,48 @@ export default function AuthBox({
                 />
               </svg>
             </button>
+
+            <Link
+              href="/dil-para-birimi"
+              onClick={() => {
+                closeDropdownHandler();
+              }}
+              className="px-4 py-4 pt-7 text-[16px] text-[#262626] hover:bg-gray-100 flex flex-row items-center justify-between lg:hidden border-t border-[#F5F5F5]"
+            >
+              <div className="flex flex-row items-center font-medium">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-[24px] h-[24px] mr-3"
+                  stroke="#262626"
+                  strokeWidth="1.5"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="2" y1="12" x2="22" y2="12"></line>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+                {t_authBox("languageAndCurrency")}
+              </div>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="lg:hidden"
+              >
+                <path
+                  d="M9 18L15 12L9 6"
+                  stroke="#595959"
+                  strokeWidth="2"
+                  strokeLinecap="square"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </Link>
 
             <div
               className="border-b border-[#F5F5F5] my-3 lg:my-2"

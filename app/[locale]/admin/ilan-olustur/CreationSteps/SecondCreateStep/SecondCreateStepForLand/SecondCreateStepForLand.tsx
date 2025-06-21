@@ -463,6 +463,7 @@ export default function SecondCreateStepForLand() {
   }, []);
 
   return (
+
     <div className="h-[calc(100vh-72px)] lg:h-[calc(100vh-96px)] bg-[#ECEBF4] flex justify-center items-start p-4 py-6">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white h-full">
         <div className="flex flex-col md:flex-row h-full">

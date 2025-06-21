@@ -11,7 +11,7 @@ import { FilterType } from "@/types/filter.type";
 import Footer from "../[locale]/resident/[slug]/Footer/Footer";
 import Header from "./Header/Header";
 import { Hotel } from "@/types/hotel.type";
-import ListView from "./ListView/ListView";
+import ListView, { getLocalizedText } from "./ListView/ListView";
 import NoResultFound from "./ListView/NoResultFound/NoResultFound";
 import PersonalInformationFormPopup from "../components/PersonalInformationsFormPopup/PersonalInformationsFormPopup";
 import SaveFilterPopup from "./SaveFilterPopup/SaveFilterPopup";
@@ -27,6 +27,9 @@ import { useScrollDirection } from "../hooks/useScrollDirection";
 import { useSelector } from "react-redux";
 import { useTranslations } from "next-intl";
 import Bowser from "bowser";
+import MapPropertyFloatingCard from "./MapView/MapPropertyFloatingCard/MapPropertyFloatingCard";
+import { getDisplayPrice } from "../utils/priceFormatter";
+import { formatAddress } from "../utils/addressFormatter";
 
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
@@ -127,6 +130,8 @@ export default function HomePage({
   const [showEmailVerifiedPopup, setShowEmailVerifiedPopup] = useState(false);
   const [showSignupEmailVerifySendPopup, setShowSignupEmailVerifySendPopup] =
     useState(false);
+  const [selectedHotel, setSelectedHotel] = useState<Hotel | null>(null);
+  const [hideSelectedHotel, setHideSelectedHotel] = useState(false);
 
   const [
     isPersonalInformationFormPopupOpen,
@@ -144,6 +149,10 @@ export default function HomePage({
       setShowSignupEmailVerifySendPopup(true);
     }
   }, [searchParams]);
+
+  console.log({
+    selectedFeatures,
+  });
 
   const handleCloseEmailVerifiedPopup = () => {
     setShowEmailVerifiedPopup(false);
@@ -447,6 +456,22 @@ export default function HomePage({
     }
   }
 
+  if (roomCount !== undefined && roomCount !== null && +roomCount > 0) {
+    filteredHotels = filteredHotels.filter((hotel) => {
+      return hotel.roomCount === +roomCount;
+    });
+  }
+
+  if (
+    bathroomCount !== undefined &&
+    bathroomCount !== null &&
+    +bathroomCount > 0
+  ) {
+    filteredHotels = filteredHotels.filter((hotel) => {
+      return hotel.bathroomCount === +bathroomCount;
+    });
+  }
+
   if (filters) {
     if (filters.propertyType) {
       filteredHotels = filteredHotels.filter((hotel) =>
@@ -491,25 +516,9 @@ export default function HomePage({
       });
     }
 
-    if (
-      filters.roomCount !== undefined &&
-      filters.roomCount !== null &&
-      filters.roomCount > 0
-    ) {
-      filteredHotels = filteredHotels.filter((hotel) => {
-        return hotel.roomCount === filters.roomCount;
-      });
-    }
-
-    if (
-      filters.bathroomCount !== undefined &&
-      filters.bathroomCount !== null &&
-      filters.bathroomCount > 0
-    ) {
-      filteredHotels = filteredHotels.filter((hotel) => {
-        return hotel.bathroomCount === filters.bathroomCount;
-      });
-    }
+    console.log({
+      roomCount: filters.roomCount,
+    });
 
     if (
       filters.minProjectArea !== undefined &&
@@ -595,38 +604,49 @@ export default function HomePage({
       });
     }
 
-    if (
-      filters.isOnePlusOneSelected ||
-      filters.isTwoPlusOneSelected ||
-      filters.isThreePlusOneSelected
-    ) {
-      const selectedRoomTypes: string[] = [];
-      if (filters.isOnePlusOneSelected) selectedRoomTypes.push("1+1");
-      if (filters.isTwoPlusOneSelected) selectedRoomTypes.push("2+1");
-      if (filters.isThreePlusOneSelected) selectedRoomTypes.push("3+1");
-
+    if (filters.isOnePlusOneSelected) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return selectedRoomTypes.includes(hotel.roomAsText);
+        return hotel.roomCount === 1;
+      });
+    }
+
+    if (filters.isTwoPlusOneSelected) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return hotel.roomCount === 2;
+      });
+    }
+
+    if (filters.isThreePlusOneSelected) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return hotel.roomCount === 3;
       });
     }
   }
 
   if (selectedFeatures.length > 0) {
     filteredHotels = filteredHotels.filter((hotel) =>
-      selectedFeatures.every((selectedFeature) =>
-        hotel.featureIds.some((hotelFeature: string | { _id: string }) => {
-          // Assuming hotel.features is an array of feature objects with _id
-          if (
-            typeof hotelFeature === "object" &&
-            hotelFeature !== null &&
-            "_id" in hotelFeature
-          ) {
-            return hotelFeature._id === selectedFeature._id;
+      selectedFeatures.every((selectedFeature) => {
+        const isHousingTypeMatch =
+          hotel.housingType.tr === selectedFeature.name.tr;
+
+        const isFeatureMatch = hotel.featureIds.some(
+          (hotelFeature: string | { _id: string }) => {
+            // Assuming hotel.features is an array of feature objects with _id
+
+            if (
+              typeof hotelFeature === "object" &&
+              hotelFeature !== null &&
+              "_id" in hotelFeature
+            ) {
+              return hotelFeature._id === selectedFeature._id;
+            }
+            // Assuming hotel.features is an array of feature IDs (strings)
+            return hotelFeature === selectedFeature._id;
           }
-          // Assuming hotel.features is an array of feature IDs (strings)
-          return hotelFeature === selectedFeature._id;
-        })
-      )
+        );
+
+        return isHousingTypeMatch || isFeatureMatch;
+      })
     );
   }
 
@@ -681,6 +701,7 @@ export default function HomePage({
           }}
         />
       )}
+
 
       {!disableMapListButton && (
         <div
@@ -900,6 +921,10 @@ export default function HomePage({
                     selectedLocation={selectedLocation}
                     searchRadius={searchRadius}
                     onPinSelectionChange={handlePinSelectionChange}
+                    selectedHotel={selectedHotel}
+                    setSelectedHotel={setSelectedHotel}
+                    hideSelectedHotel={hideSelectedHotel}
+                    setHideSelectedHotel={setHideSelectedHotel}
                   />
                 </div>
               ) : (
@@ -925,6 +950,62 @@ export default function HomePage({
 
         {/* <ViewSwitcher currentView={currentView} setCurrentView={setCurrentView} /> */}
       </div>
+
+      {!disableMapListButton && (
+        <div className="fixed left-0 bottom-0 lg:hidden w-full z-40 px-4 pb-4">
+          <div
+            className={` bg-[#FCFCFC] border border-[#D9D9D9] flex flex-row items-center justify-center z-40 px-3 h-[40px]  rounded-lg shadow-lg transition-all duration-300`}
+            onClick={() => {
+              handleViewChange(currentView === "map" ? "list" : "map");
+              localStorage.setItem(
+                "currentView",
+                currentView === "map" ? "list" : "map"
+              );
+            }}
+            style={{
+              width: "88px",
+            }}
+          >
+            <img
+              src={currentView === "map" ? "/list.png" : "/map-03.png"}
+              className="w-5 h-5"
+            />
+            <p className="text-base text-[#262626] font-medium ml-2">
+              {currentView === "map" ? "Liste" : "Harita"}
+            </p>
+          </div>
+
+          {isMobile && selectedHotel && (
+            <MapPropertyFloatingCard
+              isVisible={!!selectedHotel && !hideSelectedHotel}
+              onClose={() => setSelectedHotel(null)}
+              key={selectedHotel._id}
+              hotelId={selectedHotel._id}
+              slug={selectedHotel.slug}
+              type={getLocalizedText(selectedHotel.listingType, "en")}
+              isOptinable={false}
+              residentTypeName={getLocalizedText(
+                selectedHotel.housingType,
+                "en"
+              )}
+              title={getLocalizedText(selectedHotel.title, "en")}
+              price={getDisplayPrice(selectedHotel.price, selectedCurrency)}
+              bedCount={selectedHotel.bedRoomCount.toString()}
+              floorCount={"2"}
+              area={`${selectedHotel.projectArea}m²`}
+              locationText={formatAddress(selectedHotel, "en ")}
+              image={selectedHotel.images[0]}
+              images={selectedHotel.images}
+              isFavorite={false}
+              roomAsText={selectedHotel.roomAsText}
+              roomCount={selectedHotel.roomCount || 0}
+              entranceType={selectedHotel.entranceType}
+              priceAsNumber={selectedHotel.price[0].amount}
+              areaAsNumber={+selectedHotel.projectArea}
+            />
+          )}
+        </div>
+      )}
     </>
   );
 }

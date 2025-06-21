@@ -47,18 +47,7 @@ export default function DilParaBirimiPage() {
   }, [selectedLanguage, selectedCurrency, initialLanguage, initialCurrency]);
 
   const changeLanguage = (newLocale: string) => {
-    let newPath = pathname;
-
-    if (pathname.startsWith(`/${currentLocale}`)) {
-      newPath = pathname.substring(currentLocale.length + 1) || "/";
-      if (newPath.startsWith('dil-para-birimi')) {
-        newPath = '/';
-      }
-    } else {
-      newPath = pathname;
-    }
-
-    window.location.href = `/${newLocale}${newPath === "/" ? "" : newPath}`;
+    window.location.href = `/${newLocale}`;
   };
 
   const handleUpdate = () => {
@@ -71,11 +60,11 @@ export default function DilParaBirimiPage() {
       window.location.reload();
     }
   };
-  
+
   const handleCancel = () => {
     setSelectedLanguage(initialLanguage);
     setSelectedCurrency(initialCurrency);
-  }
+  };
 
   return (
     <div className="lg:hidden flex flex-col h-screen bg-white">
@@ -116,7 +105,10 @@ export default function DilParaBirimiPage() {
           </div>
         </div>
 
-        <hr className="border-t-[1px] my-8" style={{ borderColor: "#F0F0F0" }} />
+        <hr
+          className="border-t-[1px] my-8"
+          style={{ borderColor: "#F0F0F0" }}
+        />
 
         <div>
           <div className="flex justify-between items-center mb-4">
@@ -161,8 +153,8 @@ export default function DilParaBirimiPage() {
         </footer>
       )}
       <div className="p-4 flex items-center justify-center">
-            <p className='text-sm text-gray-500'>© obudur.com</p>
+        <p className="text-sm text-gray-500">© obudur.com</p>
       </div>
     </div>
   );
-} 
+}
