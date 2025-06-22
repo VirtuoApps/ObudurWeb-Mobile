@@ -111,6 +111,10 @@ interface HotelDetails {
   postalCode: string;
   video: string;
   isPublished: boolean;
+  floorPosition: {
+    tr: string;
+    en: string;
+  };
 }
 
 interface PopulatedData {

@@ -11,6 +11,7 @@ import { getLocalizedText } from "../ListView/ListView";
 import { useGoogleMaps } from "../../contexts/GoogleMapsContext";
 import { useRouter } from "@/app/utils/router";
 import { useLocale } from "next-intl";
+import { renderFloorPositionText } from "@/app/utils/renderFloorPositionText";
 
 export default function GoogleMapView({
   hotels,
@@ -427,7 +428,10 @@ export default function GoogleMapView({
                   title={getLocalizedText(selectedHotel.title, locale)}
                   price={getDisplayPrice(selectedHotel.price, selectedCurrency)}
                   bedCount={selectedHotel.bedRoomCount.toString()}
-                  floorCount={selectedHotel.floorCount?.toString()}
+                  floorCount={renderFloorPositionText(
+                    selectedHotel.floorPosition,
+                    locale
+                  )}
                   area={`${selectedHotel.projectArea}m2`}
                   locationText={formatAddress(selectedHotel, locale)}
                   image={selectedHotel.images[0]}

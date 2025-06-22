@@ -12,6 +12,7 @@ import { infrastructureFeatures } from "@/app/utils/infrastructureFeatures";
 import { useHotelData } from "../hotelContext";
 import { useTranslations } from "next-intl";
 import { views } from "@/app/utils/views";
+import { renderFloorPositionText } from "@/app/utils/renderFloorPositionText";
 
 interface FeatureIconProps {
   icon: React.ReactNode;
@@ -428,7 +429,12 @@ export default function GeneralInfo() {
             </div>
             <div className="flex items-center gap-2 text-[#262626] border-r  pr-4 border-l border-[#D9D9D9] pl-4 whitespace-nowrap w-[33%] sm:w-auto flex items-center justify-center">
               <FloorCountIcon />
-              <span>{floorCount}</span>
+              <span>
+                {renderFloorPositionText(
+                  hotelData.hotelDetails.floorPosition,
+                  locale
+                )}
+              </span>
             </div>
             <div className="flex items-center gap-2 text-[#262626] whitespace-nowrap">
               <AreaIcon />
