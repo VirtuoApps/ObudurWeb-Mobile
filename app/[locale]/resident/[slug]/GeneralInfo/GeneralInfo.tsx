@@ -235,6 +235,7 @@ const LocationIcon = () => (
 export default function GeneralInfo() {
   const t = useTranslations("generalInfo");
   const propertyT = useTranslations("propertyTypes");
+  const residentBoxT = useTranslations("residentBox");
   const { hotelData, locale } = useHotelData();
 
   // Get current locale data
@@ -538,7 +539,9 @@ export default function GeneralInfo() {
                 />
               </svg>
 
-              <span>{roomCount} Bölüm</span>
+              <span>
+                {roomCount} {residentBoxT("section")}
+              </span>
             </div>
 
             <div className="flex items-center gap-2 text-[#262626] whitespace-nowrap">
