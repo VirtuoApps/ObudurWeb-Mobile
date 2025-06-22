@@ -5,7 +5,7 @@ import { Feature, LocalizedText } from "../page";
 import AreaIcon from "@/app/svgIcons/AreaIcon";
 import BedIcon from "@/app/svgIcons/BedIcon";
 import FloorCountIcon from "@/app/svgIcons/FloorCountIcon";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { formatAddress } from "@/app/utils/addressFormatter";
 import { generateRoomCountOptions } from "@/app/[locale]/admin/ilan-olustur/CreationSteps/SecondCreateStep/SecondCreateStep";
 import { infrastructureFeatures } from "@/app/utils/infrastructureFeatures";
@@ -239,6 +239,8 @@ export default function GeneralInfo() {
   const residentBoxT = useTranslations("residentBox");
   const { hotelData, locale } = useHotelData();
 
+  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
+
   // Get current locale data
   const currentLocale = locale as keyof LocalizedText;
 
@@ -257,10 +259,23 @@ export default function GeneralInfo() {
     neighborhood,
   } = hotelData.hotelDetails;
 
+  console.log({
+    selectedCurrency,
+    price,
+  });
+
   // Get general features for the icons
   const generalFeatures = hotelData.populatedData.generalFeatures;
 
   const quickFilters = hotelData.populatedData.quickFilters;
+
+  useEffect(() => {
+    // Initialize selectedCurrency from localStorage if available
+    const savedCurrency = localStorage.getItem("selectedCurrency");
+    if (savedCurrency) {
+      setSelectedCurrency(savedCurrency);
+    }
+  }, []);
 
   // Prepare feature data for icon row
   const infrastructureData: Feature[] =
@@ -314,8 +329,14 @@ export default function GeneralInfo() {
   );
 
   // Format price with currency
-  const mainPrice = price[0]?.amount || 0;
-  const currency = price[0]?.currency || "USD";
+  let currency = selectedCurrency || "USD";
+
+  let mainPrice = price.find((p) => p.currency === currency)?.amount || 0;
+
+  if (mainPrice === 0) {
+    currency = "USD";
+    mainPrice = price.find((p) => p.currency === currency)?.amount || 0;
+  }
 
   let formattedPrice = "";
   if (currency === "TRY") {
@@ -342,9 +363,11 @@ export default function GeneralInfo() {
             <div className="text-gray-500 text-xs sm:text-sm hidden md:block">
               {t("listingNumber", { id: no.toString() })}
             </div>
-            <div className="text-[#362C75] md:text-2xl font-bold w-[max-content]">
-              {formattedPrice}
-            </div>
+            {selectedCurrency && (
+              <div className="text-[#362C75] md:text-2xl font-bold w-[max-content]">
+                {formattedPrice}
+              </div>
+            )}
           </div>
         </div>
 
