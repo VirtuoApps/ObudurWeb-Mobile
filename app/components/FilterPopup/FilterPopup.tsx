@@ -108,6 +108,7 @@ type FilterPopupProps = {
   searchRadius: number;
   selectedSceneryFeatures: any[];
   setSelectedSceneryFeatures: React.Dispatch<React.SetStateAction<any[]>>;
+  resetFilters: () => void;
 };
 
 export default function FilterPopup({
@@ -157,6 +158,7 @@ export default function FilterPopup({
   searchRadius,
   selectedSceneryFeatures,
   setSelectedSceneryFeatures,
+  resetFilters,
 }: FilterPopupProps) {
   const dispatch = useDispatch();
   const t = useTranslations("filter");
@@ -793,7 +795,7 @@ export default function FilterPopup({
   };
 
   // Apply temporary filters to actual filters
-  const applyFilters = () => {
+  const applyFilters = (disableClose?: boolean) => {
     setListingType(tempListingType);
     setSelectedLocation(tempSelectedLocation);
     setSelectedPropertyType &&
@@ -837,7 +839,9 @@ export default function FilterPopup({
     setSelectedFeatures(newSelectedFeatures);
 
     dispatch(setIsFilterApplied(true));
-    onClose && onClose();
+    if (!disableClose) {
+      onClose && onClose();
+    }
   };
 
   // Clear all temporary filters
@@ -866,6 +870,7 @@ export default function FilterPopup({
       isThreePlusOneSelected: false,
       isNewSelected: false,
     });
+    resetFilters();
   };
 
   const isWorkPlaceSelected =

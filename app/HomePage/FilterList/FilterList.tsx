@@ -104,6 +104,7 @@ export default function FilterList({
   setIsSaveFilterSheetOpen,
   isSheetOpen,
   setIsSheetOpen,
+  resetFilters,
 }: {
   onChangeCurrentView: () => void;
   currentView: "map" | "list";
@@ -176,6 +177,7 @@ export default function FilterList({
   setIsSaveFilterSheetOpen?: (isOpen: boolean) => void;
   setIsSheetOpen?: (isOpen: boolean) => void;
   isSheetOpen?: boolean;
+  resetFilters: () => void;
 }) {
   const dispatch = useDispatch();
   const isFilterApplied = useSelector(
@@ -604,6 +606,7 @@ export default function FilterList({
           setInfrastructureFeatures={setInfrastructureFeatures}
           sceneryFeatures={sceneryFeatures}
           setSceneryFeatures={setSceneryFeatures}
+          resetFilters={resetFilters}
         />
 
         {isSheetOpen && (
@@ -904,6 +907,7 @@ export default function FilterList({
         setInfrastructureFeatures={setInfrastructureFeatures}
         sceneryFeatures={sceneryFeatures}
         setSceneryFeatures={setSceneryFeatures}
+        resetFilters={resetFilters}
       />
       <div
         className={`bg-white flex flex-row transition-all duration-350 ease-in-out ${

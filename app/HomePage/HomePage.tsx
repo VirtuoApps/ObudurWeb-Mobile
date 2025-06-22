@@ -385,6 +385,16 @@ export default function HomePage({
     setSelectedPropertyType && setSelectedPropertyType(null);
     setSelectedCategory && setSelectedCategory(null);
     setSelectedFeatures([]);
+    setListingType("For Sale");
+    setAccessibilityFeatures([]);
+    setFaceFeatures([]);
+    setInfrastructureFeatures([]);
+    setSceneryFeatures([]);
+    setMinPrice("");
+    setMaxPrice("");
+    setMinArea("");
+    setMaxArea("");
+    setRoomCount("");
 
     setFilters({
       listingType: null,
@@ -941,6 +951,7 @@ export default function HomePage({
           setIsSaveFilterSheetOpen={setIsSaveFilterSheetOpen}
           isSheetOpen={isSheetOpen}
           setIsSheetOpen={setIsSheetOpen}
+          resetFilters={resetFilters}
         />
 
         {/* View Container with Transitions */}
@@ -963,30 +974,32 @@ export default function HomePage({
               }`}
             >
               <NoResultFound
-                resetFilters={() => {
-                  setFilters(null);
-                  setSelectedLocation(null);
-                  setSelectedPropertyType(null);
-                  setSelectedCategory(null);
-                  setListingType("For Sale");
-                  setSelectedFeatures([]);
-                  setInteriorFeatures([]);
-                  setSelectedExteriorFeatures([]);
-                  setSelectedAccessibilityFeatures([]);
-                  setAccessibilityFeatures([]);
-                  setSelectedFaceFeatures([]);
-                  setFaceFeatures([]);
-                  setSelectedInfrastructureFeatures([]);
-                  setInfrastructureFeatures([]);
-                  setSelectedSceneryFeatures([]);
-                  setSceneryFeatures([]);
-                  setMinPrice("");
-                  setMaxPrice("");
-                  setMinArea("");
-                  setMaxArea("");
-                  setRoomCount("");
-                  setBathroomCount("");
-                }}
+                // resetFilters={() => {
+                //   setFilters(null);
+                //   setSelectedLocation(null);
+                //   setSelectedPropertyType(null);
+                //   setSelectedCategory(null);
+                //   setListingType("For Sale");
+                //   setSelectedFeatures([]);
+                //   setInteriorFeatures([]);
+                //   setSelectedExteriorFeatures([]);
+                //   setSelectedAccessibilityFeatures([]);
+                //   setAccessibilityFeatures([]);
+                //   setSelectedFaceFeatures([]);
+                //   setFaceFeatures([]);
+                //   setSelectedInfrastructureFeatures([]);
+                //   setInfrastructureFeatures([]);
+                //   setSelectedSceneryFeatures([]);
+                //   setSceneryFeatures([]);
+                //   setMinPrice("");
+                //   setMaxPrice("");
+                //   setMinArea("");
+                //   setMaxArea("");
+                //   setRoomCount("");
+                //   setBathroomCount("");
+
+                // }}
+                resetFilters={resetFilters}
                 allHotels={hotels}
                 currentView={currentView}
               />
