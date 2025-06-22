@@ -5,13 +5,29 @@ export const renderFloorPositionText = (
   },
   language: string
 ) => {
+  if (language === "en" && floorPosition.en === "Level 1 Basement") {
+    return "B1";
+  }
+
+  if (language === "en" && floorPosition.en === "Level 2 Basement") {
+    return "B2";
+  }
+
+  if (language === "en" && floorPosition.en === "Level 3 Basement") {
+    return "B3";
+  }
+
+  if (language === "en" && floorPosition.en === "Level 4 Basement") {
+    return "B4";
+  }
+
   if (floorPosition.tr === "Zemin Kat") {
     if (language === "tr") {
       return "Z";
     }
 
     if (language === "en") {
-      return "G";
+      return "GF";
     }
   }
 
@@ -21,7 +37,7 @@ export const renderFloorPositionText = (
     }
 
     if (language === "en") {
-      return "B";
+      return "GF";
     }
   }
 
@@ -51,7 +67,7 @@ export const renderFloorPositionText = (
     }
 
     if (language === "en") {
-      return "YG";
+      return "EGF";
     }
   }
 
@@ -61,7 +77,7 @@ export const renderFloorPositionText = (
     }
 
     if (language === "en") {
-      return "VT";
+      return "Villa";
     }
   }
 
