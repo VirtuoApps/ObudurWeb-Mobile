@@ -1082,5 +1082,41 @@
     "welcomeGreeting": "Welcome!",
     "login": "Login",
     "signUp": "Sign Up"
+  },
+  "personalInfoPopup": {
+    "title": "Personal Information",
+    "description": "Please enter your personal information to post listings and contact listing owners.",
+    "validationError": "Please fill in all fields and accept the user agreement.",
+    "updateSuccess": "Your information has been successfully updated!",
+    "updateError": "An error occurred while updating your profile. Please try again.",
+    "firstNamePlaceholder": "First Name",
+    "lastNamePlaceholder": "Last Name",
+    "birthDateLabel": "Your Birth Date",
+    "dayPlaceholder": "Day",
+    "monthPlaceholder": "Month",
+    "yearPlaceholder": "Year",
+    "phoneLabel": "Your Phone Number",
+    "countryCodePlaceholder": "Select",
+    "phoneNumberPlaceholder": "Your Phone Number",
+    "agreementLink": "User agreement",
+    "agreementText": "I have read and accept.",
+    "marketingLabel": "I want to receive marketing emails",
+    "updatingButton": "Updating...",
+    "continueButton": "Continue",
+    "doItLaterButton": "I'll do it later",
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    }
   }
 }

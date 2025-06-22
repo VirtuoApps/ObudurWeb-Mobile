@@ -5,6 +5,7 @@ import GeneralSelect from "../GeneralSelect/GeneralSelect";
 import { countryCodes } from "@/app/[locale]/resident/[slug]/ContactBox/countryCodes";
 import axiosInstance from "../../../axios";
 import PersonalContract from "./PersonalContract/PersonalContract";
+import { useTranslations } from "next-intl";
 
 interface PersonalInformationFormPopupProps {
   onClose: () => void;
@@ -13,6 +14,8 @@ interface PersonalInformationFormPopupProps {
 export default function PersonalInformationFormPopup({
   onClose,
 }: PersonalInformationFormPopupProps) {
+  const t = useTranslations("personalInfoPopup");
+  const tMonths = useTranslations("personalInfoPopup.months");
   const { user } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
@@ -40,18 +43,18 @@ export default function PersonalInformationFormPopup({
   }));
 
   const months = [
-    { id: 1, name: "Ocak" },
-    { id: 2, name: "Şubat" },
-    { id: 3, name: "Mart" },
-    { id: 4, name: "Nisan" },
-    { id: 5, name: "Mayıs" },
-    { id: 6, name: "Haziran" },
-    { id: 7, name: "Temmuz" },
-    { id: 8, name: "Ağustos" },
-    { id: 9, name: "Eylül" },
-    { id: 10, name: "Ekim" },
-    { id: 11, name: "Kasım" },
-    { id: 12, name: "Aralık" },
+    { id: 1, name: tMonths("january") },
+    { id: 2, name: tMonths("february") },
+    { id: 3, name: tMonths("march") },
+    { id: 4, name: tMonths("april") },
+    { id: 5, name: tMonths("may") },
+    { id: 6, name: tMonths("june") },
+    { id: 7, name: tMonths("july") },
+    { id: 8, name: tMonths("august") },
+    { id: 9, name: tMonths("september") },
+    { id: 10, name: tMonths("october") },
+    { id: 11, name: tMonths("november") },
+    { id: 12, name: tMonths("december") },
   ];
 
   const startYear = 2005;
@@ -124,9 +127,7 @@ export default function PersonalInformationFormPopup({
   // Handle form submission
   const handleSubmit = async () => {
     if (!isFormValid()) {
-      setError(
-        "Lütfen tüm alanları doldurun ve kullanıcı sözleşmesini kabul edin."
-      );
+      setError(t("validationError"));
       return;
     }
 
@@ -165,7 +166,7 @@ export default function PersonalInformationFormPopup({
       dispatch(updateUserData(updateData));
 
       // Show success message
-      setSuccess("Bilgileriniz başarıyla güncellendi!");
+      setSuccess(t("updateSuccess"));
 
       // Close popup after 2 seconds
       setTimeout(() => {
@@ -173,10 +174,7 @@ export default function PersonalInformationFormPopup({
       }, 2000);
     } catch (error: any) {
       console.error("Error updating profile:", error);
-      setError(
-        error.response?.data?.message ||
-          "Profil güncellenirken bir hata oluştu. Lütfen tekrar deneyin."
-      );
+      setError(error.response?.data?.message || t("updateError"));
     } finally {
       setIsLoading(false);
     }
@@ -224,13 +222,12 @@ export default function PersonalInformationFormPopup({
 
           {/* Title */}
           <h2 className="text-2xl font-bold text-[#262626] mb-8">
-            Kişisel Bilgiler
+            {t("title")}
           </h2>
 
           {/* Main Message */}
           <h3 className="text-base font-bold text-[#262626] mb-4 mt-8">
-            İlan verebilmek, ilan sahipleri ile iletişim kurabilmek için lütfen
-            kişisel bilgilerinizi girin.
+            {t("description")}
           </h3>
 
           {/* Error Message */}
@@ -249,7 +246,7 @@ export default function PersonalInformationFormPopup({
 
           <input
             type="text"
-            placeholder="Adınız"
+            placeholder={t("firstNamePlaceholder")}
             className="w-full h-[56px] px-3 rounded-2xl border border-[#F5F5F5] text-sm outline-none  transition-colors text-[#262626]"
             style={{
               backgroundColor: "#FCFCFC",
@@ -260,7 +257,7 @@ export default function PersonalInformationFormPopup({
 
           <input
             type="text"
-            placeholder="Soyadınız"
+            placeholder={t("lastNamePlaceholder")}
             className="w-full h-[56px] px-3 rounded-2xl border border-[#F5F5F5] text-sm outline-none  transition-colors text-[#262626] mt-3"
             style={{
               backgroundColor: "#FCFCFC",
@@ -270,14 +267,14 @@ export default function PersonalInformationFormPopup({
           />
 
           <p className="font-bold text-sm text-[#262626] mt-8">
-            Doğum Tarihiniz
+            {t("birthDateLabel")}
           </p>
           <div className="flex justify-between items-center mt-3 space-x-3">
             <GeneralSelect
               selectedItem={selectedDay}
               onSelect={setSelectedDay}
               options={days}
-              defaultText="Gün"
+              defaultText={t("dayPlaceholder")}
               extraClassName="w-[110px] h-[56px] border border-[#F5F5F5] rounded-2xl bg-[#FCFCFC] text-[#262626]"
               popoverExtraClassName="w-[150px] max-w-[150px] "
               maxHeight="200"
@@ -287,7 +284,7 @@ export default function PersonalInformationFormPopup({
               selectedItem={selectedMonth}
               onSelect={setSelectedMonth}
               options={months}
-              defaultText="Ay"
+              defaultText={t("monthPlaceholder")}
               extraClassName="w-[110px] h-[56px] border border-[#F5F5F5] rounded-2xl bg-[#FCFCFC] text-[#262626]"
               popoverExtraClassName="w-[150px] max-w-[150px] "
               customTextColor={true}
@@ -297,7 +294,7 @@ export default function PersonalInformationFormPopup({
               selectedItem={selectedYear}
               onSelect={setSelectedYear}
               options={years}
-              defaultText="Yıl"
+              defaultText={t("yearPlaceholder")}
               extraClassName="w-[110px] h-[56px] border border-[#F5F5F5] rounded-2xl bg-[#FCFCFC] text-[#262626]"
               popoverExtraClassName="w-[150px] max-w-[150px] "
               customTextColor={true}
@@ -306,7 +303,7 @@ export default function PersonalInformationFormPopup({
           </div>
 
           <p className="font-bold text-sm text-[#262626] mt-8">
-            Telefon Numaranız
+            {t("phoneLabel")}
           </p>
 
           <div className="flex flex-row items-center justify-between">
@@ -317,7 +314,7 @@ export default function PersonalInformationFormPopup({
                 id: `+${country.code}`,
                 name: `+${country.code}`,
               }))}
-              defaultText="Seçin"
+              defaultText={t("countryCodePlaceholder")}
               extraClassName="w-[100px] h-[56px] border border-[#F5F5F5] rounded-2xl bg-[#FCFCFC] text-[#262626]"
               popoverExtraClassName="w-[150px] max-w-[150px] "
               maxHeight="200"
@@ -326,7 +323,7 @@ export default function PersonalInformationFormPopup({
 
             <input
               type="text"
-              placeholder="Telefon Numaranız"
+              placeholder={t("phoneNumberPlaceholder")}
               className="w-full h-[56px] px-3 rounded-2xl border border-[#F5F5F5] text-sm outline-none  transition-colors text-[#262626] ml-3"
               style={{
                 backgroundColor: "#FCFCFC",
@@ -370,9 +367,9 @@ export default function PersonalInformationFormPopup({
                 }}
               >
                 {" "}
-                Kullanıcı sözleşmesini
+                {t("agreementLink")}
               </span>{" "}
-              okudum, kabul ediyorum.
+              {t("agreementText")}
             </p>
           </div>
 
@@ -402,9 +399,7 @@ export default function PersonalInformationFormPopup({
               ) : null}
             </div>
 
-            <p className="text-xs text-[#8C8C8C] ml-3">
-              Pazarlama mailleri almak istiyorum
-            </p>
+            <p className="text-xs text-[#8C8C8C] ml-3">{t("marketingLabel")}</p>
           </div>
 
           {/* Button */}
@@ -418,14 +413,14 @@ export default function PersonalInformationFormPopup({
               color: isLoading || !isFormValid() ? "#6E6E6E" : "#FFFFFF",
             }}
           >
-            {isLoading ? "Güncelleniyor..." : "Devam Et"}
+            {isLoading ? t("updatingButton") : t("continueButton")}
           </button>
 
           <button
             onClick={onClose}
             className="w-full bg-transparent text-[#5E5691] py-4 px-6 rounded-2xl font-medium hover:bg-[#4c4677] transition-colors mt-3 border border-[#D9D9D9]"
           >
-            Daha sonra yapacağım
+            {t("doItLaterButton")}
           </button>
         </div>
       </div>

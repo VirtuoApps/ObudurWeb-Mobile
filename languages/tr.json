@@ -1087,5 +1087,41 @@
     "welcomeGreeting": "Hoş Geldiniz!",
     "login": "Giriş Yap",
     "signUp": "Üye Ol"
+  },
+  "personalInfoPopup": {
+    "title": "Kişisel Bilgiler",
+    "description": "İlan verebilmek, ilan sahipleri ile iletişim kurabilmek için lütfen kişisel bilgilerinizi girin.",
+    "validationError": "Lütfen tüm alanları doldurun ve kullanıcı sözleşmesini kabul edin.",
+    "updateSuccess": "Bilgileriniz başarıyla güncellendi!",
+    "updateError": "Profil güncellenirken bir hata oluştu. Lütfen tekrar deneyin.",
+    "firstNamePlaceholder": "Adınız",
+    "lastNamePlaceholder": "Soyadınız",
+    "birthDateLabel": "Doğum Tarihiniz",
+    "dayPlaceholder": "Gün",
+    "monthPlaceholder": "Ay",
+    "yearPlaceholder": "Yıl",
+    "phoneLabel": "Telefon Numaranız",
+    "countryCodePlaceholder": "Seçin",
+    "phoneNumberPlaceholder": "Telefon Numaranız",
+    "agreementLink": "Kullanıcı sözleşmesini",
+    "agreementText": "okudum, kabul ediyorum.",
+    "marketingLabel": "Pazarlama mailleri almak istiyorum",
+    "updatingButton": "Güncelleniyor...",
+    "continueButton": "Devam Et",
+    "doItLaterButton": "Daha sonra yapacağım",
+    "months": {
+      "january": "Ocak",
+      "february": "Şubat",
+      "march": "Mart",
+      "april": "Nisan",
+      "may": "Mayıs",
+      "june": "Haziran",
+      "july": "Temmuz",
+      "august": "Ağustos",
+      "september": "Eylül",
+      "october": "Ekim",
+      "november": "Kasım",
+      "december": "Aralık"
+    }
   }
 }
