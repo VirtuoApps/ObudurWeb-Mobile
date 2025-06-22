@@ -1889,12 +1889,19 @@ export default function FilterPopup({
               </button>
             )}
             <button
-              onClick={applyFilters}
+              onClick={() => {
+                if (!hasActiveFilters()) {
+                  return;
+                }
+                applyFilters();
+              }}
               disabled={hasActiveFilters() && resultsCount === 0}
-              className={`w-full h-[56px] text-base md:text-sm font-medium text-white rounded-[16px] cursor-pointer ${
+              className={`w-full h-[56px] text-base md:text-sm font-medium  rounded-[16px] cursor-pointer ${
                 hasActiveFilters() && resultsCount === 0
-                  ? "bg-gray-300 cursor-not-allowed"
-                  : "bg-[#5E5691] hover:bg-[#4a4574]"
+                  ? "bg-gray-300 cursor-not-allowed text-white"
+                  : !hasActiveFilters()
+                  ? "bg-[#F0F0F0] text-[#8C8C8C]"
+                  : "bg-[#5E5691] hover:bg-[#4a4574] text-white"
               } ${hasActiveFilters() ? "col-span-1" : "col-span-2"}`}
             >
               {hasActiveFilters() && resultsCount === 0
