@@ -100,6 +100,10 @@ export default function FilterList({
   selectedSceneryFeatures,
   setSelectedSceneryFeatures,
   isAuthMenuOpen,
+  isSaveFilterSheetOpen,
+  setIsSaveFilterSheetOpen,
+  isSheetOpen,
+  setIsSheetOpen,
 }: {
   onChangeCurrentView: () => void;
   currentView: "map" | "list";
@@ -168,6 +172,10 @@ export default function FilterList({
   selectedSceneryFeatures: any[];
   setSelectedSceneryFeatures: React.Dispatch<React.SetStateAction<any[]>>;
   isAuthMenuOpen?: boolean;
+  isSaveFilterSheetOpen?: boolean;
+  setIsSaveFilterSheetOpen?: (isOpen: boolean) => void;
+  setIsSheetOpen?: (isOpen: boolean) => void;
+  isSheetOpen?: boolean;
 }) {
   const dispatch = useDispatch();
   const isFilterApplied = useSelector(
@@ -402,9 +410,7 @@ export default function FilterList({
   };
 
   const isMobile = useSelector((state: any) => state.favorites.isMobile);
-  const [isSaveFilterSheetOpen, setIsSaveFilterSheetOpen] = useState(false);
 
-  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [touchStartY, setTouchStartY] = useState<number | null>(null);
   const [translateY, setTranslateY] = useState(0);
 
@@ -599,146 +605,102 @@ export default function FilterList({
           sceneryFeatures={sceneryFeatures}
           setSceneryFeatures={setSceneryFeatures}
         />
-        {!isAuthMenuOpen && (
-          <div
-            className={`bg-white flex flex-row transition-all duration-350 ease-in-out z-[9999] ${
-              currentView === "map"
-                ? `fixed lg:top-28 ${
-                    isScrolled && isMobile ? "top-[72px]" : "top-[71px]"
-                  } left-0 right-0 w-full lg:w-[924px] lg:shadow-lg ${
-                    scrollDirection === "down" && isScrolled && isMobile
-                      ? "transform -translate-y-full opacity-0"
-                      : "transform translate-y-0 opacity-100"
-                  }`
-                : "mt-0 mb-7 relative w-full border-b border-[#F0F0F0]"
-            } z-20  mx-auto  lg:rounded-2xl border-y border-[#F0F0F0] `}
-          >
-            <div className="flex w-full h-[56px]">
-              <button
-                onClick={() => setIsFilterPopupOpen(true)}
-                className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-r border-[#F0F0F0]"
-              >
-                {filteringT("filters", { count: countActiveFilters() })}
-              </button>
-              <button
-                onClick={() => setIsSaveFilterSheetOpen(true)}
-                className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#262626]"
-              >
-                {filteringT("saveSearch")}
-              </button>
-              {currentView !== "map" && (
-                <button
-                  onClick={() => {
-                    setIsSheetOpen(true);
-                  }}
-                  className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-l border-[#F0F0F0]"
-                >
-                  <p className="text-sm text-gray-500 font-semibold">
-                    {filteringT("sort")}
-                  </p>
-                </button>
-              )}
 
-              {isSheetOpen && (
-                <div className="fixed inset-0 z-[99999] flex items-end md:items-center justify-center lg:p-4 overflow-y-auto">
+        {isSheetOpen && (
+          <div className="fixed inset-0 z-[99999] flex items-end md:items-center justify-center lg:p-4 overflow-y-auto">
+            <div
+              className="fixed inset-0"
+              onClick={() => setIsSheetOpen(false)}
+              style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+            ></div>
+            <div
+              className="relative bg-white rounded-t-[24px] shadow-xl max-w-[600px] w-full mx-auto max-h-[calc(100vh-112px)] flex flex-col"
+              style={{
+                transform: `translateY(${translateY}px)`,
+                transition: touchStartY ? "none" : "transform 0.3s ease-out",
+              }}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              {/* Header */}
+              <div className="sticky top-0 bg-white z-10 p-4 pb-0 rounded-t-[24px] relative">
+                <div className="flex items-center justify-between"></div>
+                <span className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1.5 bg-gray-300 rounded-full md:hidden"></span>
+              </div>
+
+              {/* Scrollable content area */}
+              <div className="flex-1 overflow-y-auto px-4 py-2 flex flex-col gap-[16px]">
+                <div className="top-full left-0 right-0 mt-1 bg-white z-10 flex flex-col gap-[8px]">
                   <div
-                    className="fixed inset-0"
-                    onClick={() => setIsSheetOpen(false)}
-                    style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
-                  ></div>
-                  <div
-                    className="relative bg-white rounded-t-[24px] shadow-xl max-w-[600px] w-full mx-auto max-h-[calc(100vh-112px)] flex flex-col"
-                    style={{
-                      transform: `translateY(${translateY}px)`,
-                      transition: touchStartY
-                        ? "none"
-                        : "transform 0.3s ease-out",
-                    }}
-                    onTouchStart={handleTouchStart}
-                    onTouchMove={handleTouchMove}
-                    onTouchEnd={handleTouchEnd}
+                    className={`px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold rounded-2xl flex items-center gap-2 outline ${
+                      selectedSortOption === "ascending"
+                        ? "outline-[#595959]"
+                        : "outline-[#F0F0F0]"
+                    }`}
+                    onClick={() => setSelectedSortOption("ascending")}
                   >
-                    {/* Header */}
-                    <div className="sticky top-0 bg-white z-10 p-4 pb-0 rounded-t-[24px] relative">
-                      <div className="flex items-center justify-between"></div>
-                      <span className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1.5 bg-gray-300 rounded-full md:hidden"></span>
+                    <div className="relative w-[16px] h-[16px] rounded-full border border-black flex items-center justify-center">
+                      {selectedSortOption === "ascending" && (
+                        <div className="w-[10px] h-[10px] rounded-full bg-[#362C75]"></div>
+                      )}
                     </div>
-
-                    {/* Scrollable content area */}
-                    <div className="flex-1 overflow-y-auto px-4 py-2 flex flex-col gap-[16px]">
-                      <div className="top-full left-0 right-0 mt-1 bg-white z-10 flex flex-col gap-[8px]">
-                        <div
-                          className={`px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold rounded-2xl flex items-center gap-2 outline ${
-                            selectedSortOption === "ascending"
-                              ? "outline-[#595959]"
-                              : "outline-[#F0F0F0]"
-                          }`}
-                          onClick={() => setSelectedSortOption("ascending")}
-                        >
-                          <div className="relative w-[16px] h-[16px] rounded-full border border-black flex items-center justify-center">
-                            {selectedSortOption === "ascending" && (
-                              <div className="w-[10px] h-[10px] rounded-full bg-[#362C75]"></div>
-                            )}
-                          </div>
-                          <p className="text-sm">
-                            {filteringT("sortOptions.lowestPrice")}
-                          </p>
-                        </div>
-                        <div
-                          className={`px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold rounded-2xl flex items-center gap-2 outline ${
-                            selectedSortOption === "descending"
-                              ? "outline-[#595959]"
-                              : "outline-[#F0F0F0]"
-                          }`}
-                          onClick={() => setSelectedSortOption("descending")}
-                        >
-                          <div className="relative w-[16px] h-[16px] rounded-full border border-black flex items-center justify-center">
-                            {selectedSortOption === "descending" && (
-                              <div className="w-[10px] h-[10px] rounded-full bg-[#362C75]"></div>
-                            )}
-                          </div>
-                          <p className="text-sm">
-                            {filteringT("sortOptions.highestPrice")}
-                          </p>
-                        </div>
-                        <div
-                          className={`px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold rounded-2xl flex items-center gap-2 outline ${
-                            selectedSortOption === "newest"
-                              ? "outline-[#595959]"
-                              : "outline-[#F0F0F0]"
-                          }`}
-                          onClick={() => setSelectedSortOption("newest")}
-                        >
-                          <div className="relative w-[16px] h-[16px] rounded-full border border-black flex items-center justify-center">
-                            {selectedSortOption === "newest" && (
-                              <div className="w-[10px] h-[10px] rounded-full bg-[#362C75]"></div>
-                            )}
-                          </div>
-                          <p className="text-sm">
-                            {filteringT("sortOptions.newest")}
-                          </p>
-                        </div>
-                        {/* <div
+                    <p className="text-sm">
+                      {filteringT("sortOptions.lowestPrice")}
+                    </p>
+                  </div>
+                  <div
+                    className={`px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold rounded-2xl flex items-center gap-2 outline ${
+                      selectedSortOption === "descending"
+                        ? "outline-[#595959]"
+                        : "outline-[#F0F0F0]"
+                    }`}
+                    onClick={() => setSelectedSortOption("descending")}
+                  >
+                    <div className="relative w-[16px] h-[16px] rounded-full border border-black flex items-center justify-center">
+                      {selectedSortOption === "descending" && (
+                        <div className="w-[10px] h-[10px] rounded-full bg-[#362C75]"></div>
+                      )}
+                    </div>
+                    <p className="text-sm">
+                      {filteringT("sortOptions.highestPrice")}
+                    </p>
+                  </div>
+                  <div
+                    className={`px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold rounded-2xl flex items-center gap-2 outline ${
+                      selectedSortOption === "newest"
+                        ? "outline-[#595959]"
+                        : "outline-[#F0F0F0]"
+                    }`}
+                    onClick={() => setSelectedSortOption("newest")}
+                  >
+                    <div className="relative w-[16px] h-[16px] rounded-full border border-black flex items-center justify-center">
+                      {selectedSortOption === "newest" && (
+                        <div className="w-[10px] h-[10px] rounded-full bg-[#362C75]"></div>
+                      )}
+                    </div>
+                    <p className="text-sm">
+                      {filteringT("sortOptions.newest")}
+                    </p>
+                  </div>
+                  {/* <div
                   className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
                   onClick={() => setSelectedSortOption("oldest")}
                 >
                   <p className="text-sm">Önce En Eski İlan</p>
                 </div> */}
-                      </div>
-
-                      <div className="border-b border-gray-200"></div>
-
-                      <button
-                        type="button"
-                        className={`mb-[16px] h-[54px] justify-center w-full inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer bg-[#5E5691] border-[0.5px] border-[#362C75] text-[#fcfcfc]`}
-                        onClick={handleSortSelection}
-                      >
-                        {filteringT("sort")}
-                      </button>
-                    </div>
-                  </div>
                 </div>
-              )}
+
+                <div className="border-b border-gray-200"></div>
+
+                <button
+                  type="button"
+                  className={`mb-[16px] h-[54px] justify-center w-full inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer bg-[#5E5691] border-[0.5px] border-[#362C75] text-[#fcfcfc]`}
+                  onClick={handleSortSelection}
+                >
+                  {filteringT("sort")}
+                </button>
+              </div>
             </div>
           </div>
         )}

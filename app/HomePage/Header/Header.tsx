@@ -37,6 +37,11 @@ export default function Header({
   disableMapListButton = false,
   setDisableMapListButton = () => {},
   setIsAuthMenuOpen = () => {},
+  currentView,
+  setIsSaveFilterSheetOpen,
+  isSaveFilterSheetOpen,
+  isSheetOpen,
+  setIsSheetOpen,
 }: {
   setFilters: (filters: FilterType) => void;
   filterOptions: FilterOptions;
@@ -56,6 +61,11 @@ export default function Header({
   disableMapListButton?: boolean;
   setDisableMapListButton?: (isOpen: boolean) => void;
   setIsAuthMenuOpen?: (isOpen: boolean) => void;
+  currentView?: "map" | "list";
+  setIsSaveFilterSheetOpen?: (isOpen: boolean) => void;
+  isSaveFilterSheetOpen?: boolean;
+  isSheetOpen?: boolean;
+  setIsSheetOpen?: (isOpen: boolean) => void;
 }) {
   const dispatch = useDispatch();
   const t = useTranslations("header");
@@ -68,48 +78,84 @@ export default function Header({
   const { scrollDirection, isScrolled } = useScrollDirection();
   useDeviceDetection();
 
+  const filteringT = useTranslations("filtering");
+
   if (isFilterApplied && isMobile) {
     return (
-      <header
-        className={`${
-          isFilterApplied ? "applied" : "not-applied"
-        } relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-0 lg:py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 flex ${
-          isMobile ? "sticky top-0 z-40" : ""
-        } z-50`}
-      >
-        <div className="w-full flex items-center px-4 sm:px-6 gap-3 z-50">
-          <div className="xl:hidden flex items-center shrink-0 w-[32px]">
-            <button
-              type="button"
-              onClick={() => {
-                resetFilters();
-                dispatch(setIsFilterApplied(false));
-              }}
-              className="bg-white hover:bg-gray-50 text-[#262626] w-[32px] h-[32px] font-semibold  inline-flex items-center justify-center gap-2 transition hover:border-[#6656AD] cursor-pointer rounded-[16px]"
-            >
-              <ArrowLeftIcon className="h-5 w-5" />
-            </button>
+      <>
+        <header
+          className={`${
+            isFilterApplied ? "applied" : "not-applied"
+          } relative border-none lg:border-solid lg:border-b lg:border-[#F0F0F0] py-0 lg:py-4 bg-white h-[72px] lg:h-[96px] w-full px-0 xl:px-0 ${
+            isMobile ? "sticky top-0 z-40" : ""
+          } z-50`}
+        >
+          <div className="w-full flex items-center px-4 sm:px-6 gap-3 z-50 py-3">
+            <div className="xl:hidden flex items-center shrink-0 w-[32px]">
+              <button
+                type="button"
+                onClick={() => {
+                  resetFilters();
+                  dispatch(setIsFilterApplied(false));
+                }}
+                className="bg-white hover:bg-gray-50 text-[#262626] w-[32px] h-[32px] font-semibold  inline-flex items-center justify-center gap-2 transition hover:border-[#6656AD] cursor-pointer rounded-[16px]"
+              >
+                <ArrowLeftIcon className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="xl:hidden flex items-center justify-center flex-1 min-w-0">
+              <Image
+                src="/obudur-logo.png"
+                alt="oBudur Logo"
+                width={108}
+                height={24}
+                priority
+              />
+            </div>
+
+            <div className="flex items-center xl:hidden shrink-0 z-50">
+              <AuthBox
+                disableMapListButton={disableMapListButton}
+                setDisableMapListButton={setDisableMapListButton}
+                setIsAuthMenuOpen={setIsAuthMenuOpen}
+              />
+            </div>
           </div>
 
-          <div className="xl:hidden flex items-center justify-center flex-1 min-w-0">
-            <Image
-              src="/obudur-logo.png"
-              alt="oBudur Logo"
-              width={108}
-              height={24}
-              priority
-            />
+          <div
+            className={`bg-white flex flex-row transition-all duration-350 ease-in-out   mx-auto  lg:rounded-2xl border-y border-[#F0F0F0] `}
+          >
+            <div className="flex w-full h-[56px]">
+              <button
+                onClick={() => setIsFilterPopupOpen(true)}
+                className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-r border-[#F0F0F0]"
+              >
+                {filteringT("filters", { count: 5 })}
+                {/* TODO: countActiveFilters() */}
+              </button>
+              <button
+                onClick={() => setIsSaveFilterSheetOpen?.(true)}
+                className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#262626]"
+              >
+                {filteringT("saveSearch")}
+              </button>
+              {currentView !== "map" && (
+                <button
+                  onClick={() => {
+                    setIsSheetOpen?.(true);
+                  }}
+                  className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-l border-[#F0F0F0]"
+                >
+                  <p className="text-sm text-gray-500 font-semibold">
+                    {filteringT("sort")}
+                  </p>
+                </button>
+              )}
+            </div>
           </div>
-
-          <div className="flex items-center xl:hidden shrink-0 z-50">
-            <AuthBox
-              disableMapListButton={disableMapListButton}
-              setDisableMapListButton={setDisableMapListButton}
-              setIsAuthMenuOpen={setIsAuthMenuOpen}
-            />
-          </div>
-        </div>
-      </header>
+        </header>
+      </>
     );
   }
 
