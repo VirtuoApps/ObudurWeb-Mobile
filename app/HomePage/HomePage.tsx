@@ -138,9 +138,23 @@ export default function HomePage({
     setIsPersonalInformationFormPopupOpen,
   ] = useState(false);
 
-  console.log({
-    filters,
-  });
+  const tForRoomCounts = useTranslations("adminCreation.step2_house");
+
+  const generateRoomCountOptions = () => {
+    return [
+      { value: 9999999, label: tForRoomCounts("options.roomCounts.studio") },
+      { value: 1, label: tForRoomCounts("options.roomCounts.1+1") },
+      { value: 2, label: tForRoomCounts("options.roomCounts.2+1") },
+      { value: 3, label: tForRoomCounts("options.roomCounts.3+1") },
+      { value: 4, label: tForRoomCounts("options.roomCounts.4+1") },
+      { value: 5, label: tForRoomCounts("options.roomCounts.5+1") },
+      { value: 6, label: tForRoomCounts("options.roomCounts.6+1") },
+      { value: 7, label: tForRoomCounts("options.roomCounts.7+1") },
+      { value: 8, label: tForRoomCounts("options.roomCounts.8+1") },
+      { value: 9, label: tForRoomCounts("options.roomCounts.9+1") },
+      { value: 10, label: tForRoomCounts("options.roomCounts.10+") },
+    ];
+  };
 
   useEffect(() => {
     if (searchParams.get("emailConfirmed") === "true") {
@@ -1045,13 +1059,17 @@ export default function HomePage({
               title={getLocalizedText(selectedHotel.title, "en")}
               price={getDisplayPrice(selectedHotel.price, selectedCurrency)}
               bedCount={selectedHotel.bedRoomCount.toString()}
-              floorCount={"2"}
+              floorCount={selectedHotel.floorCount?.toString()}
               area={`${selectedHotel.projectArea}m²`}
               locationText={formatAddress(selectedHotel, "en ")}
               image={selectedHotel.images[0]}
               images={selectedHotel.images}
               isFavorite={false}
-              roomAsText={selectedHotel.roomAsText}
+              roomAsText={
+                generateRoomCountOptions().find(
+                  (option) => option.value === selectedHotel.roomCount
+                )?.label || ""
+              }
               roomCount={selectedHotel.roomCount || 0}
               entranceType={selectedHotel.entranceType}
               priceAsNumber={selectedHotel.price[0].amount}
