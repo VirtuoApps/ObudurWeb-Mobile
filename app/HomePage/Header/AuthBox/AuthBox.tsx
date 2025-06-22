@@ -76,6 +76,7 @@ export default function AuthBox({
   disableMapListButton,
   setDisableMapListButton,
   isSimpleHeader = false,
+  setIsAuthMenuOpen,
 }: {
   showLikeButton?: boolean;
   hideCreateListingButton?: boolean;
@@ -84,6 +85,7 @@ export default function AuthBox({
   disableMapListButton?: boolean;
   setDisableMapListButton?: (isOpen: boolean) => void;
   isSimpleHeader?: boolean;
+  setIsAuthMenuOpen?: (isOpen: boolean) => void;
 }) {
   const t = useTranslations("header");
   const t_authBox = useTranslations("authBox");
@@ -145,6 +147,14 @@ export default function AuthBox({
       document.body.style.width = "";
     };
   }, [dropdownOpen, guestDropdownOpen]);
+
+  useEffect(() => {
+    if (dropdownOpen || guestDropdownOpen) {
+      setIsAuthMenuOpen?.(true);
+    } else {
+      setIsAuthMenuOpen?.(false);
+    }
+  }, [dropdownOpen, guestDropdownOpen, setIsAuthMenuOpen]);
 
   const handleLogout = () => {
     // Clear token from localStorage

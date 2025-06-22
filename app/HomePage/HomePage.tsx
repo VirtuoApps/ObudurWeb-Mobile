@@ -133,6 +133,7 @@ export default function HomePage({
     useState(false);
   const [selectedHotel, setSelectedHotel] = useState<Hotel | null>(null);
   const [hideSelectedHotel, setHideSelectedHotel] = useState(false);
+  const [isAuthMenuOpen, setIsAuthMenuOpen] = useState(false);
 
   const [
     isPersonalInformationFormPopupOpen,
@@ -858,6 +859,7 @@ export default function HomePage({
           resetFilters={resetFilters}
           disableMapListButton={disableMapListButton}
           setDisableMapListButton={setDisableMapListButton}
+          setIsAuthMenuOpen={setIsAuthMenuOpen}
         />
 
         <FilterList
@@ -927,6 +929,7 @@ export default function HomePage({
           sortOption={sortOption}
           setSortOption={setSortOption}
           resultCount={filteredHotels.length}
+          isAuthMenuOpen={isAuthMenuOpen}
         />
 
         {/* View Container with Transitions */}

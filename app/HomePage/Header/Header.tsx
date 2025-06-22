@@ -36,6 +36,7 @@ export default function Header({
   resetFilters,
   disableMapListButton = false,
   setDisableMapListButton = () => {},
+  setIsAuthMenuOpen = () => {},
 }: {
   setFilters: (filters: FilterType) => void;
   filterOptions: FilterOptions;
@@ -54,6 +55,7 @@ export default function Header({
   resetFilters?: any;
   disableMapListButton?: boolean;
   setDisableMapListButton?: (isOpen: boolean) => void;
+  setIsAuthMenuOpen?: (isOpen: boolean) => void;
 }) {
   const dispatch = useDispatch();
   const t = useTranslations("header");
@@ -103,6 +105,7 @@ export default function Header({
             <AuthBox
               disableMapListButton={disableMapListButton}
               setDisableMapListButton={setDisableMapListButton}
+              setIsAuthMenuOpen={setIsAuthMenuOpen}
             />
           </div>
         </div>
