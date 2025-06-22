@@ -839,6 +839,19 @@ export default function FilterPopup({
     });
   };
 
+  const isWorkPlaceSelected =
+    tempSelectedPropertyType &&
+    tempSelectedPropertyType.originalData.name.tr === "İş Yeri";
+
+  const isLandSelected =
+    tempSelectedPropertyType &&
+    tempSelectedPropertyType.originalData.name.tr === "Arsa";
+
+  console.log({
+    tempSelectedPropertyType,
+    isLandSelected,
+  });
+
   if (!isOpen) return null;
 
   return (
@@ -1332,69 +1345,72 @@ export default function FilterPopup({
             </div>
           </div>
 
-          <div className="flex flex-row justify-between gap-2">
-            {/* Room Count Section */}
-            <div className="mt-6 w-1/2">
-              <div className="flex items-center justify-between">
-                <h3 className="text-base font-semibold text-gray-700">
-                  {t("rooms")}
-                </h3>
+          {!isWorkPlaceSelected && !isLandSelected && (
+            <div className="flex flex-row justify-between gap-2">
+              {/* Room Count Section */}
+              <div className="mt-6 w-1/2">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-base font-semibold text-gray-700">
+                    {t("rooms")}
+                  </h3>
+                </div>
+                <div className="mt-3">
+                  <GeneralSelect
+                    selectedItem={
+                      tempRoomCount
+                        ? {
+                            name: generateRoomCountOptions().find(
+                              (option) => option.value === +tempRoomCount
+                            )?.label,
+                          }
+                        : null
+                    }
+                    onSelect={(room) => {
+                      if (room) setTempRoomCount(room.value.toString());
+                      else setTempRoomCount(""); // Reset if no room selected
+                    }}
+                    options={generateRoomCountOptions().map((room) => ({
+                      name: room.label,
+                      value: room.value,
+                      href: "#",
+                    }))}
+                    defaultText={t("roomsSelect") || "Select Room Count"}
+                    extraClassName="w-full bg-white border border-gray-200 h-[56px] text-base md:text-sm text-gray-700"
+                    popoverExtraClassName=" md:max-w-[300px] max-w-[190px]"
+                  />
+                </div>
               </div>
-              <div className="mt-3">
-                <GeneralSelect
-                  selectedItem={
-                    tempRoomCount
-                      ? {
-                          name: generateRoomCountOptions().find(
-                            (option) => option.value === +tempRoomCount
-                          )?.label,
-                        }
-                      : null
-                  }
-                  onSelect={(room) => {
-                    if (room) setTempRoomCount(room.value.toString());
-                    else setTempRoomCount(""); // Reset if no room selected
-                  }}
-                  options={generateRoomCountOptions().map((room) => ({
-                    name: room.label,
-                    value: room.value,
-                    href: "#",
-                  }))}
-                  defaultText={t("roomsSelect") || "Select Room Count"}
-                  extraClassName="w-full bg-white border border-gray-200 h-[56px] text-base md:text-sm text-gray-700"
-                  popoverExtraClassName=" md:max-w-[300px] max-w-[190px]"
-                />
+
+              {/* Bathroom Count Section */}
+              <div className="mt-6 w-1/2">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-base font-semibold text-gray-700">
+                    {t("bathrooms") || "Bathrooms"}
+                  </h3>
+                </div>
+                <div className="mt-3">
+                  <GeneralSelect
+                    selectedItem={
+                      tempBathroomCount ? { name: tempBathroomCount } : null
+                    }
+                    onSelect={(bathroom) => {
+                      if (bathroom) setTempBathroomCount(bathroom.name);
+                      else setTempBathroomCount(""); // Reset if no bathroom selected
+                    }}
+                    options={[0, 1, 2, 3, 4, 5].map((bathroom: number) => ({
+                      name: bathroom.toString(),
+                      href: "#",
+                    }))}
+                    defaultText={
+                      t("bathroomsSelect") || "Select Bathroom Count"
+                    }
+                    extraClassName="w-full bg-white border border-gray-200 h-[56px] text-base md:text-sm text-gray-700"
+                    popoverExtraClassName=" md:max-w-[300px] max-w-[190px]"
+                  />
+                </div>
               </div>
             </div>
-
-            {/* Bathroom Count Section */}
-            <div className="mt-6 w-1/2">
-              <div className="flex items-center justify-between">
-                <h3 className="text-base font-semibold text-gray-700">
-                  {t("bathrooms") || "Bathrooms"}
-                </h3>
-              </div>
-              <div className="mt-3">
-                <GeneralSelect
-                  selectedItem={
-                    tempBathroomCount ? { name: tempBathroomCount } : null
-                  }
-                  onSelect={(bathroom) => {
-                    if (bathroom) setTempBathroomCount(bathroom.name);
-                    else setTempBathroomCount(""); // Reset if no bathroom selected
-                  }}
-                  options={[0, 1, 2, 3, 4, 5].map((bathroom: number) => ({
-                    name: bathroom.toString(),
-                    href: "#",
-                  }))}
-                  defaultText={t("bathroomsSelect") || "Select Bathroom Count"}
-                  extraClassName="w-full bg-white border border-gray-200 h-[56px] text-base md:text-sm text-gray-700"
-                  popoverExtraClassName=" md:max-w-[300px] max-w-[190px]"
-                />
-              </div>
-            </div>
-          </div>
-
+          )}
           {/* Area Section */}
           <div className="mt-6">
             <div className="flex items-center justify-between">
@@ -1515,21 +1531,82 @@ export default function FilterPopup({
             </div>
           </div>
 
-          {/* Face Features Section */}
-          {filterOptions.faceFeatures &&
-            filterOptions.faceFeatures.length > 0 && (
-              <div className="mt-6 border-b border-t border-[#F0F0F0] pb-8 pt-10">
+          {!isLandSelected && (
+            <>
+              {/* Face Features Section */}
+              {filterOptions.faceFeatures &&
+                filterOptions.faceFeatures.length > 0 && (
+                  <div className="mt-6 border-b border-t border-[#F0F0F0] pb-8 pt-10">
+                    <div
+                      className="flex items-center justify-between cursor-pointer"
+                      onClick={() =>
+                        setFaceFeaturesCollapsed(!faceFeaturesCollapsed)
+                      }
+                    >
+                      <h3 className="text-base font-semibold text-gray-700">
+                        {t("faceFeatures") || "Cephe"}{" "}
+                        {tempSelectedFaceFeatures.length > 0 ? (
+                          <span className="text-base md:text-sm font-normal text-[#595959]">
+                            ({tempSelectedFaceFeatures.length})
+                          </span>
+                        ) : null}
+                      </h3>
+                      <button className="text-base md:text-sm text-[#8c8c8c] hover:underline cursor-pointer">
+                        <img
+                          src="/chevron-down.png"
+                          className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
+                            !faceFeaturesCollapsed ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+                    </div>
+                    {!faceFeaturesCollapsed && (
+                      <div className="mt-3 ">
+                        <div className="flex flex-wrap gap-2">
+                          {(filterOptions.faceFeatures || []).map((feature) => {
+                            const isSelected = tempSelectedFaceFeatures.find(
+                              (f: any) => f._id === feature._id
+                            );
+
+                            return (
+                              <button
+                                key={feature._id}
+                                onClick={() => toggleFaceFeature(feature)}
+                                className={`inline-flex items-center ${
+                                  isSelected
+                                    ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                                    : "bg-white border-gray-100 text-gray-600"
+                                } border rounded-[16px] h-[40px] px-3 py-1 text-base md:text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
+                              >
+                                {feature.iconUrl && (
+                                  <img
+                                    src={feature.iconUrl}
+                                    className="w-[24px] h-[24px] mr-2"
+                                  />
+                                )}
+                                {feature.name[locale]}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+              {/* Interior Features Section */}
+              <div className="mt-6 border-b border-[#F0F0F0] pb-8">
                 <div
                   className="flex items-center justify-between cursor-pointer"
                   onClick={() =>
-                    setFaceFeaturesCollapsed(!faceFeaturesCollapsed)
+                    setInteriorFeaturesCollapsed(!interiorFeaturesCollapsed)
                   }
                 >
                   <h3 className="text-base font-semibold text-gray-700">
-                    {t("faceFeatures") || "Cephe"}{" "}
-                    {tempSelectedFaceFeatures.length > 0 ? (
+                    {t("interiorFeatures")}{" "}
+                    {tempInteriorFeatures.length > 0 ? (
                       <span className="text-base md:text-sm font-normal text-[#595959]">
-                        ({tempSelectedFaceFeatures.length})
+                        ({tempInteriorFeatures.length})
                       </span>
                     ) : null}
                   </h3>
@@ -1537,35 +1614,33 @@ export default function FilterPopup({
                     <img
                       src="/chevron-down.png"
                       className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
-                        !faceFeaturesCollapsed ? "rotate-180" : ""
+                        !interiorFeaturesCollapsed ? "rotate-180" : ""
                       }`}
                     />
                   </button>
                 </div>
-                {!faceFeaturesCollapsed && (
+                {!interiorFeaturesCollapsed && (
                   <div className="mt-3 ">
-                    <div className="flex flex-wrap gap-2">
-                      {(filterOptions.faceFeatures || []).map((feature) => {
-                        const isSelected = tempSelectedFaceFeatures.find(
+                    <div className="flex flex-wrap gap-2 ">
+                      {filterOptions.interiorFeatures.map((feature) => {
+                        const isSelected = tempInteriorFeatures.find(
                           (f: any) => f._id === feature._id
                         );
 
                         return (
                           <button
                             key={feature._id}
-                            onClick={() => toggleFaceFeature(feature)}
+                            onClick={() => toggleFeature(feature)}
                             className={`inline-flex items-center ${
                               isSelected
                                 ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
                                 : "bg-white border-gray-100 text-gray-600"
                             } border rounded-[16px] h-[40px] px-3 py-1 text-base md:text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
                           >
-                            {feature.iconUrl && (
-                              <img
-                                src={feature.iconUrl}
-                                className="w-[24px] h-[24px] mr-2"
-                              />
-                            )}
+                            <img
+                              src={feature.iconUrl}
+                              className="w-[24px] h-[24px] mr-2"
+                            />
                             {feature.name[locale]}
                           </button>
                         );
@@ -1574,138 +1649,20 @@ export default function FilterPopup({
                   </div>
                 )}
               </div>
-            )}
 
-          {/* Interior Features Section */}
-          <div className="mt-6 border-b border-[#F0F0F0] pb-8">
-            <div
-              className="flex items-center justify-between cursor-pointer"
-              onClick={() =>
-                setInteriorFeaturesCollapsed(!interiorFeaturesCollapsed)
-              }
-            >
-              <h3 className="text-base font-semibold text-gray-700">
-                {t("interiorFeatures")}{" "}
-                {tempInteriorFeatures.length > 0 ? (
-                  <span className="text-base md:text-sm font-normal text-[#595959]">
-                    ({tempInteriorFeatures.length})
-                  </span>
-                ) : null}
-              </h3>
-              <button className="text-base md:text-sm text-[#8c8c8c] hover:underline cursor-pointer">
-                <img
-                  src="/chevron-down.png"
-                  className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
-                    !interiorFeaturesCollapsed ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-            </div>
-            {!interiorFeaturesCollapsed && (
-              <div className="mt-3 ">
-                <div className="flex flex-wrap gap-2 ">
-                  {filterOptions.interiorFeatures.map((feature) => {
-                    const isSelected = tempInteriorFeatures.find(
-                      (f: any) => f._id === feature._id
-                    );
-
-                    return (
-                      <button
-                        key={feature._id}
-                        onClick={() => toggleFeature(feature)}
-                        className={`inline-flex items-center ${
-                          isSelected
-                            ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
-                            : "bg-white border-gray-100 text-gray-600"
-                        } border rounded-[16px] h-[40px] px-3 py-1 text-base md:text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
-                      >
-                        <img
-                          src={feature.iconUrl}
-                          className="w-[24px] h-[24px] mr-2"
-                        />
-                        {feature.name[locale]}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Exterior Features Section */}
-          <div className="mt-6 border-b border-[#F0F0F0] pb-8">
-            <div
-              className="flex items-center justify-between cursor-pointer"
-              onClick={() =>
-                setExteriorFeaturesCollapsed(!exteriorFeaturesCollapsed)
-              }
-            >
-              <h3 className="text-base font-semibold text-gray-700">
-                {t("exteriorFeatures") || "Dış Özellikler"}{" "}
-                {tempSelectedExteriorFeatures.length > 0 ? (
-                  <span className="text-base md:text-sm font-normal text-[#595959]">
-                    ({tempSelectedExteriorFeatures.length})
-                  </span>
-                ) : null}
-              </h3>
-              <button className="text-base md:text-sm text-[#8c8c8c] hover:underline cursor-pointer">
-                <img
-                  src="/chevron-down.png"
-                  className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
-                    !exteriorFeaturesCollapsed ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-            </div>
-            {!exteriorFeaturesCollapsed && (
-              <div className="mt-3 ">
-                <div className="flex flex-wrap gap-2">
-                  {filterOptions.outsideFeatures.map((feature) => {
-                    const isSelected = tempSelectedExteriorFeatures.find(
-                      (f: any) => f._id === feature._id
-                    );
-
-                    return (
-                      <button
-                        key={feature._id}
-                        onClick={() => toggleExteriorFeature(feature)}
-                        className={`inline-flex items-center ${
-                          isSelected
-                            ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
-                            : "bg-white border-gray-100 text-gray-600"
-                        } border rounded-[16px] h-[40px] px-3 py-1 text-base md:text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
-                      >
-                        <img
-                          src={feature.iconUrl}
-                          className="w-[24px] h-[24px] mr-2"
-                        />
-                        {feature.name[locale]}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Accessibility Features Section */}
-          {filterOptions.accessibilityFeatures &&
-            filterOptions.accessibilityFeatures.length > 0 && (
+              {/* Exterior Features Section */}
               <div className="mt-6 border-b border-[#F0F0F0] pb-8">
                 <div
                   className="flex items-center justify-between cursor-pointer"
                   onClick={() =>
-                    setAccessibilityFeaturesCollapsed(
-                      !accessibilityFeaturesCollapsed
-                    )
+                    setExteriorFeaturesCollapsed(!exteriorFeaturesCollapsed)
                   }
                 >
                   <h3 className="text-base font-semibold text-gray-700">
-                    {t("accessibilityFeatures") ||
-                      "Engelliye ve Yaşlıya Yönelik Özellikler"}{" "}
-                    {tempSelectedAccessibilityFeatures.length > 0 ? (
+                    {t("exteriorFeatures") || "Dış Özellikler"}{" "}
+                    {tempSelectedExteriorFeatures.length > 0 ? (
                       <span className="text-base md:text-sm font-normal text-[#595959]">
-                        ({tempSelectedAccessibilityFeatures.length})
+                        ({tempSelectedExteriorFeatures.length})
                       </span>
                     ) : null}
                   </h3>
@@ -1713,49 +1670,112 @@ export default function FilterPopup({
                     <img
                       src="/chevron-down.png"
                       className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
-                        !accessibilityFeaturesCollapsed ? "rotate-180" : ""
+                        !exteriorFeaturesCollapsed ? "rotate-180" : ""
                       }`}
                     />
                   </button>
                 </div>
-                {!accessibilityFeaturesCollapsed && (
+                {!exteriorFeaturesCollapsed && (
                   <div className="mt-3 ">
                     <div className="flex flex-wrap gap-2">
-                      {(filterOptions.accessibilityFeatures || []).map(
-                        (feature) => {
-                          const isSelected =
-                            tempSelectedAccessibilityFeatures.find(
-                              (f: any) => f._id === feature._id
-                            );
+                      {filterOptions.outsideFeatures.map((feature) => {
+                        const isSelected = tempSelectedExteriorFeatures.find(
+                          (f: any) => f._id === feature._id
+                        );
 
-                          return (
-                            <button
-                              key={feature._id}
-                              onClick={() =>
-                                toggleAccessibilityFeature(feature)
-                              }
-                              className={`inline-flex items-center ${
-                                isSelected
-                                  ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
-                                  : "bg-white border-gray-100 text-gray-600"
-                              } border rounded-[16px] h-[40px] px-3 py-1 text-base md:text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
-                            >
-                              {feature.iconUrl && (
-                                <img
-                                  src={feature.iconUrl}
-                                  className="w-[24px] h-[24px] mr-2"
-                                />
-                              )}
-                              {feature.name[locale]}
-                            </button>
-                          );
-                        }
-                      )}
+                        return (
+                          <button
+                            key={feature._id}
+                            onClick={() => toggleExteriorFeature(feature)}
+                            className={`inline-flex items-center ${
+                              isSelected
+                                ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                                : "bg-white border-gray-100 text-gray-600"
+                            } border rounded-[16px] h-[40px] px-3 py-1 text-base md:text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
+                          >
+                            <img
+                              src={feature.iconUrl}
+                              className="w-[24px] h-[24px] mr-2"
+                            />
+                            {feature.name[locale]}
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
               </div>
-            )}
+
+              {/* Accessibility Features Section */}
+              {filterOptions.accessibilityFeatures &&
+                filterOptions.accessibilityFeatures.length > 0 && (
+                  <div className="mt-6 border-b border-[#F0F0F0] pb-8">
+                    <div
+                      className="flex items-center justify-between cursor-pointer"
+                      onClick={() =>
+                        setAccessibilityFeaturesCollapsed(
+                          !accessibilityFeaturesCollapsed
+                        )
+                      }
+                    >
+                      <h3 className="text-base font-semibold text-gray-700">
+                        {t("accessibilityFeatures") ||
+                          "Engelliye ve Yaşlıya Yönelik Özellikler"}{" "}
+                        {tempSelectedAccessibilityFeatures.length > 0 ? (
+                          <span className="text-base md:text-sm font-normal text-[#595959]">
+                            ({tempSelectedAccessibilityFeatures.length})
+                          </span>
+                        ) : null}
+                      </h3>
+                      <button className="text-base md:text-sm text-[#8c8c8c] hover:underline cursor-pointer">
+                        <img
+                          src="/chevron-down.png"
+                          className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
+                            !accessibilityFeaturesCollapsed ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+                    </div>
+                    {!accessibilityFeaturesCollapsed && (
+                      <div className="mt-3 ">
+                        <div className="flex flex-wrap gap-2">
+                          {(filterOptions.accessibilityFeatures || []).map(
+                            (feature) => {
+                              const isSelected =
+                                tempSelectedAccessibilityFeatures.find(
+                                  (f: any) => f._id === feature._id
+                                );
+
+                              return (
+                                <button
+                                  key={feature._id}
+                                  onClick={() =>
+                                    toggleAccessibilityFeature(feature)
+                                  }
+                                  className={`inline-flex items-center ${
+                                    isSelected
+                                      ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                                      : "bg-white border-gray-100 text-gray-600"
+                                  } border rounded-[16px] h-[40px] px-3 py-1 text-base md:text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
+                                >
+                                  {feature.iconUrl && (
+                                    <img
+                                      src={feature.iconUrl}
+                                      className="w-[24px] h-[24px] mr-2"
+                                    />
+                                  )}
+                                  {feature.name[locale]}
+                                </button>
+                              );
+                            }
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+            </>
+          )}
 
           {/* Location Features Section */}
 
