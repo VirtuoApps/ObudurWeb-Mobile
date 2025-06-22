@@ -1612,7 +1612,11 @@ export default function FilterPopup({
                                     className="w-[24px] h-[24px] mr-2"
                                   />
                                 )}
-                                {feature.name[locale]}
+                                {
+                                  feature.name[
+                                    locale as keyof typeof feature.name
+                                  ]
+                                }
                               </button>
                             );
                           })}
@@ -1669,7 +1673,7 @@ export default function FilterPopup({
                               src={feature.iconUrl}
                               className="w-[24px] h-[24px] mr-2"
                             />
-                            {feature.name[locale]}
+                            {feature.name[locale as keyof typeof feature.name]}
                           </button>
                         );
                       })}
@@ -1725,7 +1729,7 @@ export default function FilterPopup({
                               src={feature.iconUrl}
                               className="w-[24px] h-[24px] mr-2"
                             />
-                            {feature.name[locale]}
+                            {feature.name[locale as keyof typeof feature.name]}
                           </button>
                         );
                       })}
@@ -1792,7 +1796,11 @@ export default function FilterPopup({
                                       className="w-[24px] h-[24px] mr-2"
                                     />
                                   )}
-                                  {feature.name[locale]}
+                                  {
+                                    feature.name[
+                                      locale as keyof typeof feature.name
+                                    ]
+                                  }
                                 </button>
                               );
                             }
@@ -1813,7 +1821,7 @@ export default function FilterPopup({
               }
             >
               <h3 className="text-base font-semibold text-gray-700">
-                {t("sceneryFeatures") || "Manzara"}{" "}
+                {t("sceneryFeatures")}{" "}
                 {tempSelectedSceneryFeatures.length > 0 ? (
                   <span className="text-base md:text-sm font-normal text-[#595959]">
                     ({tempSelectedSceneryFeatures.length})
@@ -1853,7 +1861,7 @@ export default function FilterPopup({
                             className="w-[24px] h-[24px] mr-2"
                           />
                         )}
-                        {view.name.tr}
+                        {view.name[locale as keyof typeof view.name]}
                       </button>
                     );
                   })}
