@@ -59,6 +59,7 @@ import { currencyOptions } from "../LanguageSwitcher";
 import { filterHotelsByProximity } from "@/app/utils/geoUtils";
 import { setIsFilterApplied } from "@/app/store/favoritesSlice";
 import { useDispatch } from "react-redux";
+import { views, viewsAsArray } from "@/app/utils/views";
 
 type FilterPopupProps = {
   isOpen: boolean;
@@ -105,6 +106,8 @@ type FilterPopupProps = {
   hotels: Hotel[];
   selectedCurrency: string;
   searchRadius: number;
+  selectedSceneryFeatures: any[];
+  setSelectedSceneryFeatures: React.Dispatch<React.SetStateAction<any[]>>;
 };
 
 export default function FilterPopup({
@@ -152,6 +155,8 @@ export default function FilterPopup({
   hotels,
   selectedCurrency,
   searchRadius,
+  selectedSceneryFeatures,
+  setSelectedSceneryFeatures,
 }: FilterPopupProps) {
   const dispatch = useDispatch();
   const t = useTranslations("filter");
@@ -187,6 +192,11 @@ export default function FilterPopup({
   ] = useState<any[]>(selectedAccessibilityFeatures);
   const [tempSelectedFaceFeatures, setTempSelectedFaceFeatures] =
     useState<any[]>(selectedFaceFeatures);
+
+  const [sceneryFeaturesCollapsed, setSceneryFeaturesCollapsed] =
+    useState(true);
+  const [tempSelectedSceneryFeatures, setTempSelectedSceneryFeatures] =
+    useState<Feature[]>(selectedSceneryFeatures);
 
   // Location search state variables - similar to LocationSelect.tsx
   const [suggestions, setSuggestions] = useState<any[]>([]);
@@ -233,6 +243,14 @@ export default function FilterPopup({
     if (deltaY > 0) {
       setTranslateY(deltaY);
     }
+  };
+
+  const toggleSceneryFeature = (feature: Feature) => {
+    setTempSelectedSceneryFeatures((prev: any[]) =>
+      prev.some((f: any) => f._id === feature._id)
+        ? prev.filter((f: any) => f._id !== feature._id)
+        : [...prev, feature]
+    );
   };
 
   const handleTouchEnd = () => {
@@ -718,6 +736,14 @@ export default function FilterPopup({
       });
     }
 
+    if (tempSelectedSceneryFeatures.length > 0) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return hotel.viewIds.some((viewId) =>
+          tempSelectedSceneryFeatures.some((el) => el._id === viewId)
+        );
+      });
+    }
+
     // Filter by selected features (quick filters) - matching HomePage logic
     if (selectedFeatures.length > 0) {
       filteredHotels = filteredHotels.filter((hotel) =>
@@ -761,7 +787,8 @@ export default function FilterPopup({
         (tempFilters.isOnePlusOneSelected ||
           tempFilters.isTwoPlusOneSelected ||
           tempFilters.isThreePlusOneSelected ||
-          tempFilters.isNewSelected))
+          tempFilters.isNewSelected)) ||
+      tempSelectedSceneryFeatures.length > 0
     );
   };
 
@@ -796,6 +823,7 @@ export default function FilterPopup({
     setInteriorFeatures(tempInteriorFeatures);
     setSelectedAccessibilityFeatures(tempSelectedAccessibilityFeatures);
     setSelectedFaceFeatures(tempSelectedFaceFeatures);
+    setSelectedSceneryFeatures(tempSelectedSceneryFeatures);
 
     // Update quick filters (selectedFeatures) based on interior and exterior features
     const newSelectedFeatures = [
@@ -1776,6 +1804,63 @@ export default function FilterPopup({
                 )}
             </>
           )}
+
+          <div className="mt-6 border-b border-[#F0F0F0] pb-8">
+            <div
+              className="flex items-center justify-between cursor-pointer"
+              onClick={() =>
+                setSceneryFeaturesCollapsed(!sceneryFeaturesCollapsed)
+              }
+            >
+              <h3 className="text-base font-semibold text-gray-700">
+                {t("sceneryFeatures") || "Manzara"}{" "}
+                {tempSelectedSceneryFeatures.length > 0 ? (
+                  <span className="text-base md:text-sm font-normal text-[#595959]">
+                    ({tempSelectedSceneryFeatures.length})
+                  </span>
+                ) : null}
+              </h3>
+              <button className="text-base md:text-sm text-[#8c8c8c] hover:underline cursor-pointer">
+                <img
+                  src="/chevron-down.png"
+                  className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
+                    !sceneryFeaturesCollapsed ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+            </div>
+            {!sceneryFeaturesCollapsed && (
+              <div className="mt-3 ">
+                <div className="flex flex-wrap gap-2">
+                  {viewsAsArray.map((view) => {
+                    const isSelected = tempSelectedSceneryFeatures.find(
+                      (f: any) => f._id === view._id
+                    );
+
+                    return (
+                      <button
+                        key={view._id}
+                        onClick={() => toggleSceneryFeature(view)}
+                        className={`inline-flex items-center ${
+                          isSelected
+                            ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                            : "bg-white border-gray-100 text-gray-600"
+                        } border rounded-[16px] h-[40px] px-3 py-1 text-base md:text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
+                      >
+                        {view.iconUrl && (
+                          <img
+                            src={view.iconUrl}
+                            className="w-[24px] h-[24px] mr-2"
+                          />
+                        )}
+                        {view.name.tr}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* Location Features Section */}
 

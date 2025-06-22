@@ -60,4 +60,5 @@ export interface Hotel {
   updatedAt: string;
   floorPosition: MultilingualText;
   __v: number;
+  viewIds: string[];
 }

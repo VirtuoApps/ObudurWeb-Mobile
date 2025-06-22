@@ -22,3 +22,16 @@ export const views: {
     image: "/landscape.png",
   },
 };
+
+export const viewsAsArray = Object.entries(views).map(([key, value]) => ({
+  _id: key,
+  name: {
+    tr: value.tr,
+    en: value.en,
+  },
+  iconUrl: value.image,
+  featureType: "scenery",
+  createdAt: "",
+  updatedAt: "",
+  __v: 0,
+}));

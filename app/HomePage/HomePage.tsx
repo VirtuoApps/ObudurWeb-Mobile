@@ -497,6 +497,14 @@ export default function HomePage({
     filteredHotels: filteredHotels.length,
   });
 
+  if (selectedSceneryFeatures.length > 0) {
+    filteredHotels = filteredHotels.filter((hotel) => {
+      return hotel.viewIds.some((viewId) =>
+        selectedSceneryFeatures.some((feature) => feature._id === viewId)
+      );
+    });
+  }
+
   if (interiorFeatures.length > 0) {
     filteredHotels = filteredHotels.filter((hotel) => {
       return interiorFeatures.every((feature) =>
