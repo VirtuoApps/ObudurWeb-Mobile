@@ -118,7 +118,7 @@ export default function Header({
     >
       <div className="w-full flex items-center px-4 sm:px-6 gap-3 z-50">
         {/* Logo - Sabit genişlik */}
-        <div className="xl:flex hidden items-center shrink-0 w-[144px]">
+        <div className="md:flex hidden items-center shrink-0 w-[144px]">
           <Image
             src="/obudur-logo.png"
             alt="oBudur Logo"
@@ -128,7 +128,7 @@ export default function Header({
           />
         </div>
 
-        <div className="xl:hidden flex items-center shrink-0 w-[28px]">
+        <div className="md:hidden flex items-center shrink-0 w-[28px]">
           <Image
             src="/obudur-icon.png"
             alt="oBudur Logo"

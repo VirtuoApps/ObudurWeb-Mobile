@@ -194,7 +194,7 @@ export default function AuthBox({
 
                   router.push("/admin/ilan-olustur");
                 }}
-                className="hidden lg:block rounded-lg px-2 py-3 transition-all duration-300 hover:bg-gray-50 text-[#5E5691] cursor-pointer font-medium text-[14px] w-[92px] h-[48px]"
+                className="hidden xl:block rounded-lg px-2 py-3 transition-all duration-300 hover:bg-gray-50 text-[#5E5691] cursor-pointer font-medium text-[14px] w-[92px] h-[48px]"
               >
                 <p className="">{t("postListing")}</p>
               </button>
