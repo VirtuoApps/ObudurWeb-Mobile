@@ -855,6 +855,7 @@ export default function FilterPopup({
     setTempSelectedLocation(null);
     setTempSelectedPropertyType(null);
     setTempSelectedCategory(null);
+    setTempSelectedSceneryFeatures([]);
     setTempFilters({
       listingType: null,
       state: null,
