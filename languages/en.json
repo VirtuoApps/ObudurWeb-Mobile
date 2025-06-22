@@ -187,7 +187,8 @@
   "residentBox": {
     "optinable": "Optinable",
     "forSale": "For Sale",
-    "forRent": "For Rent"
+    "forRent": "For Rent",
+    "section": "Section"
   },
   "residentMenu": {
     "photos": "Photos",

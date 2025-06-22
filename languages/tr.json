@@ -192,7 +192,8 @@
   "residentBox": {
     "optinable": "Opsiyonlandı",
     "forSale": "Satılık",
-    "forRent": "Kiralık"
+    "forRent": "Kiralık",
+    "section": "Bölüm"
   },
   "residentMenu": {
     "photos": "Fotoğraflar",

@@ -280,7 +280,7 @@ export default function ResidentBox({
 
                 <span>
                   {roomCount}
-                  <span> Bölüm</span>
+                  <span> {t("section")}</span>
                 </span>
               </div>
 

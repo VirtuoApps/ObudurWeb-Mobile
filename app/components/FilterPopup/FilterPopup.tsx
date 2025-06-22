@@ -1566,7 +1566,7 @@ export default function FilterPopup({
                                 className="w-[24px] h-[24px] mr-2"
                               />
                             )}
-                            {feature.name.tr}
+                            {feature.name[locale]}
                           </button>
                         );
                       })}
@@ -1623,7 +1623,7 @@ export default function FilterPopup({
                           src={feature.iconUrl}
                           className="w-[24px] h-[24px] mr-2"
                         />
-                        {feature.name.tr}
+                        {feature.name[locale]}
                       </button>
                     );
                   })}
@@ -1679,7 +1679,7 @@ export default function FilterPopup({
                           src={feature.iconUrl}
                           className="w-[24px] h-[24px] mr-2"
                         />
-                        {feature.name.tr}
+                        {feature.name[locale]}
                       </button>
                     );
                   })}
@@ -1746,7 +1746,7 @@ export default function FilterPopup({
                                   className="w-[24px] h-[24px] mr-2"
                                 />
                               )}
-                              {feature.name.tr}
+                              {feature.name[locale]}
                             </button>
                           );
                         }
