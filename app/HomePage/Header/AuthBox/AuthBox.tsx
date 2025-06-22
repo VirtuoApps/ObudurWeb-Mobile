@@ -75,6 +75,7 @@ export default function AuthBox({
   hideProfileIcon = false,
   disableMapListButton,
   setDisableMapListButton,
+  isSimpleHeader = false,
 }: {
   showLikeButton?: boolean;
   hideCreateListingButton?: boolean;
@@ -82,6 +83,7 @@ export default function AuthBox({
   hideProfileIcon?: boolean;
   disableMapListButton?: boolean;
   setDisableMapListButton?: (isOpen: boolean) => void;
+  isSimpleHeader?: boolean;
 }) {
   const t = useTranslations("header");
   const t_authBox = useTranslations("authBox");
@@ -194,7 +196,9 @@ export default function AuthBox({
 
                   router.push("/admin/ilan-olustur");
                 }}
-                className="hidden xl:block rounded-lg px-2 py-3 transition-all duration-300 hover:bg-gray-50 text-[#5E5691] cursor-pointer font-medium text-[14px] w-[92px] h-[48px]"
+                className={`${
+                  isSimpleHeader ? "hidden lg:block" : "hidden xl:block"
+                } rounded-lg px-2 py-3 transition-all duration-300 hover:bg-gray-50 text-[#5E5691] cursor-pointer font-medium text-[14px] w-[92px] h-[48px]`}
               >
                 <p className="">{t("postListing")}</p>
               </button>

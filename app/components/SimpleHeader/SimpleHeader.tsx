@@ -117,13 +117,13 @@ export default function SimpleHeader({
         {/* Center Navigation - Hidden on mobile, shown on md and larger */}
 
         {/* Right Side Items for Desktop */}
-        <div className="hidden md:flex items-center gap-4">
-          <AuthBox />
+        <div className="hidden lg:flex items-center gap-4">
+          <AuthBox isSimpleHeader={true} />
           <LanguageSwitcher />
         </div>
 
         {/* Mobile Right Side Items */}
-        <div className="md:hidden flex items-center">
+        <div className="lg:hidden flex items-center">
           {showFavoriteButton ? (
             <LikeButton
               isLiked={false}
