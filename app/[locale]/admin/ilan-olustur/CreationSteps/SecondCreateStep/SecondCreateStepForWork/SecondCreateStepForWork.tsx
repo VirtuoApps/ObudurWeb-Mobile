@@ -228,6 +228,10 @@ export default function SecondCreateStepForWork() {
     },
     { value: "floorHeater", label: t("options.heatingTypes.floorHeater") },
     {
+      value: "underfloorHeating",
+      label: t("options.heatingTypes.underfloorHeating"),
+    },
+    {
       value: "naturalGasBoiler",
       label: t("options.heatingTypes.naturalGasBoiler"),
     },
@@ -476,7 +480,7 @@ export default function SecondCreateStepForWork() {
   return (
     <div className=" bg-[#ECEBF4] flex justify-center items-start p-4 py-6">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white h-full ">
-        <div className="flex flex-col md:flex-row h-full md:h-[67vh]  2xl:h-[76vh]">
+        <div className="flex flex-col md:flex-row h-full md:h-[73vh]  2xl:h-[76vh]">
           {/* Left Info Panel */}
           <div className="w-full md:w-[30%] md:p-6 hidden flex-col md:flex justify-between">
             <div>
