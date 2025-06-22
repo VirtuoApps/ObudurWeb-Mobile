@@ -193,7 +193,8 @@
     "optinable": "Opsiyonlandı",
     "forSale": "Satılık",
     "forRent": "Kiralık",
-    "section": "Bölüm"
+    "section": "Bölüm",
+    "floor": "Kat"
   },
   "residentMenu": {
     "photos": "Fotoğraflar",

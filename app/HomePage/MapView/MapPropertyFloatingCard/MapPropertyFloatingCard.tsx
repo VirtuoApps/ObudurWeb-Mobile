@@ -181,9 +181,24 @@ export default function MapPropertyFloatingCard({
 
               {/* Features */}
               {entranceType.tr === "Konut" && (
-                <div className="flex items-center gap-3 text-xs text-[#595959] font-medium leading-[1.4] text-[12px] justify-between">
+                <div className="flex items-center gap-1 text-xs text-[#595959] font-medium leading-[1.4] text-[12px] justify-between">
                   <div className="flex items-center space-x-1">
-                    <BedIcon />
+                    <svg
+                      width={24}
+                      height={24}
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M20 12.7273V20H4V12.7273M20 12.7273H16.3636M20 12.7273V4H11.2727M11.2727 4H4V12.7273M11.2727 4V5.45455M11.2727 12.7273H12.7273M11.2727 12.7273H9.09091M11.2727 12.7273V9.09091M4 12.7273H5.45455"
+                        stroke="#595959"
+                        strokeWidth="1.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+
                     <span>{roomAsText}</span>
                   </div>
 
@@ -191,7 +206,9 @@ export default function MapPropertyFloatingCard({
 
                   <div className="flex items-center space-x-1">
                     <FloorCountIcon />
-                    <span>{floorCount}</span>
+                    <span>
+                      {floorCount}. {t("floor")}
+                    </span>
                   </div>
 
                   <div className="w-px h-4 bg-[#D9D9D9]"></div>

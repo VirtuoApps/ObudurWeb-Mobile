@@ -10,6 +10,7 @@ import { getDisplayPrice } from "@/app/utils/priceFormatter";
 import { getLocalizedText } from "../ListView/ListView";
 import { useGoogleMaps } from "../../contexts/GoogleMapsContext";
 import { useRouter } from "@/app/utils/router";
+import { useLocale } from "next-intl";
 
 export default function GoogleMapView({
   hotels,
@@ -43,6 +44,8 @@ export default function GoogleMapView({
   const [isMobile, setIsMobile] = useState(false);
 
   const router = useRouter();
+
+  const locale = useLocale();
 
   // Check if screen is mobile
   useEffect(() => {
@@ -415,18 +418,18 @@ export default function GoogleMapView({
                   key={selectedHotel._id}
                   hotelId={selectedHotel._id}
                   slug={selectedHotel.slug}
-                  type={getLocalizedText(selectedHotel.listingType, "en")}
+                  type={getLocalizedText(selectedHotel.listingType, locale)}
                   isOptinable={false}
                   residentTypeName={getLocalizedText(
                     selectedHotel.housingType,
-                    "en"
+                    locale
                   )}
-                  title={getLocalizedText(selectedHotel.title, "en")}
+                  title={getLocalizedText(selectedHotel.title, locale)}
                   price={getDisplayPrice(selectedHotel.price, selectedCurrency)}
                   bedCount={selectedHotel.bedRoomCount.toString()}
                   floorCount={selectedHotel.floorCount?.toString()}
                   area={`${selectedHotel.projectArea}m2`}
-                  locationText={formatAddress(selectedHotel, "en ")}
+                  locationText={formatAddress(selectedHotel, locale)}
                   image={selectedHotel.images[0]}
                   images={selectedHotel.images}
                   isFavorite={false}

@@ -188,7 +188,8 @@
     "optinable": "Optinable",
     "forSale": "For Sale",
     "forRent": "For Rent",
-    "section": "Section"
+    "section": "Section",
+    "floor": "Floor"
   },
   "residentMenu": {
     "photos": "Photos",
