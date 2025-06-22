@@ -206,9 +206,7 @@ export default function MapPropertyFloatingCard({
 
                   <div className="flex items-center space-x-1">
                     <FloorCountIcon />
-                    <span>
-                      {floorCount}. {t("floor")}
-                    </span>
+                    <span>{floorCount}</span>
                   </div>
 
                   <div className="w-px h-4 bg-[#D9D9D9]"></div>

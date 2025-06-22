@@ -25,11 +25,12 @@ import { filterHotelsByProximity } from "@/app/utils/geoUtils";
 import { states } from "./states";
 import { useScrollDirection } from "../hooks/useScrollDirection";
 import { useSelector } from "react-redux";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Bowser from "bowser";
 import MapPropertyFloatingCard from "./MapView/MapPropertyFloatingCard/MapPropertyFloatingCard";
 import { getDisplayPrice } from "../utils/priceFormatter";
 import { formatAddress } from "../utils/addressFormatter";
+import { renderFloorPositionText } from "../utils/renderFloorPositionText";
 
 const MapView = dynamic(() => import("./MapView/MapView"), {
   ssr: false,
@@ -139,6 +140,8 @@ export default function HomePage({
   ] = useState(false);
 
   const tForRoomCounts = useTranslations("adminCreation.step2_house");
+
+  const locale = useLocale();
 
   const generateRoomCountOptions = () => {
     return [
@@ -1050,18 +1053,21 @@ export default function HomePage({
               key={selectedHotel._id}
               hotelId={selectedHotel._id}
               slug={selectedHotel.slug}
-              type={getLocalizedText(selectedHotel.listingType, "en")}
+              type={getLocalizedText(selectedHotel.listingType, locale)}
               isOptinable={false}
               residentTypeName={getLocalizedText(
                 selectedHotel.housingType,
-                "en"
+                locale
               )}
-              title={getLocalizedText(selectedHotel.title, "en")}
+              title={getLocalizedText(selectedHotel.title, locale)}
               price={getDisplayPrice(selectedHotel.price, selectedCurrency)}
               bedCount={selectedHotel.bedRoomCount.toString()}
-              floorCount={selectedHotel.floorCount?.toString()}
+              floorCount={renderFloorPositionText(
+                selectedHotel.floorPosition,
+                locale
+              )}
               area={`${selectedHotel.projectArea}m²`}
-              locationText={formatAddress(selectedHotel, "en ")}
+              locationText={formatAddress(selectedHotel, locale)}
               image={selectedHotel.images[0]}
               images={selectedHotel.images}
               isFavorite={false}

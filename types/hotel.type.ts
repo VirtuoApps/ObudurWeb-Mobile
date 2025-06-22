@@ -58,5 +58,6 @@ export interface Hotel {
   documents: any[];
   createdAt: string;
   updatedAt: string;
+  floorPosition: MultilingualText;
   __v: number;
 }
