@@ -183,6 +183,13 @@ export default function FilterList({
   const { scrollDirection, isScrolled } = useScrollDirection();
 
   const handleFilterClick = (featureItem: Feature) => {
+    console.log(
+      {
+        featureItem,
+      },
+      "filterClicked"
+    );
+
     const isCurrentlySelected = selectedFeatures.some(
       (sf) => sf._id === featureItem._id
     );

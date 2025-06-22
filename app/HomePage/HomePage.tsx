@@ -138,6 +138,10 @@ export default function HomePage({
     setIsPersonalInformationFormPopupOpen,
   ] = useState(false);
 
+  console.log({
+    filters,
+  });
+
   useEffect(() => {
     if (searchParams.get("emailConfirmed") === "true") {
       setShowEmailVerifiedPopup(true);
@@ -456,6 +460,11 @@ export default function HomePage({
     });
   }
 
+  console.log({
+    roomCount,
+    filteredHotels: filteredHotels.length,
+  });
+
   if (
     bathroomCount !== undefined &&
     bathroomCount !== null &&
@@ -466,6 +475,11 @@ export default function HomePage({
     });
   }
 
+  console.log({
+    bathroomCount,
+    filteredHotels: filteredHotels.length,
+  });
+
   if (interiorFeatures.length > 0) {
     filteredHotels = filteredHotels.filter((hotel) => {
       return interiorFeatures.every((feature) =>
@@ -474,13 +488,30 @@ export default function HomePage({
     });
   }
 
+  console.log({
+    interiorFeatures,
+    filteredHotels: filteredHotels.length,
+  });
+
   if (selectedExteriorFeatures.length > 0) {
     filteredHotels = filteredHotels.filter((hotel) => {
-      return selectedExteriorFeatures.every((feature) =>
-        hotel.featureIds.includes(feature._id)
-      );
+      return selectedExteriorFeatures.every((feature) => {
+        const isHousingTypeMatch =
+          hotel.housingType.tr === selectedExteriorFeatures[0].name.tr;
+
+        if (isHousingTypeMatch) {
+          return true;
+        }
+
+        return hotel.featureIds.includes(feature._id);
+      });
     });
   }
+
+  console.log({
+    selectedExteriorFeatures,
+    filteredHotels: filteredHotels.length,
+  });
 
   if (selectedFaceFeatures.length > 0) {
     filteredHotels = filteredHotels.filter((hotel) => {
@@ -490,6 +521,11 @@ export default function HomePage({
     });
   }
 
+  console.log({
+    selectedFaceFeatures,
+    filteredHotels: filteredHotels.length,
+  });
+
   if (selectedAccessibilityFeatures.length > 0) {
     filteredHotels = filteredHotels.filter((hotel) => {
       return selectedAccessibilityFeatures.every((feature) =>
@@ -497,6 +533,11 @@ export default function HomePage({
       );
     });
   }
+
+  console.log({
+    selectedAccessibilityFeatures,
+    filteredHotels: filteredHotels.length,
+  });
 
   if (filters) {
     if (filters.propertyType) {
@@ -649,11 +690,22 @@ export default function HomePage({
     }
   }
 
+  console.log({
+    selectedFeatures,
+    filteredHotels: filteredHotels.length,
+    filters,
+    hotels: hotels.length,
+  });
+
   if (selectedFeatures.length > 0) {
     filteredHotels = filteredHotels.filter((hotel) =>
       selectedFeatures.every((selectedFeature) => {
         const isHousingTypeMatch =
           hotel.housingType.tr === selectedFeature.name.tr;
+
+        console.log({
+          isHousingTypeMatch,
+        });
 
         const isFeatureMatch = hotel.featureIds.some(
           (hotelFeature: string | { _id: string }) => {
