@@ -452,12 +452,7 @@ export default function GeneralInfo() {
             </div>
             <div className="flex items-center gap-2 text-[#262626] border-r  pr-4 border-l border-[#D9D9D9] pl-4 whitespace-nowrap w-[33%] sm:w-auto flex items-center justify-center">
               <FloorCountIcon />
-              <span>
-                {renderFloorPositionText(
-                  hotelData.hotelDetails.floorPosition,
-                  locale
-                )}
-              </span>
+              <span>{hotelData.hotelDetails.floorPosition[currentLocale]}</span>
             </div>
             <div className="flex items-center gap-2 text-[#262626] whitespace-nowrap">
               <AreaIcon />
