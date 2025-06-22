@@ -67,7 +67,7 @@ export default function ListingTypePopup({
 
       {/* Bottom sheet */}
       <div
-        className="relative w-full max-w-md bg-white rounded-t-[32px] pt-[24px] px-[16px] pb-[32px] shadow-xl"
+        className="relative w-full max-w-md md:max-w-2xl bg-white rounded-t-[32px] pt-[24px] px-[16px] pb-[32px] shadow-xl"
         style={{
           transform: `translateY(${translateY}px)`,
           transition: touchStartY ? "none" : "transform 0.3s ease-out",
