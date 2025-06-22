@@ -112,9 +112,9 @@ export default function Header() {
           />
         </div>
 
-        <div className="w-[1px] h-[16px] bg-[#D9D9D9] ml-12"></div>
+        <div className="w-[1px] h-[16px] bg-[#D9D9D9] xl:ml-12 ml-6"></div>
 
-        <div className="hidden md:block ml-12">
+        <div className="hidden md:block xl:ml-12 ml-6">
           <MenuItems />
         </div>
 
