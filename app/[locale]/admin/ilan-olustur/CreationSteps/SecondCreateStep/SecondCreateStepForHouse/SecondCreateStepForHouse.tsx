@@ -900,6 +900,8 @@ export default function SecondCreateStepForHouse() {
                                 ? "Air Conditioning"
                                 : selected.value === "solarEnergy"
                                 ? "Solar Energy"
+                                : selected.value === "underfloorHeating"
+                                ? "Underfloor Heating"
                                 : "",
                           });
                         }
