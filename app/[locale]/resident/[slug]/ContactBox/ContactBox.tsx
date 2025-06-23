@@ -227,42 +227,45 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
 
   const formatPhoneNumber = (phone: string) => {
     // Remove all non-digit characters except the leading +
-    const cleaned = phone.replace(/[^\d+]/g, '');
-    
+    const cleaned = phone.replace(/[^\d+]/g, "");
+
     // Handle different country code formats
-    if (cleaned.startsWith('+')) {
+    if (cleaned.startsWith("+")) {
       const withoutPlus = cleaned.slice(1);
-      
+
       // For Turkish numbers (+90)
-      if (withoutPlus.startsWith('90') && withoutPlus.length === 13) {
-        return `+90 ${withoutPlus.slice(2, 5)} ${withoutPlus.slice(5, 8)} ${withoutPlus.slice(8, 10)} ${withoutPlus.slice(10)}`;
+      if (withoutPlus.startsWith("90") && withoutPlus.length === 13) {
+        return `+90 ${withoutPlus.slice(2, 5)} ${withoutPlus.slice(
+          5,
+          8
+        )} ${withoutPlus.slice(8, 10)} ${withoutPlus.slice(10)}`;
       }
-      
+
       // Generic international format - try to add spaces every 3 digits after country code
       const countryCodeLength = withoutPlus.length > 10 ? 2 : 1;
       const countryCode = withoutPlus.slice(0, countryCodeLength);
       const remaining = withoutPlus.slice(countryCodeLength);
-      
+
       if (remaining.length <= 10) {
         // Format as groups of 3
-        const formatted = remaining.match(/.{1,3}/g)?.join(' ') || remaining;
+        const formatted = remaining.match(/.{1,3}/g)?.join(" ") || remaining;
         return `+${countryCode} ${formatted}`;
       }
     }
-    
+
     // Fallback: just add the original format with minimal spacing
-    return cleaned.replace(/(\+\d{1,3})(\d{3})(\d{3})(\d+)/, '$1 $2 $3 $4');
+    return cleaned.replace(/(\+\d{1,3})(\d{3})(\d{3})(\d+)/, "$1 $2 $3 $4");
   };
 
   const maskPhone = (phone: string) => {
     const formatted = formatPhoneNumber(phone);
     const parts = formatted.split(" ");
-    
+
     return parts
       .map((part, index) => {
         if (!part) return "";
         // Don't mask the country code (first part with +)
-        if (index === 0 && part.startsWith('+')) return part;
+        if (index === 0 && part.startsWith("+")) return part;
         // Keep the first segment after country code visible (e.g., "512")
         if (index === 1) return part;
         // Mask all other segments completely
@@ -403,7 +406,9 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
       )}
       {isLoginned && (
         <div className="mt-6">
-          <h4 className="text-gray-800 mb-4 font-bold text-[14px]">{t("getMoreInfo")}</h4>
+          <h4 className="text-gray-800 mb-4 font-bold text-[14px]">
+            {t("getMoreInfo")}
+          </h4>
 
           {existingMessage ? (
             <div className="bg-green-50 p-4 rounded-xl border border-green-200 mb-4">
@@ -468,9 +473,7 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
               </div>
             </div>
 
-            <div className="mb-2">
-
-            </div>
+            <div className="mb-2"></div>
 
             <div className="mb-2">
               <input
@@ -601,7 +604,9 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
             {!(!isValid || loading || !!existingMessage) && (
               <div className="mb-6">
                 <p className="px-4 text-[12px] text-[#8C8C8C]">
-                  “Mesaj Gönder” butonuna tıklayarak bilgilerinizin ilan veren taraf ile paylaşılmasını ve Kullanıcı Sözleşmesi’ni kabul etmiş olursunuz.
+                  “Mesaj Gönder” butonuna tıklayarak bilgilerinizin ilan veren
+                  taraf ile paylaşılmasını ve Kullanıcı Sözleşmesi’ni kabul
+                  etmiş olursunuz.
                 </p>
               </div>
             )}
@@ -652,7 +657,7 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
             style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
           ></div>
           <div
-            className="relative bg-white rounded-t-[24px] shadow-xl max-w-[600px] w-full mx-auto max-h-[calc(100vh-112px)] flex flex-col mt-28"
+            className="relative bg-white rounded-t-[24px] shadow-xl max-w-[600px] w-full mx-auto max-h-[calc(100vh-32px)] flex flex-col mt-28"
             style={{
               transform: `translateY(${translateY}px)`,
               transition: touchStartY ? "none" : "transform 0.3s ease-out",
