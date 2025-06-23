@@ -469,7 +469,29 @@
     "searchButton": "Search",
     "suggestedListingsTitle": "Listings That May Interest You",
     "filters": "Filters:",
-    "quickFilters": "Quick Filters"
+    "quickFilters": "Quick Filters",
+    "filterBox": {
+      "oneDayAgo": "1 day ago",
+      "daysAgo": "{diffDays} days ago",
+      "category": "Category",
+      "all": "All",
+      "allLocations": "All locations",
+      "priceRange": "Price: {min} - {max}",
+      "areaRange": "Area: {min} - {max} m²",
+      "roomCount": "{count} room(s)",
+      "bathroomCount": "{count} bathroom(s)",
+      "plusFeatures": "+{count} feature(s)",
+      "noFilter": "No filter",
+      "location": "Location",
+      "filtersLabel": "Filters",
+      "viewResults": "View Results ({count})",
+      "results": "Results({count})",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteSearchTitle": "Delete Saved Search",
+      "deleteSearchConfirm": "Are you sure you want to delete your saved search?",
+      "cancel": "Cancel"
+    }
   },
   "adminListings": {
     "postListing": "Post Listing",

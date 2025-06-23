@@ -140,7 +140,7 @@ export default function LoginForm({
               type="email"
               placeholder={t("emailPlaceholder")}
               {...register("email")}
-              className={`w-full rounded-[16px] h-14 border py-2 px-3 text-[#262626] focus:outline-none focus:ring-none placeholder:text-gray-400 ${
+              className={`w-full rounded-[16px] h-14 border py-2 px-3 text-[#262626] focus:outline-none focus:ring-none placeholder:text-gray-400  ${
                 errors.email ? "border-red-500" : "border-[#D9D9D9]"
               }`}
             />
@@ -157,7 +157,7 @@ export default function LoginForm({
               type="password"
               placeholder={t("passwordPlaceholder")}
               {...register("password")}
-              className={`w-full rounded-[16px] h-14 border py-2 px-3 text-[#262626] focus:outline-none focus:ring-none placeholder:text-gray-400 outline-none  ${
+              className={`w-full rounded-[16px] h-14 border py-2 px-3 text-[#262626] focus:outline-none focus:ring-none placeholder:text-gray-400 outline-none text-base ${
                 errors.password ? "border-red-500" : "border-gray-300"
               }`}
             />

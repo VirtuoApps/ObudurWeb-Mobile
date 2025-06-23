@@ -474,7 +474,29 @@
     "searchButton": "Arama Yap",
     "suggestedListingsTitle": "İlginizi Çekebilecek İlanlar",
     "filters": "Filtreler:",
-    "quickFilters": "Hızlı Filtreler"
+    "quickFilters": "Hızlı Filtreler",
+    "filterBox": {
+      "oneDayAgo": "1 gün önce",
+      "daysAgo": "{diffDays} gün önce",
+      "category": "Kategori",
+      "all": "Tümü",
+      "allLocations": "Tüm konumlar",
+      "priceRange": "Fiyat: {min} - {max}",
+      "areaRange": "Alan: {min} - {max} m²",
+      "roomCount": "{count} oda",
+      "bathroomCount": "{count} banyo",
+      "plusFeatures": "+{count} özellik",
+      "noFilter": "Filtre yok",
+      "location": "Konum",
+      "filtersLabel": "Filtreler",
+      "viewResults": "Sonuçları Görüntüle ({count})",
+      "results": "Sonuçlar({count})",
+      "edit": "Düzenle",
+      "delete": "Sil",
+      "deleteSearchTitle": "Arama Kaydını Sil",
+      "deleteSearchConfirm": "Arama kaydınızı silmek istediğinize emin misiniz?",
+      "cancel": "İptal"
+    }
   },
   "adminListings": {
     "postListing": "İlan Ver",

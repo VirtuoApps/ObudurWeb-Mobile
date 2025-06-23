@@ -44,6 +44,8 @@ export default function FilterBox({
 
   const selectedLanguage = useLocale();
   const t = useTranslations("savedSearchesPage");
+  const tFilterBox = useTranslations("savedSearchesPage.filterBox");
+  const tAdmin = useTranslations("adminInterface");
 
   // Format the date
   const formatDate = (dateString?: string) => {
@@ -53,20 +55,22 @@ export default function FilterBox({
     const diffTime = Math.abs(now.getTime() - date.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    if (diffDays === 1) return "1 gün önce";
-    return `${diffDays} gün önce`;
+    if (diffDays === 1) return tFilterBox("oneDayAgo");
+    return tFilterBox("daysAgo", { diffDays });
   };
 
   // Build category text
   const getCategoryText = () => {
-    const categoryText = filter.categoryId ? "Kategori" : "Tümü";
-    const propertyText = filter.propertyType || "Tümü";
+    const categoryText = filter.categoryId
+      ? tFilterBox("category")
+      : tFilterBox("all");
+    const propertyText = filter.propertyType || tFilterBox("all");
     return `${propertyText} - ${categoryText}`;
   };
 
   // Build location text
   const getLocationText = () => {
-    return filter.selectedLocation?.name || "Tüm konumlar";
+    return filter.selectedLocation?.name || tFilterBox("allLocations");
   };
 
   // Build filters text
@@ -89,24 +93,26 @@ export default function FilterBox({
     if (filter.minPrice || filter.maxPrice) {
       const min = filter.minPrice || 0;
       const max = filter.maxPrice || "∞";
-      activeFilters.push(`Fiyat: ${min} - ${max}`);
+      activeFilters.push(tFilterBox("priceRange", { min, max }));
     }
 
     // Area range
     if (filter.minProjectArea || filter.maxProjectArea) {
       const min = filter.minProjectArea || 0;
       const max = filter.maxProjectArea || "∞";
-      activeFilters.push(`Alan: ${min} - ${max} m²`);
+      activeFilters.push(tFilterBox("areaRange", { min, max }));
     }
 
     // Room count
     if (filter.roomCount) {
-      activeFilters.push(`${filter.roomCount} oda`);
+      activeFilters.push(tFilterBox("roomCount", { count: filter.roomCount }));
     }
 
     // Bathroom count
     if (filter.bathroomCount) {
-      activeFilters.push(`${filter.bathroomCount} banyo`);
+      activeFilters.push(
+        tFilterBox("bathroomCount", { count: filter.bathroomCount })
+      );
     }
 
     // Feature IDs count
@@ -123,10 +129,12 @@ export default function FilterBox({
       featureCount += filter.locationFeatureIds.length;
 
     if (featureCount > 0) {
-      activeFilters.push(`+${featureCount} özellik`);
+      activeFilters.push(tFilterBox("plusFeatures", { count: featureCount }));
     }
 
-    return activeFilters.length > 0 ? activeFilters.join(", ") : "Filtre yok";
+    return activeFilters.length > 0
+      ? activeFilters.join(", ")
+      : tFilterBox("noFilter");
   };
 
   const handleViewResults = () => {
@@ -187,7 +195,7 @@ export default function FilterBox({
         <div className="space-y-3 sm:space-y-2 pb-4 sm:pb-6 py-0 p-4 sm:p-6 border-b border-[#F0F0F0]">
           <div className="flex flex-col sm:flex-row gap-1 sm:gap-0">
             <span className="text-[#262626] font-bold text-xs sm:text-sm leading-[140%] tracking-normal sm:min-w-[80px]">
-              Kategori:
+              {tFilterBox("category")}:
             </span>
             <span className="text-gray-700 font-normal text-xs sm:text-sm leading-[140%] tracking-normal">
               {getCategoryText()}
@@ -196,7 +204,7 @@ export default function FilterBox({
 
           <div className="flex flex-col sm:flex-row gap-1 sm:gap-0">
             <span className="text-[#262626] font-bold text-xs sm:text-sm leading-[140%] tracking-normal sm:min-w-[80px]">
-              Konum:
+              {tFilterBox("location")}:
             </span>
             <span className="text-gray-700 font-normal text-xs sm:text-sm leading-[140%] tracking-normal">
               {getLocationText()}
@@ -205,7 +213,7 @@ export default function FilterBox({
 
           <div className="flex flex-col sm:flex-row gap-1 sm:gap-0">
             <span className="text-[#262626] font-bold text-xs sm:text-sm leading-[140%] tracking-normal sm:min-w-[80px]">
-              {useTranslations("filtering")("filters")}:
+              {t("filters")}:
             </span>
             <span className="text-gray-700 font-normal text-xs sm:text-sm leading-[140%] tracking-normal">
               {getFiltersText()}
@@ -360,7 +368,7 @@ export default function FilterBox({
             onClick={handleViewResults}
             className="hidden sm:flex flex-1 bg-[#5E5691] text-white font-medium text-sm sm:text-base leading-[140%] tracking-normal rounded-xl sm:rounded-2xl px-4 sm:px-6 py-3 sm:py-4 items-center justify-center gap-2 hover:bg-[#504682] transition-colors sm:max-w-[263px] order-1 h-12 sm:h-14"
           >
-            Sonuçları Görüntüle ({filter.resultCount || 0})
+            {tFilterBox("viewResults", { count: filter.resultCount || 0 })}
             <img src="/chevron-right.png" className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
@@ -368,7 +376,7 @@ export default function FilterBox({
             onClick={handleViewResults}
             className="flex sm:hidden flex-1 bg-[#5E5691] text-white font-medium text-sm sm:text-base leading-[140%] tracking-normal rounded-xl sm:rounded-2xl px-4 sm:px-6 py-3 sm:py-4 items-center justify-center gap-2 hover:bg-[#504682] transition-colors sm:max-w-[263px] order-1 h-12 sm:h-14"
           >
-            Sonuçlar({filter.resultCount || 0})
+            {tFilterBox("results", { count: filter.resultCount || 0 })}
             <img src="/chevron-right.png" className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
@@ -377,14 +385,14 @@ export default function FilterBox({
               onClick={handleEditClick}
               className="flex-1 sm:flex-none px-4 sm:px-6 py-3 sm:py-4 text-gray-700 font-medium text-sm sm:text-base leading-[140%] tracking-normal border border-[#BFBFBF] rounded-xl sm:rounded-2xl hover:bg-gray-50 transition-colors sm:ml-auto h-12 sm:h-14 sm:w-[110px]"
             >
-              Düzenle
+              {tFilterBox("edit")}
             </button>
 
             <button
               onClick={handleDeleteClick}
               className="flex-1 sm:flex-none px-4 sm:px-6 py-3 sm:py-4 bg-[#F24853] text-white font-medium text-sm sm:text-base leading-[140%] tracking-normal rounded-xl sm:rounded-2xl hover:bg-[#E03843] transition-colors h-12 sm:h-14 sm:w-[66px]"
             >
-              Sil
+              {tFilterBox("delete")}
             </button>
           </div>
         </div>
@@ -401,7 +409,7 @@ export default function FilterBox({
           <div className="bg-[#FCFCFC] p-6 max-w-md w-full rounded-3xl relative">
             <div className="flex justify-between items-center mb-2">
               <h3 className="text-2xl font-bold  text-[#262626]">
-                Arama Kaydını Sil
+                {tFilterBox("deleteSearchTitle")}
               </h3>
 
               <button
@@ -412,7 +420,7 @@ export default function FilterBox({
               </button>
             </div>
             <p className="mb-16 text-[#595959] font-bold text-base ">
-              Arama kaydınızı silmek istediğinize emin misiniz?
+              {tFilterBox("deleteSearchConfirm")}
             </p>
             <div className="flex justify-center gap-3">
               <button
@@ -422,16 +430,14 @@ export default function FilterBox({
                 }}
                 disabled={deleteLoading}
               >
-                İptal
+                {tFilterBox("cancel")}
               </button>
               <button
                 className="px-4 py-2 bg-[#F24853] text-white rounded-2xl hover:bg-red-700 transition w-1/2 h-[54px]"
                 onClick={handleDeleteFilter}
                 disabled={deleteLoading}
               >
-                {deleteLoading
-                  ? useTranslations("adminInterface")("loading")
-                  : useTranslations("adminInterface")("delete")}
+                {deleteLoading ? tAdmin("loading") : tAdmin("delete")}
               </button>
             </div>
           </div>
