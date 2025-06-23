@@ -305,6 +305,24 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
     }
   };
 
+  const handlePhoneAction = () => {
+    if (!isLoginned || !managerPhone) return;
+
+    // Check if device is mobile (iOS or Android)
+    const isMobile =
+      /iPhone|iPad|iPod|Android|BlackBerry|Opera Mini|IEMobile|WPDesktop/i.test(
+        navigator.userAgent
+      );
+
+    if (isMobile) {
+      // On mobile devices, initiate phone call
+      window.location.href = `tel:${managerPhone}`;
+    } else {
+      // On desktop, copy to clipboard
+      copyPhoneToClipboard();
+    }
+  };
+
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     if (window.innerWidth >= 768) return;
     setTouchStartY(e.touches[0].clientY);
@@ -359,11 +377,7 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
 
         <div className="flex gap-2 mt-4">
           <button
-            onClick={() => {
-              if (isLoginned) {
-                copyPhoneToClipboard();
-              }
-            }}
+            onClick={handlePhoneAction}
             className="flex-1 bg-[#EC755D] text-[#FCFCFC] py-2 px-4 rounded-xl font-medium cursor-pointer text-[12px] max-h-[36px]"
           >
             {isLoginned
