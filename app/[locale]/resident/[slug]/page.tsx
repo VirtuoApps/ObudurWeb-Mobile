@@ -177,7 +177,7 @@ export default async function ResidentPage({
         </div>
         <div className="xl:max-w-[1472px] mx-auto mt-0  lg:-mt-12 xl:mt-0">
           <div className="flex lg:flex-row flex-col items-start mt-[16px] md:mt-[80px] justify-between px-4 gap-[32px]">
-            <div className="xl:max-w-[952px] lg:max-w-[800px] xl:w-full w-[60%]">
+            <div className="xl:max-w-[952px] lg:max-w-[800px] xl:w-full md:w-[60%]">
               <GeneralInfo />
               <div id="descriptions-section" className="my-[24px] md:my-[72px]">
                 <Descriptions />
