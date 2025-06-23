@@ -224,7 +224,6 @@ export default function FilterPopup({
   const [isLoadingHotelTypes, setIsLoadingHotelTypes] = useState(false);
 
   /* -------------------- Mobile drag-to-close logic -------------------- */
-  const [touchStartY, setTouchStartY] = useState<number | null>(null);
   const [translateY, setTranslateY] = useState(0);
 
   const [infrastructureFeaturesCollapsed, setInfrastructureFeaturesCollapsed] =
@@ -259,15 +258,14 @@ export default function FilterPopup({
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     // Only enable on mobile (screen width < 768px)
     if (window.innerWidth >= 768) return;
-    setTouchStartY(e.touches[0].clientY);
   };
 
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (touchStartY === null || window.innerWidth >= 768) return;
-    const deltaY = e.touches[0].clientY - touchStartY;
-    if (deltaY > 0) {
-      setTranslateY(deltaY);
-    }
+    // if (touchStartY === null || window.innerWidth >= 768) return;
+    // const deltaY = e.touches[0].clientY - touchStartY;
+    // if (deltaY > 0) {
+    //   setTranslateY(deltaY);
+    // }
   };
 
   const toggleSceneryFeature = (feature: Feature) => {
@@ -284,7 +282,6 @@ export default function FilterPopup({
       onClose();
     }
     setTranslateY(0);
-    setTouchStartY(null);
   };
 
   // Initialize temporary states when popup opens
@@ -932,11 +929,8 @@ export default function FilterPopup({
         className="relative bg-white rounded-t-2xl md:rounded-2xl shadow-xl max-w-[600px] w-full mx-auto h-[90vh] md:h-auto md:max-h-[90vh] flex flex-col md:mt-0"
         style={{
           transform: `translateY(${translateY}px)`,
-          transition: touchStartY ? "none" : "transform 0.3s ease-out",
+          transition: "transform 0.3s ease-out",
         }}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
       >
         {/* Header - Fixed at top */}
         <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-2xl relative">
