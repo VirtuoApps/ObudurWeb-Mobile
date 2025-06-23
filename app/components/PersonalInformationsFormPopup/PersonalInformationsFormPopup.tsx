@@ -187,7 +187,7 @@ export default function PersonalInformationFormPopup({
         setIsOpen={setIsPersonalContractOpen}
       />
       <div
-        className="fixed inset-0  flex items-center justify-center z-[9999] "
+        className="fixed inset-0  flex items-center justify-center z-[9999] h-screen md:h-auto overflow-y-scroll md:overflow-y-hidden"
         style={{
           backgroundColor: "rgba(0, 0, 0, 0.5)",
         }}
@@ -275,7 +275,7 @@ export default function PersonalInformationFormPopup({
               onSelect={setSelectedDay}
               options={days}
               defaultText={t("dayPlaceholder")}
-              extraClassName="w-[110px] h-[56px] border border-[#F5F5F5] rounded-2xl bg-[#FCFCFC] text-[#262626]"
+              extraClassName="md:w-[110px] w-[80px] h-[56px] border border-[#F5F5F5] rounded-2xl bg-[#FCFCFC] text-[#262626]"
               popoverExtraClassName="w-[150px] max-w-[150px] "
               maxHeight="200"
               customTextColor={true}
@@ -285,7 +285,7 @@ export default function PersonalInformationFormPopup({
               onSelect={setSelectedMonth}
               options={months}
               defaultText={t("monthPlaceholder")}
-              extraClassName="w-[110px] h-[56px] border border-[#F5F5F5] rounded-2xl bg-[#FCFCFC] text-[#262626]"
+              extraClassName="md:w-[110px] w-[90px] h-[56px] border border-[#F5F5F5] rounded-2xl bg-[#FCFCFC] text-[#262626]"
               popoverExtraClassName="w-[150px] max-w-[150px] "
               customTextColor={true}
               maxHeight="200"
@@ -295,7 +295,7 @@ export default function PersonalInformationFormPopup({
               onSelect={setSelectedYear}
               options={years}
               defaultText={t("yearPlaceholder")}
-              extraClassName="w-[110px] h-[56px] border border-[#F5F5F5] rounded-2xl bg-[#FCFCFC] text-[#262626]"
+              extraClassName="md:w-[110px] w-[80px] h-[56px] border border-[#F5F5F5] rounded-2xl bg-[#FCFCFC] text-[#262626]"
               popoverExtraClassName="w-[150px] max-w-[150px] "
               customTextColor={true}
               maxHeight="200"
