@@ -764,7 +764,7 @@ export default function SecondCreateStepForHouse() {
                       {t("floorCount")}
                     </label>
                     <CustomSelect
-                      options={generateNumberOptions(1, 5)}
+                      options={generateNumberOptions(1, 20)}
                       value={floorCount}
                       onChange={(value) => setFloorCount(parseInt(value))}
                       placeholder={t("selectOption")}
