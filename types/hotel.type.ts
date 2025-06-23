@@ -61,4 +61,5 @@ export interface Hotel {
   floorPosition: MultilingualText;
   __v: number;
   viewIds: string[];
+  infrastructureFeatureIds: string[];
 }

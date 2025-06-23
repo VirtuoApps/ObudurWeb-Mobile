@@ -505,15 +505,18 @@ export default function HomePage({
     });
   }
 
-  console.log({
-    bathroomCount,
-    filteredHotels: filteredHotels.length,
-  });
-
   if (selectedSceneryFeatures.length > 0) {
     filteredHotels = filteredHotels.filter((hotel) => {
       return hotel.viewIds.some((viewId) =>
         selectedSceneryFeatures.some((feature) => feature._id === viewId)
+      );
+    });
+  }
+
+  if (selectedInfrastructureFeatures.length > 0) {
+    filteredHotels = filteredHotels.filter((hotel) => {
+      return hotel.infrastructureFeatureIds.some((featureId) =>
+        selectedInfrastructureFeatures.some((el) => el._id === featureId)
       );
     });
   }

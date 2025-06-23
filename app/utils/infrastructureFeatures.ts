@@ -47,3 +47,18 @@ export const infrastructureFeatures: {
     image: "/way.png",
   },
 };
+
+export const infrastructureFeaturesAsArray = Object.entries(
+  infrastructureFeatures
+).map(([key, value]) => ({
+  _id: key,
+  name: {
+    tr: value.tr,
+    en: value.en,
+  },
+  iconUrl: value.image,
+  featureType: "infrastructure",
+  createdAt: "",
+  updatedAt: "",
+  __v: 0,
+}));

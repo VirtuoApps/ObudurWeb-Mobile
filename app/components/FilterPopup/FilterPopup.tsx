@@ -60,6 +60,7 @@ import { filterHotelsByProximity } from "@/app/utils/geoUtils";
 import { setIsFilterApplied } from "@/app/store/favoritesSlice";
 import { useDispatch } from "react-redux";
 import { views, viewsAsArray } from "@/app/utils/views";
+import { infrastructureFeaturesAsArray } from "@/app/utils/infrastructureFeatures";
 
 type FilterPopupProps = {
   isOpen: boolean;
@@ -109,6 +110,10 @@ type FilterPopupProps = {
   selectedSceneryFeatures: any[];
   setSelectedSceneryFeatures: React.Dispatch<React.SetStateAction<any[]>>;
   resetFilters: () => void;
+  selectedInfrastructureFeatures: any[];
+  setSelectedInfrastructureFeatures: React.Dispatch<
+    React.SetStateAction<any[]>
+  >;
 };
 
 export default function FilterPopup({
@@ -159,6 +164,8 @@ export default function FilterPopup({
   selectedSceneryFeatures,
   setSelectedSceneryFeatures,
   resetFilters,
+  selectedInfrastructureFeatures,
+  setSelectedInfrastructureFeatures,
 }: FilterPopupProps) {
   const dispatch = useDispatch();
   const t = useTranslations("filter");
@@ -195,6 +202,11 @@ export default function FilterPopup({
   const [tempSelectedFaceFeatures, setTempSelectedFaceFeatures] =
     useState<any[]>(selectedFaceFeatures);
 
+  const [
+    tempSelectedInfrastructureFeatures,
+    setTempSelectedInfrastructureFeatures,
+  ] = useState<any[]>(selectedInfrastructureFeatures);
+
   const [sceneryFeaturesCollapsed, setSceneryFeaturesCollapsed] =
     useState(true);
   const [tempSelectedSceneryFeatures, setTempSelectedSceneryFeatures] =
@@ -215,6 +227,9 @@ export default function FilterPopup({
   const [touchStartY, setTouchStartY] = useState<number | null>(null);
   const [translateY, setTranslateY] = useState(0);
 
+  const [infrastructureFeaturesCollapsed, setInfrastructureFeaturesCollapsed] =
+    useState(true);
+
   const tForRoomCounts = useTranslations("adminCreation.step2_house");
 
   const generateRoomCountOptions = () => {
@@ -231,6 +246,14 @@ export default function FilterPopup({
       { value: 9, label: tForRoomCounts("options.roomCounts.9+1") },
       { value: 10, label: tForRoomCounts("options.roomCounts.10+") },
     ];
+  };
+
+  const toggleInfrastructureFeature = (feature: Feature) => {
+    setTempSelectedInfrastructureFeatures((prev: any[]) =>
+      prev.some((f: any) => f._id === feature._id)
+        ? prev.filter((f: any) => f._id !== feature._id)
+        : [...prev, feature]
+    );
   };
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
@@ -746,6 +769,14 @@ export default function FilterPopup({
       });
     }
 
+    if (tempSelectedInfrastructureFeatures.length > 0) {
+      filteredHotels = filteredHotels.filter((hotel) => {
+        return hotel.infrastructureFeatureIds.some((featureId) =>
+          tempSelectedInfrastructureFeatures.some((el) => el._id === featureId)
+        );
+      });
+    }
+
     // Filter by selected features (quick filters) - matching HomePage logic
     if (selectedFeatures.length > 0) {
       filteredHotels = filteredHotels.filter((hotel) =>
@@ -790,7 +821,8 @@ export default function FilterPopup({
           tempFilters.isTwoPlusOneSelected ||
           tempFilters.isThreePlusOneSelected ||
           tempFilters.isNewSelected)) ||
-      tempSelectedSceneryFeatures.length > 0
+      tempSelectedSceneryFeatures.length > 0 ||
+      tempSelectedInfrastructureFeatures.length > 0
     );
   };
 
@@ -826,6 +858,7 @@ export default function FilterPopup({
     setSelectedAccessibilityFeatures(tempSelectedAccessibilityFeatures);
     setSelectedFaceFeatures(tempSelectedFaceFeatures);
     setSelectedSceneryFeatures(tempSelectedSceneryFeatures);
+    setSelectedInfrastructureFeatures(tempSelectedInfrastructureFeatures);
 
     // Update quick filters (selectedFeatures) based on interior and exterior features
     const newSelectedFeatures = [
@@ -873,6 +906,10 @@ export default function FilterPopup({
     resetFilters();
   };
 
+  const isHouseSelected =
+    tempSelectedPropertyType &&
+    tempSelectedPropertyType.originalData.name.tr === "Konut";
+
   const isWorkPlaceSelected =
     tempSelectedPropertyType &&
     tempSelectedPropertyType.originalData.name.tr === "İş Yeri";
@@ -880,11 +917,6 @@ export default function FilterPopup({
   const isLandSelected =
     tempSelectedPropertyType &&
     tempSelectedPropertyType.originalData.name.tr === "Arsa";
-
-  console.log({
-    tempSelectedPropertyType,
-    isLandSelected,
-  });
 
   if (!isOpen) return null;
 
@@ -1817,6 +1849,68 @@ export default function FilterPopup({
                   </div>
                 )}
             </>
+          )}
+
+          {!isWorkPlaceSelected && !isHouseSelected && (
+            <div className="mt-6 border-b border-[#F0F0F0] pb-8">
+              <div
+                className="flex items-center justify-between cursor-pointer"
+                onClick={() =>
+                  setInfrastructureFeaturesCollapsed(
+                    !infrastructureFeaturesCollapsed
+                  )
+                }
+              >
+                <h3 className="text-base font-semibold text-gray-700">
+                  {t("infrastructureFeatures") || "Altyapı"}
+                  {tempSelectedInfrastructureFeatures.length > 0 ? (
+                    <span className="text-base md:text-sm font-normal text-[#595959]">
+                      ({tempSelectedInfrastructureFeatures.length})
+                    </span>
+                  ) : null}
+                </h3>
+                <button className="text-base md:text-sm text-[#8c8c8c] hover:underline cursor-pointer">
+                  <img
+                    src="/chevron-down.png"
+                    className={`w-[24px] h-[24px] transform transition-transform duration-300 ${
+                      !infrastructureFeaturesCollapsed ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+              </div>
+              {!infrastructureFeaturesCollapsed && (
+                <div className="mt-3 ">
+                  <div className="flex flex-wrap gap-2">
+                    {infrastructureFeaturesAsArray.map((feature) => {
+                      const isSelected =
+                        tempSelectedInfrastructureFeatures.find(
+                          (f: any) => f._id === feature._id
+                        );
+
+                      return (
+                        <button
+                          key={feature._id}
+                          onClick={() => toggleInfrastructureFeature(feature)}
+                          className={`inline-flex items-center ${
+                            isSelected
+                              ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                              : "bg-white border-gray-100 text-gray-600"
+                          } border rounded-[16px] h-[40px] px-3 py-1 text-base md:text-sm font-medium  cursor-pointer transition-all duration-300 hover:bg-[#F5F5F5]`}
+                        >
+                          {feature.iconUrl && (
+                            <img
+                              src={feature.iconUrl}
+                              className="w-[24px] h-[24px] mr-2"
+                            />
+                          )}
+                          {feature.name.tr}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
           )}
 
           <div className="mt-6 border-b border-[#F0F0F0] pb-8">
