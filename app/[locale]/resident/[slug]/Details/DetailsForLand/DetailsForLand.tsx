@@ -28,7 +28,7 @@ export default function DetailsForLand() {
         </p>
       </div>
 
-      <div className="mt-10 grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-12">
+      <div className="mt-10 grid grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-12">
         {/* First Column */}
         <div className="flex flex-col md:gap-3 gap-2 sm:border-r">
           {hotelData.hotelDetails.source ? (

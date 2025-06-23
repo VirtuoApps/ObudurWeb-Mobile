@@ -23,7 +23,7 @@ export default function GeneralDetails() {
         </p>
       </div>
 
-      <div className="mt-6 md:mt-10 grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6">
+      <div className="mt-6 md:mt-10 grid grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
         {/* First Column */}
         <div className="flex flex-col md:gap-3 gap-2 sm:border-r">
           {hotelData.hotelDetails.projectArea ? (

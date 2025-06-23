@@ -22,7 +22,7 @@ export default function MenuItems() {
       { key: "details", label: t("details"), sectionId: "details-section" },
       { key: "features", label: t("features"), sectionId: "features-section" },
     ];
-    
+
     // Video varsa virtual tour ekle
     if (hotelData.hotelDetails.video) {
       items.push({
@@ -31,19 +31,19 @@ export default function MenuItems() {
         sectionId: "panoramic-section",
       });
     }
-    
+
     // Location ekle
     items.push({
       key: "location",
       label: t("location"),
       sectionId: "location-section",
     });
-    
+
     // Floor plans en sonda
     items.push({
-      key: "floorPlans", 
-      label: t("floorPlans"), 
-      sectionId: "plans-section"
+      key: "floorPlans",
+      label: t("floorPlans"),
+      sectionId: "plans-section",
     });
 
     return items;
@@ -73,14 +73,16 @@ export default function MenuItems() {
         if (section) {
           const sectionTop = section.offsetTop;
           const sectionHeight = section.offsetHeight;
-          const sectionCenter = sectionTop + (sectionHeight / 2);
-          
+          const sectionCenter = sectionTop + sectionHeight / 2;
+
           // Calculate distance from current scroll position to section center
           const distance = Math.abs(scrollPosition - sectionCenter);
-          
+
           // If this section is visible in viewport
-          if (sectionTop <= scrollPosition + windowHeight && 
-              sectionTop + sectionHeight >= scrollPosition) {
+          if (
+            sectionTop <= scrollPosition + windowHeight &&
+            sectionTop + sectionHeight >= scrollPosition
+          ) {
             if (distance < closestDistance) {
               closestDistance = distance;
               closestSection = menuItems[i].sectionId;
@@ -154,7 +156,7 @@ export default function MenuItems() {
           display: none; /* Safari and Chrome */
         }
       `}</style>
-      <div className="flex flex-row w-full items-center gap-4 md:gap-10 mb-5 md:mb-0 overflow-x-auto flex-nowrap px-4 md:px-0 hide-scrollbar pt-4 sm:pt-0">
+      <div className="flex flex-row w-full items-center justify-start md:justify-center xl:justify-start gap-4 md:gap-10 mb-5 xl:mb-0 overflow-x-auto flex-nowrap px-4 md:px-0 hide-scrollbar pt-4 xl:pt-0">
         {menuItems.map((item, index) => (
           <div
             key={item.key}
