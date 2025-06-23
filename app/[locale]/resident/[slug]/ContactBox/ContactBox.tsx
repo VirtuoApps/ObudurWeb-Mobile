@@ -674,11 +674,8 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
             className="relative bg-white rounded-t-[24px] shadow-xl max-w-[600px] w-full mx-auto max-h-[calc(100vh-32px)] flex flex-col mt-28"
             style={{
               transform: `translateY(${translateY}px)`,
-              transition: touchStartY ? "none" : "transform 0.3s ease-out",
+              transition: "transform 0.3s ease-out",
             }}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
           >
             {/* Header */}
             <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-[24px] relative">
