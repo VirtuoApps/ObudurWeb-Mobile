@@ -739,15 +739,14 @@ export default function ThirdCreateStep() {
       }
     } else {
       // For other types, require buildingNo and postalCode
-      if (!buildingNo) {
-        newErrors.push(t("validation.buildingNoRequired"));
-        newErrorFields.add("buildingNo");
-      }
-
-      if (!postalCode) {
-        newErrors.push(t("validation.postalCodeRequired"));
-        newErrorFields.add("postalCode");
-      }
+      // if (!buildingNo) {
+      //   newErrors.push(t("validation.buildingNoRequired"));
+      //   newErrorFields.add("buildingNo");
+      // }
+      // if (!postalCode) {
+      //   newErrors.push(t("validation.postalCodeRequired"));
+      //   newErrorFields.add("postalCode");
+      // }
     }
 
     if (!coordinates || coordinates.length !== 2) {
