@@ -43,6 +43,7 @@
     "accessibilityFeatures": "Features for Disabled and Elderly",
     "faceFeatures": "Facade",
     "sceneryFeatures": "Scenery",
+    "infrastructureFeatures": "Infrastructure Features",
     "locationFeatures": "Location Features",
     "selectLocation": "Where are you looking for a house?",
     "selectEstateType": "Select Property",

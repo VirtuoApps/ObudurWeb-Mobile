@@ -1862,7 +1862,7 @@ export default function FilterPopup({
                 }
               >
                 <h3 className="text-base font-semibold text-gray-700">
-                  {t("infrastructureFeatures") || "Altyapı"}
+                  {t("infrastructureFeatures")}
                   {tempSelectedInfrastructureFeatures.length > 0 ? (
                     <span className="text-base md:text-sm font-normal text-[#595959]">
                       ({tempSelectedInfrastructureFeatures.length})

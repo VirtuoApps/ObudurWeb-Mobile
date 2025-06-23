@@ -48,6 +48,7 @@
     "accessibilityFeatures": "Engelliye ve Yaşlıya Yönelik Özellikler",
     "faceFeatures": "Cephe",
     "sceneryFeatures": "Manzara",
+    "infrastructureFeatures": "Altyapı Özellikleri",
     "locationFeatures": "Konum Özellikleri",
     "selectLocation": "Nerede ev arıyorsun?",
     "selectEstateType": "Emlak Tipi",
