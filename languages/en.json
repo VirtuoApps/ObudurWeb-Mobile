@@ -315,9 +315,9 @@
     "meetingRoom": "Meeting Room"
   },
   "panoramicView": {
-    "title": "360 Virtual Tour",
-    "description": "An interactive viewing experience that allows you to explore all areas of the property in detail through a virtual tour.",
-    "startTour": "Start Tour",
+    "title": "Video",
+    "description": "Video presentation that offers the opportunity to discover the details of the house.",
+    "startTour": "",
     "closeTour": "Close"
   },
   "location": {
