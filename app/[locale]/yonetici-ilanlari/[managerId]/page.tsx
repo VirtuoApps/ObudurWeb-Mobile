@@ -238,7 +238,7 @@ export default function ManagerPage() {
 
       {managerData?.manager && (
         <div className="mb-8 bg-[#362C75] p-6 rounded-lg shadow-sm border">
-          <div className="flex items-center justify-between gap-4 container mx-auto">
+          <div className="flex lg:flex-row flex-col lg:items-center items-start justify-between gap-4 container mx-auto">
             <div className="flex items-center gap-4">
               <img
                 src={managerData.manager.profilePicture}
@@ -257,7 +257,7 @@ export default function ManagerPage() {
 
             <button
               onClick={handlePhoneAction}
-              className="bg-[#EC755D] w-[211px] rounded-2xl flex flex-row items-center justify-center h-[56px] text-[#FCFCFC] cursor-pointer transition-all duration-200"
+              className="bg-[#EC755D] w-[211px] rounded-2xl flex flex-row items-center justify-center h-[56px] text-[#FCFCFC] cursor-pointer transition-all duration-200 lg:w-auto w-full"
             >
               <svg
                 width={24}
