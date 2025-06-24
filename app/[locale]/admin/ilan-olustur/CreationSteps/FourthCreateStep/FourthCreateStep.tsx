@@ -15,8 +15,8 @@ import Image from "next/image";
 import axiosInstance from "@/axios";
 import { infrastructureFeatures } from "../../../../../utils/infrastructureFeatures";
 import { useListingForm } from "../CreationSteps";
-import { views } from "../../../../../utils/views";
 import { useTranslations } from "next-intl";
+import { views } from "../../../../../utils/views";
 
 interface Feature {
   _id: string;
@@ -400,7 +400,7 @@ export default function FourthCreateStep() {
     return (
       <button
         type="button"
-        className={`inline-flex items-center gap-2 px-4 py-2 rounded-full transition border  cursor-pointer ${
+        className={`inline-flex items-center gap-2 px-4 py-2 rounded-[16px] transition border  cursor-pointer text-[14px] font-medium h-[40px] ${
           isSelected
             ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
             : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
@@ -408,12 +408,12 @@ export default function FourthCreateStep() {
         onClick={() => toggleFeature(feature._id)}
       >
         {feature.iconUrl && (
-          <div className="w-5 h-5 relative">
+          <div className="w-6 h-6 relative">
             <Image
               src={feature.iconUrl}
               alt={feature.name[langKey] || ""}
-              width={20}
-              height={20}
+              width={24}
+              height={24}
               className="object-contain"
             />
           </div>
@@ -521,7 +521,7 @@ export default function FourthCreateStep() {
                       <button
                         key={option._id}
                         type="button"
-                        className={`inline-flex items-center  px-4 py-2 rounded-full transition border cursor-pointer ${
+                        className={`inline-flex items-center  px-4 py-2 rounded-[16px] transition border cursor-pointer text-[14px] font-medium h-[40px] ${
                           faces.includes(option._id)
                             ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75] "
                             : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
@@ -535,8 +535,8 @@ export default function FourthCreateStep() {
                               selectedLanguage as keyof typeof option.name
                             ] || ""
                           }
-                          width={20}
-                          height={20}
+                          width={24}
+                          height={24}
                           className="object-contain"
                         />
                         <span className="font-medium ml-2">
@@ -601,7 +601,7 @@ export default function FourthCreateStep() {
                             <button
                               key={key}
                               type="button"
-                              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full transition border  cursor-pointer ${
+                              className={`inline-flex items-center gap-2 px-4 py-2 rounded-[16px] transition border cursor-pointer text-[14px] font-medium h-[40px] ${
                                 isSelected
                                   ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
                                   : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
@@ -609,12 +609,12 @@ export default function FourthCreateStep() {
                               onClick={() => toggleInfrastructureFeature(key)}
                             >
                               {feature.image && (
-                                <div className="w-5 h-5 relative">
+                                <div className="w-6 h-6 relative">
                                   <Image
                                     src={feature.image}
                                     alt={displayName}
-                                    width={20}
-                                    height={20}
+                                    width={24}
+                                    height={24}
                                     className="object-contain"
                                   />
                                 </div>
@@ -634,7 +634,7 @@ export default function FourthCreateStep() {
                 <h2 className="font-semibold mb-2 text-[#262626] text-[16px]">
                   {t("view")}
                 </h2>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-2">
                   {Object.entries(views).map(([key, view]) => {
                     const isSelected = viewIds.includes(key);
                     const displayName =
@@ -643,7 +643,7 @@ export default function FourthCreateStep() {
                       <button
                         key={key}
                         type="button"
-                        className={`inline-flex items-center gap-2 px-4 py-2 rounded-full transition border  cursor-pointer ${
+                        className={`inline-flex items-center gap-2 px-4 py-2 rounded-[16px] transition border cursor-pointer text-[14px] font-medium h-[40px] ${
                           isSelected
                             ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
                             : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
@@ -653,8 +653,8 @@ export default function FourthCreateStep() {
                         <Image
                           src={view.image}
                           alt={displayName}
-                          width={20}
-                          height={20}
+                          width={24}
+                          height={24}
                           className="object-contain"
                         />
                         <span className="font-medium ml-2">{displayName}</span>
