@@ -34,6 +34,24 @@ interface ManagerHotelsResponse {
   hotels: Hotel[];
 }
 
+interface HotelType {
+  _id: string;
+  name: {
+    tr: string;
+    en: string;
+  };
+  categories: HotelCategory[];
+}
+
+interface HotelCategory {
+  _id: string;
+  name: {
+    tr: string;
+    en?: string;
+  };
+  hotelTypeId: string;
+}
+
 export default function ManagerPage() {
   const router = useRouter();
   const params = useParams();
@@ -50,6 +68,13 @@ export default function ManagerPage() {
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
   const [phoneCopied, setPhoneCopied] = useState(false);
+
+  // Filter states
+  const [hotelTypes, setHotelTypes] = useState<HotelType[]>([]);
+  const [selectedPropertyType, setSelectedPropertyType] = useState<any>(null);
+  const [selectedCategory, setSelectedCategory] = useState<any>(null);
+  const [isPropertyTypeOpen, setIsPropertyTypeOpen] = useState(false);
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
 
   const selectedLanguage = useLocale();
   const t = useTranslations("favoritesPage");
@@ -74,6 +99,22 @@ export default function ManagerPage() {
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
   }, [selectedCurrency]);
+
+  // Fetch hotel types and categories
+  useEffect(() => {
+    const fetchHotelTypes = async () => {
+      try {
+        const response = await axiosInstance.get(
+          "/admin/hotel-types/all-options"
+        );
+        setHotelTypes(response.data);
+      } catch (error) {
+        console.error("Error fetching hotel types:", error);
+      }
+    };
+
+    fetchHotelTypes();
+  }, []);
 
   // Fetch manager hotels data
   useEffect(() => {
@@ -120,43 +161,119 @@ export default function ManagerPage() {
     }
   };
 
-  const hotelCount = managerData?.hotels?.length || 0;
+  // Filter handlers
+  const handlePropertyTypeSelect = (propertyType: any) => {
+    setSelectedPropertyType(propertyType);
+    setSelectedCategory(null); // Reset category when property type changes
+    setIsPropertyTypeOpen(false);
+  };
 
-  // Sort hotels based on selected option
-  const sortedHotels = React.useMemo(() => {
-    if (!sortOption || !managerData?.hotels) return managerData?.hotels || [];
+  const handleCategorySelect = (category: any) => {
+    setSelectedCategory(category);
+    setIsCategoryOpen(false);
+  };
 
-    const sorted = [...managerData.hotels];
+  // Get available categories based on selected property type
+  const availableCategories = selectedPropertyType
+    ? selectedPropertyType.originalData?.categories || []
+    : [];
 
-    switch (sortOption) {
-      case "ascending":
-        return sorted.sort((a, b) => {
-          const priceA = a.price?.[0]?.amount || 0;
-          const priceB = b.price?.[0]?.amount || 0;
-          return priceA - priceB;
-        });
-      case "descending":
-        return sorted.sort((a, b) => {
-          const priceA = a.price?.[0]?.amount || 0;
-          const priceB = b.price?.[0]?.amount || 0;
-          return priceB - priceA;
-        });
-      case "newest":
-        return sorted.sort((a, b) => {
-          const dateA = new Date(a.createdAt || 0);
-          const dateB = new Date(b.createdAt || 0);
-          return dateB.getTime() - dateA.getTime();
-        });
-      case "oldest":
-        return sorted.sort((a, b) => {
-          const dateA = new Date(a.createdAt || 0);
-          const dateB = new Date(b.createdAt || 0);
-          return dateA.getTime() - dateB.getTime();
-        });
-      default:
-        return sorted;
+  // Get property types for display
+  const propertyTypes = hotelTypes.map((hotelType) => ({
+    _id: hotelType._id,
+    name: hotelType.name[selectedLanguage] || hotelType.name.tr,
+    originalData: hotelType,
+  }));
+
+  // Get categories for display
+  const categories = availableCategories.map((category: HotelCategory) => ({
+    _id: category._id,
+    name:
+      category.name[selectedLanguage] || category.name.tr || category.name.en,
+    originalData: category,
+  }));
+
+  // Filter and sort hotels
+  const filteredAndSortedHotels = React.useMemo(() => {
+    if (!managerData?.hotels) return [];
+
+    let filtered = [...managerData.hotels];
+
+    // Filter by property type (entranceType)
+    if (selectedPropertyType) {
+      const propertyTypeName = selectedPropertyType.name;
+      filtered = filtered.filter((hotel) => {
+        const hotelEntranceType = getLocalizedText(
+          hotel.entranceType,
+          selectedLanguage
+        );
+        return hotelEntranceType === propertyTypeName;
+      });
     }
-  }, [managerData?.hotels, sortOption]);
+
+    // Filter by category (housingType)
+    if (selectedCategory) {
+      const categoryName = selectedCategory.name;
+      filtered = filtered.filter((hotel) => {
+        const hotelHousingType = getLocalizedText(
+          hotel.housingType,
+          selectedLanguage
+        );
+        return hotelHousingType === categoryName;
+      });
+    }
+
+    // Sort the filtered results
+    if (sortOption) {
+      switch (sortOption) {
+        case "ascending":
+          return filtered.sort((a, b) => {
+            const priceA = a.price?.[0]?.amount || 0;
+            const priceB = b.price?.[0]?.amount || 0;
+            return priceA - priceB;
+          });
+        case "descending":
+          return filtered.sort((a, b) => {
+            const priceA = a.price?.[0]?.amount || 0;
+            const priceB = b.price?.[0]?.amount || 0;
+            return priceB - priceA;
+          });
+        case "newest":
+          return filtered.sort((a, b) => {
+            const dateA = new Date(a.createdAt || 0);
+            const dateB = new Date(b.createdAt || 0);
+            return dateB.getTime() - dateA.getTime();
+          });
+        case "oldest":
+          return filtered.sort((a, b) => {
+            const dateA = new Date(a.createdAt || 0);
+            const dateB = new Date(b.createdAt || 0);
+            return dateA.getTime() - dateB.getTime();
+          });
+        default:
+          return filtered;
+      }
+    }
+
+    return filtered;
+  }, [
+    managerData?.hotels,
+    selectedPropertyType,
+    selectedCategory,
+    sortOption,
+    selectedLanguage,
+  ]);
+
+  const hotelCount = filteredAndSortedHotels.length;
+  const totalHotelCount = managerData?.hotels?.length || 0;
+  const hasActiveFilters = selectedPropertyType || selectedCategory;
+
+  // Reset all filters
+  const resetFilters = () => {
+    setSelectedPropertyType(null);
+    setSelectedCategory(null);
+    setSortOption(null);
+  };
 
   const copyPhoneToClipboard = async () => {
     if (managerData?.manager.phoneNumber) {
@@ -257,7 +374,7 @@ export default function ManagerPage() {
 
             <button
               onClick={handlePhoneAction}
-              className="bg-[#EC755D] w-[211px] rounded-2xl flex flex-row items-center justify-center h-[56px] text-[#FCFCFC] cursor-pointer transition-all duration-200 lg:w-auto w-full"
+              className="bg-[#EC755D]  rounded-2xl flex flex-row items-center justify-center h-[56px] text-[#FCFCFC] cursor-pointer transition-all duration-200 lg:w-[211px] w-full"
             >
               <svg
                 width={24}
@@ -291,22 +408,113 @@ export default function ManagerPage() {
                 Yönetici İlanları
               </h1>
               <p className="text-[#595959] text-sm">
-                {hotelCount} adet ilan bulundu.
+                {totalHotelCount} aktif ilanı var.
               </p>
             </div>
 
             <div className="flex flex-row items-center gap-2">
+              {/* Property Type Filter */}
+              <div className="relative">
+                <button
+                  onClick={() => setIsPropertyTypeOpen(!isPropertyTypeOpen)}
+                  className="border bg-transparent flex flex-row items-center justify-between rounded-xl px-5 py-3 cursor-pointer min-w-[180px]"
+                >
+                  <p className="text-sm text-gray-500 font-semibold mr-3">
+                    {selectedPropertyType
+                      ? selectedPropertyType.name
+                      : "İlan Tipi"}
+                  </p>
+                  <img
+                    src="/chevron-down.png"
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      isPropertyTypeOpen ? "rotate-180" : ""
+                    }`}
+                    alt="arrow-down"
+                  />
+                </button>
+
+                {isPropertyTypeOpen && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border rounded-xl shadow-lg z-10 max-h-60 overflow-y-auto">
+                    <div
+                      className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                      onClick={() => {
+                        setSelectedPropertyType(null);
+                        setSelectedCategory(null);
+                        setIsPropertyTypeOpen(false);
+                      }}
+                    >
+                      <p className="text-sm">Tümü</p>
+                    </div>
+                    {propertyTypes.map((type) => (
+                      <div
+                        key={type._id}
+                        className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                        onClick={() => handlePropertyTypeSelect(type)}
+                      >
+                        <p className="text-sm">{type.name}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Category Filter */}
+              <div className="relative">
+                <button
+                  onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+                  disabled={!selectedPropertyType}
+                  className={`border bg-transparent flex flex-row items-center justify-between rounded-xl px-5 py-3 cursor-pointer min-w-[180px] ${
+                    !selectedPropertyType ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                >
+                  <p className="text-sm text-gray-500 font-semibold mr-3">
+                    {selectedCategory ? selectedCategory.name : "Emlak Tipi"}
+                  </p>
+                  <img
+                    src="/chevron-down.png"
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      isCategoryOpen ? "rotate-180" : ""
+                    }`}
+                    alt="arrow-down"
+                  />
+                </button>
+
+                {isCategoryOpen && selectedPropertyType && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border rounded-xl shadow-lg z-10 max-h-60 overflow-y-auto">
+                    <div
+                      className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                      onClick={() => {
+                        setSelectedCategory(null);
+                        setIsCategoryOpen(false);
+                      }}
+                    >
+                      <p className="text-sm">Tümü</p>
+                    </div>
+                    {categories.map((category) => (
+                      <div
+                        key={category._id}
+                        className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                        onClick={() => handleCategorySelect(category)}
+                      >
+                        <p className="text-sm">{category.name}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Sort Filter */}
               <div className="relative">
                 <button
                   onClick={() => setIsSortOpen(!isSortOpen)}
-                  className="border bg-transparent flex flex-row items-center justify-between rounded-xl px-5 py-3 cursor-pointer min-w-[240px]"
+                  className="border bg-transparent flex flex-row items-center justify-between rounded-xl px-5 py-3 cursor-pointer min-w-[200px]"
                 >
-                  <p className="text-sm text-gray-500 font-semibold mr-12">
+                  <p className="text-sm text-gray-500 font-semibold mr-3">
                     {getSortDisplayText()}
                   </p>
                   <img
                     src="/chevron-down.png"
-                    className={`w-6 h-6 transition-transform duration-200 ${
+                    className={`w-4 h-4 transition-transform duration-200 ${
                       isSortOpen ? "rotate-180" : ""
                     }`}
                     alt="arrow-down"
@@ -352,7 +560,7 @@ export default function ManagerPage() {
             Yönetici İlanları
           </h1>
           <p className="text-[#595959] text-sm">
-            {hotelCount} adet ilan bulundu.
+            {totalHotelCount} ilanın {hotelCount} tanesi gösteriliyor.
           </p>
         </div>
 
@@ -360,25 +568,46 @@ export default function ManagerPage() {
           <div
             className={`w-full flex flex-col items-center justify-center text-gray-500`}
           >
-            <p className="text-center text-[#362C75] font-bold text-[24px]">
-              Henüz İlan Yok
-            </p>
-            <p className="text-center text-[#262626] font-medium text-[16px] mt-4">
-              Bu yöneticinin henüz aktiflestiriŽmiş ilanı bulunmuyor.
-            </p>
-            <button
-              onClick={() => {
-                localStorage.setItem("currentView", "list");
-                router.push(`/`);
-              }}
-              className="bg-[#5E5691] rounded-2xl py-4 px-6 flex items-center justify-center text-white mt-5"
-            >
-              Diğer İlanlara Göz At
-            </button>
+            {hasActiveFilters ? (
+              // No results with active filters
+              <>
+                <p className="text-center text-[#362C75] font-bold text-[24px]">
+                  Filtrelere Uygun İlan Bulunamadı
+                </p>
+                <p className="text-center text-[#262626] font-medium text-[16px] mt-4">
+                  Seçtiğiniz filtrelere uygun ilan bulunmuyor.
+                </p>
+                <button
+                  onClick={resetFilters}
+                  className="bg-[#5E5691] rounded-2xl py-4 px-6 flex items-center justify-center text-white mt-5"
+                >
+                  Filtreleri Sıfırla
+                </button>
+              </>
+            ) : (
+              // No hotels at all
+              <>
+                <p className="text-center text-[#362C75] font-bold text-[24px]">
+                  Henüz İlan Yok
+                </p>
+                <p className="text-center text-[#262626] font-medium text-[16px] mt-4">
+                  Bu yöneticinin henüz aktiflestirimiş ilanı bulunmuyor.
+                </p>
+                <button
+                  onClick={() => {
+                    localStorage.setItem("currentView", "list");
+                    router.push(`/`);
+                  }}
+                  className="bg-[#5E5691] rounded-2xl py-4 px-6 flex items-center justify-center text-white mt-5"
+                >
+                  Diğer İlanlara Göz At
+                </button>
+              </>
+            )}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 -mx-3">
-            {sortedHotels.map((hotel) => (
+            {filteredAndSortedHotels.map((hotel) => (
               <ResidentBox
                 key={hotel._id}
                 hotelId={hotel._id}
