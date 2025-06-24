@@ -547,7 +547,7 @@ export default function AccountForm({ user }: AccountFormProps) {
               </label>
               <input
                 type="text"
-                placeholder={t("estateAgencyPlaceholder")}
+                placeholder=""
                 {...registerPersonalInfo("estateAgency")}
                 className="w-full h-[56px] px-3 rounded-2xl border border-[#D9D9D9] text-sm outline-none  transition-colors text-[#262626]"
                 style={{
