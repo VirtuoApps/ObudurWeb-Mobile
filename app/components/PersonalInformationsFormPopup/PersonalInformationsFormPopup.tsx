@@ -1,6 +1,6 @@
 import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
 import { updateUserData } from "@/app/store/userSlice";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import GeneralSelect from "../GeneralSelect/GeneralSelect";
 import { countryCodes } from "@/app/[locale]/resident/[slug]/ContactBox/countryCodes";
 import axiosInstance from "../../../axios";
@@ -37,11 +37,6 @@ export default function PersonalInformationFormPopup({
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const days = Array.from({ length: 31 }, (_, i) => ({
-    id: i + 1,
-    name: `${i + 1}`,
-  }));
-
   const months = [
     { id: 1, name: tMonths("january") },
     { id: 2, name: tMonths("february") },
@@ -62,6 +57,59 @@ export default function PersonalInformationFormPopup({
     id: startYear - i,
     name: `${startYear - i}`,
   }));
+
+  // Function to get the number of days in a month
+  const getDaysInMonth = (month: number, year: number) => {
+    return new Date(year, month, 0).getDate();
+  };
+
+  // Function to check if a date is valid
+  const isValidDate = (day: number, month: number, year: number) => {
+    const date = new Date(year, month - 1, day);
+    return date.getDate() === day && date.getMonth() === month - 1 && date.getFullYear() === year;
+  };
+
+  // Dynamically generate days based on selected month and year
+  const days = useMemo(() => {
+    if (!selectedMonth || !selectedYear) {
+      return Array.from({ length: 31 }, (_, i) => ({
+        id: i + 1,
+        name: `${i + 1}`,
+      }));
+    }
+
+    const daysInMonth = getDaysInMonth(selectedMonth.id, selectedYear.id);
+    return Array.from({ length: daysInMonth }, (_, i) => ({
+      id: i + 1,
+      name: `${i + 1}`,
+    }));
+  }, [selectedMonth, selectedYear]);
+
+  // Handle month selection
+  const handleMonthSelect = (month: any) => {
+    setSelectedMonth(month);
+    
+    // If selected day is invalid for the new month, reset it
+    if (selectedDay && selectedYear) {
+      const daysInNewMonth = getDaysInMonth(month.id, selectedYear.id);
+      if (selectedDay.id > daysInNewMonth) {
+        setSelectedDay(null);
+      }
+    }
+  };
+
+  // Handle year selection
+  const handleYearSelect = (year: any) => {
+    setSelectedYear(year);
+    
+    // If selected day is invalid for the new year (leap year changes), reset it
+    if (selectedDay && selectedMonth) {
+      const daysInNewYear = getDaysInMonth(selectedMonth.id, year.id);
+      if (selectedDay.id > daysInNewYear) {
+        setSelectedDay(null);
+      }
+    }
+  };
 
   useEffect(() => {
     if (user) {
@@ -100,12 +148,19 @@ export default function PersonalInformationFormPopup({
       // Parse birth date
       if (user.birthDate) {
         const [day, month, year] = user.birthDate.split("-");
-        setSelectedDay({ id: parseInt(day), name: day });
-        setSelectedMonth({
-          id: parseInt(month),
-          name: months[parseInt(month) - 1]?.name,
-        });
-        setSelectedYear({ id: parseInt(year), name: year });
+        const dayNum = parseInt(day);
+        const monthNum = parseInt(month);
+        const yearNum = parseInt(year);
+        
+        // Only set the date if it's valid
+        if (isValidDate(dayNum, monthNum, yearNum)) {
+          setSelectedDay({ id: dayNum, name: day });
+          setSelectedMonth({
+            id: monthNum,
+            name: months[monthNum - 1]?.name,
+          });
+          setSelectedYear({ id: yearNum, name: year });
+        }
       }
     }
   }, [user]);
@@ -283,7 +338,7 @@ export default function PersonalInformationFormPopup({
             />
             <GeneralSelect
               selectedItem={selectedMonth}
-              onSelect={setSelectedMonth}
+              onSelect={handleMonthSelect}
               options={months}
               defaultText={t("monthPlaceholder")}
               extraClassName="md:w-[110px] w-[90px] h-[56px] border border-[#F5F5F5] rounded-2xl bg-[#FCFCFC] text-[#262626]"
@@ -293,7 +348,7 @@ export default function PersonalInformationFormPopup({
             />
             <GeneralSelect
               selectedItem={selectedYear}
-              onSelect={setSelectedYear}
+              onSelect={handleYearSelect}
               options={years}
               defaultText={t("yearPlaceholder")}
               extraClassName="md:w-[110px] w-[80px] h-[56px] border border-[#F5F5F5] rounded-2xl bg-[#FCFCFC] text-[#262626]"
