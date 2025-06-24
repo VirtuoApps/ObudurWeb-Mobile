@@ -933,11 +933,11 @@ export default function FilterList({
 
         <div
           onClick={onChangeCurrentView}
-          className={`hidden lg:flex items-center justify-center border-r py-[10px] border-gray-200 cursor-pointer ${
+          className={`hidden lg:flex items-center justify-center border-r py-[10px] border-gray-200 hover:bg-[#F5F5F5] transition-all duration-300 rounded-l-2xl cursor-pointer ${
             currentView === "map" ? "px-[10px]" : "px-[16px]"
           }`}
         >
-          <div className="ease-in-out  hover:bg-[#F5F5F5] transition-all duration-300 p-2 rounded-lg">
+          <div className="ease-in-out    p-2 rounded-lg">
             {currentView === "map" && <ListViewIcon />}
             {currentView !== "map" && (
               <img src="/map-icon.png" className="w-4 h-4  " />
@@ -1080,10 +1080,10 @@ export default function FilterList({
           </button>
         )}
         <div
-          className="hidden lg:flex justify-center items-center w-full md:w-auto px-1  border-l border-gray-200 cursor-pointer"
+          className="hidden lg:flex justify-center items-center w-full md:w-auto px-1  border-l border-gray-200 cursor-pointer hover:bg-[#F5F5F5] transition-all duration-300 rounded-r-2xl"
           onClick={() => setIsFilterPopupOpen(true)}
         >
-          <p className="text-xs font-bold   text-gray-600 whitespace-nowrap hover:bg-[#F5F5F5] transition-all duration-300 p-2 rounded-lg ml-3 mr-3">
+          <p className="text-xs font-bold   text-gray-600 whitespace-nowrap p-2  ml-3 mr-3">
             {t("allFilters", { count: countActiveFilters() })}
           </p>
         </div>
