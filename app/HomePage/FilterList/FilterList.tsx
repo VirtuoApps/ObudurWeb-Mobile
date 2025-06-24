@@ -922,23 +922,14 @@ export default function FilterList({
             : "mt-0 mb-7 lg:rounded-b-[0px] relative w-full border-b border-[#F0F0F0]"
         } z-20  mx-auto  lg:rounded-2xl border-b border-[#F0F0F0] `}
       >
-        {showRightArrow && (
-          <button
-            onClick={scrollRight}
-            className="absolute right-27 top-1/2 -translate-y-1/2 z-10 bg-white p-1 rounded-lg border border-gray-200 shadow-md cursor-pointer hidden lg:block"
-          >
-            <FiChevronRight className="text-gray-600 text-sm" />
-          </button>
-        )}
-
-        {showLeftArrow && (
+        {/* {showLeftArrow && (
           <button
             onClick={scrollLeft}
             className="absolute left-10 top-1/2 -translate-y-1/2 z-10 bg-white p-1 rounded-lg border border-gray-200 shadow-md cursor-pointer hidden lg:block"
           >
             <FiChevronLeft className="text-gray-600 text-sm" />
           </button>
-        )}
+        )} */}
 
         <div
           onClick={onChangeCurrentView}
@@ -953,6 +944,29 @@ export default function FilterList({
             )}
           </div>
         </div>
+
+        {showLeftArrow && (
+          <button
+            onClick={scrollLeft}
+            className="z-10 bg-white p-1 w-[32px] items-center justify-center cursor-pointer hidden lg:flex hover:bg-[#F0F0F0] transition-all duration-200"
+          >
+            <svg
+              width={20}
+              height={20}
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11.6667 14.1667L7.5 10.0001L11.6667 5.83342"
+                stroke="#262626"
+                strokeWidth="1.5"
+                strokeLinecap="square"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        )}
 
         {hasActiveFilters() && (
           <div
@@ -1039,6 +1053,32 @@ export default function FilterList({
             ))}
           </div>
         </div>
+
+        {showRightArrow && (
+          <button
+            onClick={scrollRight}
+            className="z-10 bg-white p-1 w-[32px] items-center justify-center cursor-pointer hidden lg:flex hover:bg-[#F0F0F0] transition-all duration-200"
+          >
+            <svg
+              width={20}
+              height={20}
+              viewBox="0 0 20 20"
+              fill="none"
+              style={{
+                transform: "rotate(180deg)",
+              }}
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11.6667 14.1667L7.5 10.0001L11.6667 5.83342"
+                stroke="#262626"
+                strokeWidth="1.5"
+                strokeLinecap="square"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        )}
         <div
           className="hidden lg:flex justify-center items-center w-full md:w-auto px-1  border-l border-gray-200 cursor-pointer"
           onClick={() => setIsFilterPopupOpen(true)}
