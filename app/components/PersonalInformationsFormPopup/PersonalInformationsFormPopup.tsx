@@ -137,11 +137,12 @@ export default function PersonalInformationFormPopup({
 
     try {
       // Prepare update data
-      const birthDate = `${selectedDay.id
-        .toString()
-        .padStart(2, "0")}-${selectedMonth.id.toString().padStart(2, "0")}-${
-        selectedYear.id
-      }`;
+      const birthDate = new Date();
+
+      birthDate.setDate(selectedDay.id);
+      birthDate.setMonth(selectedMonth.id - 1);
+      birthDate.setFullYear(selectedYear.id);
+
       const fullPhoneNumber = `${selectCountryCode.id}${phoneNumber}`;
 
       const updateData = {
