@@ -320,9 +320,9 @@
     "meetingRoom": "Toplantı Odası"
   },
   "panoramicView": {
-    "title": "360 Sanal Tur",
-    "description": "Konutun tüm alanlarını sanal tur ile detaylı şekilde keşfetme imkanı sunan interaktif görüntüleme deneyimi.",
-    "startTour": "Tura Başla",
+    "title": "Video",
+    "description": "Konutun detaylarını keşfetme imkanı sunan video sunumu.",
+    "startTour": "",
     "closeTour": "Kapat"
   },
   "location": {
