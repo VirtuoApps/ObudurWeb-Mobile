@@ -1149,5 +1149,27 @@
       "november": "Kasım",
       "december": "Aralık"
     }
+  },
+  "managerPage": {
+    "title": "Yönetici İlanları",
+    "lowestPrice": "En Düşük Fiyat",
+    "highestPrice": "En Yüksek Fiyat",
+    "newest": "Önce En Yeni İlan",
+    "oldest": "Önce En Eski İlan",
+    "propertyType": "İlan Tipi",
+    "category": "Emlak Tipi",
+    "all": "Tümü",
+    "phoneCopied": "Telefon numarası kopyalandı",
+    "errorLoading": "Yönetici ilanları yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+    "activeListings": "{count} aktif ilanı var.",
+    "showingCount": "{total} ilanın {count} tanesi gösteriliyor.",
+    "noResultsTitle": "Filtrelere Uygun İlan Bulunamadı",
+    "noResultsSubtitle": "Seçtiğiniz filtrelere uygun ilan bulunmuyor.",
+    "resetFilters": "Filtreleri Sıfırla",
+    "noListingsTitle": "Henüz İlan Yok",
+    "noListingsSubtitle": "Bu yöneticinin henüz aktiflestirimiş ilanı bulunmuyor.",
+    "browseOtherListings": "Diğer İlanlara Göz At",
+    "sort": "Sırala",
+    "managerListingsError": "Yönetici ilanları yüklenirken bir hata oluştu"
   }
 }

@@ -14,7 +14,10 @@ import { useTranslations } from "next-intl";
 import { toast, Toaster } from "react-hot-toast";
 
 // Helper function to get localized text
-export const getLocalizedText = (textObj: any, selectedLanguage: string) => {
+export const getLocalizedText = (
+  textObj: any,
+  selectedLanguage: "tr" | "en"
+) => {
   return textObj && textObj[selectedLanguage]
     ? textObj[selectedLanguage]
     : textObj?.en || "";
@@ -52,6 +55,18 @@ interface HotelCategory {
   hotelTypeId: string;
 }
 
+interface DisplayPropertyType {
+  _id: string;
+  name: string;
+  originalData: HotelType;
+}
+
+interface DisplayCategory {
+  _id: string;
+  name: string;
+  originalData: HotelCategory;
+}
+
 export default function ManagerPage() {
   const router = useRouter();
   const params = useParams();
@@ -71,13 +86,15 @@ export default function ManagerPage() {
 
   // Filter states
   const [hotelTypes, setHotelTypes] = useState<HotelType[]>([]);
-  const [selectedPropertyType, setSelectedPropertyType] = useState<any>(null);
-  const [selectedCategory, setSelectedCategory] = useState<any>(null);
+  const [selectedPropertyType, setSelectedPropertyType] =
+    useState<DisplayPropertyType | null>(null);
+  const [selectedCategory, setSelectedCategory] =
+    useState<DisplayCategory | null>(null);
   const [isPropertyTypeOpen, setIsPropertyTypeOpen] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
 
-  const selectedLanguage = useLocale();
-  const t = useTranslations("favoritesPage");
+  const selectedLanguage = useLocale() as "tr" | "en";
+  const t = useTranslations("managerPage");
 
   // Get selected currency from localStorage
   useEffect(() => {
@@ -130,7 +147,7 @@ export default function ManagerPage() {
         setManagerData(response.data);
       } catch (error) {
         console.error("Error fetching manager hotels:", error);
-        setError("Error fetching manager hotels");
+        setError(t("managerListingsError"));
       } finally {
         setLoading(false);
       }
@@ -149,49 +166,54 @@ export default function ManagerPage() {
   const getSortDisplayText = () => {
     switch (sortOption) {
       case "ascending":
-        return "En Düşük Fiyat";
+        return t("lowestPrice");
       case "descending":
-        return "En Yüksek Fiyat";
+        return t("highestPrice");
       case "newest":
-        return "Önce En Yeni İlan";
+        return t("newest");
       case "oldest":
-        return "Önce En Eski İlan";
+        return t("oldest");
       default:
         return t("sort");
     }
   };
 
   // Filter handlers
-  const handlePropertyTypeSelect = (propertyType: any) => {
+  const handlePropertyTypeSelect = (propertyType: DisplayPropertyType) => {
     setSelectedPropertyType(propertyType);
     setSelectedCategory(null); // Reset category when property type changes
     setIsPropertyTypeOpen(false);
   };
 
-  const handleCategorySelect = (category: any) => {
+  const handleCategorySelect = (category: DisplayCategory) => {
     setSelectedCategory(category);
     setIsCategoryOpen(false);
   };
 
   // Get available categories based on selected property type
-  const availableCategories = selectedPropertyType
+  const availableCategories: HotelCategory[] = selectedPropertyType
     ? selectedPropertyType.originalData?.categories || []
     : [];
 
   // Get property types for display
-  const propertyTypes = hotelTypes.map((hotelType) => ({
+  const propertyTypes: DisplayPropertyType[] = hotelTypes.map((hotelType) => ({
     _id: hotelType._id,
     name: hotelType.name[selectedLanguage] || hotelType.name.tr,
     originalData: hotelType,
   }));
 
   // Get categories for display
-  const categories = availableCategories.map((category: HotelCategory) => ({
-    _id: category._id,
-    name:
-      category.name[selectedLanguage] || category.name.tr || category.name.en,
-    originalData: category,
-  }));
+  const categories: DisplayCategory[] = availableCategories.map(
+    (category: HotelCategory) => ({
+      _id: category._id,
+      name:
+        category.name[selectedLanguage] ||
+        category.name.tr ||
+        category.name.en ||
+        "",
+      originalData: category,
+    })
+  );
 
   // Filter and sort hotels
   const filteredAndSortedHotels = React.useMemo(() => {
@@ -280,7 +302,7 @@ export default function ManagerPage() {
       try {
         await navigator.clipboard.writeText(managerData.manager.phoneNumber);
         setPhoneCopied(true);
-        toast.success("Telefon numarası kopyalandı");
+        toast.success(t("phoneCopied"));
         // Hide the success message after 2 seconds
         setTimeout(() => {
           setPhoneCopied(false);
@@ -327,7 +349,7 @@ export default function ManagerPage() {
   if (loading) {
     return (
       <div className="container mx-auto p-8">
-        <h1 className="text-2xl font-bold mb-8">Yönetici İlanları</h1>
+        <h1 className="text-2xl font-bold mb-8">{t("title")}</h1>
         <div className="flex justify-center items-center min-h-[300px]">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
         </div>
@@ -338,12 +360,9 @@ export default function ManagerPage() {
   if (error) {
     return (
       <div className="container mx-auto p-8">
-        <h1 className="text-2xl font-bold mb-8">Yönetici İlanları</h1>
+        <h1 className="text-2xl font-bold mb-8">{t("title")}</h1>
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-          <p>
-            Yönetici ilanları yüklenirken bir hata oluştu. Lütfen daha sonra
-            tekrar deneyin.
-          </p>
+          <p>{t("errorLoading")}</p>
         </div>
       </div>
     );
@@ -405,10 +424,10 @@ export default function ManagerPage() {
           <div className="justify-between items-start mb-8 hidden lg:flex">
             <div>
               <h1 className="text-[#262626] font-bold text-2xl">
-                Yönetici İlanları
+                {t("title")}
               </h1>
               <p className="text-[#595959] text-sm">
-                {totalHotelCount} aktif ilanı var.
+                {t("activeListings", { count: totalHotelCount })}
               </p>
             </div>
 
@@ -422,7 +441,7 @@ export default function ManagerPage() {
                   <p className="text-sm text-gray-500 font-semibold mr-3">
                     {selectedPropertyType
                       ? selectedPropertyType.name
-                      : "İlan Tipi"}
+                      : t("propertyType")}
                   </p>
                   <img
                     src="/chevron-down.png"
@@ -443,7 +462,7 @@ export default function ManagerPage() {
                         setIsPropertyTypeOpen(false);
                       }}
                     >
-                      <p className="text-sm">Tümü</p>
+                      <p className="text-sm">{t("all")}</p>
                     </div>
                     {propertyTypes.map((type) => (
                       <div
@@ -468,7 +487,7 @@ export default function ManagerPage() {
                   }`}
                 >
                   <p className="text-sm text-gray-500 font-semibold mr-3">
-                    {selectedCategory ? selectedCategory.name : "Emlak Tipi"}
+                    {selectedCategory ? selectedCategory.name : t("category")}
                   </p>
                   <img
                     src="/chevron-down.png"
@@ -488,7 +507,7 @@ export default function ManagerPage() {
                         setIsCategoryOpen(false);
                       }}
                     >
-                      <p className="text-sm">Tümü</p>
+                      <p className="text-sm">{t("all")}</p>
                     </div>
                     {categories.map((category) => (
                       <div
@@ -527,25 +546,25 @@ export default function ManagerPage() {
                       className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
                       onClick={() => handleSortSelection("ascending")}
                     >
-                      <p className="text-sm">En Düşük Fiyat</p>
+                      <p className="text-sm">{t("lowestPrice")}</p>
                     </div>
                     <div
                       className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
                       onClick={() => handleSortSelection("descending")}
                     >
-                      <p className="text-sm">En Yüksek Fiyat</p>
+                      <p className="text-sm">{t("highestPrice")}</p>
                     </div>
                     <div
                       className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
                       onClick={() => handleSortSelection("newest")}
                     >
-                      <p className="text-sm">Önce En Yeni İlan</p>
+                      <p className="text-sm">{t("newest")}</p>
                     </div>
                     <div
                       className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
                       onClick={() => handleSortSelection("oldest")}
                     >
-                      <p className="text-sm">Önce En Eski İlan</p>
+                      <p className="text-sm">{t("oldest")}</p>
                     </div>
                   </div>
                 )}
@@ -556,13 +575,14 @@ export default function ManagerPage() {
 
         {/* Mobile header - with filters */}
         <div className="block lg:hidden mb-8">
-          <h1 className="text-[#262626] font-bold text-2xl">
-            Yönetici İlanları
-          </h1>
+          <h1 className="text-[#262626] font-bold text-2xl">{t("title")}</h1>
           <p className="text-[#595959] text-sm mb-4">
-            {totalHotelCount} ilanın {hotelCount} tanesi gösteriliyor.
+            {t("showingCount", {
+              total: totalHotelCount,
+              count: hotelCount,
+            })}
           </p>
-          
+
           {/* Mobile Filters */}
           {totalHotelCount > 0 && (
             <div className="flex flex-col gap-3">
@@ -573,7 +593,9 @@ export default function ManagerPage() {
                   className="border bg-transparent flex flex-row items-center justify-between rounded-xl px-4 py-3 cursor-pointer w-full"
                 >
                   <p className="text-sm text-gray-500 font-semibold">
-                    {selectedPropertyType ? selectedPropertyType.name : "İlan Tipi"}
+                    {selectedPropertyType
+                      ? selectedPropertyType.name
+                      : t("propertyType")}
                   </p>
                   <img
                     src="/chevron-down.png"
@@ -594,7 +616,7 @@ export default function ManagerPage() {
                         setIsPropertyTypeOpen(false);
                       }}
                     >
-                      <p className="text-sm">Tümü</p>
+                      <p className="text-sm">{t("all")}</p>
                     </div>
                     {propertyTypes.map((type) => (
                       <div
@@ -619,7 +641,7 @@ export default function ManagerPage() {
                   }`}
                 >
                   <p className="text-sm text-gray-500 font-semibold">
-                    {selectedCategory ? selectedCategory.name : "Emlak Tipi"}
+                    {selectedCategory ? selectedCategory.name : t("category")}
                   </p>
                   <img
                     src="/chevron-down.png"
@@ -639,7 +661,7 @@ export default function ManagerPage() {
                         setIsCategoryOpen(false);
                       }}
                     >
-                      <p className="text-sm">Tümü</p>
+                      <p className="text-sm">{t("all")}</p>
                     </div>
                     {categories.map((category) => (
                       <div
@@ -678,25 +700,25 @@ export default function ManagerPage() {
                       className="px-4 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
                       onClick={() => handleSortSelection("ascending")}
                     >
-                      <p className="text-sm">En Düşük Fiyat</p>
+                      <p className="text-sm">{t("lowestPrice")}</p>
                     </div>
                     <div
                       className="px-4 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
                       onClick={() => handleSortSelection("descending")}
                     >
-                      <p className="text-sm">En Yüksek Fiyat</p>
+                      <p className="text-sm">{t("highestPrice")}</p>
                     </div>
                     <div
                       className="px-4 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
                       onClick={() => handleSortSelection("newest")}
                     >
-                      <p className="text-sm">Önce En Yeni İlan</p>
+                      <p className="text-sm">{t("newest")}</p>
                     </div>
                     <div
                       className="px-4 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
                       onClick={() => handleSortSelection("oldest")}
                     >
-                      <p className="text-sm">Önce En Eski İlan</p>
+                      <p className="text-sm">{t("oldest")}</p>
                     </div>
                   </div>
                 )}
@@ -713,26 +735,26 @@ export default function ManagerPage() {
               // No results with active filters
               <>
                 <p className="text-center text-[#362C75] font-bold text-[24px]">
-                  Filtrelere Uygun İlan Bulunamadı
+                  {t("noResultsTitle")}
                 </p>
                 <p className="text-center text-[#262626] font-medium text-[16px] mt-4">
-                  Seçtiğiniz filtrelere uygun ilan bulunmuyor.
+                  {t("noResultsSubtitle")}
                 </p>
                 <button
                   onClick={resetFilters}
                   className="bg-[#5E5691] rounded-2xl py-4 px-6 flex items-center justify-center text-white mt-5"
                 >
-                  Filtreleri Sıfırla
+                  {t("resetFilters")}
                 </button>
               </>
             ) : (
               // No hotels at all
               <>
                 <p className="text-center text-[#362C75] font-bold text-[24px]">
-                  Henüz İlan Yok
+                  {t("noListingsTitle")}
                 </p>
                 <p className="text-center text-[#262626] font-medium text-[16px] mt-4">
-                  Bu yöneticinin henüz aktiflestirimiş ilanı bulunmuyor.
+                  {t("noListingsSubtitle")}
                 </p>
                 <button
                   onClick={() => {
@@ -741,7 +763,7 @@ export default function ManagerPage() {
                   }}
                   className="bg-[#5E5691] rounded-2xl py-4 px-6 flex items-center justify-center text-white mt-5"
                 >
-                  Diğer İlanlara Göz At
+                  {t("browseOtherListings")}
                 </button>
               </>
             )}

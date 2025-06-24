@@ -1144,5 +1144,27 @@
       "november": "November",
       "december": "December"
     }
+  },
+  "managerPage": {
+    "title": "Manager Listings",
+    "lowestPrice": "Lowest Price",
+    "highestPrice": "Highest Price",
+    "newest": "Newest First",
+    "oldest": "Oldest First",
+    "propertyType": "Property Type",
+    "category": "Category",
+    "all": "All",
+    "phoneCopied": "Phone number copied to clipboard",
+    "errorLoading": "An error occurred while loading manager listings. Please try again later.",
+    "activeListings": "Has {count} active listings.",
+    "showingCount": "Showing {count} of {total} listings.",
+    "noResultsTitle": "No Listings Found Matching Filters",
+    "noResultsSubtitle": "There are no listings matching your selected filters.",
+    "resetFilters": "Reset Filters",
+    "noListingsTitle": "No Listings Yet",
+    "noListingsSubtitle": "This manager has not activated any listings yet.",
+    "browseOtherListings": "Browse Other Listings",
+    "sort": "Sort",
+    "managerListingsError": "Error fetching manager listings"
   }
 }
