@@ -7,6 +7,7 @@ import ResidentBox from "./ResidentBox/ResidentBox";
 import SortAndSaveFiltering from "./SortAndSaveFiltering/SortAndSaveFiltering";
 import { formatAddress } from "@/app/utils/addressFormatter";
 import { useLocale } from "next-intl";
+import { renderFloorPositionText } from "@/app/utils/renderFloorPositionText";
 
 // Helper function to get localized text
 export const getLocalizedText = (textObj: any, selectedLanguage: string) => {
@@ -131,8 +132,11 @@ export default function ListView({
             title={getLocalizedText(hotel.title, selectedLanguage)}
             price={getDisplayPrice(hotel.price, selectedCurrency)}
             bedCount={hotel.bedRoomCount.toString()}
-            floorCount={hotel.floorCount?.toString()}
-            area={`${hotel.projectArea}m2`}
+            floorCount={renderFloorPositionText(
+              hotel.floorPosition,
+              selectedLanguage
+            )}
+            area={`${hotel.projectArea}m²`}
             locationText={formatAddress(hotel, selectedLanguage)}
             image={hotel.images[0]}
             images={hotel.images}

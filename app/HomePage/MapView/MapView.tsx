@@ -432,7 +432,7 @@ export default function GoogleMapView({
                     selectedHotel.floorPosition,
                     locale
                   )}
-                  area={`${selectedHotel.projectArea}m2`}
+                  area={`${selectedHotel.projectArea}m²`}
                   locationText={formatAddress(selectedHotel, locale)}
                   image={selectedHotel.images[0]}
                   images={selectedHotel.images}
