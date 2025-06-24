@@ -34,7 +34,7 @@ export default function PanoramicView({ video }: PanoramicViewProps) {
     onClick={() => setOpen(true)}
     className="absolute cursor-pointer inset-0 m-auto w-32 h-32 bg-[#362C75]/70 rounded-full flex flex-col items-center justify-center gap-1 text-white shadow-lg transition hover:scale-105 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#31286A]"
   >
-    <img src="/360.png" alt="" className="w-12 h-12" />
+    <img src="/360.png" alt="" className="w-[45px] h-[45px]" />
     <span className="text-sm font-medium">{t("startTour")}</span>
   </button>
 </div>
