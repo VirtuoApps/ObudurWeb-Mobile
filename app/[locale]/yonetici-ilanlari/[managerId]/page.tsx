@@ -554,14 +554,155 @@ export default function ManagerPage() {
           </div>
         )}
 
-        {/* Mobile header - without sorting for now */}
+        {/* Mobile header - with filters */}
         <div className="block lg:hidden mb-8">
           <h1 className="text-[#262626] font-bold text-2xl">
             Yönetici İlanları
           </h1>
-          <p className="text-[#595959] text-sm">
+          <p className="text-[#595959] text-sm mb-4">
             {totalHotelCount} ilanın {hotelCount} tanesi gösteriliyor.
           </p>
+          
+          {/* Mobile Filters */}
+          {totalHotelCount > 0 && (
+            <div className="flex flex-col gap-3">
+              {/* Property Type Filter - Mobile */}
+              <div className="relative">
+                <button
+                  onClick={() => setIsPropertyTypeOpen(!isPropertyTypeOpen)}
+                  className="border bg-transparent flex flex-row items-center justify-between rounded-xl px-4 py-3 cursor-pointer w-full"
+                >
+                  <p className="text-sm text-gray-500 font-semibold">
+                    {selectedPropertyType ? selectedPropertyType.name : "İlan Tipi"}
+                  </p>
+                  <img
+                    src="/chevron-down.png"
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      isPropertyTypeOpen ? "rotate-180" : ""
+                    }`}
+                    alt="arrow-down"
+                  />
+                </button>
+
+                {isPropertyTypeOpen && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border rounded-xl shadow-lg z-10 max-h-60 overflow-y-auto">
+                    <div
+                      className="px-4 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                      onClick={() => {
+                        setSelectedPropertyType(null);
+                        setSelectedCategory(null);
+                        setIsPropertyTypeOpen(false);
+                      }}
+                    >
+                      <p className="text-sm">Tümü</p>
+                    </div>
+                    {propertyTypes.map((type) => (
+                      <div
+                        key={type._id}
+                        className="px-4 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                        onClick={() => handlePropertyTypeSelect(type)}
+                      >
+                        <p className="text-sm">{type.name}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Category Filter - Mobile */}
+              <div className="relative">
+                <button
+                  onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+                  disabled={!selectedPropertyType}
+                  className={`border bg-transparent flex flex-row items-center justify-between rounded-xl px-4 py-3 cursor-pointer w-full ${
+                    !selectedPropertyType ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                >
+                  <p className="text-sm text-gray-500 font-semibold">
+                    {selectedCategory ? selectedCategory.name : "Emlak Tipi"}
+                  </p>
+                  <img
+                    src="/chevron-down.png"
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      isCategoryOpen ? "rotate-180" : ""
+                    }`}
+                    alt="arrow-down"
+                  />
+                </button>
+
+                {isCategoryOpen && selectedPropertyType && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border rounded-xl shadow-lg z-10 max-h-60 overflow-y-auto">
+                    <div
+                      className="px-4 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                      onClick={() => {
+                        setSelectedCategory(null);
+                        setIsCategoryOpen(false);
+                      }}
+                    >
+                      <p className="text-sm">Tümü</p>
+                    </div>
+                    {categories.map((category) => (
+                      <div
+                        key={category._id}
+                        className="px-4 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                        onClick={() => handleCategorySelect(category)}
+                      >
+                        <p className="text-sm">{category.name}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Sort Filter - Mobile */}
+              <div className="relative">
+                <button
+                  onClick={() => setIsSortOpen(!isSortOpen)}
+                  className="border bg-transparent flex flex-row items-center justify-between rounded-xl px-4 py-3 cursor-pointer w-full"
+                >
+                  <p className="text-sm text-gray-500 font-semibold">
+                    {getSortDisplayText()}
+                  </p>
+                  <img
+                    src="/chevron-down.png"
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      isSortOpen ? "rotate-180" : ""
+                    }`}
+                    alt="arrow-down"
+                  />
+                </button>
+
+                {isSortOpen && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border rounded-xl shadow-lg z-10">
+                    <div
+                      className="px-4 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                      onClick={() => handleSortSelection("ascending")}
+                    >
+                      <p className="text-sm">En Düşük Fiyat</p>
+                    </div>
+                    <div
+                      className="px-4 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                      onClick={() => handleSortSelection("descending")}
+                    >
+                      <p className="text-sm">En Yüksek Fiyat</p>
+                    </div>
+                    <div
+                      className="px-4 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                      onClick={() => handleSortSelection("newest")}
+                    >
+                      <p className="text-sm">Önce En Yeni İlan</p>
+                    </div>
+                    <div
+                      className="px-4 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
+                      onClick={() => handleSortSelection("oldest")}
+                    >
+                      <p className="text-sm">Önce En Eski İlan</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
         {hotelCount === 0 ? (
