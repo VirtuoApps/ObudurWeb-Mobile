@@ -611,14 +611,6 @@ export default function FifthCreateStep() {
                 </p>
                 {/* Video Upload Section */}
                 <div className="">
-                  <h2 className="font-bold text-[16px] text-[#262626]">
-                    Video
-                  </h2>
-                  <p className="text-sm text-gray-500 mb-4">
-                    Maksimum 1 dakika uzunluğunda video yükleyebilirsiniz. (MP4,
-                    MOV)
-                  </p>
-
                   {/* Drag and drop area for video */}
                   <div
                     className="border-2 border-dashed border-gray-300 rounded-[16px] p-6 flex flex-col items-center justify-center bg-gray-50 cursor-pointer"
