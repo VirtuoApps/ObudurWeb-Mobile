@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 
 // Define the type for form data
 type ContactFormData = {
@@ -40,6 +41,8 @@ type ExistingMessage = {
 };
 
 export default function ContactBox({ hotelData }: { hotelData: any }) {
+  const router = useRouter();
+
   const [countryCode, setCountryCode] = useState("+90");
   const [wantsVisit, setWantsVisit] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -384,7 +387,12 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
               ? formatPhoneNumber(managerPhone)
               : maskPhone(managerPhone || "+90 539 000 00 00")}
           </button>
-          <button className="flex-1 bg-[#FCFCFC] text-[#262626] py-2 px-4 rounded-xl border border-gray-200 cursor-pointer text-[14px] max-h-[36px]">
+          <button
+            onClick={() => {
+              router.push(`/yonetici-ilanlari/${hotelData.manager._id}`);
+            }}
+            className="flex-1 bg-[#FCFCFC] text-[#262626] py-2 px-4 rounded-xl border border-gray-200 cursor-pointer text-[14px] max-h-[36px]"
+          >
             {t("allListings")}
           </button>
         </div>
