@@ -23,20 +23,21 @@ export default function PanoramicView({ video }: PanoramicViewProps) {
       </p>
 
       {/* Hero image */}
-      <div className="relative mt-10">
-        <img
-          src="/example-house.png"
-          alt="House interior"
-          className="w-full rounded-lg object-cover"
-        />
-        <button
-          onClick={() => setOpen(true)}
-          className="absolute cursor-pointer inset-0 m-auto w-36 h-36 bg-[#31286A] rounded-full flex flex-col items-center justify-center gap-2 text-white shadow-lg transition hover:scale-105 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#31286A]"
-        >
-          <img src="/360.png" alt="" className="w-10 h-10" />
-          <span className="text-sm font-medium">{t("startTour")}</span>
-        </button>
-      </div>
+ 
+<div className="relative mt-10">
+  <img
+    src="/example-house.png"
+    alt="House interior"
+    className="w-full rounded-lg object-cover"
+  />
+  <button
+    onClick={() => setOpen(true)}
+    className="absolute cursor-pointer inset-0 m-auto w-25 h-25 bg-[#362C75] rounded-full flex flex-col items-center justify-center gap-2 text-white shadow-lg transition hover:scale-105 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#31286A]"
+  >
+    <img src="/360.png" alt="" className="w-15 h-15" />
+    <span className="text-sm font-medium">{t("startTour")}</span>
+  </button>
+</div>
 
       {/* Modal */}
       <Transition show={open} as={Fragment}>
