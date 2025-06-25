@@ -1117,6 +1117,7 @@
     "validationError": "Please fill in all fields and accept the user agreement.",
     "updateSuccess": "Your information has been successfully updated!",
     "updateError": "An error occurred while updating your profile. Please try again.",
+    "phoneAlreadyExistsError": "Your phone number is already in use.",
     "firstNamePlaceholder": "First Name",
     "lastNamePlaceholder": "Last Name",
     "birthDateLabel": "Your Birth Date",

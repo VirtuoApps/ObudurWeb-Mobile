@@ -1122,6 +1122,7 @@
     "validationError": "Lütfen tüm alanları doldurun ve kullanıcı sözleşmesini kabul edin.",
     "updateSuccess": "Bilgileriniz başarıyla güncellendi!",
     "updateError": "Profil güncellenirken bir hata oluştu. Lütfen tekrar deneyin.",
+    "phoneAlreadyExistsError": "Telefon numaranız zaten kullanılıyor.",
     "firstNamePlaceholder": "Adınız",
     "lastNamePlaceholder": "Soyadınız",
     "birthDateLabel": "Doğum Tarihiniz",

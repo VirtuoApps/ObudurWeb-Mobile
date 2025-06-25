@@ -174,7 +174,11 @@ export default function PersonalInformationFormPopup({
         window.location.reload();
       }, 2000);
     } catch (error: any) {
-      console.error("Error updating profile:", error);
+      if (error.errorCode === "PHONE_NUMBER_ALREADY_EXISTS") {
+        setError(t("phoneAlreadyExistsError"));
+        return;
+      }
+
       setError(error.response?.data?.message || t("updateError"));
     } finally {
       setIsLoading(false);
