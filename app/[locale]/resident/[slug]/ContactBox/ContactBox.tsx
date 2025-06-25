@@ -629,9 +629,7 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
             {!(!isValid || loading || !!existingMessage) && (
               <div className="mb-6">
                 <p className="px-4 text-[12px] text-[#8C8C8C]">
-                  “Mesaj Gönder” butonuna tıklayarak bilgilerinizin ilan veren
-                  taraf ile paylaşılmasını ve Kullanıcı Sözleşmesi’ni kabul
-                  etmiş olursunuz.
+                  {t("agreement")}
                 </p>
               </div>
             )}
@@ -669,7 +667,7 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
           onClick={() => setIsSheetOpen(true)}
           className="bg-[#5E5691] text-white py-3 rounded-full font-medium cursor-pointer w-full text-center"
         >
-          İletişime Geç
+          {t("contact")}
         </button>
       </div>
 
@@ -686,7 +684,7 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
             <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-[24px] relative">
               <div className="flex items-center justify-between">
                 <h2 className="md:text-lg text-2xl font-bold text-gray-700">
-                  İletişime Geç
+                  {t("contact")}
                 </h2>
                 <button
                   className="text-gray-400 hover:text-gray-600 cursor-pointer"

@@ -233,7 +233,9 @@
     "messageSentTitle": "Message Already Sent",
     "messageSentDescription": "You have already contacted this property. The agent will get back to you soon.",
     "errorSendingMessage": "Error sending message. Please try again.",
-    "phoneCopied": "📞 Phone number copied to clipboard!"
+    "phoneCopied": "📞 Phone number copied to clipboard!",
+    "contact": "Contact",
+    "agreement": "By clicking the \"Send Message\" button, you agree to share your information with the advertiser and accept the User Agreement."
   },
   "generalInfo": {
     "listingNumber": "Listing No: #{id}",
