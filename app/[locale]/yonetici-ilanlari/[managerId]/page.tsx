@@ -373,8 +373,8 @@ export default function ManagerPage() {
       <Toaster position="top-center" />
 
       {managerData?.manager && (
-        <div className="mb-8 bg-[#362C75] p-6 rounded-lg shadow-sm border">
-          <div className="flex lg:flex-row flex-col lg:items-center items-start justify-between gap-4 container mx-auto">
+        <div className="mb-8 bg-[#362C75] p-6 border">
+          <div className="flex lg:flex-row flex-col lg:items-center items-start justify-between gap-4 max-w-[1440px] mx-auto">
             <div className="flex items-center gap-4">
               <img
                 src={managerData.manager.profilePicture}
@@ -416,7 +416,7 @@ export default function ManagerPage() {
           </div>
         </div>
       )}
-      <div className="container mx-auto p-8 pb-0 px-2">
+      <div className="max-w-[1440px] mx-auto p-8 pb-0 sm:px-0 px-4">
         {/* Manager Information Section */}
 
         {/* Header with sorting - matching SortAndSaveFiltering design */}
