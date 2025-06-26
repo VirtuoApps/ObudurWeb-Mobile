@@ -321,9 +321,9 @@ export default function FirstCreateStep() {
     : [];
 
   return (
-    <div className="bg-[#ECEBF4] flex justify-center items-start p-4 py-6 ">
+    <div className="bg-[#ECEBF4] flex justify-center items-start p-4 py-6">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white h-full">
-        <div className="flex flex-col md:flex-row h-[inherit] md:h-[83vh]  2xl:h-[86vh]">
+        <div className="flex flex-col md:flex-row h-full md:h-[85vh]  2xl:h-[88vh]">
           {/* Left Info Panel - 30% width on desktop */}
           <div className="w-full md:w-[30%] mb-8 md:mb-0 md:p-6 hidden flex-col md:flex justify-between">
             <div className="">

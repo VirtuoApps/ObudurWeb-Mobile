@@ -476,12 +476,13 @@ export default function FourthCreateStep() {
             <div className="mt-4 text-base text-[#595959] font-medium">
               <p className="leading-[140%]">{t("description")}</p>
             </div>
+            <GoBackButton handleBack={handleBack} step={4} totalSteps={6} />
           </div>
 
           {/* Right Form Panel */}
           <div
             ref={formPanelRef}
-            className="w-full md:w-[70%] md:pl-6 h-auto md:h-[68vh]  2xl:h-[70vh] overflow-auto md:border-l md:border-[#F0F0F0]"
+            className="w-full md:w-[70%] md:pl-6 h-auto md:h-[85vh]  2xl:h-[88vh] overflow-auto md:border-l md:border-[#F0F0F0]"
           >
             {/* Errors display */}
             {errors.length > 0 && (
@@ -783,9 +784,7 @@ export default function FourthCreateStep() {
             </div>
           </div>
         </div>
-
-        <div className=" flex flex-col sm:flex-row justify-between items-center p-6">
-          <GoBackButton handleBack={handleBack} step={4} totalSteps={6} />
+        <div className=" flex flex-col sm:flex-row justify-end items-center p-6 border-t md:border-l border-[#F0F0F0]">
           <button
             type="button"
             onClick={handleContinue}

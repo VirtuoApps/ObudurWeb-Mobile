@@ -819,7 +819,7 @@ export default function ThirdCreateStep() {
   return (
     <div className="bg-[#ECEBF4] flex justify-center items-start p-4 py-6 ">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white h-full">
-        <div className="flex flex-col md:flex-row h-[inherit] md:h-[73vh]  2xl:h-[73vh]">
+        <div className="flex flex-col md:flex-row h-[inherit] md:h-[85vh]  2xl:h-[88vh]">
           {/* Left Info Panel - 30% width on desktop */}
           <div className="w-full md:w-[30%] mb-8 md:mb-0 md:p-6 hidden flex-col md:flex justify-between">
             <div className="">
@@ -830,6 +830,7 @@ export default function ThirdCreateStep() {
                 <p className="leading-[140%]">{t("description")}</p>
               </div>
             </div>
+            <GoBackButton handleBack={handleBack} step={3} totalSteps={6} />
           </div>
 
           {/* Right Form Panel - 70% width on desktop */}
@@ -1226,19 +1227,17 @@ export default function ThirdCreateStep() {
             </div>
 
             {/* Step counter and continue button */}
+            <div className=" flex flex-col sm:flex-row justify-end items-center p-6 border-t md:border-l border-[#F0F0F0]">
+              <button
+                type="button"
+                onClick={handleContinue}
+                className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+              >
+                {t("continue")}
+                <ChevronRightIcon className="h-5 w-5" />
+              </button>
+            </div>
           </div>
-        </div>
-
-        <div className=" flex flex-col sm:flex-row justify-between items-center p-6">
-          <GoBackButton handleBack={handleBack} step={3} totalSteps={6} />
-          <button
-            type="button"
-            onClick={handleContinue}
-            className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
-          >
-            {t("continue")}
-            <ChevronRightIcon className="h-5 w-5" />
-          </button>
         </div>
       </div>
     </div>

@@ -494,7 +494,7 @@ export default function SecondCreateStepForWork() {
   return (
     <div className=" bg-[#ECEBF4] flex justify-center items-start p-4 py-6">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white h-full ">
-        <div className="flex flex-col md:flex-row h-full md:h-[73vh]  2xl:h-[76vh]">
+        <div className="flex flex-col md:flex-row h-full md:h-[85vh]  2xl:h-[88vh]">
           {/* Left Info Panel */}
           <div className="w-full md:w-[30%] md:p-6 hidden flex-col md:flex justify-between">
             <div>
@@ -505,6 +505,7 @@ export default function SecondCreateStepForWork() {
                 <p className="leading-[140%]">{t("description")}</p>
               </div>
             </div>
+            <GoBackButton handleBack={handleBack} step={2} totalSteps={6} />
           </div>
 
           {/* Right Form Panel */}
@@ -916,19 +917,17 @@ export default function SecondCreateStepForWork() {
                 </div>
               </div>
             </div>
+            <div className=" flex flex-col sm:flex-row justify-end items-center p-6 border-t md:border-l border-[#F0F0F0]">
+              <button
+                type="button"
+                onClick={handleContinue}
+                className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+              >
+                {t("continue")}
+                <ChevronRightIcon className="h-5 w-5" />
+              </button>
+            </div>
           </div>
-        </div>
-
-        <div className=" flex flex-col sm:flex-row justify-between items-center p-6">
-          <GoBackButton handleBack={handleBack} step={2} totalSteps={6} />
-          <button
-            type="button"
-            onClick={handleContinue}
-            className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
-          >
-            {t("continue")}
-            <ChevronRightIcon className="h-5 w-5" />
-          </button>
         </div>
       </div>
     </div>
