@@ -403,9 +403,9 @@ export default function SixthCreateStep() {
   }, []); // Empty dependency array means this runs once when component mounts
 
   return (
-    <div className="bg-[#ECEBF4] flex justify-center items-start p-4 py-6 h-[calc(100vh-72px)] lg:h-[calc(100vh-96px)]">
+    <div className="bg-[#ECEBF4] flex justify-center items-start p-4 py-6 ">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white h-full">
-        <div className="flex flex-col md:flex-row h-[inherit]">
+        <div className="flex flex-col md:flex-row h-[inherit] md:h-[85vh]  2xl:h-[88vh]">
           {/* Left Info Panel - 30% width on desktop */}
           <div className="w-full md:w-[30%] mb-8 md:mb-0 md:p-6 hidden flex-col md:flex justify-between">
             <div className="">
@@ -421,66 +421,64 @@ export default function SixthCreateStep() {
                 </p>
               </div>
             </div>
-
-            <span className="text-sm text-gray-600 mt-4 sm:mt-0">
-              {t("stepCounter", { current: 6, total: 6 })}
-            </span>
+            <GoBackButton
+              handleBack={() => setCurrentStep(5)}
+              step={6}
+              totalSteps={6}
+            />
           </div>
 
           {/* Right Form Panel - 70% width on desktop */}
-          <div
-            ref={formPanelRef}
-            className="flex-1 h-full flex flex-col"
-          >
+          <div ref={formPanelRef} className="flex-1 h-full flex flex-col">
             <div className="p-6 flex-1 overflow-auto md:border-l border-[#F0F0F0]">
-                          {/* Errors display */}
-            {errors.length > 0 && (
-              <div className="bg-red-50 border border-red-200 rounded-md p-4 m-6 mb-0">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <XCircleIcon
-                      className="h-5 w-5 text-red-400"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-red-800">
-                      {t("fixErrors")}
-                    </h3>
-                    <div className="mt-2 text-sm text-red-700">
-                      <ul className="list-disc pl-5 space-y-1">
-                        {errors.map((error, index) => (
-                          <li key={index}>{error}</li>
-                        ))}
-                      </ul>
+              {/* Errors display */}
+              {errors.length > 0 && (
+                <div className="bg-red-50 border border-red-200 rounded-md p-4 m-6 mb-0">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0">
+                      <XCircleIcon
+                        className="h-5 w-5 text-red-400"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium text-red-800">
+                        {t("fixErrors")}
+                      </h3>
+                      <div className="mt-2 text-sm text-red-700">
+                        <ul className="list-disc pl-5 space-y-1">
+                          {errors.map((error, index) => (
+                            <li key={index}>{error}</li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* Form submission error */}
-            {submitError && (
-              <div className="bg-red-50 border border-red-200 rounded-md p-4 m-6 mb-0">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <XCircleIcon
-                      className="h-5 w-5 text-red-400"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-red-800">
-                      {t("creationError")}
-                    </h3>
-                    <div className="mt-2 text-sm text-red-700">
-                      {submitError}
+              {/* Form submission error */}
+              {submitError && (
+                <div className="bg-red-50 border border-red-200 rounded-md p-4 m-6 mb-0">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0">
+                      <XCircleIcon
+                        className="h-5 w-5 text-red-400"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium text-red-800">
+                        {t("creationError")}
+                      </h3>
+                      <div className="mt-2 text-sm text-red-700">
+                        {submitError}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
-            
+              )}
+
               {/* Document Upload Sections */}
               {DOCUMENT_TYPES.map((docType, index) => {
                 const docKey = `${docType.tr}_${docType.en}`;
@@ -656,8 +654,8 @@ export default function SixthCreateStep() {
                               } transition-colors`}
                             >
                               {dragActive[docKey]
-                              ? t("dropFile")
-                              : tShared("dropzoneText")}
+                                ? t("dropFile")
+                                : tShared("dropzoneText")}
                             </p>
                             {dragActive[docKey] && (
                               <p className="mt-1 text-xs text-blue-500">
@@ -675,55 +673,14 @@ export default function SixthCreateStep() {
               {/* Navigation buttons */}
             </div>
 
-            {/* Step counter and continue button */}
-            <div className="flex flex-col-reverse sm:flex-row justify-end items-center border-t md:border-l border-[#F0F0F0] p-6">
-              <div className="flex flex-row gap-4 sm:mt-0 w-full md:w-auto justify-end">
-                <button
-                  type="button"
-                  onClick={() => setCurrentStep(5)}
-                  className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-600 font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition border border-gray-300"
-                >
-                  {t("cancel")}
-                </button>
-                <button
-                  type="button"
-                  onClick={handleComplete}
-                  disabled={
-                    Object.values(uploadingDocs).some(
-                      (uploading) => uploading
-                    ) || isSubmitting
-                  }
-                  className="cursor-pointer w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition disabled:opacity-70 disabled:cursor-not-allowed"
-                >
-                  {isSubmitting ? (
-                    <div className="flex items-center">
-                      <svg
-                        className="animate-spin mr-2 h-4 w-4 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                      </svg>
-                      <span>{tAdmin("processing")}</span>
-                    </div>
-                  ) : (
-                    <span>{isUpdate ? tAdmin("update") : tAdmin("create")}</span>
-                  )}
-                </button>
-              </div>
+            <div className=" flex flex-col sm:flex-row justify-end items-center p-6 border-t md:border-l border-[#F0F0F0]">
+              <button
+                type="button"
+                onClick={handleComplete}
+                className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+              >
+                {isUpdate ? tAdmin("update") : tAdmin("create")}
+              </button>
             </div>
           </div>
         </div>
