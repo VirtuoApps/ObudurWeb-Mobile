@@ -290,7 +290,7 @@ export default function GoogleMapView({
         }}
         onLoad={onLoad}
         onUnmount={onUnmount}
-        onClick={() => setHideSelectedHotel(true)}
+        onClick={() => setHideSelectedHotel?.(true)}
       >
         {hotels.map((hotel, index) => {
           if (
@@ -342,8 +342,8 @@ export default function GoogleMapView({
               onClick={() => {
                 // router.push(`/resident/${hotel.slug}`);
                 // Alternative: show info window
-                setHideSelectedHotel(false);
-                setSelectedHotel(hotel);
+                setHideSelectedHotel?.(false);
+                setSelectedHotel?.(hotel);
               }}
             />
           );
@@ -396,7 +396,7 @@ export default function GoogleMapView({
                 lat: selectedHotel.location.coordinates[1], // Minimal offset to keep InfoWindow close to marker
                 lng: selectedHotel.location.coordinates[0],
               }}
-              onCloseClick={() => setSelectedHotel(null)}
+              onCloseClick={() => setSelectedHotel?.(null)}
               options={{
                 disableAutoPan: false,
                 pixelOffset: new window.google.maps.Size(0, 4), // Balanced offset - not too far from marker
@@ -428,10 +428,20 @@ export default function GoogleMapView({
                   title={getLocalizedText(selectedHotel.title, locale)}
                   price={getDisplayPrice(selectedHotel.price, selectedCurrency)}
                   bedCount={selectedHotel.bedRoomCount.toString()}
-                  floorCount={renderFloorPositionText(
-                    selectedHotel.floorPosition,
-                    locale
-                  )}
+                  floorCount={
+                    isMobile
+                      ? renderFloorPositionText(
+                          selectedHotel.floorPosition,
+                          locale
+                        )
+                      : !isNaN(Number(selectedHotel.floorPosition.tr))
+                      ? locale === "tr"
+                        ? `${selectedHotel.floorPosition.tr}. Kat`
+                        : `${selectedHotel.floorPosition.en}. Floor`
+                      : selectedHotel.floorPosition[
+                          locale as keyof typeof selectedHotel.floorPosition
+                        ]
+                  }
                   area={`${selectedHotel.projectArea}m²`}
                   locationText={formatAddress(selectedHotel, locale)}
                   image={selectedHotel.images[0]}
