@@ -465,7 +465,7 @@ export default function FourthCreateStep() {
   }, []); // Empty dependency array means this runs once when component mounts
 
   return (
-    <div className="min-h-screen bg-[#ECEBF4] flex justify-center items-start p-4">
+    <div className=" bg-[#ECEBF4] flex justify-center items-start p-4">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">
         <div className="flex flex-col md:flex-row p-10">
           {/* Left Info Panel */}
