@@ -28,7 +28,9 @@ interface AccountFormProps {
   user: User;
 }
 
-export default function AccountForm({ user }: AccountFormProps) {
+export default function AccountForm({}: AccountFormProps) {
+  const { user } = useAppSelector((state) => state.user);
+
   const t = useTranslations("accountForm");
   const dispatch = useAppDispatch();
   const { updateLoading, updateError, updateSuccess } = useAppSelector(
@@ -256,7 +258,13 @@ export default function AccountForm({ user }: AccountFormProps) {
     fileInputRef.current?.click();
   };
 
+  console.log({
+    user,
+  });
+
   const onSubmitPersonalInfo = async (data: PersonalInfoData) => {
+    if (!user) return;
+
     const updateData: any = {};
 
     // Only include fields that have changed
@@ -287,8 +295,21 @@ export default function AccountForm({ user }: AccountFormProps) {
           ] = `Bearer ${response.data.accessToken}`;
         }
 
+        console.log({
+          user,
+          updateData,
+        });
+
         // Dispatch action to update user data in Redux store
-        dispatch(updateUserData(updateData));
+        dispatch(
+          updateUserData({
+            ...user,
+            ...updateData,
+          })
+        );
+
+        // Reset loading state on success
+        setProfileUpdateLoading(false);
       } catch (error) {
         console.error("Error updating profile:", error);
         setProfileUpdateLoading(false);

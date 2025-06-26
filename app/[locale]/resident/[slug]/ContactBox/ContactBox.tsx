@@ -419,7 +419,10 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
             {t("loginPromptDescription")}
           </p>
           <button
-            onClick={() => setIsAuthPopupOpen(true)}
+            onClick={() => {
+              setIsAuthPopupOpen(true);
+              setIsSheetOpen(false);
+            }}
             className={`w-full py-3 rounded-xl font-medium cursor-pointer bg-[#5E5691] text-white mt-6`}
           >
             {t("loginButton")}
@@ -596,7 +599,7 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
               </label>
             </div>
 
-            <div className="mb-6">
+            <div className="mb-6 relative">
               <label
                 htmlFor="message"
                 className="absolute text-sm text-gray-400 mt-4 ml-4"
@@ -626,9 +629,7 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
             {!(!isValid || loading || !!existingMessage) && (
               <div className="mb-6">
                 <p className="px-4 text-[12px] text-[#8C8C8C]">
-                  “Mesaj Gönder” butonuna tıklayarak bilgilerinizin ilan veren
-                  taraf ile paylaşılmasını ve Kullanıcı Sözleşmesi’ni kabul
-                  etmiş olursunuz.
+                  {t("agreement")}
                 </p>
               </div>
             )}
@@ -666,7 +667,7 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
           onClick={() => setIsSheetOpen(true)}
           className="bg-[#5E5691] text-white py-3 rounded-full font-medium cursor-pointer w-full text-center"
         >
-          İletişime Geç
+          {t("contact")}
         </button>
       </div>
 
@@ -678,18 +679,12 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
             onClick={() => setIsSheetOpen(false)}
             style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
           ></div>
-          <div
-            className="relative bg-white rounded-t-[24px] shadow-xl max-w-[600px] w-full mx-auto max-h-[calc(100vh-32px)] flex flex-col mt-28"
-            style={{
-              transform: `translateY(${translateY}px)`,
-              transition: "transform 0.3s ease-out",
-            }}
-          >
+          <div className="relative bg-white rounded-t-[24px] shadow-xl max-w-[600px] w-full mx-auto flex flex-col mt-28 h-[87vh]">
             {/* Header */}
             <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-[24px] relative">
               <div className="flex items-center justify-between">
                 <h2 className="md:text-lg text-2xl font-bold text-gray-700">
-                  İletişime Geç
+                  {t("contact")}
                 </h2>
                 <button
                   className="text-gray-400 hover:text-gray-600 cursor-pointer"
@@ -702,7 +697,12 @@ export default function ContactBox({ hotelData }: { hotelData: any }) {
             </div>
 
             {/* Scrollable content area */}
-            <div className="flex-1 overflow-y-auto p-2">
+            <div
+              className="flex-1 overflow-y-auto p-2"
+              style={{
+                height: "100px",
+              }}
+            >
               {renderContactForm()}
             </div>
           </div>

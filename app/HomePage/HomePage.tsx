@@ -171,6 +171,13 @@ export default function HomePage({
   useEffect(() => {
     if (searchParams.get("showSignupEmailVerifySendPopup") === "true") {
       setShowSignupEmailVerifySendPopup(true);
+
+      // Remove the parameter from URL
+      const newParams = new URLSearchParams(searchParams.toString());
+      newParams.delete("showSignupEmailVerifySendPopup");
+      const newSearch = newParams.toString();
+      const newUrl = newSearch ? `${pathname}?${newSearch}` : pathname;
+      router.replace(newUrl, { scroll: false });
     }
   }, [searchParams]);
 

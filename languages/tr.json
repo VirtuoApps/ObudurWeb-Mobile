@@ -238,7 +238,9 @@
     "messageSentTitle": "Mesaj Gönderildi",
     "messageSentDescription": "Bu mülk için zaten iletişime geçtiniz. Emlak danışmanı sizinle en kısa sürede iletişime geçecektir.",
     "errorSendingMessage": "Mesaj gönderilirken bir hata oluştu. Lütfen tekrar deneyin.",
-    "phoneCopied": "📞 Telefon numarası panoya kopyalandı!"
+    "phoneCopied": "📞 Telefon numarası panoya kopyalandı!",
+    "contact": "İletişime Geç",
+    "agreement": "“Mesaj Gönder” butonuna tıklayarak bilgilerinizin ilan veren taraf ile paylaşılmasını ve Kullanıcı Sözleşmesi'ni kabul etmiş olursunuz."
   },
   "generalInfo": {
     "listingNumber": "İlan No: #{id}",
@@ -1120,6 +1122,7 @@
     "validationError": "Lütfen tüm alanları doldurun ve kullanıcı sözleşmesini kabul edin.",
     "updateSuccess": "Bilgileriniz başarıyla güncellendi!",
     "updateError": "Profil güncellenirken bir hata oluştu. Lütfen tekrar deneyin.",
+    "phoneAlreadyExistsError": "Telefon numaranız zaten kullanılıyor.",
     "firstNamePlaceholder": "Adınız",
     "lastNamePlaceholder": "Soyadınız",
     "birthDateLabel": "Doğum Tarihiniz",

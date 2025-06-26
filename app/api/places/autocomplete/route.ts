@@ -15,7 +15,7 @@ export async function GET(request: Request) {
   try {
     const apiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
       input
-    )}&types=geocode&key=${
+    )}&types=geocode&components=country:tr&key=${
       process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
       "AIzaSyCuWfmRQouyhfUcovYc33TeAvn5kZFeRTs"
     }&language=${language}`;

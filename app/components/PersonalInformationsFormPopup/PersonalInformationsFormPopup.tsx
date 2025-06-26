@@ -1,6 +1,7 @@
 import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
 import { updateUserData } from "@/app/store/userSlice";
-import React, { useEffect, useState, useMemo } from "react";
+
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import GeneralSelect from "../GeneralSelect/GeneralSelect";
 import { countryCodes } from "@/app/[locale]/resident/[slug]/ContactBox/countryCodes";
 import axiosInstance from "../../../axios";
@@ -37,20 +38,60 @@ export default function PersonalInformationFormPopup({
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const months = [
-    { id: 1, name: tMonths("january") },
-    { id: 2, name: tMonths("february") },
-    { id: 3, name: tMonths("march") },
-    { id: 4, name: tMonths("april") },
-    { id: 5, name: tMonths("may") },
-    { id: 6, name: tMonths("june") },
-    { id: 7, name: tMonths("july") },
-    { id: 8, name: tMonths("august") },
-    { id: 9, name: tMonths("september") },
-    { id: 10, name: tMonths("october") },
-    { id: 11, name: tMonths("november") },
-    { id: 12, name: tMonths("december") },
-  ];
+
+  // Helper function to check if a year is a leap year
+  const isLeapYear = (year: number): boolean => {
+    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+  };
+
+  // Helper function to get number of days in a month
+  const getDaysInMonth = (month: number, year: number): number => {
+    const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+    if (month === 2 && isLeapYear(year)) {
+      return 29; // February in leap year
+    }
+
+    return daysInMonth[month - 1];
+  };
+
+  // Generate days array based on selected month and year
+  const generateDaysArray = (): { id: number; name: string }[] => {
+    let maxDays = 31; // Default to 31 days
+
+    if (selectedMonth && selectedYear) {
+      maxDays = getDaysInMonth(selectedMonth.id, selectedYear.id);
+    } else if (selectedMonth) {
+      // If only month is selected, use current year as reference
+      const currentYear = new Date().getFullYear();
+      maxDays = getDaysInMonth(selectedMonth.id, currentYear);
+    }
+
+    return Array.from({ length: maxDays }, (_, i) => ({
+      id: i + 1,
+      name: `${i + 1}`,
+    }));
+  };
+
+  const days = generateDaysArray();
+
+  const months = useMemo(
+    () => [
+      { id: 1, name: tMonths("january") },
+      { id: 2, name: tMonths("february") },
+      { id: 3, name: tMonths("march") },
+      { id: 4, name: tMonths("april") },
+      { id: 5, name: tMonths("may") },
+      { id: 6, name: tMonths("june") },
+      { id: 7, name: tMonths("july") },
+      { id: 8, name: tMonths("august") },
+      { id: 9, name: tMonths("september") },
+      { id: 10, name: tMonths("october") },
+      { id: 11, name: tMonths("november") },
+      { id: 12, name: tMonths("december") },
+    ],
+    [tMonths]
+  );
 
   const startYear = 2005;
   const years = Array.from({ length: 100 }, (_, i) => ({
@@ -163,7 +204,23 @@ export default function PersonalInformationFormPopup({
         }
       }
     }
-  }, [user]);
+  }, [user, months]);
+
+  // Reset selected day if it becomes invalid when month or year changes
+  useEffect(() => {
+    if (selectedDay && selectedMonth) {
+      // Use selected year if available, otherwise use current year as reference
+      const yearToUse = selectedYear
+        ? selectedYear.id
+        : new Date().getFullYear();
+      const maxDaysInMonth = getDaysInMonth(selectedMonth.id, yearToUse);
+
+      // If selected day is greater than max days in the selected month, reset it
+      if (selectedDay.id > maxDaysInMonth) {
+        setSelectedDay(null);
+      }
+    }
+  }, [selectedMonth, selectedYear, selectedDay]);
 
   // Validate form
   const isFormValid = () => {
@@ -229,7 +286,11 @@ export default function PersonalInformationFormPopup({
         window.location.reload();
       }, 2000);
     } catch (error: any) {
-      console.error("Error updating profile:", error);
+      if (error.errorCode === "PHONE_NUMBER_ALREADY_EXISTS") {
+        setError(t("phoneAlreadyExistsError"));
+        return;
+      }
+
       setError(error.response?.data?.message || t("updateError"));
     } finally {
       setIsLoading(false);
