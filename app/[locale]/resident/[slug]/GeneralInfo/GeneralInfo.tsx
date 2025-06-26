@@ -394,7 +394,7 @@ export default function GeneralInfo() {
       )}
 
       {/* Features Icons Row - Scrollable on mobile */}
-      {iconsToDisplay.length >= 6 && (
+      {iconsToDisplay.length >= 6 && entranceType.tr !== "Arsa" && (
         <div className="flex overflow-x-auto mt-6 justify-between no-scrollbar">
           <div
             className={`flex ${
@@ -419,7 +419,11 @@ export default function GeneralInfo() {
       )}
 
       {/* Separator Line */}
-      <div className="border-b border-gray-200 my-3 sm:my-6"></div>
+      <div
+        className={`${
+          entranceType.tr !== "Arsa" ? "border-b border-gray-200 " : ""
+        } my-3 sm:my-6`}
+      ></div>
 
       {/* Details Section */}
       {entranceType.tr !== "Arsa" && entranceType.tr !== "İş Yeri" && (

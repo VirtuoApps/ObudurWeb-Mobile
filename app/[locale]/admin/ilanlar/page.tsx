@@ -130,12 +130,20 @@ export default function AdminListings() {
     setShowIsPersonalInformationFormPopup,
   ] = useState(false);
 
+  const [showPersonalPopup, setShowPersonalPopup] = useState(false);
+
   const isUserAccountCompleted =
     user?.firstName &&
     user?.lastName &&
     user?.email &&
     user.phoneNumber &&
     user.birthDate;
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowPersonalPopup(true);
+    }, 3000);
+  }, []);
 
   // Handle outside clicks to close dropdowns
   useEffect(() => {
@@ -594,7 +602,7 @@ export default function AdminListings() {
 
   return (
     <>
-      {!isUserAccountCompleted && (
+      {user && !isUserAccountCompleted && showPersonalPopup && (
         <PersonalInformationFormPopup
           onClose={() => {
             window.location.href = "/";
