@@ -21,7 +21,7 @@ import LikeIcon from "@/app/svgIcons/likeIcon";
 import { MdFavoriteBorder } from "react-icons/md";
 import { MdOutlineFavorite } from "react-icons/md";
 import { useRouter } from "@/app/utils/router";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 interface ResidentBoxProps {
   isFavorite?: boolean;
@@ -78,7 +78,7 @@ export default function ResidentBox({
   const favorites = useSelector(
     (state: RootState) => state.favorites.favorites
   );
-
+  const locale = useLocale();
   const router = useRouter();
 
   // Use images array if provided, otherwise create array from single image
@@ -130,7 +130,7 @@ export default function ResidentBox({
       <div
         className="w-full overflow-hidden bg-white rounded-2xl  transition-shadow duration-300 cursor-pointer border-[9px] border-white"
         onClick={() => {
-          window.open(`/resident/${slug}`, "_blank");
+          window.open(`/${locale}/resident/${slug}`, "_blank");
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
