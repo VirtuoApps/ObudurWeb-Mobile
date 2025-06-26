@@ -31,6 +31,8 @@ export default function SignupForm({
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
   const [contractOpen, setContractOpen] = useState(false);
+
+  const [isContractAlreadyOpen, setIsContractAlreadyOpen] = useState(false);
   const dispatch = useAppDispatch();
 
   // Define the schema for form validation with localized error messages
@@ -206,17 +208,24 @@ export default function SignupForm({
                 <input
                   id="agreement"
                   type="checkbox"
+                  onClick={() => {
+                    if (!isContractAlreadyOpen) {
+                      setContractOpen(true);
+                      setIsContractAlreadyOpen(true);
+                    }
+                  }}
                   {...register("agreement")}
                   className="w-4 h-4 border border-gray-300 rounded"
                 />
               </div>
               <label
-                htmlFor="agreement"
                 className={`ml-2 text-sm ${
                   errors.agreement ? "text-red-500" : "text-gray-500"
                 } cursor-pointer decoration-1 underline`}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   setContractOpen(true);
+                  setIsContractAlreadyOpen(true);
                 }}
               >
                 {t("agreement")}
