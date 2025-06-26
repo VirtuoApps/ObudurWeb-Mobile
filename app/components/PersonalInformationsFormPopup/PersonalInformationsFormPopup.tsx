@@ -73,7 +73,6 @@ export default function PersonalInformationFormPopup({
     }));
   };
 
-  const days = generateDaysArray();
 
   const months = useMemo(
     () => [
@@ -99,10 +98,7 @@ export default function PersonalInformationFormPopup({
     name: `${startYear - i}`,
   }));
 
-  // Function to get the number of days in a month
-  const getDaysInMonth = (month: number, year: number) => {
-    return new Date(year, month, 0).getDate();
-  };
+
 
   // Function to check if a date is valid
   const isValidDate = (day: number, month: number, year: number) => {

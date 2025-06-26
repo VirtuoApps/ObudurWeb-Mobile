@@ -5,7 +5,8 @@ export default createMiddleware({
   locales: ["en", "tr"],
 
   // If this locale is matched, pathname will remain unchanged
-  defaultLocale: "en",
+  defaultLocale: "tr",
+  localeDetection: false,
 
   // Paths that don't require locale detection
   localePrefix: "as-needed",
