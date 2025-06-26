@@ -134,7 +134,7 @@ export default function MapPropertyFloatingCard({
         onClick={handleCardClick}
       >
         {/* Content */}
-        <div className="p-2">
+        <div className="p-1">
           <div className="flex gap-[4px]">
             {/* Image */}
             <div className="relative flex-shrink-0">
@@ -160,7 +160,7 @@ export default function MapPropertyFloatingCard({
             </div>
 
             {/* Details */}
-            <div className="flex-1 min-w-0 p-[10px]">
+            <div className="flex-1 min-w-0 p-[6px]">
               {/* Property type */}
               <div className="flex flex-row items-center justify-between">
                 <p className="text-sm text-[#8C8C8C] font-normal leading-[1.4] mb-1 ">

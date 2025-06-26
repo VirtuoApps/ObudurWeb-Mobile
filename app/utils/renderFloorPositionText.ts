@@ -23,7 +23,7 @@ export const renderFloorPositionText = (
 
   if (floorPosition.tr === "Zemin Kat") {
     if (language === "tr") {
-      return "Z";
+      return "Zemin K.";
     }
 
     if (language === "en") {
@@ -33,7 +33,7 @@ export const renderFloorPositionText = (
 
   if (floorPosition.tr === "Bahçe Katı") {
     if (language === "tr") {
-      return "B";
+      return "Bahçe K.";
     }
 
     if (language === "en") {
@@ -43,7 +43,7 @@ export const renderFloorPositionText = (
 
   if (floorPosition.tr === "Bodrum Katı") {
     if (language === "tr") {
-      return "B";
+      return "Bodrum K.";
     }
 
     if (language === "en") {
@@ -63,7 +63,7 @@ export const renderFloorPositionText = (
 
   if (floorPosition.tr === "Yüksek Giriş") {
     if (language === "tr") {
-      return "YG";
+      return "Y. Giriş";
     }
 
     if (language === "en") {
@@ -73,7 +73,7 @@ export const renderFloorPositionText = (
 
   if (floorPosition.tr === "Villa Tipi") {
     if (language === "tr") {
-      return "VT";
+      return "Villa T.";
     }
 
     if (language === "en") {
