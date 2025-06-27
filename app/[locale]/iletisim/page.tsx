@@ -8,6 +8,7 @@ import React from "react";
 import SimpleHeader from "@/app/components/SimpleHeader/SimpleHeader";
 import { useTranslations } from "next-intl";
 
+
 export default function contact() {
   const t = useTranslations("contactPage");
 
