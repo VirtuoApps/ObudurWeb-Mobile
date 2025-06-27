@@ -923,7 +923,21 @@ export default function FilterPopup({
         }}
       >
         {/* Header - Fixed at top */}
-        <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-2xl relative">
+        <div
+          className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-2xl relative"
+          onTouchMove={e => {
+            if (window.innerWidth < 768) {
+              const content = document.getElementById('filter-popup-content');
+              if (content) {
+                content.scrollBy({
+                  top: e.touches[0].clientY * -1,
+                  behavior: 'auto',
+                });
+              }
+              e.preventDefault();
+            }
+          }}
+        >
           <div className="flex items-center justify-between">
             <h2 className="text-2xl md:text-lg font-bold text-gray-700">
               {t("title")}
@@ -941,6 +955,7 @@ export default function FilterPopup({
 
         {/* Scrollable content area */}
         <div
+          id="filter-popup-content"
           className="flex-1 overflow-y-auto p-6 pt-3"
           style={{ maxHeight: "calc(90vh - 128px - 80px)" }} // 128px header, 80px footer yükseklikleri örnek
         >
