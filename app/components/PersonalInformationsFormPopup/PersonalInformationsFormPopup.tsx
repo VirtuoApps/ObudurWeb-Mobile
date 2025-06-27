@@ -38,6 +38,7 @@ export default function PersonalInformationFormPopup({
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const [isContractAlreadyOpen, setIsContractAlreadyOpen] = useState(false);
 
   // Helper function to check if a year is a leap year
   const isLeapYear = (year: number): boolean => {
@@ -73,7 +74,6 @@ export default function PersonalInformationFormPopup({
     }));
   };
 
-
   const months = useMemo(
     () => [
       { id: 1, name: tMonths("january") },
@@ -98,12 +98,14 @@ export default function PersonalInformationFormPopup({
     name: `${startYear - i}`,
   }));
 
-
-
   // Function to check if a date is valid
   const isValidDate = (day: number, month: number, year: number) => {
     const date = new Date(year, month - 1, day);
-    return date.getDate() === day && date.getMonth() === month - 1 && date.getFullYear() === year;
+    return (
+      date.getDate() === day &&
+      date.getMonth() === month - 1 &&
+      date.getFullYear() === year
+    );
   };
 
   // Dynamically generate days based on selected month and year
@@ -125,7 +127,7 @@ export default function PersonalInformationFormPopup({
   // Handle month selection
   const handleMonthSelect = (month: any) => {
     setSelectedMonth(month);
-    
+
     // If selected day is invalid for the new month, reset it
     if (selectedDay && selectedYear) {
       const daysInNewMonth = getDaysInMonth(month.id, selectedYear.id);
@@ -138,7 +140,7 @@ export default function PersonalInformationFormPopup({
   // Handle year selection
   const handleYearSelect = (year: any) => {
     setSelectedYear(year);
-    
+
     // If selected day is invalid for the new year (leap year changes), reset it
     if (selectedDay && selectedMonth) {
       const daysInNewYear = getDaysInMonth(selectedMonth.id, year.id);
@@ -188,7 +190,7 @@ export default function PersonalInformationFormPopup({
         const dayNum = parseInt(day);
         const monthNum = parseInt(month);
         const yearNum = parseInt(year);
-        
+
         // Only set the date if it's valid
         if (isValidDate(dayNum, monthNum, yearNum)) {
           setSelectedDay({ id: dayNum, name: day });
@@ -449,9 +451,12 @@ export default function PersonalInformationFormPopup({
           <div className="flex flex-row items-center mt-4">
             <div
               className="w-6 h-6 border border-[#D9D9D9] flex items-center justify-center rounded-lg cursor-pointer"
-              onClick={() =>
-                setIsUserAgreementConfirmed(!isUserAgreementConfirmed)
-              }
+              onClick={() => {
+                if (!isContractAlreadyOpen) {
+                  setIsPersonalContractOpen(true);
+                }
+                setIsUserAgreementConfirmed(!isUserAgreementConfirmed);
+              }}
             >
               {isUserAgreementConfirmed ? (
                 <svg
@@ -476,6 +481,7 @@ export default function PersonalInformationFormPopup({
               <span
                 className="font-medium text-[#595959] underline cursor-pointer"
                 onClick={() => {
+                  setIsContractAlreadyOpen(true);
                   setIsPersonalContractOpen(true);
                 }}
               >
