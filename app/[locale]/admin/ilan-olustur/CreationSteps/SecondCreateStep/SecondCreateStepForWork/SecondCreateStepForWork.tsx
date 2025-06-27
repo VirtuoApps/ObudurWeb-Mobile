@@ -269,10 +269,10 @@ export default function SecondCreateStepForWork() {
   // Building age options
   const buildingAgeOptions = [
     ...Array.from({ length: 20 }, (_, i) => ({
-      value: i + 1,
-      label: t(`options.buildingAges.${i + 1}`),
+      value: i,
+      label: t(`options.buildingAges.${i}`),
     })),
-    { value: 21, label: t("options.buildingAges.20+") },
+    { value: 20, label: t("options.buildingAges.20+") },
   ];
 
   // Boolean options
