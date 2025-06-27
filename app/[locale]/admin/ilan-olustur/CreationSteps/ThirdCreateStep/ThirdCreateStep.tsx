@@ -966,6 +966,7 @@ export default function ThirdCreateStep() {
                     popoverMaxWidth="400"
                     maxHeight="200"
                     popoverExtraClassName="w-auto max-w-[420px]"
+                    showClearButton={false}
                   />
                 </div>
 
@@ -985,6 +986,7 @@ export default function ThirdCreateStep() {
                     popoverMaxWidth="400"
                     maxHeight="200"
                     popoverExtraClassName="w-auto max-w-[420px]"
+                    showClearButton={false}
                   />
                 </div>
               </div>
@@ -1007,6 +1009,7 @@ export default function ThirdCreateStep() {
                     popoverMaxWidth="200"
                     maxHeight="200"
                     popoverExtraClassName="w-auto max-w-[280px]"
+                    showClearButton={false}
                   />
                 </div>
 
