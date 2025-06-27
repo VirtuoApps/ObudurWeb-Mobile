@@ -223,7 +223,8 @@ export default function FilterPopup({
   const [hotelTypes, setHotelTypes] = useState<HotelType[]>([]);
   const [isLoadingHotelTypes, setIsLoadingHotelTypes] = useState(false);
 
-  /* -------------------- Mobile drag-to-close logic -------------------- */
+  // --- Mobil bottom sheet için state'ler ---
+  const [touchStartY, setTouchStartY] = useState<number | null>(null);
   const [translateY, setTranslateY] = useState(0);
 
   const [infrastructureFeaturesCollapsed, setInfrastructureFeaturesCollapsed] =
@@ -256,16 +257,17 @@ export default function FilterPopup({
   };
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    // Only enable on mobile (screen width < 768px)
-    if (window.innerWidth >= 768) return;
+    if (window.innerWidth < 768) {
+      setTouchStartY(e.touches[0].clientY);
+    }
   };
 
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    // if (touchStartY === null || window.innerWidth >= 768) return;
-    // const deltaY = e.touches[0].clientY - touchStartY;
-    // if (deltaY > 0) {
-    //   setTranslateY(deltaY);
-    // }
+    if (touchStartY === null || window.innerWidth >= 768) return;
+    const deltaY = e.touches[0].clientY - touchStartY;
+    if (deltaY > 0) {
+      setTranslateY(deltaY);
+    }
   };
 
   const toggleSceneryFeature = (feature: Feature) => {
@@ -940,7 +942,17 @@ export default function FilterPopup({
         </div>
 
         {/* Scrollable content area */}
-        <div className="flex-1 overflow-y-auto p-6 pt-3">
+        <div
+          id="filter-popup-content"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          className="flex-1 overflow-y-auto p-6 pt-3 touch-pan-y"
+          style={{
+            maxHeight: "calc(90vh - 128px - 80px)",
+            WebkitOverflowScrolling: "touch",
+          }}
+        >
           <div className="relative flex rounded-[12px] bg-[#f0f0f0]   w-full h-[56px] items-center">
             {/* Sliding Background */}
             <div
@@ -1957,7 +1969,7 @@ export default function FilterPopup({
           {/* Location Features Section */}
 
           {/* Add some bottom padding to prevent content from hiding behind the fixed footer */}
-          <div className="pb-20"></div>
+          {/* <div className="pb-20"></div> */}
         </div>
 
         {/* Footer Buttons - Fixed at bottom */}
