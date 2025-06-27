@@ -187,9 +187,14 @@ export default async function ResidentPage({
                 <Details />
               </div>
               <div className="border-b border-gray-200"></div>
-              <div id="features-section">
-                <FeaturesEquipment />
-              </div>
+              {hotelData.hotelDetails.entranceType?.tr !== "Arsa" && (
+                <>
+                  <div id="features-section">
+                    <FeaturesEquipment />
+                  </div>
+                  <div className="border-b border-gray-200"></div>
+                </>
+              )}
               {video && (
                 <>
                   <div className="border-b border-gray-200"></div>
