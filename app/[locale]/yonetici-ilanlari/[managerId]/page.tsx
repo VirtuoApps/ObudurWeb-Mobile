@@ -81,7 +81,7 @@ export default function ManagerPage() {
     "ascending" | "descending" | "newest" | "oldest" | null
   >(null);
   const [isSortOpen, setIsSortOpen] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("TRY");
   const [phoneCopied, setPhoneCopied] = useState(false);
 
   // Filter states

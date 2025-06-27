@@ -31,7 +31,7 @@ export default function FavoritesPage() {
     "ascending" | "descending" | "newest" | "oldest" | null
   >(null);
   const [isSortOpen, setIsSortOpen] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("TRY");
 
   const selectedLanguage = useLocale();
   const t = useTranslations("favoritesPage");
