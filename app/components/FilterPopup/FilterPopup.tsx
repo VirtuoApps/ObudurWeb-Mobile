@@ -940,7 +940,10 @@ export default function FilterPopup({
         </div>
 
         {/* Scrollable content area */}
-        <div className="flex-1 overflow-y-auto p-6 pt-3">
+        <div
+          className="flex-1 overflow-y-auto p-6 pt-3"
+          style={{ maxHeight: "calc(90vh - 128px - 80px)" }} // 128px header, 80px footer yükseklikleri örnek
+        >
           <div className="relative flex rounded-[12px] bg-[#f0f0f0]   w-full h-[56px] items-center">
             {/* Sliding Background */}
             <div
@@ -1957,7 +1960,7 @@ export default function FilterPopup({
           {/* Location Features Section */}
 
           {/* Add some bottom padding to prevent content from hiding behind the fixed footer */}
-          <div className="pb-20"></div>
+          {/* <div className="pb-20"></div> */}
         </div>
 
         {/* Footer Buttons - Fixed at bottom */}
