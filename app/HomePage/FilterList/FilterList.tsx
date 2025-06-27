@@ -1080,7 +1080,9 @@ export default function FilterList({
           </button>
         )}
         <div
-          className="hidden lg:flex justify-center items-center w-full md:w-auto px-1  border-l border-gray-200 cursor-pointer hover:bg-[#F5F5F5] transition-all duration-300 rounded-r-2xl"
+          className={`hidden lg:flex justify-center items-center w-full md:w-auto px-1  border-l border-gray-200 cursor-pointer hover:bg-[#F5F5F5] transition-all duration-300 ${
+            currentView === "map" ? "rounded-r-2xl" : ""
+          }`}
           onClick={() => setIsFilterPopupOpen(true)}
         >
           <p className="text-xs font-bold   text-gray-600 whitespace-nowrap p-2  ml-3 mr-3">
