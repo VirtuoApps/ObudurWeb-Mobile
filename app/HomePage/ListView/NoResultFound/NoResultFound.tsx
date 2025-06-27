@@ -26,7 +26,7 @@ export default function NoResultFound({
   allHotels = [],
   currentView,
 }: NoResultFoundProps) {
-  const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("TRY");
   const selectedLanguage = useLocale();
 
   // Get selected currency from localStorage

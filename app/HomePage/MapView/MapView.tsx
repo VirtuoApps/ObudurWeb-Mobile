@@ -36,7 +36,7 @@ export default function GoogleMapView({
 }) {
   const { isLoaded } = useGoogleMaps();
 
-  const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("TRY");
   const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
   const [initialCenter, setInitialCenter] = useState<{
     lat: number;

@@ -14,7 +14,6 @@ const languageOptions = [
 
 export const currencyOptions = [
   { code: "TRY", symbol: "₺", name: "Turkish Lira" },
-  { code: "EUR", symbol: "€", name: "Euro" },
   { code: "USD", symbol: "$", name: "US Dollar" },
 ];
 
@@ -35,7 +34,7 @@ export default function LanguageSwitcher({
   const pathname = usePathname();
   const [internalIsOpen, setInternalIsOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(currentLocale);
-  const [selectedCurrency, setSelectedCurrency] = useState("USD");
+  const [selectedCurrency, setSelectedCurrency] = useState("TRY");
 
   // Use external isOpen if provided, otherwise use internal state
   const isOpen = externalIsOpen !== undefined ? externalIsOpen : internalIsOpen;
@@ -162,7 +161,7 @@ export default function LanguageSwitcher({
               <div className="text-[#8C8C8C] text-base">{ls("currency")}</div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 mb-8">
+            <div className="grid grid-cols-2 gap-4 mb-8">
               {currencyOptions.map((currency) => (
                 <div
                   key={currency.code}

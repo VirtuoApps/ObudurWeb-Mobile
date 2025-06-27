@@ -32,7 +32,7 @@ export default function FavoriAramalarPage() {
   const [dataLoading, setDataLoading] = useState(true);
   const selectedLanguage = useLocale();
   const router = useRouter();
-  const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("TRY");
   const t = useTranslations("savedSearchesPage");
 
   // Get selected currency from localStorage
@@ -215,7 +215,7 @@ export default function FavoriAramalarPage() {
                   onDelete={() => handleDelete(filter._id || "")}
                   filterOptions={filterOptions}
                   hotels={hotels}
-                  selectedCurrency="USD" // Default currency
+                  selectedCurrency="TRY" // Default currency
                   searchRadius={5} // Default search radius in km
                   allQuickFilters={allQuickFilters}
                 />

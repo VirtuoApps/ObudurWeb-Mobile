@@ -33,7 +33,7 @@ export default function ListView({
   setIsSaveFilterPopupOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isCurrentFilterExist: boolean;
 }) {
-  const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("TRY");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const selectedLanguage = useLocale();
 

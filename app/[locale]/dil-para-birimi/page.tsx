@@ -12,7 +12,6 @@ const languageOptions = [
 export const currencyOptions = [
   { code: "TRY", symbol: "₺", name: "Turkish Lira" },
   { code: "USD", symbol: "$", name: "US Dollar" },
-  { code: "EUR", symbol: "€", name: "Euro" },
 ];
 
 export default function DilParaBirimiPage() {
