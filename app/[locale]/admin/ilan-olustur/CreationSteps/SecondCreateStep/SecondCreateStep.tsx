@@ -297,15 +297,8 @@ export default function SecondCreateStep() {
 
   // Building age options
   const buildingAgeOptions = [
-    { value: 0, label: "0" },
-    { value: 1, label: "1" },
-    { value: 2, label: "2" },
-    { value: 3, label: "3" },
-    { value: 4, label: "4" },
-    { value: 5, label: "5" },
-    { value: 10, label: "10" },
-    { value: 15, label: "15" },
-    { value: 20, label: "20+" },
+    ...Array.from({ length: 20 }, (_, i) => ({ value: i + 1, label: (i + 1).toString() })),
+    { value: 21, label: "20+" },
   ];
 
   // Boolean options
