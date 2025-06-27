@@ -918,7 +918,7 @@ export default function FilterPopup({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[99999] flex items-start pt-[104px] md:items-center justify-center lg:p-4 overflow-y-auto">
+    <div className="fixed inset-0 z-[99999] flex items-start pt-[180px] md:items-center justify-center lg:p-4 overflow-y-auto">
       <div
         className="fixed inset-0"
         onClick={onClose}

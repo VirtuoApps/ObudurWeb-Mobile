@@ -102,8 +102,8 @@ export default function FilterList({
   isAuthMenuOpen,
   isSaveFilterSheetOpen,
   setIsSaveFilterSheetOpen,
-  isSheetOpen,
   setIsSheetOpen,
+  isSheetOpen,
   resetFilters,
 }: {
   onChangeCurrentView: () => void;
@@ -610,7 +610,7 @@ export default function FilterList({
         />
 
         {isSheetOpen && (
-          <div className="fixed inset-0 z-[99999] flex items-end md:items-center justify-center lg:p-4 overflow-y-auto">
+          <div className="fixed inset-0 z-[99999] flex items-end pt-[180px] md:items-center justify-center lg:p-4 overflow-y-auto">
             <div
               className="fixed inset-0"
               onClick={() => setIsSheetOpen(false)}
@@ -709,7 +709,7 @@ export default function FilterList({
         )}
 
         {isSaveFilterSheetOpen && (
-          <div className="fixed bottom-0 left-0 inset-0 z-[99999] flex items-end md:items-center justify-center lg:p-4 overflow-y-auto">
+          <div className="fixed inset-0 z-[99999] flex items-end pt-[180px] md:items-center justify-center lg:p-4 overflow-y-auto">
             <div
               className="fixed inset-0"
               onClick={() => setIsSaveFilterSheetOpen(false)}
