@@ -599,9 +599,7 @@ export default function FilterPopup({
           ? tempSelectedFaceFeatures.map((f: any) => f._id)
           : null,
       isNewSelected: tempFilters?.isNewSelected || false,
-      isOnePlusOneSelected: tempFilters?.isOnePlusOneSelected || false,
-      isTwoPlusOneSelected: tempFilters?.isTwoPlusOneSelected || false,
-      isThreePlusOneSelected: tempFilters?.isThreePlusOneSelected || false,
+      selectedRoomTypes: tempFilters?.selectedRoomTypes || null,
     };
 
     // Apply filters using HomePage logic
@@ -744,18 +742,14 @@ export default function FilterPopup({
     }
 
     if (
-      filtersForCount.isOnePlusOneSelected ||
-      filtersForCount.isTwoPlusOneSelected ||
-      filtersForCount.isThreePlusOneSelected
+      filtersForCount.selectedRoomTypes &&
+      filtersForCount.selectedRoomTypes.length > 0
     ) {
-      const selectedRoomTypes: string[] = [];
-      if (filtersForCount.isOnePlusOneSelected) selectedRoomTypes.push("1+1");
-      if (filtersForCount.isTwoPlusOneSelected) selectedRoomTypes.push("2+1");
-      if (filtersForCount.isThreePlusOneSelected) selectedRoomTypes.push("3+1");
-
-      filteredHotels = filteredHotels.filter((hotel) => {
-        return selectedRoomTypes.includes(hotel.roomAsText);
-      });
+      filteredHotels = filteredHotels.filter((hotel) =>
+        filtersForCount.selectedRoomTypes!.some((type: number) =>
+          hotel.roomCount === type
+        )
+      );
     }
 
     if (tempSelectedSceneryFeatures.length > 0) {
@@ -814,9 +808,7 @@ export default function FilterPopup({
       tempSelectedPropertyType ||
       tempSelectedCategory ||
       (tempFilters &&
-        (tempFilters.isOnePlusOneSelected ||
-          tempFilters.isTwoPlusOneSelected ||
-          tempFilters.isThreePlusOneSelected ||
+        (tempFilters.selectedRoomTypes && tempFilters.selectedRoomTypes.length > 0 ||
           tempFilters.isNewSelected)) ||
       tempSelectedSceneryFeatures.length > 0 ||
       tempSelectedInfrastructureFeatures.length > 0
@@ -895,9 +887,7 @@ export default function FilterPopup({
       state: null,
       propertyType: null,
       roomAsText: null,
-      isOnePlusOneSelected: false,
-      isTwoPlusOneSelected: false,
-      isThreePlusOneSelected: false,
+      selectedRoomTypes: null,
       isNewSelected: false,
     });
     resetFilters();

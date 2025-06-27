@@ -236,9 +236,7 @@ export default function HomePage({
           accessibilityFeatureIds: savedFilter.accessibilityFeatureIds || null,
           faceFeatureIds: savedFilter.faceFeatureIds || null,
           isNewSelected: savedFilter.isNewSelected || null,
-          isOnePlusOneSelected: savedFilter.isOnePlusOneSelected || null,
-          isTwoPlusOneSelected: savedFilter.isTwoPlusOneSelected || null,
-          isThreePlusOneSelected: savedFilter.isThreePlusOneSelected || null,
+          selectedRoomTypes: savedFilter.selectedRoomTypes || null,
         };
 
         setFilters(filterData);
@@ -408,9 +406,8 @@ export default function HomePage({
       state: null,
       propertyType: null,
       roomAsText: null,
-      isOnePlusOneSelected: false,
-      isTwoPlusOneSelected: false,
-      isThreePlusOneSelected: false,
+      isNewSelected: false,
+      selectedRoomTypes: null,
     });
   };
   // Handle view transitions
@@ -719,21 +716,11 @@ export default function HomePage({
       });
     }
 
-    if (filters.isOnePlusOneSelected) {
+    if (filters.selectedRoomTypes && filters.selectedRoomTypes.length > 0) {
       filteredHotels = filteredHotels.filter((hotel) => {
-        return hotel.roomCount === 1;
-      });
-    }
-
-    if (filters.isTwoPlusOneSelected) {
-      filteredHotels = filteredHotels.filter((hotel) => {
-        return hotel.roomCount === 2;
-      });
-    }
-
-    if (filters.isThreePlusOneSelected) {
-      filteredHotels = filteredHotels.filter((hotel) => {
-        return hotel.roomCount === 3;
+        return filters.selectedRoomTypes!.some((type) =>
+          hotel.roomCount === type
+        );
       });
     }
   }
@@ -984,31 +971,6 @@ export default function HomePage({
               }`}
             >
               <NoResultFound
-                // resetFilters={() => {
-                //   setFilters(null);
-                //   setSelectedLocation(null);
-                //   setSelectedPropertyType(null);
-                //   setSelectedCategory(null);
-                //   setListingType("For Sale");
-                //   setSelectedFeatures([]);
-                //   setInteriorFeatures([]);
-                //   setSelectedExteriorFeatures([]);
-                //   setSelectedAccessibilityFeatures([]);
-                //   setAccessibilityFeatures([]);
-                //   setSelectedFaceFeatures([]);
-                //   setFaceFeatures([]);
-                //   setSelectedInfrastructureFeatures([]);
-                //   setInfrastructureFeatures([]);
-                //   setSelectedSceneryFeatures([]);
-                //   setSceneryFeatures([]);
-                //   setMinPrice("");
-                //   setMaxPrice("");
-                //   setMinArea("");
-                //   setMaxArea("");
-                //   setRoomCount("");
-                //   setBathroomCount("");
-
-                // }}
                 resetFilters={resetFilters}
                 allHotels={hotels}
                 currentView={currentView}
