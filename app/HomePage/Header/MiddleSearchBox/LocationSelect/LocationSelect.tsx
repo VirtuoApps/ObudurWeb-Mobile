@@ -211,7 +211,7 @@ export default function LocationSelect({
               className={`flex items-center text-[#8c8c8c] hover:text-[#595959] transition-all duration-200 px-3 py-1.5 text-sm cursor-pointer outline-none ${
                 isMobileMenu
                   ? "w-full border rounded-md border-gray-200 justify-between"
-                  : "w-[150px] shrink-0"
+                  : "w-[294px] shrink-0"
               }`}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
@@ -284,11 +284,9 @@ export default function LocationSelect({
 
             <PopoverPanel
               transition
-              className={`absolute z-50 mt-2 w-screen max-w-2xl px-4 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in ${
-                isMobileMenu ? "left-0" : "-left-5"
-              }`}
+              className={`absolute z-50 mt-2 w-[320px] px-4 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in left-0`}
             >
-              <div className="w-full max-w-[450px] flex-auto overflow-hidden rounded-[16px] border border-[#D9D9D9] bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
+              <div className="w-full overflow-hidden rounded-[16px] border border-[#D9D9D9] bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
                 <div className="">
                   {(isSearching || isFetchingCoordinates) && (
                     <div className="p-3 text-center text-gray-500">
