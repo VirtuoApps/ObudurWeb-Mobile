@@ -291,9 +291,7 @@ export default function FilterList({
     const hasInfrastructureFeatures = selectedInfrastructureFeatures.length > 0;
     const hasSceneryFeatures = selectedSceneryFeatures.length > 0;
     const hasSizeFilters =
-      filters?.isOnePlusOneSelected ||
-      filters?.isTwoPlusOneSelected ||
-      filters?.isThreePlusOneSelected;
+      filters?.selectedRoomTypes && filters.selectedRoomTypes.length > 0;
     const isNewSelected = filters?.isNewSelected;
 
     return (
@@ -338,9 +336,7 @@ export default function FilterList({
     if (bathroomCount !== "") count += 1;
 
     // Room type filters (1+1, 2+1, 3+1)
-    if (filters?.isOnePlusOneSelected) count += 1;
-    if (filters?.isTwoPlusOneSelected) count += 1;
-    if (filters?.isThreePlusOneSelected) count += 1;
+    if (filters?.selectedRoomTypes && filters.selectedRoomTypes.length > 0) count += 1;
     if (filters?.isNewSelected) count += 1;
 
     // Features - Sadece hızlı filtrelerde olmayan özellikleri say
@@ -403,9 +399,7 @@ export default function FilterList({
     setSelectedSceneryFeatures([]);
     setFilters({
       ...filters,
-      isOnePlusOneSelected: false,
-      isTwoPlusOneSelected: false,
-      isThreePlusOneSelected: false,
+      selectedRoomTypes: null,
       isNewSelected: false,
     });
     dispatch(setIsFilterApplied(false));
@@ -499,9 +493,7 @@ export default function FilterList({
             : filters?.sceneryFeatureIds || null,
         locationFeatureIds: null,
         isNewSelected: filters?.isNewSelected || null,
-        isOnePlusOneSelected: filters?.isOnePlusOneSelected || null,
-        isTwoPlusOneSelected: filters?.isTwoPlusOneSelected || null,
-        isThreePlusOneSelected: filters?.isThreePlusOneSelected || null,
+        selectedRoomTypes: filters?.selectedRoomTypes || null,
         selectedFeatures:
           selectedFeatures.length > 0
             ? selectedFeatures.map((feature) => ({
@@ -986,37 +978,49 @@ export default function FilterList({
           >
             <NewFilterItem filters={filters} setFilters={setFilters} />
             <SizeFilterItem
-              isSelected={+roomCount === 1}
+              isSelected={filters?.selectedRoomTypes?.includes(1) || false}
               onToggleSelected={() => {
-                if (+roomCount === 1) {
-                  setRoomCount("");
-                } else {
-                  setRoomCount("1");
-                }
+                const currentSelected = filters?.selectedRoomTypes || [];
+                const newSelected = currentSelected.includes(1)
+                  ? currentSelected.filter(type => type !== 1)
+                  : [...currentSelected, 1];
+                
+                setFilters({
+                  ...filters,
+                  selectedRoomTypes: newSelected.length > 0 ? newSelected : null
+                });
               }}
               iconUrl="/1+1.png"
               text="1+1"
             />
             <SizeFilterItem
-              isSelected={+roomCount === 2}
+              isSelected={filters?.selectedRoomTypes?.includes(2) || false}
               onToggleSelected={() => {
-                if (+roomCount === 2) {
-                  setRoomCount("");
-                } else {
-                  setRoomCount("2");
-                }
+                const currentSelected = filters?.selectedRoomTypes || [];
+                const newSelected = currentSelected.includes(2)
+                  ? currentSelected.filter(type => type !== 2)
+                  : [...currentSelected, 2];
+                
+                setFilters({
+                  ...filters,
+                  selectedRoomTypes: newSelected.length > 0 ? newSelected : null
+                });
               }}
               iconUrl="/2+1.png"
               text="2+1"
             />
             <SizeFilterItem
-              isSelected={+roomCount === 3}
+              isSelected={filters?.selectedRoomTypes?.includes(3) || false}
               onToggleSelected={() => {
-                if (+roomCount === 3) {
-                  setRoomCount("");
-                } else {
-                  setRoomCount("3");
-                }
+                const currentSelected = filters?.selectedRoomTypes || [];
+                const newSelected = currentSelected.includes(3)
+                  ? currentSelected.filter(type => type !== 3)
+                  : [...currentSelected, 3];
+                
+                setFilters({
+                  ...filters,
+                  selectedRoomTypes: newSelected.length > 0 ? newSelected : null
+                });
               }}
               iconUrl="/3+1.png"
               text="3+1"

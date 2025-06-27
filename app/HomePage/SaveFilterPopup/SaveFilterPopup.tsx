@@ -110,9 +110,7 @@ export default function SaveFilterPopup({
             : filters?.faceFeatureIds || null,
         locationFeatureIds: null,
         isNewSelected: filters?.isNewSelected || null,
-        isOnePlusOneSelected: filters?.isOnePlusOneSelected || null,
-        isTwoPlusOneSelected: filters?.isTwoPlusOneSelected || null,
-        isThreePlusOneSelected: filters?.isThreePlusOneSelected || null,
+        selectedRoomTypes: filters?.selectedRoomTypes || null,
         selectedFeatures:
           selectedFeatures.length > 0
             ? selectedFeatures.map((feature) => ({
