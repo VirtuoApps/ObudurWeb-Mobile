@@ -336,7 +336,8 @@ export default function FilterList({
     if (bathroomCount !== "") count += 1;
 
     // Room type filters (1+1, 2+1, 3+1)
-    if (filters?.selectedRoomTypes && filters.selectedRoomTypes.length > 0) count += 1;
+    if (filters?.selectedRoomTypes && filters.selectedRoomTypes.length > 0)
+      count += 1;
     if (filters?.isNewSelected) count += 1;
 
     // Features - Sadece hızlı filtrelerde olmayan özellikleri say
@@ -1011,12 +1012,13 @@ export default function FilterList({
               onToggleSelected={() => {
                 const currentSelected = filters?.selectedRoomTypes || [];
                 const newSelected = currentSelected.includes(1)
-                  ? currentSelected.filter(type => type !== 1)
+                  ? currentSelected.filter((type) => type !== 1)
                   : [...currentSelected, 1];
-                
+
                 setFilters({
                   ...filters,
-                  selectedRoomTypes: newSelected.length > 0 ? newSelected : null
+                  selectedRoomTypes:
+                    newSelected.length > 0 ? newSelected : null,
                 });
               }}
               iconUrl="/1+1.png"
@@ -1027,12 +1029,13 @@ export default function FilterList({
               onToggleSelected={() => {
                 const currentSelected = filters?.selectedRoomTypes || [];
                 const newSelected = currentSelected.includes(2)
-                  ? currentSelected.filter(type => type !== 2)
+                  ? currentSelected.filter((type) => type !== 2)
                   : [...currentSelected, 2];
-                
+
                 setFilters({
                   ...filters,
-                  selectedRoomTypes: newSelected.length > 0 ? newSelected : null
+                  selectedRoomTypes:
+                    newSelected.length > 0 ? newSelected : null,
                 });
               }}
               iconUrl="/2+1.png"
@@ -1043,12 +1046,13 @@ export default function FilterList({
               onToggleSelected={() => {
                 const currentSelected = filters?.selectedRoomTypes || [];
                 const newSelected = currentSelected.includes(3)
-                  ? currentSelected.filter(type => type !== 3)
+                  ? currentSelected.filter((type) => type !== 3)
                   : [...currentSelected, 3];
-                
+
                 setFilters({
                   ...filters,
-                  selectedRoomTypes: newSelected.length > 0 ? newSelected : null
+                  selectedRoomTypes:
+                    newSelected.length > 0 ? newSelected : null,
                 });
               }}
               iconUrl="/3+1.png"

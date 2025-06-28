@@ -68,49 +68,49 @@ export default function SaveFilterPopup({
     try {
       // Prepare the data according to CreateSavedFilterDto
       const filterData = {
-        filterName: searchName,
-        enableNotifications: inAppNotifications,
-        enableMailNotifications: emailNotifications,
-        listingType: listingType || null,
-        state: filters?.state || null,
+        filterName: searchName, // Filtre Adı
+        enableNotifications: inAppNotifications, //Bildirimleri aç
+        enableMailNotifications: emailNotifications, // Email bildirimleri aç
+        listingType: listingType || null, // Kiralık veya Satılık
+        state: filters?.state || null, // Şehir (Artık kullanılmıyor ilerde gerekirse diye bırakıyorum)
         propertyType:
-          selectedPropertyType?.name || filters?.propertyType || null,
-        propertyTypeId: selectedPropertyType?._id || null,
-        roomAsText: filters?.roomAsText || null,
-        categoryId: selectedCategory?._id || null,
+          selectedPropertyType?.name || filters?.propertyType || null, // Emlak Tipi (Arsa, Konut, İş Yer iv.b)
+        propertyTypeId: selectedPropertyType?._id || null, // Emlak Tipi ID
+        roomAsText: filters?.roomAsText || null, // Kategori (Daire, Villa, Apartman v.b)
+        categoryId: selectedCategory?._id || null, // Kategori ID
         minPrice:
-          minPrice !== "" ? Number(minPrice) : filters?.minPrice || null,
+          minPrice !== "" ? Number(minPrice) : filters?.minPrice || null, // Minimum Fiyat
         maxPrice:
-          maxPrice !== "" ? Number(maxPrice) : filters?.maxPrice || null,
+          maxPrice !== "" ? Number(maxPrice) : filters?.maxPrice || null, // Maksimum Fiyat
         roomCount:
-          roomCount !== "" ? Number(roomCount) : filters?.roomCount || null,
+          roomCount !== "" ? Number(roomCount) : filters?.roomCount || null, // Oda Sayısı
         bathroomCount:
           bathroomCount !== ""
             ? Number(bathroomCount)
-            : filters?.bathroomCount || null,
+            : filters?.bathroomCount || null, // Banyo Sayısı
         minProjectArea:
-          minArea !== "" ? Number(minArea) : filters?.minProjectArea || null,
+          minArea !== "" ? Number(minArea) : filters?.minProjectArea || null, // Minimum Alan
         maxProjectArea:
-          maxArea !== "" ? Number(maxArea) : filters?.maxProjectArea || null,
+          maxArea !== "" ? Number(maxArea) : filters?.maxProjectArea || null, // Maksimum Alan
         interiorFeatureIds:
           interiorFeatures.map((f) => f._id).length > 0
-            ? interiorFeatures.map((f) => f._id)
+            ? interiorFeatures.map((f) => f._id) // İç Özellikler
             : filters?.interiorFeatureIds || null,
         exteriorFeatureIds:
           selectedExteriorFeatures.map((f) => f._id).length > 0
-            ? selectedExteriorFeatures.map((f) => f._id)
+            ? selectedExteriorFeatures.map((f) => f._id) // Dış Özellikler
             : filters?.exteriorFeatureIds || null,
         accessibilityFeatureIds:
           selectedAccessibilityFeatures.map((f) => f._id).length > 0
-            ? selectedAccessibilityFeatures.map((f) => f._id)
+            ? selectedAccessibilityFeatures.map((f) => f._id) // Erişim Özellikleri
             : filters?.accessibilityFeatureIds || null,
         faceFeatureIds:
           selectedFaceFeatures.map((f) => f._id).length > 0
             ? selectedFaceFeatures.map((f) => f._id)
             : filters?.faceFeatureIds || null,
-        locationFeatureIds: null,
-        isNewSelected: filters?.isNewSelected || null,
-        selectedRoomTypes: filters?.selectedRoomTypes || null,
+        locationFeatureIds: null, // Konum Özellikleri
+        isNewSelected: filters?.isNewSelected || null, // Yeni mi? (Yeni filtresi panelden bağımsız eklendiği için burada da eklendi)
+        selectedRoomTypes: filters?.selectedRoomTypes || null, // Oda Sayısı
         selectedFeatures:
           selectedFeatures.length > 0
             ? selectedFeatures.map((feature) => ({
@@ -125,9 +125,9 @@ export default function SaveFilterPopup({
                 updatedAt: feature.updatedAt || new Date().toISOString(),
                 __v: feature.__v || 0,
               }))
-            : undefined,
-        selectedLocation,
-        resultCount,
+            : undefined, // Hızlı Filtreler
+        selectedLocation, // Konum
+        resultCount, // Sonuç Sayısı
       };
 
       // Remove null values to send only set filters
