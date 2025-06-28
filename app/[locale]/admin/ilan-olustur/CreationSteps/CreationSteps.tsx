@@ -366,7 +366,7 @@ export default function CreationSteps({
   // New fields state
   const [exchangeable, setExchangeable] = useState<boolean>(false);
   const [creditEligible, setCreditEligible] = useState<any>("");
-  const [buildingAge, setBuildingAge] = useState<number>(-1);
+  const [buildingAge, setBuildingAge] = useState<number>(0);
   const [isFurnished, setIsFurnished] = useState<boolean>(false);
   const [dues, setDues] = useState<{ amount: number; currency: string }[]>([]);
   const [usageStatus, setUsageStatus] = useState<Map<string, string>>(

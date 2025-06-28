@@ -223,6 +223,7 @@ export default function FilterPopup({
   const [hotelTypes, setHotelTypes] = useState<HotelType[]>([]);
   const [isLoadingHotelTypes, setIsLoadingHotelTypes] = useState(false);
 
+
   const [infrastructureFeaturesCollapsed, setInfrastructureFeaturesCollapsed] =
     useState(true);
 
@@ -251,6 +252,7 @@ export default function FilterPopup({
         : [...prev, feature]
     );
   };
+
 
   const toggleSceneryFeature = (feature: Feature) => {
     setTempSelectedSceneryFeatures((prev: any[]) =>
@@ -575,9 +577,7 @@ export default function FilterPopup({
           ? tempSelectedFaceFeatures.map((f: any) => f._id)
           : null,
       isNewSelected: tempFilters?.isNewSelected || false,
-      isOnePlusOneSelected: tempFilters?.isOnePlusOneSelected || false,
-      isTwoPlusOneSelected: tempFilters?.isTwoPlusOneSelected || false,
-      isThreePlusOneSelected: tempFilters?.isThreePlusOneSelected || false,
+      selectedRoomTypes: tempFilters?.selectedRoomTypes || null,
     };
 
     // Apply filters using HomePage logic
@@ -720,18 +720,14 @@ export default function FilterPopup({
     }
 
     if (
-      filtersForCount.isOnePlusOneSelected ||
-      filtersForCount.isTwoPlusOneSelected ||
-      filtersForCount.isThreePlusOneSelected
+      filtersForCount.selectedRoomTypes &&
+      filtersForCount.selectedRoomTypes.length > 0
     ) {
-      const selectedRoomTypes: string[] = [];
-      if (filtersForCount.isOnePlusOneSelected) selectedRoomTypes.push("1+1");
-      if (filtersForCount.isTwoPlusOneSelected) selectedRoomTypes.push("2+1");
-      if (filtersForCount.isThreePlusOneSelected) selectedRoomTypes.push("3+1");
-
-      filteredHotels = filteredHotels.filter((hotel) => {
-        return selectedRoomTypes.includes(hotel.roomAsText);
-      });
+      filteredHotels = filteredHotels.filter((hotel) =>
+        filtersForCount.selectedRoomTypes!.some((type: number) =>
+          hotel.roomCount === type
+        )
+      );
     }
 
     if (tempSelectedSceneryFeatures.length > 0) {
@@ -790,9 +786,7 @@ export default function FilterPopup({
       tempSelectedPropertyType ||
       tempSelectedCategory ||
       (tempFilters &&
-        (tempFilters.isOnePlusOneSelected ||
-          tempFilters.isTwoPlusOneSelected ||
-          tempFilters.isThreePlusOneSelected ||
+        (tempFilters.selectedRoomTypes && tempFilters.selectedRoomTypes.length > 0 ||
           tempFilters.isNewSelected)) ||
       tempSelectedSceneryFeatures.length > 0 ||
       tempSelectedInfrastructureFeatures.length > 0
@@ -871,9 +865,7 @@ export default function FilterPopup({
       state: null,
       propertyType: null,
       roomAsText: null,
-      isOnePlusOneSelected: false,
-      isTwoPlusOneSelected: false,
-      isThreePlusOneSelected: false,
+      selectedRoomTypes: null,
       isNewSelected: false,
     });
     resetFilters();
@@ -920,7 +912,17 @@ export default function FilterPopup({
         </div>
 
         {/* Scrollable content area */}
-        <div className="flex-1 overflow-y-auto p-6 pt-3">
+        <div
+          id="filter-popup-content"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          className="flex-1 overflow-y-auto p-6 pt-3 touch-pan-y"
+          style={{
+            maxHeight: "calc(90vh - 128px - 80px)",
+            WebkitOverflowScrolling: "touch",
+          }}
+        >
           <div className="relative flex rounded-[12px] bg-[#f0f0f0]   w-full h-[56px] items-center">
             {/* Sliding Background */}
             <div
@@ -1937,7 +1939,7 @@ export default function FilterPopup({
           {/* Location Features Section */}
 
           {/* Add some bottom padding to prevent content from hiding behind the fixed footer */}
-          <div className="pb-20"></div>
+          {/* <div className="pb-20"></div> */}
         </div>
 
         {/* Footer Buttons - Fixed at bottom */}

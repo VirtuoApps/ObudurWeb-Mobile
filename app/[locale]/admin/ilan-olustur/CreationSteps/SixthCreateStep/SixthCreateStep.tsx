@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 
 import GoBackButton from "../../GoBackButton/GoBackButton";
 import { XCircleIcon } from "@heroicons/react/24/solid";
@@ -6,12 +6,6 @@ import axiosInstance from "@/axios";
 import { useListingForm } from "../CreationSteps";
 import { useRouter } from "@/app/utils/router";
 import { useTranslations } from "next-intl";
-
-// Predefined document types
-const DOCUMENT_TYPES = [
-  { tr: "Kat Planı", en: "Floor Plan", tKey: "floorPlan" },
-  { tr: "Teklif Formu", en: "Offer Form", tKey: "offerForm" },
-];
 
 export default function SixthCreateStep() {
   const router = useRouter();
@@ -74,6 +68,21 @@ export default function SixthCreateStep() {
     floorPosition,
   } = useListingForm();
 
+  // Filter document types based on property type
+  const documentTypes = useMemo(() => {
+    const allDocumentTypes = [
+      { tr: "Kat Planı", en: "Floor Plan", tKey: "floorPlan" },
+      { tr: "Teklif Formu", en: "Offer Form", tKey: "offerForm" },
+    ];
+    
+    // If property type is "Arsa" (Land), exclude floor plan
+    if (entranceType?.tr === "Arsa") {
+      return allDocumentTypes.filter(doc => doc.tKey !== "floorPlan");
+    }
+    
+    return allDocumentTypes;
+  }, [entranceType?.tr]);
+
   const [errors, setErrors] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -92,7 +101,7 @@ export default function SixthCreateStep() {
     if (isUpdate && documents.length > 0) {
       const links: { [key: string]: string } = {};
       documents.forEach((doc: any) => {
-        const docType = DOCUMENT_TYPES.find(
+        const docType = documentTypes.find(
           (dt) => dt.tr === doc.name.tr && dt.en === doc.name.en
         );
         if (docType) {
@@ -102,12 +111,29 @@ export default function SixthCreateStep() {
       });
       setDocumentLinks(links);
     }
-  }, [isUpdate, documents]);
+  }, [isUpdate, documents, documentTypes]);
+
+  // Filter out floor plan documents when property type is "Arsa"
+  useEffect(() => {
+    if (entranceType?.tr === "Arsa" && documents.length > 0) {
+      const hasFloorPlan = documents.some(
+        (doc: any) => doc.name.tr === "Kat Planı" && doc.name.en === "Floor Plan"
+      );
+      
+      if (hasFloorPlan) {
+        setDocuments((prev: any) => 
+          prev.filter((doc: any) => 
+            !(doc.name.tr === "Kat Planı" && doc.name.en === "Floor Plan")
+          )
+        );
+      }
+    }
+  }, [entranceType?.tr, setDocuments]);
 
   // Upload a single document
   const uploadDocument = async (
     file: File,
-    docType: (typeof DOCUMENT_TYPES)[0]
+    docType: (typeof documentTypes)[0]
   ) => {
     try {
       const docKey = `${docType.tr}_${docType.en}`;
@@ -159,7 +185,7 @@ export default function SixthCreateStep() {
   // Handle document file selection
   const handleDocumentSelect = async (
     event: React.ChangeEvent<HTMLInputElement>,
-    docType: (typeof DOCUMENT_TYPES)[0]
+    docType: (typeof documentTypes)[0]
   ) => {
     if (!event.target.files || !event.target.files[0]) return;
 
@@ -169,7 +195,7 @@ export default function SixthCreateStep() {
 
   // Handle document link input
   const handleDocumentLink = (
-    docType: (typeof DOCUMENT_TYPES)[0],
+    docType: (typeof documentTypes)[0],
     link: string
   ) => {
     const docKey = `${docType.tr}_${docType.en}`;
@@ -198,7 +224,7 @@ export default function SixthCreateStep() {
   };
 
   // Remove uploaded document
-  const removeDocument = (docType: (typeof DOCUMENT_TYPES)[0]) => {
+  const removeDocument = (docType: (typeof documentTypes)[0]) => {
     const docKey = `${docType.tr}_${docType.en}`;
     setDocumentLinks((prev) => {
       const newLinks = { ...prev };
@@ -214,7 +240,7 @@ export default function SixthCreateStep() {
   };
 
   // Check if document is a link (URL)
-  const isDocumentLink = (docType: (typeof DOCUMENT_TYPES)[0]) => {
+  const isDocumentLink = (docType: (typeof documentTypes)[0]) => {
     const docKey = `${docType.tr}_${docType.en}`;
     const link = documentLinks[docKey];
     return link && (link.startsWith("http://") || link.startsWith("https://"));
@@ -234,7 +260,7 @@ export default function SixthCreateStep() {
   // Handle drop event
   const handleDrop = async (
     e: React.DragEvent,
-    docType: (typeof DOCUMENT_TYPES)[0]
+    docType: (typeof documentTypes)[0]
   ) => {
     e.preventDefault();
     e.stopPropagation();
@@ -480,7 +506,7 @@ export default function SixthCreateStep() {
               )}
 
               {/* Document Upload Sections */}
-              {DOCUMENT_TYPES.map((docType, index) => {
+              {documentTypes.map((docType, index) => {
                 const docKey = `${docType.tr}_${docType.en}`;
                 const hasDocument = !!documentLinks[docKey];
                 const isLink = isDocumentLink(docType);

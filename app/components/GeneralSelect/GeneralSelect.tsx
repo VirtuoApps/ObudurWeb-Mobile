@@ -16,6 +16,7 @@ type GeneralSelectProps = {
   customTextColor?: boolean;
   popoverExtraClassName?: string;
   disabled?: boolean;
+  showClearButton?: boolean;
 };
 
 export default function GeneralSelect({
@@ -30,6 +31,7 @@ export default function GeneralSelect({
   customTextColor,
   popoverExtraClassName,
   disabled = false,
+  showClearButton = true,
 }: GeneralSelectProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -141,7 +143,7 @@ export default function GeneralSelect({
                   {selectedItem ? selectedItem.name : defaultText}
                 </span>
               </div>
-              {selectedItem && !popoverExtraClassName?.includes("mobile") ? (
+              {selectedItem && !popoverExtraClassName?.includes("mobile") && showClearButton ? (
                 <button
                   type="button"
                   className="ml-2 p-1 rounded hover:bg-gray-100 transition cursor-pointer"

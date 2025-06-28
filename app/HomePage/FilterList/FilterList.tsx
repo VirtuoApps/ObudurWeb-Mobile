@@ -291,9 +291,7 @@ export default function FilterList({
     const hasInfrastructureFeatures = selectedInfrastructureFeatures.length > 0;
     const hasSceneryFeatures = selectedSceneryFeatures.length > 0;
     const hasSizeFilters =
-      filters?.isOnePlusOneSelected ||
-      filters?.isTwoPlusOneSelected ||
-      filters?.isThreePlusOneSelected;
+      filters?.selectedRoomTypes && filters.selectedRoomTypes.length > 0;
     const isNewSelected = filters?.isNewSelected;
 
     return (
@@ -338,9 +336,7 @@ export default function FilterList({
     if (bathroomCount !== "") count += 1;
 
     // Room type filters (1+1, 2+1, 3+1)
-    if (filters?.isOnePlusOneSelected) count += 1;
-    if (filters?.isTwoPlusOneSelected) count += 1;
-    if (filters?.isThreePlusOneSelected) count += 1;
+    if (filters?.selectedRoomTypes && filters.selectedRoomTypes.length > 0) count += 1;
     if (filters?.isNewSelected) count += 1;
 
     // Features - Sadece hızlı filtrelerde olmayan özellikleri say
@@ -403,9 +399,7 @@ export default function FilterList({
     setSelectedSceneryFeatures([]);
     setFilters({
       ...filters,
-      isOnePlusOneSelected: false,
-      isTwoPlusOneSelected: false,
-      isThreePlusOneSelected: false,
+      selectedRoomTypes: null,
       isNewSelected: false,
     });
     dispatch(setIsFilterApplied(false));
@@ -415,6 +409,20 @@ export default function FilterList({
 
   const [touchStartY, setTouchStartY] = useState<number | null>(null);
   const [translateY, setTranslateY] = useState(0);
+
+  // Prevent body scroll when bottom sheet is open
+  useEffect(() => {
+    if (isSheetOpen || isSaveFilterSheetOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isSheetOpen, isSaveFilterSheetOpen]);
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     if (window.innerWidth >= 768) return;
@@ -499,9 +507,7 @@ export default function FilterList({
             : filters?.sceneryFeatureIds || null,
         locationFeatureIds: null,
         isNewSelected: filters?.isNewSelected || null,
-        isOnePlusOneSelected: filters?.isOnePlusOneSelected || null,
-        isTwoPlusOneSelected: filters?.isTwoPlusOneSelected || null,
-        isThreePlusOneSelected: filters?.isThreePlusOneSelected || null,
+        selectedRoomTypes: filters?.selectedRoomTypes || null,
         selectedFeatures:
           selectedFeatures.length > 0
             ? selectedFeatures.map((feature) => ({
@@ -610,14 +616,14 @@ export default function FilterList({
         />
 
         {isSheetOpen && (
-          <div className="fixed inset-0 z-[99999] flex items-end pt-[180px] md:items-center justify-center lg:p-4 overflow-y-auto">
+          <div className="fixed inset-0 z-[99999] flex items-end justify-center md:hidden pt-28">
             <div
               className="fixed inset-0"
               onClick={() => setIsSheetOpen(false)}
               style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
             ></div>
             <div
-              className="relative bg-white rounded-t-[24px] shadow-xl max-w-[600px] w-full mx-auto max-h-[calc(100vh-112px)] flex flex-col"
+              className="relative bg-white rounded-t-[24px] shadow-xl max-w-[600px] w-full mx-auto flex flex-col mt-28 h-[87vh]"
               style={{
                 transform: `translateY(${translateY}px)`,
                 transition: touchStartY ? "none" : "transform 0.3s ease-out",
@@ -627,14 +633,40 @@ export default function FilterList({
               onTouchEnd={handleTouchEnd}
             >
               {/* Header */}
-              <div className="sticky top-0 bg-white z-10 p-4 pb-0 rounded-t-[24px] relative">
-                <div className="flex items-center justify-between"></div>
+              <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-[24px] relative">
+                <div className="flex items-center justify-between">
+                  <h2 className="md:text-lg text-2xl font-bold text-gray-700">
+                    Sıralama
+                  </h2>
+                  <button
+                    className="text-gray-400 hover:text-gray-600 cursor-pointer"
+                    onClick={() => setIsSheetOpen(false)}
+                  >
+                    <XMarkIcon className="w-8 h-8 md:w-6 md:h-6 text-gray-700" />
+                  </button>
+                </div>
                 <span className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1.5 bg-gray-300 rounded-full md:hidden"></span>
               </div>
 
               {/* Scrollable content area */}
-              <div className="flex-1 overflow-y-auto px-4 py-2 flex flex-col gap-[16px]">
+              <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-[16px]">
                 <div className="top-full left-0 right-0 mt-1 bg-white z-10 flex flex-col gap-[8px]">
+                  {/* Search Name Section */}
+                  <div className="mb-10">
+                    <label className="block text-lg font-bold text-[#262626] mb-2">
+                      Arama Adı
+                    </label>
+                    <input
+                      type="text"
+                      value={searchName}
+                      onChange={(e) => setSearchName(e.target.value)}
+                      placeholder="Yeni aramam"
+                      className="w-full px-6 py-4 bg-[#FCFCFC] border border-[#D9D9D9] rounded-2xl 
+                     text-[#8C8C8C] placeholder-[#8C8C8C] focus:outline-none focus:border-[#262626]
+                     focus:text-[#262626] transition-colors"
+                    />
+                  </div>
+
                   <div
                     className={`px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold rounded-2xl flex items-center gap-2 outline ${
                       selectedSortOption === "ascending"
@@ -686,12 +718,6 @@ export default function FilterList({
                       {filteringT("sortOptions.newest")}
                     </p>
                   </div>
-                  {/* <div
-                  className="px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold"
-                  onClick={() => setSelectedSortOption("oldest")}
-                >
-                  <p className="text-sm">Önce En Eski İlan</p>
-                </div> */}
                 </div>
 
                 <div className="border-b border-gray-200"></div>
@@ -709,7 +735,7 @@ export default function FilterList({
         )}
 
         {isSaveFilterSheetOpen && (
-          <div className="fixed inset-0 z-[99999] flex items-end pt-[180px] md:items-center justify-center lg:p-4 overflow-y-auto">
+          <div className="fixed inset-0 z-[99999] flex items-end justify-center md:hidden pt-28">
             <div
               className="fixed inset-0"
               onClick={() => setIsSaveFilterSheetOpen(false)}
@@ -717,7 +743,7 @@ export default function FilterList({
             ></div>
 
             <div
-              className="relative bg-white rounded-t-[24px] shadow-xl max-w-[600px] w-full mx-auto max-h-[calc(100vh-112px)] flex flex-col"
+              className="relative bg-white rounded-t-[24px] shadow-xl max-w-[600px] w-full mx-auto flex flex-col mt-28 h-[87vh]"
               style={{
                 transform: `translateY(${translateY}px)`,
                 transition: touchStartY ? "none" : "transform 0.3s ease-out",
@@ -728,27 +754,26 @@ export default function FilterList({
             >
               {isSuccess ? (
                 <>
-                  <div className="flex justify-between items-start p-4">
-                    <h2 className="text-2xl font-bold text-[#262626]">
-                      {filteringT("saved")}
-                    </h2>
-                    <button
-                      onClick={() => {
-                        setSearchName("");
-                        setIsSuccess(false);
-                        setIsSaveFilterSheetOpen(false);
-                      }}
-                      className="w-6 h-6 flex items-center justify-center cursor-pointer "
-                    >
-                      <img
-                        src="/popup-close-icon.png"
-                        alt="close"
-                        className="w-6 h-6"
-                      />
-                    </button>
+                  <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-[24px] relative">
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-2xl font-bold text-[#262626]">
+                        {filteringT("saved")}
+                      </h2>
+                      <button
+                        onClick={() => {
+                          setSearchName("");
+                          setIsSuccess(false);
+                          setIsSaveFilterSheetOpen(false);
+                        }}
+                        className="w-6 h-6 flex items-center justify-center cursor-pointer"
+                      >
+                        <XMarkIcon className="w-6 h-6 text-gray-700" />
+                      </button>
+                    </div>
+                    <span className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1.5 bg-gray-300 rounded-full md:hidden"></span>
                   </div>
 
-                  <div className="p-4 space-y-2">
+                  <div className="flex-1 overflow-y-auto p-6 space-y-2">
                     <h2 className="text-[#262626] font-kumbh font-bold text-base leading-[140%] tracking-[0%] align-start">
                       {filteringT("saveSuccess.title")}
                     </h2>
@@ -774,7 +799,7 @@ export default function FilterList({
                 </>
               ) : (
                 <>
-                  <div className="sticky top-0 bg-white z-10 px-4 py-[22px] rounded-t-[24px] relative">
+                  <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-[24px] relative">
                     <div className="flex items-center justify-between">
                       <h2 className="md:text-lg text-2xl font-bold text-[#262626]">
                         {filteringT("saveSearch")}
@@ -785,19 +810,15 @@ export default function FilterList({
                           setIsSuccess(false);
                           setIsSaveFilterSheetOpen(false);
                         }}
-                        className="w-6 h-6 flex items-center justify-center cursor-pointer "
+                        className="w-6 h-6 flex items-center justify-center cursor-pointer"
                       >
-                        <img
-                          src="/popup-close-icon.png"
-                          alt="close"
-                          className="w-6 h-6"
-                        />
+                        <XMarkIcon className="w-6 h-6 text-gray-700" />
                       </button>
                     </div>
                     <span className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1.5 bg-gray-300 rounded-full md:hidden"></span>
                   </div>
 
-                  <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-[16px]">
+                  <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-[16px]">
                     <div className="top-full left-0 right-0 mt-1 bg-white z-10 flex flex-col gap-[8px]">
                       {/* Search Name Section */}
                       <div className="mb-10">
@@ -986,37 +1007,49 @@ export default function FilterList({
           >
             <NewFilterItem filters={filters} setFilters={setFilters} />
             <SizeFilterItem
-              isSelected={+roomCount === 1}
+              isSelected={filters?.selectedRoomTypes?.includes(1) || false}
               onToggleSelected={() => {
-                if (+roomCount === 1) {
-                  setRoomCount("");
-                } else {
-                  setRoomCount("1");
-                }
+                const currentSelected = filters?.selectedRoomTypes || [];
+                const newSelected = currentSelected.includes(1)
+                  ? currentSelected.filter(type => type !== 1)
+                  : [...currentSelected, 1];
+                
+                setFilters({
+                  ...filters,
+                  selectedRoomTypes: newSelected.length > 0 ? newSelected : null
+                });
               }}
               iconUrl="/1+1.png"
               text="1+1"
             />
             <SizeFilterItem
-              isSelected={+roomCount === 2}
+              isSelected={filters?.selectedRoomTypes?.includes(2) || false}
               onToggleSelected={() => {
-                if (+roomCount === 2) {
-                  setRoomCount("");
-                } else {
-                  setRoomCount("2");
-                }
+                const currentSelected = filters?.selectedRoomTypes || [];
+                const newSelected = currentSelected.includes(2)
+                  ? currentSelected.filter(type => type !== 2)
+                  : [...currentSelected, 2];
+                
+                setFilters({
+                  ...filters,
+                  selectedRoomTypes: newSelected.length > 0 ? newSelected : null
+                });
               }}
               iconUrl="/2+1.png"
               text="2+1"
             />
             <SizeFilterItem
-              isSelected={+roomCount === 3}
+              isSelected={filters?.selectedRoomTypes?.includes(3) || false}
               onToggleSelected={() => {
-                if (+roomCount === 3) {
-                  setRoomCount("");
-                } else {
-                  setRoomCount("3");
-                }
+                const currentSelected = filters?.selectedRoomTypes || [];
+                const newSelected = currentSelected.includes(3)
+                  ? currentSelected.filter(type => type !== 3)
+                  : [...currentSelected, 3];
+                
+                setFilters({
+                  ...filters,
+                  selectedRoomTypes: newSelected.length > 0 ? newSelected : null
+                });
               }}
               iconUrl="/3+1.png"
               text="3+1"

@@ -268,14 +268,10 @@ export default function SecondCreateStepForWork() {
 
   // Building age options
   const buildingAgeOptions = [
-    { value: 0, label: t("options.buildingAges.0") },
-    { value: 1, label: t("options.buildingAges.1") },
-    { value: 2, label: t("options.buildingAges.2") },
-    { value: 3, label: t("options.buildingAges.3") },
-    { value: 4, label: t("options.buildingAges.4") },
-    { value: 5, label: t("options.buildingAges.5") },
-    { value: 10, label: t("options.buildingAges.10") },
-    { value: 15, label: t("options.buildingAges.15") },
+    ...Array.from({ length: 20 }, (_, i) => ({
+      value: i,
+      label: t(`options.buildingAges.${i}`),
+    })),
     { value: 20, label: t("options.buildingAges.20+") },
   ];
 
