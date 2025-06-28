@@ -223,7 +223,6 @@ export default function FilterPopup({
   const [hotelTypes, setHotelTypes] = useState<HotelType[]>([]);
   const [isLoadingHotelTypes, setIsLoadingHotelTypes] = useState(false);
 
-
   const [infrastructureFeaturesCollapsed, setInfrastructureFeaturesCollapsed] =
     useState(true);
 
@@ -252,7 +251,6 @@ export default function FilterPopup({
         : [...prev, feature]
     );
   };
-
 
   const toggleSceneryFeature = (feature: Feature) => {
     setTempSelectedSceneryFeatures((prev: any[]) =>
@@ -724,8 +722,8 @@ export default function FilterPopup({
       filtersForCount.selectedRoomTypes.length > 0
     ) {
       filteredHotels = filteredHotels.filter((hotel) =>
-        filtersForCount.selectedRoomTypes!.some((type: number) =>
-          hotel.roomCount === type
+        filtersForCount.selectedRoomTypes!.some(
+          (type: number) => hotel.roomCount === type
         )
       );
     }
@@ -786,7 +784,8 @@ export default function FilterPopup({
       tempSelectedPropertyType ||
       tempSelectedCategory ||
       (tempFilters &&
-        (tempFilters.selectedRoomTypes && tempFilters.selectedRoomTypes.length > 0 ||
+        ((tempFilters.selectedRoomTypes &&
+          tempFilters.selectedRoomTypes.length > 0) ||
           tempFilters.isNewSelected)) ||
       tempSelectedSceneryFeatures.length > 0 ||
       tempSelectedInfrastructureFeatures.length > 0
@@ -914,10 +913,7 @@ export default function FilterPopup({
         {/* Scrollable content area */}
         <div
           id="filter-popup-content"
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          className="flex-1 overflow-y-auto p-6 pt-3 touch-pan-y"
+          className="flex-1 overflow-y-auto p-6 pt-3"
           style={{
             maxHeight: "calc(90vh - 128px - 80px)",
             WebkitOverflowScrolling: "touch",
