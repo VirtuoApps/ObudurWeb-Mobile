@@ -324,28 +324,10 @@
   },
   "location": {
     "title": "Location",
-    "description": "The location of the property on the map, its distances to essential living areas, historical and/or popular points.",
-    "property": "Property",
-    "distancesTitle": "Distances",
-    "distances": {
-      "tram": "Tram",
-      "airport": "Airport",
-      "beach": "Beach",
-      "taxiStation": "Taxi Station",
-      "school": "School",
-      "bankAtm": "Bank / ATM",
-      "market": "Market",
-      "shoppingMall": "Shopping Mall",
-      "nationalPark": "National Park",
-      "cinema": "Cinema",
-      "entertainmentCenter": "Entertainment Center",
-      "gasStation": "Gas Station",
-      "restaurants": "Restaurants",
-      "gym": "Gym",
-      "pharmacy": "Pharmacy",
-      "businessCenter": "Business Center",
-      "hospital": "Hospital"
-    }
+    "description": "The location of the property on the map, distances to main living areas, historical and/or popular points.",
+    "addressTitle": "Address",
+    "getDirections": "Get Directions",
+    "distancesTitle": "Nearby Points"
   },
   "floorPlans": {
     "description": "View all areas of the property on technical drawings; access necessary certificates and documents."
