@@ -223,9 +223,6 @@ export default function FilterPopup({
   const [hotelTypes, setHotelTypes] = useState<HotelType[]>([]);
   const [isLoadingHotelTypes, setIsLoadingHotelTypes] = useState(false);
 
-  // --- Mobil bottom sheet için state'ler ---
-  const [touchStartY, setTouchStartY] = useState<number | null>(null);
-  const [translateY, setTranslateY] = useState(0);
 
   const [infrastructureFeaturesCollapsed, setInfrastructureFeaturesCollapsed] =
     useState(true);
@@ -256,19 +253,6 @@ export default function FilterPopup({
     );
   };
 
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (window.innerWidth < 768) {
-      setTouchStartY(e.touches[0].clientY);
-    }
-  };
-
-  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (touchStartY === null || window.innerWidth >= 768) return;
-    const deltaY = e.touches[0].clientY - touchStartY;
-    if (deltaY > 0) {
-      setTranslateY(deltaY);
-    }
-  };
 
   const toggleSceneryFeature = (feature: Feature) => {
     setTempSelectedSceneryFeatures((prev: any[]) =>
@@ -276,14 +260,6 @@ export default function FilterPopup({
         ? prev.filter((f: any) => f._id !== feature._id)
         : [...prev, feature]
     );
-  };
-
-  const handleTouchEnd = () => {
-    if (window.innerWidth >= 768) return;
-    if (translateY > 120) {
-      onClose();
-    }
-    setTranslateY(0);
   };
 
   // Initialize temporary states when popup opens
@@ -910,20 +886,14 @@ export default function FilterPopup({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[99999] flex items-start pt-[180px] md:items-center justify-center lg:p-4 overflow-y-auto">
+    <div className="fixed inset-0 z-[99999] flex items-start pt-[180px] md:items-center justify-center lg:p-4">
       <div
         className="fixed inset-0"
         onClick={onClose}
         style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
       ></div>
 
-      <div
-        className="relative bg-white rounded-t-2xl md:rounded-2xl shadow-xl max-w-[600px] w-full mx-auto h-[90vh] md:h-auto md:max-h-[90vh] flex flex-col md:mt-0"
-        style={{
-          transform: `translateY(${translateY}px)`,
-          transition: "transform 0.3s ease-out",
-        }}
-      >
+      <div className="relative bg-white rounded-t-2xl md:rounded-2xl shadow-xl max-w-[600px] w-full mx-auto h-[90vh] md:h-auto md:max-h-[90vh] flex flex-col md:mt-0">
         {/* Header - Fixed at top */}
         <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-2xl relative">
           <div className="flex items-center justify-between">
