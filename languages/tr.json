@@ -329,28 +329,10 @@
   },
   "location": {
     "title": "Lokasyon",
-    "description": "Konutun harita üzerindeki konumu, çevresindeki temel yaşam alanlarına, tarihi ve/veya popüler noktalara olan mesafeleri.",
-    "property": "Konut",
-    "distancesTitle": "Uzaklıklar",
-    "distances": {
-      "tram": "Tramvay",
-      "airport": "Havaalanı",
-      "beach": "Plaj",
-      "taxiStation": "Taksi Durağı",
-      "school": "Okul",
-      "bankAtm": "Banka / ATM",
-      "market": "Market",
-      "shoppingMall": "Alış Veriş Merkezi",
-      "nationalPark": "Milli Park",
-      "cinema": "Sinema",
-      "entertainmentCenter": "Eğlence Merkezi",
-      "gasStation": "Benzinlik",
-      "restaurants": "Restoranlar",
-      "gym": "Spor Salonu",
-      "pharmacy": "Eczane",
-      "businessCenter": "İş Merkezi",
-      "hospital": "Hastane"
-    }
+    "description": "Konunun harita üzerindeki konumu, çevresindeki temel yaşam alanlarına, tarihi ve/veya popüler noktalara olan mesafeleri.",
+    "addressTitle": "Adres",
+    "getDirections": "Yol Tarifi Al",
+    "distancesTitle": "Yakındaki Noktalar"
   },
   "floorPlans": {
     "description": "Konutun tüm alanlarını teknik resimler üzerinde görebilir; gerekli sertifika ve dökümanlara ulaşabilirsiniz."
