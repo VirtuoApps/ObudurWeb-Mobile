@@ -545,7 +545,7 @@ export default function SecondCreateStepForLand() {
                           onChange={(e) =>
                             handlePriceChange("USD", e.target.value)
                           }
-                          className={`w-full h-12 rounded-lg border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] ${getFieldErrorClass(
+                          className={`w-full h-[56px] rounded-[16px] border pl-8 pr-4 placeholder-gray-400 focus:outline-none focus:ring-2 text-[#262626] text-[14px] ${getFieldErrorClass(
                             "price-usd"
                           )}`}
                           placeholder={t("pricePlaceholder")}

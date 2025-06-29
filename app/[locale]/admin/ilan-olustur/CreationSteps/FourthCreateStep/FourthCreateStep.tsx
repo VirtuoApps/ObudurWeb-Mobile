@@ -742,6 +742,8 @@ export default function FourthCreateStep() {
 
                   {/* Current distances as chips */}
                   {distances.length > 0 && (
+                    <>
+                    <div className="my-6 border-t border-[#F0F0F0]"></div>
                     <div className="flex flex-wrap gap-3">
                       {distances.map((distance) => (
                         <div
@@ -789,6 +791,7 @@ export default function FourthCreateStep() {
                         </div>
                       ))}
                     </div>
+                    </>
                   )}
                 </div>
               </div>

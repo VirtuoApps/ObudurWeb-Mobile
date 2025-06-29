@@ -914,6 +914,8 @@ export default function SecondCreateStepForWork() {
               </div>
             </div>
             <div className=" flex flex-col sm:flex-row justify-end items-center p-6 border-t md:border-l border-[#F0F0F0]">
+                            <div className="flex flex-row gap-4 sm:mt-0 w-full md:w-auto justify-end">
+
               <button
                     type="button"
                     onClick={handleBack}
@@ -929,6 +931,7 @@ export default function SecondCreateStepForWork() {
                 {t("continue")}
                 <ChevronRightIcon className="h-5 w-5 hidden sm:block" />
               </button>
+              </div>
             </div>
           </div>
         </div>
