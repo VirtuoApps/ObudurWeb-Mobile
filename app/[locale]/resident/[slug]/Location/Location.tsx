@@ -84,13 +84,13 @@ export default function Location() {
   return (
     <section
       id="location-section"
-      className="max-w-5xl mx-auto my-8 md:my-16 px-4"
+      className="w-full my-8 md:my-16"
     >
       {/* Title */}
       <h2 className="font-semibold text-[#31286A] text-2xl md:text-3xl leading-tight tracking-tight mb-2">
         {t("title")}
       </h2>
-      <p className="text-base md:text-lg text-gray-500 leading-relaxed mb-8 max-w-2xl">
+      <p className="text-base md:text-lg text-gray-500 leading-relaxed mb-8">
         {t("description")}
       </p>
 
