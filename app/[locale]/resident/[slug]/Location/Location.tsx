@@ -123,11 +123,11 @@ export default function Location() {
         </div>
         <button
           onClick={handleDirectionsClick}
-          className="flex items-center gap-2 bg-[#5E5691] hover:bg-[#4b437a] text-white px-4 md:px-6 h-[40px] rounded-[8px] text-base font-medium transition-colors duration-200"
+          className="flex items-center gap-2 bg-[#5E5691] hover:bg-[#4b437a] text-white px-4 md:px-6 h-[40px] rounded-[8px] text-sm md:text-base font-medium transition-colors duration-200 whitespace-nowrap min-w-0 max-w-full overflow-hidden"
           style={{ paddingTop: 8, paddingBottom: 8, paddingLeft: 16, paddingRight: 16 }}
         >
-          <DirectionMapIcon width={20} height={20} className="w-5 h-5" stroke="#FCFCFC" />
-          {t("getDirections")}
+          <DirectionMapIcon width={20} height={20} className="w-5 h-5 flex-shrink-0" stroke="#FCFCFC" />
+          <span className="truncate block">{t("getDirections")}</span>
         </button>
       </div>
 
