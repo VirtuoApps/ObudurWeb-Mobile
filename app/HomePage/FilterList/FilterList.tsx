@@ -411,15 +411,13 @@ export default function FilterList({
   const [touchStartY, setTouchStartY] = useState<number | null>(null);
   const [translateY, setTranslateY] = useState(0);
 
-  // Prevent body scroll when bottom sheet is open
+  // Bottom sheet açıkken body scroll'unu engelle
   useEffect(() => {
     if (isSheetOpen || isSaveFilterSheetOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
     }
-
-    // Cleanup on unmount
     return () => {
       document.body.style.overflow = "unset";
     };
@@ -624,7 +622,7 @@ export default function FilterList({
               style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
             ></div>
             <div
-              className="relative bg-white rounded-t-[24px] shadow-xl max-w-[600px] w-full mx-auto flex flex-col mt-28 h-[87vh]"
+              className="relative bg-white rounded-t-[24px] shadow-xl max-w-[600px] w-full mx-auto flex flex-col mt-28"
               style={{
                 transform: `translateY(${translateY}px)`,
                 transition: touchStartY ? "none" : "transform 0.3s ease-out",
@@ -634,98 +632,66 @@ export default function FilterList({
               onTouchEnd={handleTouchEnd}
             >
               {/* Header */}
-              <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-[24px] relative">
-                <div className="flex items-center justify-between">
-                  <h2 className="md:text-lg text-2xl font-bold text-gray-700">
-                    Sıralama
-                  </h2>
+              <div className="sticky top-0 bg-white z-10 px-6 pt-6 pb-2 rounded-t-[24px]">
+                <div className="w-14 h-1.5 bg-gray-300 rounded-full mx-auto mb-3 mt-2"></div>
+                <div className="flex flex-row items-center justify-between w-full">
+                  <div className="flex flex-col">
+                    <h2 className="text-xl font-bold text-gray-700 mb-2 text-left">Sıralama</h2>
+                  </div>
                   <button
-                    className="text-gray-400 hover:text-gray-600 cursor-pointer"
+                    className="text-gray-400 hover:text-gray-600 cursor-pointer ml-4"
                     onClick={() => setIsSheetOpen(false)}
                   >
-                    <XMarkIcon className="w-8 h-8 md:w-6 md:h-6 text-gray-700" />
+                    <XMarkIcon className="w-7 h-7 text-gray-700" />
                   </button>
                 </div>
-                <span className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1.5 bg-gray-300 rounded-full md:hidden"></span>
               </div>
 
-              {/* Scrollable content area */}
-              <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-[16px]">
-                <div className="top-full left-0 right-0 mt-1 bg-white z-10 flex flex-col gap-[8px]">
-                  {/* Search Name Section */}
-                  <div className="mb-10">
-                    <label className="block text-lg font-bold text-[#262626] mb-2">
-                      Arama Adı
-                    </label>
-                    <input
-                      type="text"
-                      value={searchName}
-                      onChange={(e) => setSearchName(e.target.value)}
-                      placeholder="Yeni aramam"
-                      className="w-full px-6 py-4 bg-[#FCFCFC] border border-[#D9D9D9] rounded-2xl 
-                     text-[#8C8C8C] placeholder-[#8C8C8C] focus:outline-none focus:border-[#262626]
-                     focus:text-[#262626] transition-colors"
-                    />
+              {/* Sıralama seçenekleri */}
+              <div className="flex-1 overflow-y-auto px-4 flex flex-col gap-3 justify-start">
+                <div
+                  className={`border ${selectedSortOption === "ascending" ? "border-[#362C75] bg-[#F6F5FB]" : "border-[#E0E0E0] bg-white"} rounded-2xl px-5 py-4 flex items-center gap-3 cursor-pointer`}
+                  onClick={() => setSelectedSortOption("ascending")}
+                >
+                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedSortOption === "ascending" ? "border-[#362C75]" : "border-[#BFBFBF]"}`}>
+                    {selectedSortOption === "ascending" && <div className="w-3 h-3 rounded-full bg-[#362C75]"></div>}
                   </div>
-
-                  <div
-                    className={`px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold rounded-2xl flex items-center gap-2 outline ${
-                      selectedSortOption === "ascending"
-                        ? "outline-[#595959]"
-                        : "outline-[#F0F0F0]"
-                    }`}
-                    onClick={() => setSelectedSortOption("ascending")}
-                  >
-                    <div className="relative w-[16px] h-[16px] rounded-full border border-black flex items-center justify-center">
-                      {selectedSortOption === "ascending" && (
-                        <div className="w-[10px] h-[10px] rounded-full bg-[#362C75]"></div>
-                      )}
-                    </div>
-                    <p className="text-sm">
-                      {filteringT("sortOptions.lowestPrice")}
-                    </p>
-                  </div>
-                  <div
-                    className={`px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold rounded-2xl flex items-center gap-2 outline ${
-                      selectedSortOption === "descending"
-                        ? "outline-[#595959]"
-                        : "outline-[#F0F0F0]"
-                    }`}
-                    onClick={() => setSelectedSortOption("descending")}
-                  >
-                    <div className="relative w-[16px] h-[16px] rounded-full border border-black flex items-center justify-center">
-                      {selectedSortOption === "descending" && (
-                        <div className="w-[10px] h-[10px] rounded-full bg-[#362C75]"></div>
-                      )}
-                    </div>
-                    <p className="text-sm">
-                      {filteringT("sortOptions.highestPrice")}
-                    </p>
-                  </div>
-                  <div
-                    className={`px-5 py-3 hover:bg-gray-100 cursor-pointer text-gray-700 font-semibold rounded-2xl flex items-center gap-2 outline ${
-                      selectedSortOption === "newest"
-                        ? "outline-[#595959]"
-                        : "outline-[#F0F0F0]"
-                    }`}
-                    onClick={() => setSelectedSortOption("newest")}
-                  >
-                    <div className="relative w-[16px] h-[16px] rounded-full border border-black flex items-center justify-center">
-                      {selectedSortOption === "newest" && (
-                        <div className="w-[10px] h-[10px] rounded-full bg-[#362C75]"></div>
-                      )}
-                    </div>
-                    <p className="text-sm">
-                      {filteringT("sortOptions.newest")}
-                    </p>
-                  </div>
+                  <span className="text-base font-medium text-[#262626]">{filteringT("sortOptions.lowestPrice")}</span>
                 </div>
+                <div
+                  className={`border ${selectedSortOption === "descending" ? "border-[#362C75] bg-[#F6F5FB]" : "border-[#E0E0E0] bg-white"} rounded-2xl px-5 py-4 flex items-center gap-3 cursor-pointer`}
+                  onClick={() => setSelectedSortOption("descending")}
+                >
+                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedSortOption === "descending" ? "border-[#362C75]" : "border-[#BFBFBF]"}`}>
+                    {selectedSortOption === "descending" && <div className="w-3 h-3 rounded-full bg-[#362C75]"></div>}
+                  </div>
+                  <span className="text-base font-medium text-[#262626]">{filteringT("sortOptions.highestPrice")}</span>
+                </div>
+                <div
+                  className={`border ${selectedSortOption === "newest" ? "border-[#362C75] bg-[#F6F5FB]" : "border-[#E0E0E0] bg-white"} rounded-2xl px-5 py-4 flex items-center gap-3 cursor-pointer`}
+                  onClick={() => setSelectedSortOption("newest")}
+                >
+                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedSortOption === "newest" ? "border-[#362C75]" : "border-[#BFBFBF]"}`}>
+                    {selectedSortOption === "newest" && <div className="w-3 h-3 rounded-full bg-[#362C75]"></div>}
+                  </div>
+                  <span className="text-base font-medium text-[#262626]">{filteringT("sortOptions.newest")}</span>
+                </div>
+                <div
+                  className={`border ${selectedSortOption === "oldest" ? "border-[#362C75] bg-[#F6F5FB]" : "border-[#E0E0E0] bg-white"} rounded-2xl px-5 py-4 flex items-center gap-3 cursor-pointer`}
+                  onClick={() => setSelectedSortOption("oldest")}
+                >
+                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${selectedSortOption === "oldest" ? "border-[#362C75]" : "border-[#BFBFBF]"}`}>
+                    {selectedSortOption === "oldest" && <div className="w-3 h-3 rounded-full bg-[#362C75]"></div>}
+                  </div>
+                  <span className="text-base font-medium text-[#262626]">{filteringT("sortOptions.oldest")}</span>
+                </div>
+              </div>
 
-                <div className="border-b border-gray-200"></div>
-
+              {/* Sırala butonu */}
+              <div className="px-4 pb-6 pt-2 bg-white">
                 <button
                   type="button"
-                  className={`mb-[16px] h-[54px] justify-center w-full inline-flex items-center gap-2 px-4 py-1.5 rounded-full transition font-medium cursor-pointer bg-[#5E5691] border-[0.5px] border-[#362C75] text-[#fcfcfc]`}
+                  className="w-full h-[54px] rounded-2xl bg-[#5E5691] text-[#fcfcfc] font-medium text-base flex items-center justify-center border-[0.5px] border-[#362C75] transition"
                   onClick={handleSortSelection}
                 >
                   {filteringT("sort")}
@@ -744,7 +710,7 @@ export default function FilterList({
             ></div>
 
             <div
-              className="relative bg-white rounded-t-[24px] shadow-xl max-w-[600px] w-full mx-auto flex flex-col mt-28 h-[87vh]"
+              className="relative bg-white rounded-t-[24px] shadow-xl max-w-[600px] w-full mx-auto flex flex-col mt-28"
               style={{
                 transform: `translateY(${translateY}px)`,
                 transition: touchStartY ? "none" : "transform 0.3s ease-out",
@@ -771,7 +737,6 @@ export default function FilterList({
                         <XMarkIcon className="w-6 h-6 text-gray-700" />
                       </button>
                     </div>
-                    <span className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1.5 bg-gray-300 rounded-full md:hidden"></span>
                   </div>
 
                   <div className="flex-1 overflow-y-auto p-6 space-y-2">
@@ -800,9 +765,10 @@ export default function FilterList({
                 </>
               ) : (
                 <>
-                  <div className="sticky top-0 bg-white z-10 p-6 border-b border-gray-100 rounded-t-[24px] relative">
+                  <div className="sticky top-0 bg-white z-10 px-6 pt-3 pb-2 rounded-t-[24px] relative">
+                    <div className="w-14 h-1.5 bg-gray-300 rounded-full mx-auto mb-3 mt-2"></div>
                     <div className="flex items-center justify-between">
-                      <h2 className="md:text-lg text-2xl font-bold text-[#262626]">
+                      <h2 className="text-xl font-bold text-gray-700 mb-1 text-left">
                         {filteringT("saveSearch")}
                       </h2>
                       <button
@@ -816,14 +782,12 @@ export default function FilterList({
                         <XMarkIcon className="w-6 h-6 text-gray-700" />
                       </button>
                     </div>
-                    <span className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-1.5 bg-gray-300 rounded-full md:hidden"></span>
                   </div>
 
                   <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-[16px]">
                     <div className="top-full left-0 right-0 mt-1 bg-white z-10 flex flex-col gap-[8px]">
-                      {/* Search Name Section */}
-                      <div className="mb-10">
-                        <label className="block text-lg font-bold text-[#262626] mb-2">
+                      <div className="mt-0 mb-2">
+                        <label className="block text-lg font-bold text-[#262626] mb-2 mt-0">
                           Arama Adı
                         </label>
                         <input
@@ -831,12 +795,9 @@ export default function FilterList({
                           value={searchName}
                           onChange={(e) => setSearchName(e.target.value)}
                           placeholder="Yeni aramam"
-                          className="w-full px-6 py-4 bg-[#FCFCFC] border border-[#D9D9D9] rounded-2xl 
-                         text-[#8C8C8C] placeholder-[#8C8C8C] focus:outline-none focus:border-[#262626]
-                         focus:text-[#262626] transition-colors"
+                          className="w-full px-6 py-4 bg-[#FCFCFC] border border-[#D9D9D9] rounded-2xl text-[#8C8C8C] placeholder-[#8C8C8C] focus:outline-none focus:border-[#262626] focus:text-[#262626] transition-colors"
                         />
                       </div>
-
                       <div className="flex gap-4">
                         <button
                           onClick={() => {
@@ -845,20 +806,14 @@ export default function FilterList({
                             setIsSaveFilterSheetOpen(false);
                           }}
                           disabled={isLoading}
-                          className="flex-1 py-4 px-6 border-2 border-[#BFBFBF] rounded-2xl 
-                         text-[#262626] font-medium hover:bg-gray-50 transition-colors cursor-pointer
-                         disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="flex-1 py-4 px-6 border-2 border-[#BFBFBF] rounded-2xl text-[#262626] font-medium hover:bg-gray-50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           Vazgeç
                         </button>
                         <button
                           onClick={handleSave}
                           disabled={!searchName || isLoading}
-                          className={`flex-1 py-4 px-6 rounded-2xl font-medium transition-colors cursor-pointer ${
-                            searchName && !isLoading
-                              ? "bg-[#5E5691] text-[#FCFCFC] hover:bg-[#5E5691]"
-                              : "bg-[#F0F0F0] text-[#8C8C8C] cursor-not-allowed"
-                          }`}
+                          className={`flex-1 py-4 px-6 rounded-2xl transition-colors cursor-pointer font-semibold ${searchName && !isLoading ? "bg-[#F0F0F0] text-[#595959] hover:bg-[#F0F0F0]" : "bg-[#F0F0F0] text-[#8C8C8C] cursor-not-allowed"}`}
                         >
                           {isLoading ? "Kaydediliyor..." : "Kaydet"}
                         </button>

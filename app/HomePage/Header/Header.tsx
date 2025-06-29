@@ -132,11 +132,10 @@ export default function Header({
                 className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-r border-[#F0F0F0]"
               >
                 {filteringT("filters", { count: 5 })}
-                {/* TODO: countActiveFilters() */}
               </button>
               <button
                 onClick={() => setIsSaveFilterSheetOpen?.(true)}
-                className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#262626]"
+                className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959]"
               >
                 {filteringT("saveSearch")}
               </button>
