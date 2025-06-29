@@ -646,7 +646,7 @@
       "deedStatus": "Tapu Durumu",
       "selectPlaceholder": "Seçiniz",
       "selectOption": "Seçin",
-      "cancel": "Vazgeç",
+      "cancel": "Geri Dön",
       "continue": "Devam Et",
       "validation": {
         "priceUSD": "Lütfen USD para biriminde fiyat belirtin",
@@ -802,6 +802,7 @@
       "dues": "Aidat",
       "continue": "Devam Et",
       "selectOption": "Seçenek seçin",
+      "cancel": "Geri Dön",
       "validation": {
         "priceUSD": "Lütfen USD para biriminde fiyat belirtin",
         "priceTRY": "Lütfen TRY para biriminde fiyat belirtin",
@@ -923,7 +924,7 @@
       "videoTitle": "Video",
       "videoDescription": "Maksimum 1 dakika uzunluğunda video yükleyebilirsiniz. (MP4, MOV)",
       "continue": "Devam Et",
-      "cancel": "Geri",
+      "cancel": "Geri Dön",
       "stepCounter": "Adım {current} / {total}",
       "fixErrors": "Lütfen aşağıdaki hataları düzeltin:",
       "submitError": "Form gönderilirken bir hata oluştu:",
@@ -956,7 +957,7 @@
         "floorPlan": "Kat Planı",
         "offerForm": "Teklif Formu"
       },
-      "cancel": "Geri",
+      "cancel": "Geri Dön",
       "stepCounter": "Adım {current} / {total}"
     },
     "step2_land": {
@@ -976,6 +977,7 @@
       "exchangeable": "Takaslı",
       "continue": "Devam Et",
       "selectPlaceholder": "Seçiniz",
+      "cancel": "Geri Dön",
       "validation": {
         "priceUSD": "Lütfen USD para biriminde fiyat belirtin",
         "priceTRY": "Lütfen TRY para biriminde fiyat belirtin",
@@ -1067,7 +1069,7 @@
       "longitude": "Boylam:",
       "loadingMap": "Harita Yükleniyor...",
       "continue": "Devam Et",
-      "cancel": "Vazgeç",
+      "cancel": "Geri Dön",
       "stepCounter": "Adım {current} / {total}",
       "validation": {
         "countryRequired": "Lütfen ülke bilgisini girin",
@@ -1105,7 +1107,8 @@
       "distancePlaceholder": "Lokasyona olan uzaklığı yazın (Km)",
       "add": "Ekle",
       "allDistanceTypesAdded": "Tüm lokasyon tipleri eklenmiştir.",
-      "continue": "Devam Et"
+      "continue": "Devam Et",
+      "cancel": "Geri Dön"
     }
   },
   "authBox": {

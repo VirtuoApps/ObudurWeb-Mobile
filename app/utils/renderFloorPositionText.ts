@@ -5,6 +5,10 @@ export const renderFloorPositionText = (
   },
   language: string
 ) => {
+  if (!floorPosition || !language) {
+    return "";
+  }
+  
   if (language === "en" && floorPosition.en === "Level 1 Basement") {
     return "B1";
   }

@@ -2,9 +2,9 @@ import { ChevronRightIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import React, { useEffect, useRef, useState } from "react";
 import { formatInputPrice, parseInputPrice } from "@/app/utils/priceFormatter";
 
+import GoBackButton from "../../../GoBackButton/GoBackButton";
 import { useListingForm } from "../../CreationSteps";
 import { useTranslations } from "next-intl";
-import GoBackButton from "../../../GoBackButton/GoBackButton";
 
 // Custom Select component that matches the design
 interface SelectOption {
@@ -547,9 +547,9 @@ export default function SecondCreateStepForHouse() {
   };
 
   return (
-    <div className=" bg-[#ECEBF4] flex justify-center items-start p-4 py-6">
+    <div className=" bg-[#ECEBF4] flex justify-center items-start p-4 py-6 h-[calc(100vh-72px)] lg:h-[calc(100vh-96px)]">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white h-full">
-        <div className="flex flex-col md:flex-row h-full md:h-[85vh]  2xl:h-[88vh]">
+        <div className="flex flex-col md:flex-row h-[inherit]">
           {/* Left Info Panel */}
           <div className="w-full md:w-[30%] md:p-6 hidden flex-col md:flex justify-between">
             <div>
@@ -569,7 +569,7 @@ export default function SecondCreateStepForHouse() {
               <div ref={formPanelRef} className="h-full">
                 {/* Errors display */}
                 {errors.length > 0 && (
-                  <div className="bg-red-50 border border-red-200 rounded-md p-4 m-0 mb-6">
+                  <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
                     <div className="flex items-start">
                       <div className="flex-shrink-0">
                         <XCircleIcon
@@ -1146,12 +1146,19 @@ export default function SecondCreateStepForHouse() {
 
             <div className=" flex flex-col sm:flex-row justify-end items-center p-6 border-t md:border-l border-[#F0F0F0]">
               <button
+                    type="button"
+                    onClick={handleBack}
+                    className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-600 font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex md:hidden items-center justify-center gap-2 transition border border-gray-300"
+                  >
+                    {t("cancel")}
+                  </button>
+              <button
                 type="button"
                 onClick={handleContinue}
                 className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
               >
                 {t("continue")}
-                <ChevronRightIcon className="h-5 w-5" />
+                <ChevronRightIcon className="h-5 w-5 hidden sm:block" />
               </button>
             </div>
           </div>

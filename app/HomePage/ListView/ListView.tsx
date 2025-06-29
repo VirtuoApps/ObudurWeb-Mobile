@@ -6,8 +6,8 @@ import PaginationBox from "./PaginationBox/PaginationBox";
 import ResidentBox from "./ResidentBox/ResidentBox";
 import SortAndSaveFiltering from "./SortAndSaveFiltering/SortAndSaveFiltering";
 import { formatAddress } from "@/app/utils/addressFormatter";
-import { useLocale } from "next-intl";
 import { renderFloorPositionText } from "@/app/utils/renderFloorPositionText";
+import { useLocale } from "next-intl";
 
 // Helper function to get localized text
 export const getLocalizedText = (textObj: any, selectedLanguage: string) => {
@@ -131,7 +131,7 @@ export default function ListView({
             )}
             title={getLocalizedText(hotel.title, selectedLanguage)}
             price={getDisplayPrice(hotel.price, selectedCurrency)}
-            bedCount={hotel.bedRoomCount.toString()}
+            bedCount={hotel.bedRoomCount?.toString()}
             floorCount={renderFloorPositionText(
               hotel.floorPosition,
               selectedLanguage

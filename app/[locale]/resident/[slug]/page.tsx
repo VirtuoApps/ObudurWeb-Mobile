@@ -177,7 +177,7 @@ export default async function ResidentPage({
         </div>
         <div className="xl:max-w-[1472px] mx-auto mt-0  lg:-mt-12 xl:mt-0">
           <div className="flex lg:flex-row flex-col items-start mt-[16px] md:mt-[80px] justify-between px-4 gap-[32px]">
-            <div className="xl:max-w-[952px] lg:max-w-[800px] xl:w-full md:w-[60%]">
+            <div className="xl:max-w-[952px] lg:max-w-[800px]">
               <GeneralInfo />
               <div id="descriptions-section" className="my-[24px] md:my-[72px]">
                 <Descriptions />
@@ -215,7 +215,7 @@ export default async function ResidentPage({
               </div>
             </div>
 
-            <div className="xl:max-w-[362px]  w-full mt-8 md:mt-0 sticky top-[104px] z-20">
+            <div className="lg:max-w-[342px] hidden lg:block w-full mt-8 md:mt-0 sticky top-[104px] z-20">
               <ContactBox hotelData={hotelData} />
             </div>
           </div>

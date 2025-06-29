@@ -400,7 +400,7 @@ export default function FourthCreateStep() {
     return (
       <button
         type="button"
-        className={`inline-flex items-center gap-2 px-4 py-2 rounded-[16px] transition border  cursor-pointer text-[14px] font-medium h-[40px] ${
+        className={`inline-flex items-center gap-2 px-4 py-2 rounded-[16px] transition border cursor-pointer text-[14px] max-h-[40px] ${
           isSelected
             ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
             : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
@@ -433,9 +433,7 @@ export default function FourthCreateStep() {
   }) => {
     return (
       <div className="mt-6">
-        <h2 className="font-semibold mb-2 text-[#262626] text-[16px]">
-          {title}
-        </h2>
+        <h2 className="font-bold mb-4 text-[#262626] text-[16px]">{title}</h2>
         <div className="flex flex-wrap gap-2">
           {features.map((feature) => (
             <FeatureItem key={feature._id} feature={feature} />
@@ -465,335 +463,357 @@ export default function FourthCreateStep() {
   }, []); // Empty dependency array means this runs once when component mounts
 
   return (
-    <div className=" bg-[#ECEBF4] flex justify-center items-start p-4">
-      <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white">
-        <div className="flex flex-col md:flex-row p-10">
-          {/* Left Info Panel */}
-          <div className="w-full md:w-[30%] mb-8 md:mb-0 md:pr-6 flex flex-col">
-            <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
-              {t("title")}
-            </h1>
-            <div className="mt-4 text-base text-[#595959] font-medium">
-              <p className="leading-[140%]">{t("description")}</p>
+    <div className="bg-[#ECEBF4] flex justify-center items-start p-4 py-6 h-[calc(100vh-72px)] lg:h-[calc(100vh-96px)]">
+      <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white h-full">
+        <div className="flex flex-col md:flex-row h-[inherit]">
+          {/* Left Info Panel - 30% width on desktop */}
+          <div className="w-full md:w-[30%] mb-8 md:mb-0 md:p-6 hidden flex-col md:flex justify-between">
+            <div className="">
+              <h1 className="text-2xl font-extrabold leading-tight text-[#362C75]">
+                {t("title")}
+              </h1>
+              <div className="mt-4 text-base text-[#595959] font-medium">
+                <p className="leading-[140%]">
+                  {t("description")}
+                </p>
+              </div>
             </div>
+
+            {/* <span className="text-sm text-gray-600 mt-4 sm:mt-0">
+              {t("stepCounter", { current: 4, total: 6 })}
+            </span> */}
+            <GoBackButton handleBack={handleBack} step={4} totalSteps={6} />
           </div>
 
-          {/* Right Form Panel */}
+          {/* Right Form Panel - 70% width on desktop */}
           <div
             ref={formPanelRef}
-            className="w-full md:w-[70%] md:pl-6 h-auto md:h-[66vh]  2xl:h-[70vh] overflow-auto md:border-l md:border-[#F0F0F0]"
+            className="flex-1 h-full flex flex-col"
           >
-            {/* Errors display */}
-            {errors.length > 0 && (
-              <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <XCircleIcon
-                      className="h-5 w-5 text-red-400"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-red-800">
-                      {t("fixErrors")}
-                    </h3>
-                    <div className="mt-2 text-sm text-red-700">
-                      <ul className="list-disc pl-5 space-y-1">
-                        {errors.map((error, index) => (
-                          <li key={index}>{error}</li>
-                        ))}
-                      </ul>
+            <div className="p-6 flex-1 overflow-auto md:border-l border-[#F0F0F0]">
+              {/* Errors display */}
+              {errors.length > 0 && (
+                <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0">
+                      <XCircleIcon
+                        className="h-5 w-5 text-red-400"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium text-red-800">
+                        {t("fixErrors")}
+                      </h3>
+                      <div className="mt-2 text-sm text-red-700">
+                        <ul className="list-disc pl-5 space-y-1">
+                          {errors.map((error, index) => (
+                            <li key={index}>{error}</li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
-
-            <div className="space-y-8">
-              {/* Orientation (Cephe) */}
-              {entranceType?.tr !== "Arsa" && (
-                <div>
-                  <h2 className="font-semibold mb-4 text-[#262626] text-[16px]">
-                    {t("facade")}
-                  </h2>
-                  <div className="flex flex-wrap gap-2">
-                    {orientationOptions.map((option) => (
-                      <button
-                        key={option._id}
-                        type="button"
-                        className={`inline-flex items-center  px-4 py-2 rounded-[16px] transition border cursor-pointer text-[14px] font-medium h-[40px] ${
-                          faces.includes(option._id)
-                            ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75] "
-                            : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
-                        }`}
-                        onClick={() => toggleFace(option._id)}
-                      >
-                        <Image
-                          src={option.iconUrl}
-                          alt={
-                            option.name[
-                              selectedLanguage as keyof typeof option.name
-                            ] || ""
-                          }
-                          width={24}
-                          height={24}
-                          className="object-contain"
-                        />
-                        <span className="font-medium ml-2">
-                          {option.name[
-                            selectedLanguage as keyof typeof option.name
-                          ] || ""}
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
               )}
 
-              {/* General Features */}
-              {/* {entranceType?.tr !== "Arsa" && (
-                <FeatureSection
-                  title="Genel Özellikler"
-                  features={generalFeatures}
-                />
-              )} */}
-
-              {/* Interior Features */}
-              {entranceType?.tr !== "Arsa" && (
-                <FeatureSection
-                  title={t("interiorFeatures")}
-                  features={insideFeatures}
-                />
-              )}
-
-              {/* Exterior Features */}
-              {entranceType?.tr !== "Arsa" && (
-                <FeatureSection
-                  title={t("exteriorFeatures")}
-                  features={outsideFeatures}
-                />
-              )}
-
-              {/* Elderly and Disabled Features */}
-              {entranceType?.tr !== "Arsa" && (
-                <FeatureSection
-                  title={t("elderlyDisabledFeatures")}
-                  features={elderlyDisabledFeatures}
-                />
-              )}
-
-              {/* Infrastructure Features */}
-              {entranceType?.tr === "Arsa" && (
-                <>
-                  {" "}
-                  <div className="mt-6">
-                    <h2 className="font-semibold mb-2 text-[#262626]">
-                      {t("infrastructureFeatures")}
+              <div className="space-y-8">
+                {/* Orientation (Cephe) */}
+                {entranceType?.tr !== "Arsa" && (
+                  <div>
+                    <h2 className="font-bold mb-4 text-[#262626] text-[16px]">
+                      {t("facade")}
                     </h2>
                     <div className="flex flex-wrap gap-2">
-                      {Object.entries(infrastructureFeatures).map(
-                        ([key, feature]) => {
-                          const isSelected =
-                            infrastructureFeatureIds.includes(key);
+                      {orientationOptions.map((option) => (
+                        <button
+                          key={option._id}
+                          type="button"
+                          className={`inline-flex items-center  px-4 py-2 rounded-[16px] transition border cursor-pointer text-[14px] max-h-[40px] ${
+                            faces.includes(option._id)
+                              ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75] "
+                              : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
+                          }`}
+                          onClick={() => toggleFace(option._id)}
+                        >
+                          <Image
+                            src={option.iconUrl}
+                            alt={
+                              option.name[
+                                selectedLanguage as keyof typeof option.name
+                              ] || ""
+                            }
+                            width={24}
+                            height={24}
+                            className="object-contain"
+                          />
+                          <span className="ml-2">
+                            {option.name[
+                              selectedLanguage as keyof typeof option.name
+                            ] || ""}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* General Features */}
+                {/* {entranceType?.tr !== "Arsa" && (
+                  <FeatureSection
+                    title="Genel Özellikler"
+                    features={generalFeatures}
+                  />
+                )} */}
+
+                {/* Interior Features */}
+                {entranceType?.tr !== "Arsa" && (
+                  <FeatureSection
+                    title={t("interiorFeatures")}
+                    features={insideFeatures}
+                  />
+                )}
+
+                {/* Exterior Features */}
+                {entranceType?.tr !== "Arsa" && (
+                  <FeatureSection
+                    title={t("exteriorFeatures")}
+                    features={outsideFeatures}
+                  />
+                )}
+
+                {/* Elderly and Disabled Features */}
+                {entranceType?.tr !== "Arsa" && (
+                  <FeatureSection
+                    title={t("elderlyDisabledFeatures")}
+                    features={elderlyDisabledFeatures}
+                  />
+                )}
+
+                {/* Infrastructure Features */}
+                {entranceType?.tr === "Arsa" && (
+                  <>
+                    {" "}
+                    <div className="mt-6">
+                      <h2 className="font-semibold mb-4 text-[#262626]">
+                        {t("infrastructureFeatures")}
+                      </h2>
+                      <div className="flex flex-wrap gap-2">
+                        {Object.entries(infrastructureFeatures).map(
+                          ([key, feature]) => {
+                            const isSelected =
+                              infrastructureFeatureIds.includes(key);
+                            const displayName =
+                              selectedLanguage === "en"
+                                ? feature.en
+                                : feature.tr;
+                            return (
+                              <button
+                                key={key}
+                                type="button"
+                                className={`inline-flex items-center gap-2 px-4 py-2 rounded-[16px] transition border  cursor-pointer text-[14px] max-h-[40px] ${
+                                  isSelected
+                                    ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
+                                    : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
+                                }`}
+                                onClick={() => toggleInfrastructureFeature(key)}
+                              >
+                                {feature.image && (
+                                  <div className="w-6 h-6 relative">
+                                    <Image
+                                      src={feature.image}
+                                      alt={displayName}
+                                      width={24}
+                                      height={24}
+                                      className="object-contain"
+                                    />
+                                  </div>
+                                )}
+                                {displayName}
+                              </button>
+                            );
+                          }
+                        )}
+                      </div>
+                    </div>
+                    {/* View (Manzara) Section */}
+                    <div className="mt-8">
+                      <h2 className="font-semibold mb-4 text-[#262626]">
+                        {t("view")}
+                      </h2>
+                      <div className="flex flex-wrap gap-4">
+                        {Object.entries(views).map(([key, view]) => {
+                          const isSelected = viewIds.includes(key);
                           const displayName =
-                            selectedLanguage === "en" ? feature.en : feature.tr;
+                            selectedLanguage === "en" ? view.en : view.tr;
                           return (
                             <button
                               key={key}
                               type="button"
-                              className={`inline-flex items-center gap-2 px-4 py-2 rounded-[16px] transition border cursor-pointer text-[14px] font-medium h-[40px] ${
+                              className={`inline-flex items-center gap-2 px-4 py-2 rounded-[16px] transition border  cursor-pointer max-h-[40px] ${
                                 isSelected
                                   ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
                                   : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
                               }`}
-                              onClick={() => toggleInfrastructureFeature(key)}
+                              onClick={() => toggleView(key)}
                             >
-                              {feature.image && (
-                                <div className="w-6 h-6 relative">
-                                  <Image
-                                    src={feature.image}
-                                    alt={displayName}
-                                    width={24}
-                                    height={24}
-                                    className="object-contain"
-                                  />
-                                </div>
-                              )}
-                              {displayName}
+                              <Image
+                                src={view.image}
+                                alt={displayName}
+                                width={24}
+                                height={24}
+                                className="object-contain"
+                              />
+                              <span className="font-medium text-[14px]">
+                                {displayName}
+                              </span>
                             </button>
                           );
-                        }
-                      )}
+                        })}
+                      </div>
                     </div>
+                  </>
+                )}
+
+                {/* Distances */}
+                <div>
+                  <h2 className="text-[16px] font-bold text-[#181818]">
+                    {t("locationFeatures")}
+                  </h2>
+                  <p className="text-[14px] text-[#6C6C6C] mb-4">
+                    {t("locationFeaturesDescription")}
+                  </p>
+
+                  {/* Add new distance form */}
+                  <div className="space-y-4">
+                    {distanceTypes.filter(
+                      (type) => !distances.some((d) => d.typeId === type._id)
+                    ).length > 0 ? (
+                      <>
+                        <div className="w-full">
+                          <CustomSelect
+                            options={distanceTypes
+                              .filter(
+                                (type) =>
+                                  !distances.some((d) => d.typeId === type._id)
+                              )
+                              .map((type) => ({
+                                value: type._id,
+                                label:
+                                  type.name[
+                                    selectedLanguage as keyof typeof type.name
+                                  ] ||
+                                  type.name.tr ||
+                                  type.name.en,
+                              }))}
+                            value={newDistanceTypeId}
+                            onChange={(value) => setNewDistanceTypeId(value)}
+                            placeholder={t("distanceType")}
+                          />
+                        </div>
+                        <div className="w-full">
+                          <input
+                            type="number"
+                            step="0.1"
+                            min="0"
+                            className="w-full h-[56px] px-4 border border-[#E2E2E2] rounded-[16px] placeholder:text-gray-400 text-gray-700 focus:outline-none focus:border-[#5D568D] text-[14px]"
+                            placeholder={t("distancePlaceholder")}
+                            value={newDistanceValue}
+                            onChange={(e) =>
+                              setNewDistanceValue(e.target.value)
+                            }
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={addDistance}
+                          className="px-6 py-2 bg-[#5D568D] text-white rounded-lg flex items-center justify-center gap-2 hover:bg-[#4A4570] transition-colors cursor-pointer"
+                        >
+                          <PlusIcon className="h-5 w-5" />
+                          {t("add")}
+                        </button>
+                      </>
+                    ) : (
+                      <div className="text-center py-4 text-gray-500">
+                        <p>{t("allDistanceTypesAdded")}</p>
+                      </div>
+                    )}
                   </div>
-                  {/* View (Manzara) Section */}
-                </>
-              )}
 
-              <div className="mt-8">
-                <h2 className="font-semibold mb-2 text-[#262626] text-[16px]">
-                  {t("view")}
-                </h2>
-                <div className="flex flex-wrap gap-2">
-                  {Object.entries(views).map(([key, view]) => {
-                    const isSelected = viewIds.includes(key);
-                    const displayName =
-                      selectedLanguage === "en" ? view.en : view.tr;
-                    return (
-                      <button
-                        key={key}
-                        type="button"
-                        className={`inline-flex items-center gap-2 px-4 py-2 rounded-[16px] transition border cursor-pointer text-[14px] font-medium h-[40px] ${
-                          isSelected
-                            ? "bg-[#EBEAF180] border-[0.5px] border-[#362C75] text-[#362C75]"
-                            : "bg-transparent border-gray-300 text-gray-700 transition-all duration-300 hover:bg-[#F5F5F5] hover:border-[#595959]"
-                        }`}
-                        onClick={() => toggleView(key)}
-                      >
-                        <Image
-                          src={view.image}
-                          alt={displayName}
-                          width={24}
-                          height={24}
-                          className="object-contain"
-                        />
-                        <span className="font-medium ml-2">{displayName}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
+                  {/* Current distances as chips */}
+                  {distances.length > 0 && (
+                    <div className="flex flex-wrap gap-3">
+                      {distances.map((distance) => (
+                        <div
+                          key={distance.typeId}
+                          className="flex items-center gap-3 h-10 px-4 border-[0.5px] border-[#362C75] rounded-[20px] bg-[#EBEAF180]"
+                        >
+                          {/* Icon */}
+                          {distanceTypes.find(
+                            (dt) => dt._id === distance.typeId
+                          )?.iconUrl && (
+                            <div className="w-6 h-6 relative flex-shrink-0">
+                              <Image
+                                src={
+                                  distanceTypes.find(
+                                    (dt) => dt._id === distance.typeId
+                                  )?.iconUrl || ""
+                                }
+                                alt={getDistanceTypeName(distance.typeId)}
+                                width={24}
+                                height={24}
+                                className="object-contain"
+                              />
+                            </div>
+                          )}
 
-              {/* Distances */}
-              <div>
-                <h2 className="text-[16px] font-bold text-[#181818] mb-2">
-                  {t("locationFeatures")}
-                </h2>
-                <p className="text-sm text-[#6C6C6C] mb-6">
-                  {t("locationFeaturesDescription")}
-                </p>
+                          {/* Location name */}
+                          <span className="text-sm font-medium text-[#362C75]">
+                            {getDistanceTypeName(distance.typeId)}
+                          </span>
 
-                {/* Add new distance form */}
-                <div className="space-y-4 mb-6">
-                  {distanceTypes.filter(
-                    (type) => !distances.some((d) => d.typeId === type._id)
-                  ).length > 0 ? (
-                    <>
-                      <div className="w-full">
-                        <CustomSelect
-                          options={distanceTypes
-                            .filter(
-                              (type) =>
-                                !distances.some((d) => d.typeId === type._id)
-                            )
-                            .map((type) => ({
-                              value: type._id,
-                              label:
-                                type.name[
-                                  selectedLanguage as keyof typeof type.name
-                                ] ||
-                                type.name.tr ||
-                                type.name.en,
-                            }))}
-                          value={newDistanceTypeId}
-                          onChange={(value) => setNewDistanceTypeId(value)}
-                          placeholder={t("distanceType")}
-                        />
-                      </div>
-                      <div className="w-full">
-                        <input
-                          type="number"
-                          step="0.1"
-                          min="0"
-                          className="w-full h-12 px-4 border border-[#E2E2E2] rounded-lg placeholder:text-gray-400 text-gray-700 focus:outline-none focus:border-[#5D568D]"
-                          placeholder={t("distancePlaceholder")}
-                          value={newDistanceValue}
-                          onChange={(e) => setNewDistanceValue(e.target.value)}
-                        />
-                      </div>
-                      <button
-                        type="button"
-                        onClick={addDistance}
-                        className="px-6 py-2 bg-[#5D568D] text-white rounded-lg flex items-center justify-center gap-2 hover:bg-[#4A4570] transition-colors cursor-pointer"
-                      >
-                        <PlusIcon className="h-5 w-5" />
-                        {t("add")}
-                      </button>
-                    </>
-                  ) : (
-                    <div className="text-center py-4 text-gray-500">
-                      <p>{t("allDistanceTypesAdded")}</p>
+                          {/* Distance value */}
+                          <span className="text-sm text-[#8C8C8C]">
+                            {distance.value}{" "}
+                            {getDistanceTypeUnit(distance.typeId)}
+                          </span>
+
+                          {/* Close button */}
+                          <button
+                            type="button"
+                            onClick={() => removeDistance(distance.typeId)}
+                            className="text-[#333] hover:text-red-500 transition-colors ml-1 cursor-pointer"
+                          >
+                            <img src="/x-03.png" alt="x" className="w-6 h-6" />
+                          </button>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>
-
-                {/* Separator line */}
-                <div className="border-t border-[#E2E2E2] mb-6"></div>
-
-                {/* Current distances as chips */}
-                {distances.length > 0 && (
-                  <div className="flex flex-wrap gap-3">
-                    {distances.map((distance) => (
-                      <div
-                        key={distance.typeId}
-                        className="flex items-center gap-3 h-10 px-4 border-[0.5px] border-[#362C75] rounded-[20px] bg-[#EBEAF180]"
-                      >
-                        {/* Icon */}
-                        {distanceTypes.find((dt) => dt._id === distance.typeId)
-                          ?.iconUrl && (
-                          <div className="w-6 h-6 relative flex-shrink-0">
-                            <Image
-                              src={
-                                distanceTypes.find(
-                                  (dt) => dt._id === distance.typeId
-                                )?.iconUrl || ""
-                              }
-                              alt={getDistanceTypeName(distance.typeId)}
-                              width={24}
-                              height={24}
-                              className="object-contain"
-                            />
-                          </div>
-                        )}
-
-                        {/* Location name */}
-                        <span className="text-sm font-medium text-[#362C75]">
-                          {getDistanceTypeName(distance.typeId)}
-                        </span>
-
-                        {/* Distance value */}
-                        <span className="text-sm text-[#8C8C8C]">
-                          {distance.value}{" "}
-                          {getDistanceTypeUnit(distance.typeId)}
-                        </span>
-
-                        {/* Close button */}
-                        <button
-                          type="button"
-                          onClick={() => removeDistance(distance.typeId)}
-                          className="text-[#333] hover:text-red-500 transition-colors ml-1 cursor-pointer"
-                        >
-                          <img src="/x-03.png" alt="x" className="w-6 h-6" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
+              </div>
+            </div>
+            {/* Step counter and continue button */}
+            <div className="flex flex-col-reverse sm:flex-row items-center border-t md:border-l border-[#F0F0F0] p-6 justify-end">
+              <div className="flex flex-row gap-4 sm:mt-0 w-full md:w-auto justify-end">
+                <button
+                    type="button"
+                    onClick={handleBack}
+                    className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-600 font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex md:hidden items-center justify-center gap-2 transition border border-gray-300"
+                  >
+                    {t("cancel")}
+                  </button>
+                <button
+                  type="button"
+                  onClick={handleContinue}
+                  className="cursor-pointer w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
+                >
+                  {t("continue")}
+                  <ChevronRightIcon className="w-5 h-5 hidden sm:block" />
+                </button>
               </div>
             </div>
           </div>
-        </div>
-
-        <div className=" flex flex-col sm:flex-row justify-between items-center p-6">
-          <GoBackButton handleBack={handleBack} step={4} totalSteps={6} />
-          <button
-            type="button"
-            onClick={handleContinue}
-            className="w-full sm:w-auto bg-[#5E5691] hover:bg-[#5349a0] text-white font-semibold px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition"
-          >
-            {t("continue")}
-            <ChevronRightIcon className="h-5 w-5" />
-          </button>
         </div>
       </div>
     </div>

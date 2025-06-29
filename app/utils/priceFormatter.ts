@@ -21,6 +21,8 @@ export const formatPrice = (
 ): string => {
   const symbol = currencySymbols[currency] || currency;
 
+  if (!amount || amount === 0) return "";
+        
   switch (currency) {
     case "TRY":
       if (isMarker) {

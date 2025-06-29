@@ -321,9 +321,9 @@ export default function FirstCreateStep() {
     : [];
 
   return (
-    <div className="bg-[#ECEBF4] flex justify-center items-start p-4 py-6">
+    <div className="bg-[#ECEBF4] flex justify-center items-start p-4 py-6 h-[calc(100vh-72px)] lg:h-[calc(100vh-96px)]">
       <div className="w-full max-w-[1200px] rounded-2xl shadow-lg bg-white h-full">
-        <div className="flex flex-col md:flex-row h-full md:h-[85vh]  2xl:h-[88vh]">
+        <div className="flex flex-col md:flex-row h-[inherit]">
           {/* Left Info Panel - 30% width on desktop */}
           <div className="w-full md:w-[30%] mb-8 md:mb-0 md:p-6 hidden flex-col md:flex justify-between">
             <div className="">
@@ -347,9 +347,12 @@ export default function FirstCreateStep() {
 
           {/* Right Form Panel - 70% width on desktop */}
           <div ref={formPanelRef} className="flex-1 h-full flex flex-col">
-            {/* Errors display */}
+            <div className="p-6 flex-1 overflow-auto md:border-l border-[#F0F0F0]">
+              {/* Sale or Rent - Dropdown, Property Type - Dropdown, Category - Dropdown: Tek satırda yan yana */}
+
+                          {/* Errors display */}
             {errors.length > 0 && (
-              <div className="bg-red-50 border border-red-200 rounded-md p-4 m-6 mb-0">
+              <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
                 <div className="flex items-start">
                   <div className="flex-shrink-0">
                     <XCircleIcon
@@ -372,9 +375,7 @@ export default function FirstCreateStep() {
                 </div>
               </div>
             )}
-
-            <div className="p-6 flex-1 overflow-auto md:border-l border-[#F0F0F0]">
-              {/* Sale or Rent - Dropdown, Property Type - Dropdown, Category - Dropdown: Tek satırda yan yana */}
+            
               <div className="mb-6">
                 <h2 className="mb-4 text-[#262626] text-2xl font-bold">
                   {t("categoriesTitle")}
@@ -572,7 +573,7 @@ export default function FirstCreateStep() {
                 <button
                   type="button"
                   onClick={() => window.history.back()}
-                  className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-600 font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex items-center justify-center gap-2 transition border border-gray-300"
+                  className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-600 font-semibold px-0 sm:px-8 py-3 rounded-xl inline-flex md:hidden items-center justify-center gap-2 transition border border-gray-300"
                 >
                   {t("cancel")}
                 </button>
