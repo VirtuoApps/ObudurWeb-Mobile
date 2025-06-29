@@ -938,80 +938,164 @@ export default function HomePage({
           activeFiltersCount={countActiveFilters()}
         />
 
-        <FilterList
-          features={features}
-          selectedFeatures={selectedFeatures}
-          setSelectedFeatures={setSelectedFeatures}
-          currentView={currentView}
-          listingType={listingType}
-          setListingType={setListingType}
-          onChangeCurrentView={() => {
-            handleViewChange(currentView === "map" ? "list" : "map");
-            localStorage.setItem(
-              "currentView",
-              currentView === "map" ? "list" : "map"
+        {/* FilterList with conditional margin for list view */}
+        {currentView === "list" ? (
+          <div className="mb-6">
+            {(() => {
+              const nextView = currentView === "map" ? "list" : "map";
+              return (
+                <FilterList
+                  features={features}
+                  selectedFeatures={selectedFeatures}
+                  setSelectedFeatures={setSelectedFeatures}
+                  currentView={currentView}
+                  listingType={listingType}
+                  setListingType={setListingType}
+                  onChangeCurrentView={() => {
+                    handleViewChange(nextView);
+                    localStorage.setItem("currentView", nextView);
+                  }}
+                  filterOptions={filterOptions}
+                  selectedLocation={selectedLocation}
+                  setSelectedLocation={setSelectedLocation}
+                  selectedPropertyType={selectedPropertyType}
+                  setSelectedPropertyType={setSelectedPropertyType}
+                  selectedCategory={selectedCategory}
+                  setSelectedCategory={setSelectedCategory}
+                  filters={filters || null}
+                  setFilters={setFilters}
+                  minPrice={minPrice}
+                  setMinPrice={setMinPrice}
+                  maxPrice={maxPrice}
+                  setMaxPrice={setMaxPrice}
+                  minArea={minArea}
+                  setMinArea={setMinArea}
+                  maxArea={maxArea}
+                  setMaxArea={setMaxArea}
+                  roomCount={roomCount}
+                  setRoomCount={setRoomCount}
+                  bathroomCount={bathroomCount}
+                  setBathroomCount={setBathroomCount}
+                  selectedExteriorFeatures={selectedExteriorFeatures}
+                  setSelectedExteriorFeatures={setSelectedExteriorFeatures}
+                  selectedAccessibilityFeatures={selectedAccessibilityFeatures}
+                  setSelectedAccessibilityFeatures={setSelectedAccessibilityFeatures}
+                  accessibilityFeatures={accessibilityFeatures}
+                  setAccessibilityFeatures={setAccessibilityFeatures}
+                  selectedFaceFeatures={selectedFaceFeatures}
+                  setSelectedFaceFeatures={setSelectedFaceFeatures}
+                  faceFeatures={faceFeatures}
+                  setFaceFeatures={setFaceFeatures}
+                  infrastructureFeatures={infrastructureFeatures}
+                  setInfrastructureFeatures={setInfrastructureFeatures}
+                  selectedInfrastructureFeatures={selectedInfrastructureFeatures}
+                  setSelectedInfrastructureFeatures={setSelectedInfrastructureFeatures}
+                  sceneryFeatures={sceneryFeatures}
+                  setSceneryFeatures={setSceneryFeatures}
+                  selectedSceneryFeatures={selectedSceneryFeatures}
+                  setSelectedSceneryFeatures={setSelectedSceneryFeatures}
+                  currencyCode={currencyCode}
+                  setCurrencyCode={setCurrencyCode}
+                  interiorFeatures={interiorFeatures}
+                  setInteriorFeatures={setInteriorFeatures}
+                  allQuickFilters={allQuickFilters}
+                  hotels={hotels}
+                  selectedCurrency={selectedCurrency}
+                  searchRadius={searchRadius}
+                  isFilterPopupOpen={isFilterPopupOpen}
+                  setIsFilterPopupOpen={setIsFilterPopupOpen}
+                  setIsSaveFilterPopupOpen={setIsSaveFilterPopupOpen}
+                  sortOption={sortOption}
+                  setSortOption={setSortOption}
+                  resultCount={filteredHotels.length}
+                  isAuthMenuOpen={isAuthMenuOpen}
+                  isSaveFilterSheetOpen={isSaveFilterSheetOpen}
+                  setIsSaveFilterSheetOpen={setIsSaveFilterSheetOpen}
+                  isSheetOpen={isSheetOpen}
+                  setIsSheetOpen={setIsSheetOpen}
+                  resetFilters={resetFilters}
+                />
+              );
+            })()}
+          </div>
+        ) : (
+          (() => {
+            const nextView = currentView === "map" ? "list" : "map";
+            return (
+              <FilterList
+                features={features}
+                selectedFeatures={selectedFeatures}
+                setSelectedFeatures={setSelectedFeatures}
+                currentView={currentView}
+                listingType={listingType}
+                setListingType={setListingType}
+                onChangeCurrentView={() => {
+                  handleViewChange(nextView);
+                  localStorage.setItem("currentView", nextView);
+                }}
+                filterOptions={filterOptions}
+                selectedLocation={selectedLocation}
+                setSelectedLocation={setSelectedLocation}
+                selectedPropertyType={selectedPropertyType}
+                setSelectedPropertyType={setSelectedPropertyType}
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
+                filters={filters || null}
+                setFilters={setFilters}
+                minPrice={minPrice}
+                setMinPrice={setMinPrice}
+                maxPrice={maxPrice}
+                setMaxPrice={setMaxPrice}
+                minArea={minArea}
+                setMinArea={setMinArea}
+                maxArea={maxArea}
+                setMaxArea={setMaxArea}
+                roomCount={roomCount}
+                setRoomCount={setRoomCount}
+                bathroomCount={bathroomCount}
+                setBathroomCount={setBathroomCount}
+                selectedExteriorFeatures={selectedExteriorFeatures}
+                setSelectedExteriorFeatures={setSelectedExteriorFeatures}
+                selectedAccessibilityFeatures={selectedAccessibilityFeatures}
+                setSelectedAccessibilityFeatures={setSelectedAccessibilityFeatures}
+                accessibilityFeatures={accessibilityFeatures}
+                setAccessibilityFeatures={setAccessibilityFeatures}
+                selectedFaceFeatures={selectedFaceFeatures}
+                setSelectedFaceFeatures={setSelectedFaceFeatures}
+                faceFeatures={faceFeatures}
+                setFaceFeatures={setFaceFeatures}
+                infrastructureFeatures={infrastructureFeatures}
+                setInfrastructureFeatures={setInfrastructureFeatures}
+                selectedInfrastructureFeatures={selectedInfrastructureFeatures}
+                setSelectedInfrastructureFeatures={setSelectedInfrastructureFeatures}
+                sceneryFeatures={sceneryFeatures}
+                setSceneryFeatures={setSceneryFeatures}
+                selectedSceneryFeatures={selectedSceneryFeatures}
+                setSelectedSceneryFeatures={setSelectedSceneryFeatures}
+                currencyCode={currencyCode}
+                setCurrencyCode={setCurrencyCode}
+                interiorFeatures={interiorFeatures}
+                setInteriorFeatures={setInteriorFeatures}
+                allQuickFilters={allQuickFilters}
+                hotels={hotels}
+                selectedCurrency={selectedCurrency}
+                searchRadius={searchRadius}
+                isFilterPopupOpen={isFilterPopupOpen}
+                setIsFilterPopupOpen={setIsFilterPopupOpen}
+                setIsSaveFilterPopupOpen={setIsSaveFilterPopupOpen}
+                sortOption={sortOption}
+                setSortOption={setSortOption}
+                resultCount={filteredHotels.length}
+                isAuthMenuOpen={isAuthMenuOpen}
+                isSaveFilterSheetOpen={isSaveFilterSheetOpen}
+                setIsSaveFilterSheetOpen={setIsSaveFilterSheetOpen}
+                isSheetOpen={isSheetOpen}
+                setIsSheetOpen={setIsSheetOpen}
+                resetFilters={resetFilters}
+              />
             );
-          }}
-          filterOptions={filterOptions}
-          selectedLocation={selectedLocation}
-          setSelectedLocation={setSelectedLocation}
-          selectedPropertyType={selectedPropertyType}
-          setSelectedPropertyType={setSelectedPropertyType}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-          filters={filters || null}
-          setFilters={setFilters}
-          minPrice={minPrice}
-          setMinPrice={setMinPrice}
-          maxPrice={maxPrice}
-          setMaxPrice={setMaxPrice}
-          minArea={minArea}
-          setMinArea={setMinArea}
-          maxArea={maxArea}
-          setMaxArea={setMaxArea}
-          roomCount={roomCount}
-          setRoomCount={setRoomCount}
-          bathroomCount={bathroomCount}
-          setBathroomCount={setBathroomCount}
-          selectedExteriorFeatures={selectedExteriorFeatures}
-          setSelectedExteriorFeatures={setSelectedExteriorFeatures}
-          selectedAccessibilityFeatures={selectedAccessibilityFeatures}
-          setSelectedAccessibilityFeatures={setSelectedAccessibilityFeatures}
-          accessibilityFeatures={accessibilityFeatures}
-          setAccessibilityFeatures={setAccessibilityFeatures}
-          selectedFaceFeatures={selectedFaceFeatures}
-          setSelectedFaceFeatures={setSelectedFaceFeatures}
-          faceFeatures={faceFeatures}
-          setFaceFeatures={setFaceFeatures}
-          infrastructureFeatures={infrastructureFeatures}
-          setInfrastructureFeatures={setInfrastructureFeatures}
-          selectedInfrastructureFeatures={selectedInfrastructureFeatures}
-          setSelectedInfrastructureFeatures={setSelectedInfrastructureFeatures}
-          sceneryFeatures={sceneryFeatures}
-          setSceneryFeatures={setSceneryFeatures}
-          selectedSceneryFeatures={selectedSceneryFeatures}
-          setSelectedSceneryFeatures={setSelectedSceneryFeatures}
-          currencyCode={currencyCode}
-          setCurrencyCode={setCurrencyCode}
-          interiorFeatures={interiorFeatures}
-          setInteriorFeatures={setInteriorFeatures}
-          allQuickFilters={allQuickFilters}
-          hotels={hotels}
-          selectedCurrency={selectedCurrency}
-          searchRadius={searchRadius}
-          isFilterPopupOpen={isFilterPopupOpen}
-          setIsFilterPopupOpen={setIsFilterPopupOpen}
-          setIsSaveFilterPopupOpen={setIsSaveFilterPopupOpen}
-          sortOption={sortOption}
-          setSortOption={setSortOption}
-          resultCount={filteredHotels.length}
-          isAuthMenuOpen={isAuthMenuOpen}
-          isSaveFilterSheetOpen={isSaveFilterSheetOpen}
-          setIsSaveFilterSheetOpen={setIsSaveFilterSheetOpen}
-          isSheetOpen={isSheetOpen}
-          setIsSheetOpen={setIsSheetOpen}
-          resetFilters={resetFilters}
-        />
+          })()
+        )}
 
         {/* View Container with Transitions */}
         <div className="relative overflow-hidden">
@@ -1069,7 +1153,10 @@ export default function HomePage({
                 </div>
               ) : (
                 <div
-                  className={!isTransitioning ? "animate-slide-in-right" : ""}
+                  className={
+                    (!isTransitioning ? "animate-slide-in-right" : "") +
+                    (currentView === "list" ? " mt-6" : "")
+                  }
                 >
                   <ListView
                     hotels={filteredHotels}
