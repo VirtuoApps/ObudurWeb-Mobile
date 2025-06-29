@@ -1223,8 +1223,9 @@ export default function FilterPopup({
                 <GeneralSelect
                   selectedItem={tempSelectedCategory}
                   onSelect={(category) => {
-                    // Only allow selection if property type is selected and has categories
                     if (tempSelectedPropertyType?.originalData?.categories) {
+                      setTempSelectedCategory(category);
+                    } else if (!tempSelectedPropertyType) {
                       setTempSelectedCategory(category);
                     }
                   }}
@@ -1240,14 +1241,17 @@ export default function FilterPopup({
                             originalData: category,
                           })
                         )
-                      : filterOptions.roomAsText.map((category: string) => ({
-                          name: category,
+                      : (filterOptions.categories || []).map((category: any) => ({
+                          _id: category._id,
+                          name: (category.name as any)[locale] || category.name.tr,
                           href: "#",
+                          originalData: category,
                         }))
                   }
                   defaultText={t("selectCategory") || "Select Category"}
                   extraClassName="w-full bg-white border border-gray-200 h-[56px] text-base md:text-sm text-gray-700"
                   popoverExtraClassName=" md:max-w-[300px] max-w-[190px]"
+                  disabled={!tempSelectedPropertyType}
                 />
               </div>
             </div>

@@ -64,4 +64,6 @@ export interface FilterOptions {
   faceFeatures: Feature[];
   // Add hotel types for the new API structure
   hotelTypes?: HotelType[];
+  // Tüm kategoriler (isteğe bağlı)
+  categories?: any[];
 }
