@@ -26,10 +26,11 @@ export const formatAddress = (
     return textObj && textObj[language] ? textObj[language] : textObj?.en || "";
   };
 
-  // Add components in the specified order: İl, İlçe, Mahalle
+  // Add components in the specified order: İl, İlçe, Mahalle, Sokak
   if (hotel.state) parts.push(getLocalizedText(hotel.state));
   if (hotel.city) parts.push(getLocalizedText(hotel.city));
   if (hotel.neighborhood) parts.push(getLocalizedText(hotel.neighborhood));
+  if (hotel.street) parts.push(getLocalizedText(hotel.street));
 
   return parts.filter(Boolean).join(", ");
 };
