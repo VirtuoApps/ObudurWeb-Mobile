@@ -42,6 +42,7 @@ export default function Header({
   isSaveFilterSheetOpen,
   isSheetOpen,
   setIsSheetOpen,
+  activeFiltersCount = 0,
 }: {
   setFilters: (filters: FilterType) => void;
   filterOptions: FilterOptions;
@@ -66,6 +67,7 @@ export default function Header({
   isSaveFilterSheetOpen?: boolean;
   isSheetOpen?: boolean;
   setIsSheetOpen?: (isOpen: boolean) => void;
+  activeFiltersCount?: number;
 }) {
   const dispatch = useDispatch();
   const t = useTranslations("header");
@@ -131,7 +133,7 @@ export default function Header({
                 onClick={() => setIsFilterPopupOpen(true)}
                 className="cursor-pointer grow shrink basis-0 text-[14px] font-medium text-[#595959] border-r border-[#F0F0F0]"
               >
-                {filteringT("filters", { count: 5 })}
+                {filteringT("filters", { count: activeFiltersCount })}
               </button>
               <button
                 onClick={() => setIsSaveFilterSheetOpen?.(true)}

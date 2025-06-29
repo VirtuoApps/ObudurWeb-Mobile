@@ -410,6 +410,67 @@ export default function HomePage({
       selectedRoomTypes: null,
     });
   };
+
+  // Count active filters for dynamic display
+  const countActiveFilters = () => {
+    let count = 0;
+
+    // Quick filters (selected features)
+    if (selectedFeatures.length > 0) count += selectedFeatures.length;
+
+    // Location, Property Type, Category
+    if (selectedLocation !== null) count += 1;
+    if (selectedPropertyType !== null) count += 1;
+    if (selectedCategory !== null) count += 1;
+
+    // Price range
+    if (minPrice !== "" || maxPrice !== "") count += 1;
+
+    // Area range
+    if (minArea !== "" || maxArea !== "") count += 1;
+
+    // Room and bathroom counts
+    if (roomCount !== "") count += 1;
+    if (bathroomCount !== "") count += 1;
+
+    // Room type filters (1+1, 2+1, 3+1)
+    if (filters?.selectedRoomTypes && filters.selectedRoomTypes.length > 0)
+      count += 1;
+    if (filters?.isNewSelected) count += 1;
+
+    // Features - Count only features not in quick filters
+    const quickFilterIds = selectedFeatures.map((f: any) => f._id);
+
+    // Interior features (not in quick filters)
+    const uniqueInteriorFeatures = interiorFeatures.filter(
+      (f: any) => !quickFilterIds.includes(f._id)
+    );
+    count += uniqueInteriorFeatures.length;
+
+    // Exterior features (not in quick filters)
+    const uniqueExteriorFeatures = selectedExteriorFeatures.filter(
+      (f: any) => !quickFilterIds.includes(f._id)
+    );
+    count += uniqueExteriorFeatures.length;
+
+    // Accessibility features
+    if (selectedAccessibilityFeatures.length > 0)
+      count += selectedAccessibilityFeatures.length;
+
+    // Face features
+    if (selectedFaceFeatures.length > 0) count += selectedFaceFeatures.length;
+
+    // Infrastructure features
+    if (selectedInfrastructureFeatures.length > 0)
+      count += selectedInfrastructureFeatures.length;
+
+    // Scenery features
+    if (selectedSceneryFeatures.length > 0)
+      count += selectedSceneryFeatures.length;
+
+    return count;
+  };
+
   // Handle view transitions
   const handleViewChange = (newView: "map" | "list") => {
     if (newView === currentView || isTransitioning) return;
@@ -874,6 +935,7 @@ export default function HomePage({
           isSheetOpen={isSheetOpen}
           setIsSheetOpen={setIsSheetOpen}
           currentView={currentView}
+          activeFiltersCount={countActiveFilters()}
         />
 
         <FilterList
